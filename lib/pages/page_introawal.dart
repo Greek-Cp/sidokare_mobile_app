@@ -5,18 +5,18 @@ class IntroAwal extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        padding: EdgeInsets.all(15),
+        padding: const EdgeInsets.all(15),
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               _imageIntro(),
               _textNganu(),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               _textDesc(),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               _button()
@@ -37,7 +37,7 @@ class IntroAwal extends StatelessWidget {
 
   Widget _textNganu() {
     return Column(
-      children: <Widget>[
+      children: const <Widget>[
         Text(
           "Masalah Teratasi",
           style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
@@ -49,7 +49,7 @@ class IntroAwal extends StatelessWidget {
   }
 
   Widget _textDesc() {
-    return Text(
+    return const Text(
       "Kami hadir dengan memudahkan segala urusan anda warga Desa Sidokare segeralah bergabung",
       textAlign: TextAlign.center,
     );
@@ -62,8 +62,8 @@ class IntroAwal extends StatelessWidget {
         onPressed: () {},
         child: Text("Mulai"),
         style: ElevatedButton.styleFrom(
-            minimumSize: Size.fromHeight(30),
-            padding: EdgeInsets.symmetric(vertical: 18)),
+            minimumSize: const Size.fromHeight(30),
+            padding: const EdgeInsets.symmetric(vertical: 18)),
       ),
     );
   }

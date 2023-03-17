@@ -16,7 +16,7 @@ class SplashScreen extends StatelessWidget {
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
+                children: const <Widget>[
                   Text(
                     "D E S A  S I D O K A R E",
                     style: TextStyle(

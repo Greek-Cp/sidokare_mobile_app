@@ -25,4 +25,5 @@ flutter:
     - assets/img_register.png
     - assets/nganjuk.png
     - assets/intro1.png
+    - assets/sukses.png
   uses-material-design: true
