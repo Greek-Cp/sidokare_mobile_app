@@ -78,10 +78,7 @@ class _PageLoginState extends State<PageLogin> {
                       height: 10.sp,
                     ),
                     GestureDetector(
-                      onTap: () => {
-                        Navigator.pushNamed(
-                            context, PageRegister.routeName.toString())
-                      },
+                      onTap: () => {},
                       child: Text(
                         "Lupa Password?",
                         style: TextStyle(
@@ -95,7 +92,7 @@ class _PageLoginState extends State<PageLogin> {
                     ElevatedButton(
                         style: ButtonStyle(
                             backgroundColor: MaterialStatePropertyAll(
-                                ListColor.warnaKuning)),
+                                ListColor.warnaBiruSidoKare)),
                         onPressed: () => {
                               if (_formKey.currentState!.validate())
                                 {
@@ -128,6 +125,37 @@ class _PageLoginState extends State<PageLogin> {
                         )),
                     SizedBox(
                       height: 20.h,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "Belum punya akun? ",
+                          style: GoogleFonts.dmSans(
+                              textStyle: TextStyle(
+                                  fontWeight: FontWeight.normal,
+                                  fontSize: 15.sp)),
+                          textAlign: TextAlign.start,
+                        ),
+                        GestureDetector(
+                          onTap: () => {
+                            Navigator.pushNamed(
+                                context, PageRegister.routeName.toString())
+                          },
+                          child: Text(
+                            "Daftar Disini",
+                            style: GoogleFonts.dmSans(
+                                textStyle: TextStyle(
+                                    color: ListColor.warnaBiruSidoKare,
+                                    fontWeight: FontWeight.normal,
+                                    fontSize: 15.sp)),
+                            textAlign: TextAlign.start,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 50.h,
+                        ),
+                      ],
                     ),
                   ],
                 ),
@@ -172,13 +200,13 @@ class _PageLoginState extends State<PageLogin> {
               hintText: hintText,
               enabledBorder: OutlineInputBorder(
                   borderSide:
-                      BorderSide(width: 1, color: ListColor.warnaKuning)),
+                      BorderSide(width: 1, color: ListColor.warnaBiruSidoKare)),
               focusedBorder: OutlineInputBorder(
                   borderSide:
-                      BorderSide(width: 1, color: ListColor.warnaKuning)),
+                      BorderSide(width: 1, color: ListColor.warnaBiruSidoKare)),
               border: OutlineInputBorder(
-                  borderSide:
-                      BorderSide(width: 1, color: ListColor.warnaKuning))),
+                  borderSide: BorderSide(
+                      width: 1, color: ListColor.warnaBiruSidoKare))),
         ),
       ],
     );

@@ -107,12 +107,12 @@ class PageRegister extends StatelessWidget {
                             statusPasswordType: true,
                             pesanValidasi: "Password Konfirmasi")),
                     SizedBox(
-                      height: 10.sp,
+                      height: 10.w,
                     ),
                     ElevatedButton(
                         style: ButtonStyle(
                             backgroundColor: MaterialStatePropertyAll(
-                                ListColor.warnaKuning)),
+                                ListColor.warnaBiruSidoKare)),
                         onPressed: () => {
                               if (_formKey.currentState!.validate())
                                 {
@@ -204,13 +204,13 @@ class PageRegister extends StatelessWidget {
               hintText: hintText,
               enabledBorder: OutlineInputBorder(
                   borderSide:
-                      BorderSide(width: 1, color: ListColor.warnaKuning)),
+                      BorderSide(width: 1, color: ListColor.warnaBiruSidoKare)),
               focusedBorder: OutlineInputBorder(
                   borderSide:
-                      BorderSide(width: 1, color: ListColor.warnaKuning)),
+                      BorderSide(width: 1, color: ListColor.warnaBiruSidoKare)),
               border: OutlineInputBorder(
-                  borderSide:
-                      BorderSide(width: 1, color: ListColor.warnaKuning))),
+                  borderSide: BorderSide(
+                      width: 1, color: ListColor.warnaBiruSidoKare))),
         ),
       ],
     );
