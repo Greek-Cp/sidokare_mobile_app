@@ -16,6 +16,7 @@ class MainApp extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (context) => ProviderAccount(),
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         theme: ThemeData(),
         initialRoute: PageLogin.routeName,
         routes: {

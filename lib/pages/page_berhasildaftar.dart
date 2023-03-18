@@ -8,13 +8,21 @@ class berhasildaftar extends StatelessWidget {
         body: Container(
       child: Center(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 10),
-          child: Column(children: <Widget>[
-            _gambarSukses(),
-            _headerForm(),
-            _descSukses(),
-            _buttonLanjut()
-          ]),
+          padding: EdgeInsets.symmetric(horizontal: 25),
+          child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                _gambarSukses(),
+                SizedBox(
+                  height: 20,
+                ),
+                _headerForm(),
+                _descSukses(),
+                SizedBox(
+                  height: 20,
+                ),
+                _buttonLanjut()
+              ]),
         ),
       ),
     ));
@@ -23,8 +31,8 @@ class berhasildaftar extends StatelessWidget {
   Widget _gambarSukses() {
     return Image.asset(
       "assets/sukses.png",
-      width: 250,
-      height: 250,
+      width: 200,
+      height: 200,
     );
   }
 
@@ -43,10 +51,15 @@ class berhasildaftar extends StatelessWidget {
   }
 
   Widget _buttonLanjut() {
-    return ElevatedButton(
-      onPressed: () {},
-      child: Text("Lanjut"),
-      style: ElevatedButton.styleFrom(minimumSize: Size.fromHeight(30)),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 40),
+      child: ElevatedButton(
+        onPressed: () {},
+        child: Text("Lanjut"),
+        style: ElevatedButton.styleFrom(
+            minimumSize: Size.fromHeight(30),
+            padding: EdgeInsets.symmetric(vertical: 15)),
+      ),
     );
   }
 }
