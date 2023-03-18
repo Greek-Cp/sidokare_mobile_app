@@ -1,7 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:sidokare_mobile_app/const/list_color.dart';
+import './page_introawal.dart';
 
-class SplashScreen extends StatelessWidget {
+class SplashScreen extends StatefulWidget {
+  static String? routeName = "/splash";
+  @override
+  State<SplashScreen> createState() => _SplashScreenState();
+}
+
+class _SplashScreenState extends State<SplashScreen> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _nextbro();
+  }
+
+  _nextbro() async {
+    await Future.delayed(Duration(milliseconds: 1500), () {
+      Navigator.pushNamed(context, IntroAwal.routeName.toString());
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build

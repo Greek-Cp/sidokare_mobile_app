@@ -26,4 +26,23 @@ flutter:
     - assets/nganjuk.png
     - assets/intro1.png
     - assets/sukses.png
-  uses-material-design: true
+    - assets/imagelupasandi.png
+    - assets/imageotp.png
+    - assets/imageubahsandi.png
+
+  fonts:
+    - family: DMsans
+      fonts:
+        - asset: assets/fonts/DMSansRegular.ttf
+        - asset: assets/fonts/DMSansItalic.ttf
+          style: italic
+        - asset: assets/fonts/DMSansBold.ttf
+          weight: 700
+        - asset: assets/fonts/DMSansBoldItalic.ttf
+          style: italic
+          weight: 700
+        - asset: assets/fonts/DMSansMedium.ttf
+        - asset: assets/fonts/DMSansMediumItalic.ttf
+          style: italic
+
+uses-material-design: true

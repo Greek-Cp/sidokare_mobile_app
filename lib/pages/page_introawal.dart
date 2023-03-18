@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import './page_login.dart';
 
 class IntroAwal extends StatelessWidget {
+  static String? routeName = "/introawal";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,7 +21,7 @@ class IntroAwal extends StatelessWidget {
               const SizedBox(
                 height: 20,
               ),
-              _button()
+              _button(context)
             ],
           ),
         ),
@@ -55,11 +57,13 @@ class IntroAwal extends StatelessWidget {
     );
   }
 
-  Widget _button() {
+  Widget _button(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 30),
       child: ElevatedButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.pushNamed(context, PageLogin.routeName.toString());
+        },
         child: Text("Mulai"),
         style: ElevatedButton.styleFrom(
             minimumSize: const Size.fromHeight(30),
