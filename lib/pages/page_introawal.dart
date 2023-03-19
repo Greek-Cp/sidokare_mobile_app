@@ -37,7 +37,7 @@ class IntroAwal extends StatelessWidget {
 
   Widget _textNganu() {
     return Column(
-      children: const <Widget>[
+      children: const <Widget>[ 
         Text(
           "Masalah Teratasi",
           style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sidokare_mobile_app/const/list_color.dart';
 
 class SplashScreen extends StatelessWidget {
+  static String routeName = "/splash_screen";
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
