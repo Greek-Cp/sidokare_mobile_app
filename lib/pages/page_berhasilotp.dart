@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:sidokare_mobile_app/const/size.dart';
 
-class berhasildaftar extends StatelessWidget {
-  static String? routeName = "/SuccesDaftar";
+class berhasilOtp extends StatelessWidget {
+  static String? routeName = "/SuccesOtp";
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -40,14 +40,14 @@ class berhasildaftar extends StatelessWidget {
 
   Widget _headerForm() {
     return const Text(
-      "Berhasil Daftar",
+      "Berhasil Verifikasi",
       style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
     );
   }
 
   Widget _descSukses() {
     return const Text(
-      "Akun yang telah dimasukkan berhasil silahkan login ke akunmu",
+      "Kode yang telah dimasukkan berhasil silahkan login ke akunmu",
       textAlign: TextAlign.center,
     );
   }

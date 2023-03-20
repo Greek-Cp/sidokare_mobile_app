@@ -3,7 +3,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:motion_toast/motion_toast.dart';
 import 'package:provider/provider.dart';
+import 'package:sidokare_mobile_app/component/text_field.dart';
 import 'package:sidokare_mobile_app/const/list_color.dart';
+import 'package:sidokare_mobile_app/const/size.dart';
 import 'package:sidokare_mobile_app/provider/provider_account.dart';
 
 class PageRegister extends StatelessWidget {
@@ -41,10 +43,10 @@ class PageRegister extends StatelessWidget {
                               icon: Icon(Icons.arrow_back)),
                         ]),
                     SizedBox(
-                      height: 50.h,
+                      height: 20.h,
                     ),
                     Text(
-                      "Mari Daftarkan Akunmu ",
+                      "Daftarkan Akunmu ",
                       style: GoogleFonts.dmSans(
                           textStyle: TextStyle(
                               fontWeight: FontWeight.bold, fontSize: 20.sp)),
@@ -65,54 +67,50 @@ class PageRegister extends StatelessWidget {
                       height: 300.h,
                     ),
                     SizedBox(
-                        child: widgetTextForm(
-                            labelName: "Nama",
+                        child: TextFieldImport.TextForm(
                             text_kontrol: textEditingControllerNama,
                             hintText: "Masukkan Nama",
+                            labelName: "Nama",
                             pesanValidasi: "Nama")),
                     SizedBox(
-                        child: widgetTextForm(
+                        child: TextFieldImport.TextForm(
                             labelName: "Username",
                             text_kontrol: textEditingControllerUsername,
                             hintText: "Masukkan Username",
-                            statusPasswordType: false,
                             pesanValidasi: "Username")),
                     SizedBox(
-                        child: widgetTextForm(
+                        child: TextFieldImport.TextForm(
                             labelName: "Email",
                             text_kontrol: textEditingControllerEmail,
                             hintText: "Masukkan Email",
-                            statusPasswordType: false,
                             pesanValidasi: "Email")),
                     SizedBox(
-                        child: widgetTextForm(
+                        child: TextFieldImport.TextFormTelp(
                             labelName: "Nomor Telepon",
                             text_kontrol: textEditingControllerNomorTelepon,
                             hintText: "Masukkan Nomor Telepon",
-                            statusPasswordType: false,
                             pesanValidasi: "Nomor Telepon")),
                     SizedBox(
-                        child: widgetTextForm(
-                            labelName: "Password",
-                            text_kontrol: textEditingControllerPassword,
-                            hintText: "Masukkan Password",
-                            statusPasswordType: true,
-                            pesanValidasi: "Password")),
+                        child: TextFieldPassword(
+                            textEditingControllerPassword,
+                            "Masukkan Password",
+                            false,
+                            "Password",
+                            "Password")),
                     SizedBox(
-                        child: widgetTextForm(
-                            labelName: "Konfirmasi Password",
-                            text_kontrol:
-                                textEditingControllerKonfirmasiPassword,
-                            hintText: "Masukkan Ulang Password",
-                            statusPasswordType: true,
-                            pesanValidasi: "Password Konfirmasi")),
+                        child: TextFieldPassword(
+                            textEditingControllerKonfirmasiPassword,
+                            "Masukkan Ulang Password",
+                            false,
+                            "Ulangi Password",
+                            "Password")),
                     SizedBox(
                       height: 10.w,
                     ),
                     ElevatedButton(
-                        style: ButtonStyle(
-                            backgroundColor: MaterialStatePropertyAll(
-                                ListColor.warnaBiruSidoKare)),
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: ListColor.warnaBiruSidoKare,
+                            minimumSize: Size.fromHeight(55)),
                         onPressed: () => {
                               if (_formKey.currentState!.validate())
                                 {
@@ -155,7 +153,7 @@ class PageRegister extends StatelessWidget {
                           padding: const EdgeInsets.all(10.0),
                           child: Text(
                             "Daftar",
-                            style: TextStyle(fontSize: 20.sp),
+                            style: TextStyle(fontSize: size.textButton.sp),
                           ),
                         )),
                     SizedBox(
