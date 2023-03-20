@@ -34,30 +34,42 @@ class _UbahSandiState extends State<UbahSandi> {
       builder: (context, child) {
         return Scaffold(
           body: Container(
-              child: Center(
-            child: Padding(
-              padding: size.paddingHorizontalAwalFrame,
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    _HeaderText(),
-                    _DescHeaderText(),
-                    _ImageLupaKataSandi(),
-                    TextFieldPassword(inputSandi2, "Masukkan Kata Sandimu",
-                        _passwordvisible2, "kata Sandi", "Harap disi"),
-                    SizedBox(
-                      height: 10.h,
-                    ),
-                    TextFieldPassword(
-                        inputSandi,
-                        "Masukkan Ulang Kata Sandimu",
-                        _passwordvisible,
-                        "Konfirmasi kata Sandi",
-                        "Harap disi"),
-                    _ButtonUbah()
-                  ],
+              child: SafeArea(
+            child: Center(
+              child: Padding(
+                padding: size.paddingHorizontalAwalFrame,
+                child: Form(
+                  key: _formKey,
+                  child: ListView(
+                    children: <Widget>[
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            IconButton(
+                                onPressed: () => {Navigator.pop(context)},
+                                icon: Icon(Icons.arrow_back)),
+                          ]),
+                      SizedBox(
+                        height: 20.h,
+                      ),
+                      _HeaderText(),
+                      _DescHeaderText(),
+                      _ImageLupaKataSandi(),
+                      TextFieldPassword(inputSandi2, "Masukkan Kata Sandimu",
+                          _passwordvisible2, "kata Sandi", "Harap disi"),
+                      SizedBox(
+                        height: 10.h,
+                      ),
+                      TextFieldPassword(
+                          inputSandi,
+                          "Masukkan Ulang Kata Sandimu",
+                          _passwordvisible,
+                          "Konfirmasi kata Sandi",
+                          "Harap disi"),
+                      _ButtonUbah()
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -74,6 +86,7 @@ class _UbahSandiState extends State<UbahSandi> {
           fontFamily: fontfix.DmSansBruh,
           fontWeight: FontWeight.bold,
           fontSize: 28),
+      textAlign: TextAlign.center,
     );
   }
 
@@ -81,16 +94,20 @@ class _UbahSandiState extends State<UbahSandi> {
     return const Text(
       "Silahkan masukkan kode otp ",
       style: TextStyle(fontFamily: fontfix.DmSansBruh, fontSize: 16),
+      textAlign: TextAlign.center,
     );
   }
 
   Widget _ImageLupaKataSandi() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10),
-      child: Image.asset(
-        "assets/imageubahsandi.png",
-        width: 260,
-        height: 256,
+    return Align(
+      alignment: Alignment.center,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 10),
+        child: Image.asset(
+          "assets/imageubahsandi.png",
+          width: 260,
+          height: 256,
+        ),
       ),
     );
   }
@@ -106,6 +123,7 @@ class _UbahSandiState extends State<UbahSandi> {
           child: Text(
             labelAtas,
             style: TextStyle(fontFamily: fontfix.DmSansBruh),
+            textAlign: TextAlign.center,
           ),
         ),
         SizedBox(

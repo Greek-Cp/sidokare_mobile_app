@@ -1,6 +1,7 @@
 import 'dart:ffi';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sidokare_mobile_app/const/list_color.dart';
@@ -42,7 +43,7 @@ class _TextFieldPasswordState extends State<TextFieldPassword> {
         TextFormField(
           validator: (value) {
             if (value!.isEmpty || value == null) {
-              return "${widget.pesanValidasi} Tidak Boleh Ksong";
+              return "${widget.pesanValidasi} Tidak Boleh Kosong";
             }
           },
           obscureText: !widget.passwordType!,
@@ -69,7 +70,7 @@ class _TextFieldPasswordState extends State<TextFieldPassword> {
                   borderRadius: BorderRadius.all(Radius.circular(10))),
               focusedBorder: OutlineInputBorder(
                   borderSide:
-                      BorderSide(width: 1, color: ListColor.warnaBiruSidoKare),
+                      BorderSide(width: 2, color: ListColor.warnaBiruSidoKare),
                   borderRadius: BorderRadius.all(Radius.circular(10))),
               border: OutlineInputBorder(
                   borderSide:
@@ -107,7 +108,7 @@ class TextFieldImport {
         TextFormField(
           validator: (value) {
             if (value!.isEmpty || value == null) {
-              return "${pesanValidasi} Tidak Boleh Ksong";
+              return "${pesanValidasi} Tidak Boleh Kosong";
             }
           },
           controller: text_kontrol,
@@ -121,8 +122,66 @@ class TextFieldImport {
                   borderRadius: BorderRadius.all(Radius.circular(10))),
               focusedBorder: OutlineInputBorder(
                   borderSide:
+                      BorderSide(width: 2, color: ListColor.warnaBiruSidoKare),
+                  borderRadius: BorderRadius.all(Radius.circular(10))),
+              border: OutlineInputBorder(
+                  borderSide:
+                      BorderSide(width: 1, color: ListColor.warnaBiruSidoKare),
+                  borderRadius: BorderRadius.all(Radius.circular(10)))),
+        ),
+      ],
+    );
+  }
+
+  static Column TextFormTelp(
+      {TextEditingController? text_kontrol,
+      String? hintText,
+      String? labelName,
+      String? pesanValidasi}) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SizedBox(
+          height: 10.h,
+        ),
+        Text(
+          "${labelName}",
+          style: GoogleFonts.dmSans(
+              textStyle:
+                  TextStyle(fontWeight: FontWeight.normal, fontSize: 13.sp)),
+          textAlign: TextAlign.start,
+        ),
+        SizedBox(
+          height: 5.h,
+        ),
+        TextFormField(
+          validator: (value) {
+            if (value!.isEmpty || value == null) {
+              return "${pesanValidasi} Tidak Boleh Kosong";
+            }
+          },
+          controller: text_kontrol,
+          inputFormatters: [
+            FilteringTextInputFormatter.digitsOnly,
+            LengthLimitingTextInputFormatter(12)
+          ],
+          style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.normal),
+          keyboardType: TextInputType.number,
+          decoration: InputDecoration(
+              hintText: hintText,
+              contentPadding: EdgeInsets.all(15),
+              // ignore: prefer_const_constructors
+              enabledBorder: OutlineInputBorder(
+                  borderSide:
                       BorderSide(width: 1, color: ListColor.warnaBiruSidoKare),
                   borderRadius: BorderRadius.all(Radius.circular(10))),
+              // ignore: prefer_const_constructors
+              focusedBorder: OutlineInputBorder(
+                  borderSide:
+                      BorderSide(width: 2, color: ListColor.warnaBiruSidoKare),
+                  borderRadius: BorderRadius.all(Radius.circular(10))),
+              // ignore: prefer_const_constructors
               border: OutlineInputBorder(
                   borderSide:
                       BorderSide(width: 1, color: ListColor.warnaBiruSidoKare),

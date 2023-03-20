@@ -4,6 +4,7 @@ import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:otp_text_field/otp_field.dart';
 import 'package:otp_text_field/style.dart';
+import 'package:sidokare_mobile_app/component/Toast.dart';
 import 'package:sidokare_mobile_app/const/list_color.dart';
 import '../const/fontfix.dart';
 import '../const/size.dart';
@@ -25,9 +26,16 @@ class _InputOtpState extends State<InputOtp> {
           body: Container(
             child: Padding(
               padding: size.paddingHorizontalAwalFrame,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+              child: ListView(
                 children: <Widget>[
+                  Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        IconButton(
+                            onPressed: () => {Navigator.pop(context)},
+                            icon: Icon(Icons.arrow_back)),
+                      ]),
                   _HeaderText(),
                   _DescHeaderText(),
                   _ImageLupaKataSandi(),
@@ -52,6 +60,7 @@ class _InputOtpState extends State<InputOtp> {
           fontFamily: fontfix.DmSansBruh,
           fontWeight: FontWeight.bold,
           fontSize: 28),
+      textAlign: TextAlign.center,
     );
   }
 
@@ -59,16 +68,20 @@ class _InputOtpState extends State<InputOtp> {
     return const Text(
       "Silakan Masukkan Kode OTP",
       style: TextStyle(fontFamily: fontfix.DmSansBruh, fontSize: 16),
+      textAlign: TextAlign.center,
     );
   }
 
   Widget _ImageLupaKataSandi() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10),
-      child: Image.asset(
-        "assets/imageotp.png",
-        width: 260.w,
-        height: 256.h,
+    return Align(
+      alignment: Alignment.center,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 10),
+        child: Image.asset(
+          "assets/imageotp.png",
+          width: 260.w,
+          height: 256.h,
+        ),
       ),
     );
   }
@@ -111,14 +124,18 @@ class _InputOtpState extends State<InputOtp> {
       padding: EdgeInsets.symmetric(vertical: 20),
       child: ElevatedButton(
         onPressed: () {
-          showDialog(
-              context: context,
-              builder: (context) {
-                return AlertDialog(
-                  title: Text("Verification Code"),
-                  content: Text('Code entered is $codeVerif'),
-                );
-              });
+          if (codeVerif == "66666") {
+            showDialog(
+                context: context,
+                builder: (context) {
+                  return AlertDialog(
+                    title: Text("Verification Code"),
+                    content: Text('Code entered is $codeVerif'),
+                  );
+                });
+          } else {
+            ToastWidget.ndasmu(context, "Kode Otp Salah");
+          }
         },
         // ignore: sort_child_properties_last
         child: Text(

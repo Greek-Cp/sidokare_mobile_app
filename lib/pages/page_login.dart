@@ -10,6 +10,7 @@ import 'package:sidokare_mobile_app/component/text_field.dart';
 import 'package:sidokare_mobile_app/const/fontfix.dart';
 import 'package:sidokare_mobile_app/const/list_color.dart';
 import 'package:sidokare_mobile_app/const/size.dart';
+import 'package:sidokare_mobile_app/pages/page_lupasandi.dart';
 import 'package:sidokare_mobile_app/pages/page_register.dart';
 import 'package:motion_toast/motion_toast.dart';
 import 'package:sidokare_mobile_app/provider/provider_account.dart';
@@ -78,12 +79,15 @@ class _PageLoginState extends State<PageLogin> {
                             "Masukkan Password",
                             false,
                             "Password",
-                            "Harap Masukkan Password")),
+                            "Password")),
                     SizedBox(
                       height: 10.sp,
                     ),
                     GestureDetector(
-                      onTap: () => {},
+                      onTap: () => {
+                        Navigator.pushNamed(
+                            context, LupaSandi.routeName.toString())
+                      },
                       child: Text(
                         "Lupa Password?",
                         style: GoogleFonts.dmSans(
@@ -123,7 +127,8 @@ class _PageLoginState extends State<PageLogin> {
                                       //         description: Text(
                                       //             "Login Gagal, Akun Tidak Ditemukan"))
                                       //     .show(context)
-                                      ToastWidget.ndasmu(context)
+                                      ToastWidget.ndasmu(context,
+                                          "Login Gagal, Akun Tidak Ditemukan")
                                     }
                                 }
                               else
