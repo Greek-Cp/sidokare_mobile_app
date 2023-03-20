@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sidokare_mobile_app/const/fontfix.dart';
 import 'package:sidokare_mobile_app/const/size.dart';
 
+import '../component/text_field.dart';
 import '../const/list_color.dart';
 
 class LupaSandi extends StatefulWidget {
@@ -11,6 +12,16 @@ class LupaSandi extends StatefulWidget {
 }
 
 class _LupaSandiState extends State<LupaSandi> {
+  bool _passwordVisible = false;
+  final _formKey = GlobalKey<FormState>();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _passwordVisible = false;
+  }
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -19,15 +30,18 @@ class _LupaSandiState extends State<LupaSandi> {
         child: Center(
           child: Padding(
             padding: size.paddingHorizontalAwalFrame,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                _HeaderText(),
-                _DescHeaderText(),
-                _ImageLupaKataSandi(),
-                _inputEmailuser(),
-                _ButtonLupa()
-              ],
+            child: Form(
+              key: _formKey,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  _HeaderText(),
+                  _DescHeaderText(),
+                  _ImageLupaKataSandi(),
+                  _inputEmailuser(),
+                  _ButtonLupa()
+                ],
+              ),
             ),
           ),
         ),
@@ -66,6 +80,7 @@ class _LupaSandiState extends State<LupaSandi> {
   Widget _inputEmailuser() {
     return Column(
       children: <Widget>[
+        // ignore: prefer_const_constructors
         Align(
           alignment: Alignment.topLeft,
           child: Text(
@@ -76,27 +91,8 @@ class _LupaSandiState extends State<LupaSandi> {
         SizedBox(
           height: 10,
         ),
-        TextFormField(
-          decoration: InputDecoration(
-              hintText: "Masukkan Emailmud",
-              hintStyle: TextStyle(fontFamily: fontfix.DmSansBruh),
-              contentPadding: EdgeInsets.all(15),
-              enabledBorder: OutlineInputBorder(
-                  borderSide:
-                      BorderSide(width: 1, color: ListColor.warnaBiruSidoKare),
-                  borderRadius: BorderRadius.all(Radius.circular(10))),
-              focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(
-                      width: 1,
-                      color: ListColor.warnaBiruSidoKare,
-                      strokeAlign: BorderSide.strokeAlignOutside,
-                      style: BorderStyle.solid),
-                  borderRadius: BorderRadius.all(Radius.circular(10))),
-              border: OutlineInputBorder(
-                  borderSide:
-                      BorderSide(width: 1, color: ListColor.warnaBiruSidoKare),
-                  borderRadius: BorderRadius.all(Radius.circular(10)))),
-        )
+        // TextFieldPassword(),
+        TextFieldImport.TextForm(),
       ],
     );
   }
@@ -105,7 +101,11 @@ class _LupaSandiState extends State<LupaSandi> {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 20),
       child: ElevatedButton(
-        onPressed: () {},
+        onPressed: () {
+          setState(() {
+            if (_formKey.currentState!.validate()) {}
+          });
+        },
         child: Text(
           "Lanjut",
           style: TextStyle(fontFamily: fontfix.DmSansBruh),

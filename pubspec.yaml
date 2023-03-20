@@ -22,6 +22,7 @@ dev_dependencies:
     sdk: flutter
 
 flutter:
+  uses-material-design: true
   assets:
     - assets/img_login.jpg
     - assets/img_register.png
@@ -46,5 +47,3 @@ flutter:
         - asset: assets/fonts/DMSansMedium.ttf
         - asset: assets/fonts/DMSansMediumItalic.ttf
           style: italic
-
-uses-material-design: true

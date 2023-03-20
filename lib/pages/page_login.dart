@@ -3,8 +3,13 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:motion_toast/resources/arrays.dart';
 import 'package:provider/provider.dart';
+import 'package:sidokare_mobile_app/component/Toast.dart';
+import 'package:sidokare_mobile_app/component/text_field.dart';
+import 'package:sidokare_mobile_app/const/fontfix.dart';
 import 'package:sidokare_mobile_app/const/list_color.dart';
+import 'package:sidokare_mobile_app/const/size.dart';
 import 'package:sidokare_mobile_app/pages/page_register.dart';
 import 'package:motion_toast/motion_toast.dart';
 import 'package:sidokare_mobile_app/provider/provider_account.dart';
@@ -62,18 +67,18 @@ class _PageLoginState extends State<PageLogin> {
                       height: 300.h,
                     ),
                     SizedBox(
-                        child: widgetTextForm(
+                        child: TextFieldImport.TextForm(
                             labelName: "Email",
                             text_kontrol: textEditingControllerEmail,
-                            hintText: "Masukkan Emailmu",
+                            hintText: "masukkan Emailmu",
                             pesanValidasi: "Email")),
                     SizedBox(
-                        child: widgetTextForm(
-                            labelName: "Password",
-                            text_kontrol: textEditingControllerPassword,
-                            hintText: "Masukkan Password",
-                            statusPasswordType: true,
-                            pesanValidasi: "Password")),
+                        child: TextFieldPassword(
+                            textEditingControllerPassword,
+                            "Masukkan Password",
+                            false,
+                            "Password",
+                            "Harap Masukkan Password")),
                     SizedBox(
                       height: 10.sp,
                     ),
@@ -81,8 +86,9 @@ class _PageLoginState extends State<PageLogin> {
                       onTap: () => {},
                       child: Text(
                         "Lupa Password?",
-                        style: TextStyle(
-                            fontStyle: FontStyle.italic, fontSize: 15.sp),
+                        style: GoogleFonts.dmSans(
+                            textStyle: TextStyle(
+                                fontStyle: FontStyle.italic, fontSize: 14.sp)),
                         textAlign: TextAlign.end,
                       ),
                     ),
@@ -90,9 +96,9 @@ class _PageLoginState extends State<PageLogin> {
                       height: 20.h,
                     ),
                     ElevatedButton(
-                        style: ButtonStyle(
-                            backgroundColor: MaterialStatePropertyAll(
-                                ListColor.warnaBiruSidoKare)),
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: ListColor.warnaBiruSidoKare,
+                            minimumSize: Size.fromHeight(55.h)),
                         onPressed: () => {
                               if (_formKey.currentState!.validate())
                                 {
@@ -107,10 +113,17 @@ class _PageLoginState extends State<PageLogin> {
                                     }
                                   else
                                     {
-                                      MotionToast.error(
-                                              description: Text(
-                                                  "Login Gagal, Akun Tidak Ditemukan"))
-                                          .show(context)
+                                      // MotionToast.error(
+                                      //         animationDuration:
+                                      //             Duration(milliseconds: 300),
+                                      //         animationCurve: Curves.easeIn,
+                                      //         animationType:
+                                      //             AnimationType.fromTop,
+                                      //         position: MotionToastPosition.top,
+                                      //         description: Text(
+                                      //             "Login Gagal, Akun Tidak Ditemukan"))
+                                      //     .show(context)
+                                      ToastWidget.ndasmu(context)
                                     }
                                 }
                               else
@@ -120,7 +133,7 @@ class _PageLoginState extends State<PageLogin> {
                           padding: const EdgeInsets.all(10.0),
                           child: Text(
                             "Masuk",
-                            style: TextStyle(fontSize: 20.sp),
+                            style: TextStyle(fontSize: size.textButton.sp),
                           ),
                         )),
                     SizedBox(
@@ -134,7 +147,7 @@ class _PageLoginState extends State<PageLogin> {
                           style: GoogleFonts.dmSans(
                               textStyle: TextStyle(
                                   fontWeight: FontWeight.normal,
-                                  fontSize: 15.sp)),
+                                  fontSize: 14.sp)),
                           textAlign: TextAlign.start,
                         ),
                         GestureDetector(
@@ -144,11 +157,10 @@ class _PageLoginState extends State<PageLogin> {
                           },
                           child: Text(
                             "Daftar Disini",
-                            style: GoogleFonts.dmSans(
-                                textStyle: TextStyle(
-                                    color: ListColor.warnaBiruSidoKare,
-                                    fontWeight: FontWeight.normal,
-                                    fontSize: 15.sp)),
+                            style: TextStyle(
+                                fontFamily: fontfix.DmSansBruh,
+                                color: ListColor.warnaBiruSidoKare,
+                                fontSize: 14.sp),
                             textAlign: TextAlign.start,
                           ),
                         ),
