@@ -38,7 +38,7 @@ class _PageLoginState extends State<PageLogin> {
         return Scaffold(
           body: Center(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              padding: EdgeInsets.symmetric(horizontal: 20.0.h),
               child: Form(
                 key: _formKey,
                 child: ListView(
@@ -50,14 +50,15 @@ class _PageLoginState extends State<PageLogin> {
                       "Selamat Datang",
                       style: GoogleFonts.dmSans(
                           textStyle: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 20.sp)),
+                              fontWeight: FontWeight.bold,
+                              fontSize: size.HeaderText.sp)),
                       textAlign: TextAlign.center,
                     ),
                     Text(
                       "Silahkan masuk dan lakukan aktivitas",
                       style: GoogleFonts.dmSans(
                           textStyle: TextStyle(
-                        fontSize: 15.sp,
+                        fontSize: size.SubHeader.sp,
                         color: ListColor.warnaDescription,
                       )),
                       textAlign: TextAlign.center,
@@ -92,7 +93,8 @@ class _PageLoginState extends State<PageLogin> {
                         "Lupa Password?",
                         style: GoogleFonts.dmSans(
                             textStyle: TextStyle(
-                                fontStyle: FontStyle.italic, fontSize: 14.sp)),
+                                fontStyle: FontStyle.italic,
+                                fontSize: size.SubHeader.sp)),
                         textAlign: TextAlign.end,
                       ),
                     ),
@@ -110,24 +112,17 @@ class _PageLoginState extends State<PageLogin> {
                                       textEditingControllerEmail.text,
                                       textEditingControllerPassword.text))
                                     {
-                                      MotionToast.success(
-                                              description: Text(
-                                                  "Login Berhasil,Akun Ditemukan"))
-                                          .show(context)
+                                      // MotionToast.success(
+                                      //         description: Text(
+                                      //             "Login Berhasil,Akun Ditemukan"))
+                                      //     .show(context)
+
+                                      ToastWidget.ToastSucces(context,
+                                          "Login Berhasil , Akun Ditemukan")
                                     }
                                   else
                                     {
-                                      // MotionToast.error(
-                                      //         animationDuration:
-                                      //             Duration(milliseconds: 300),
-                                      //         animationCurve: Curves.easeIn,
-                                      //         animationType:
-                                      //             AnimationType.fromTop,
-                                      //         position: MotionToastPosition.top,
-                                      //         description: Text(
-                                      //             "Login Gagal, Akun Tidak Ditemukan"))
-                                      //     .show(context)
-                                      ToastWidget.ndasmu(context,
+                                      ToastWidget.ToastEror(context,
                                           "Login Gagal, Akun Tidak Ditemukan")
                                     }
                                 }
@@ -152,7 +147,7 @@ class _PageLoginState extends State<PageLogin> {
                           style: GoogleFonts.dmSans(
                               textStyle: TextStyle(
                                   fontWeight: FontWeight.normal,
-                                  fontSize: 14.sp)),
+                                  fontSize: size.sizeDescriptionPas.sp)),
                           textAlign: TextAlign.start,
                         ),
                         GestureDetector(
@@ -165,7 +160,7 @@ class _PageLoginState extends State<PageLogin> {
                             style: TextStyle(
                                 fontFamily: fontfix.DmSansBruh,
                                 color: ListColor.warnaBiruSidoKare,
-                                fontSize: 14.sp),
+                                fontSize: size.sizeDescriptionPas.sp),
                             textAlign: TextAlign.start,
                           ),
                         ),

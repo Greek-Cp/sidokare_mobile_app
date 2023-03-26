@@ -134,7 +134,7 @@ class _InputOtpState extends State<InputOtp> {
                   );
                 });
           } else {
-            ToastWidget.ndasmu(context, "Kode Otp Salah");
+            ToastWidget.ToastEror(context, "Kode Otp Salah");
           }
         },
         // ignore: sort_child_properties_last

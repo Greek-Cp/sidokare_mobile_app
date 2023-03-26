@@ -48,7 +48,7 @@ class _LupaSandiState extends State<LupaSandi> {
       print('Message not sent.');
       for (var p in e.problems) {
         print('Problem: ${p.code}: ${p.msg}');
-        ToastWidget.ndasmu(context, ' Format Email Tidak Sesuai');
+        ToastWidget.ToastEror(context, ' Format Email Tidak Sesuai');
       }
     }
   }

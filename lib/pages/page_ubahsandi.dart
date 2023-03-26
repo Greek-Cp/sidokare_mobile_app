@@ -80,20 +80,21 @@ class _UbahSandiState extends State<UbahSandi> {
   }
 
   Widget _HeaderText() {
-    return const Text(
+    return Text(
       "Ubah Sandi",
       style: TextStyle(
           fontFamily: fontfix.DmSansBruh,
           fontWeight: FontWeight.bold,
-          fontSize: 28),
+          fontSize: size.HeaderText.sp),
       textAlign: TextAlign.center,
     );
   }
 
   Widget _DescHeaderText() {
-    return const Text(
+    return Text(
       "Silahkan masukkan kode otp ",
-      style: TextStyle(fontFamily: fontfix.DmSansBruh, fontSize: 16),
+      style: TextStyle(
+          fontFamily: fontfix.DmSansBruh, fontSize: size.SubHeader.sp),
       textAlign: TextAlign.center,
     );
   }
@@ -105,8 +106,8 @@ class _UbahSandiState extends State<UbahSandi> {
         padding: const EdgeInsets.symmetric(vertical: 10),
         child: Image.asset(
           "assets/imageubahsandi.png",
-          width: 260,
-          height: 256,
+          width: 260.w,
+          height: 256.h,
         ),
       ),
     );

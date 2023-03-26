@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sidokare_mobile_app/const/list_color.dart';
+import 'package:sidokare_mobile_app/const/size.dart';
 import './page_introawal.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -25,46 +27,50 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return Scaffold(
-      body: Container(
-        color: ListColor.warnaBiruSidoKare,
-        child: Center(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              _iconLogin(),
-              Column(
+    return ScreenUtilInit(
+      builder: (context, child) {
+        return Scaffold(
+          body: Container(
+            color: ListColor.warnaBiruSidoKare,
+            child: Center(
+              child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: const <Widget>[
-                  Text(
-                    "D E S A  S I D O K A R E",
-                    style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white),
-                  ),
-                  Text(
-                    "Kecamatan Rejoso",
-                    style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white),
+                children: <Widget>[
+                  _iconLogin(),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        "D E S A  S I D O K A R E",
+                        style: TextStyle(
+                            fontSize: size.HeaderText.sp,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
+                      ),
+                      Text(
+                        "Kecamatan Rejoso",
+                        style: TextStyle(
+                            fontSize: size.SubHeader.sp,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
+                      )
+                    ],
                   )
                 ],
-              )
-            ],
+              ),
+            ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 
   Widget _iconLogin() {
     return Image.asset(
       "assets/nganjuk.png",
-      width: 80,
-      height: 80,
+      width: 80.w,
+      height: 80.h,
     );
   }
 }

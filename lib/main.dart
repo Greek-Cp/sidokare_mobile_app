@@ -25,7 +25,7 @@ class MainApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: ThemeData(),
-        initialRoute: SplashScreen.routeName.toString(),
+        initialRoute: berhasilOtp.routeName.toString(),
         routes: {
           UbahSandi.routeName.toString(): (context) => UbahSandi(),
           berhasilOtp.routeName.toString(): (context) => berhasilOtp(),
@@ -36,7 +36,6 @@ class MainApp extends StatelessWidget {
           IntroAwal.routeName.toString(): (context) => IntroAwal(),
           PageLogin.routeName.toString(): (context) => PageLogin(),
           PageRegister.routeName.toString(): (context) => PageRegister(),
-          SplashScreen.routeName.toString(): (context) => SplashScreen()
         },
       ),
     );

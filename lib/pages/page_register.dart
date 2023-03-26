@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:motion_toast/motion_toast.dart';
 import 'package:provider/provider.dart';
+import 'package:sidokare_mobile_app/component/Toast.dart';
 import 'package:sidokare_mobile_app/component/text_field.dart';
 import 'package:sidokare_mobile_app/const/list_color.dart';
 import 'package:sidokare_mobile_app/const/size.dart';
@@ -29,7 +30,7 @@ class PageRegister extends StatelessWidget {
         return Scaffold(
           body: Center(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              padding: EdgeInsets.symmetric(horizontal: 20.0.w),
               child: Form(
                 key: _formKey,
                 child: ListView(
@@ -49,14 +50,15 @@ class PageRegister extends StatelessWidget {
                       "Daftarkan Akunmu ",
                       style: GoogleFonts.dmSans(
                           textStyle: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 20.sp)),
+                              fontWeight: FontWeight.bold,
+                              fontSize: size.HeaderText.sp)),
                       textAlign: TextAlign.center,
                     ),
                     Text(
                       "Silahkan buat akunmu terlebih dahulu",
                       style: GoogleFonts.dmSans(
                           textStyle: TextStyle(
-                        fontSize: 15.sp,
+                        fontSize: size.SubHeader.sp,
                         color: ListColor.warnaDescription,
                       )),
                       textAlign: TextAlign.center,
@@ -110,7 +112,7 @@ class PageRegister extends StatelessWidget {
                     ElevatedButton(
                         style: ElevatedButton.styleFrom(
                             backgroundColor: ListColor.warnaBiruSidoKare,
-                            minimumSize: Size.fromHeight(55)),
+                            minimumSize: Size.fromHeight(55.h)),
                         onPressed: () => {
                               if (_formKey.currentState!.validate())
                                 {
@@ -133,17 +135,13 @@ class PageRegister extends StatelessWidget {
                                               .text
                                               .toString()))
                                     {
-                                      MotionToast.success(
-                                              description:
-                                                  Text("Registerasi Berhasil"))
-                                          .show(context)
+                                      ToastWidget.ToastSucces(
+                                          context, "Register Berhasil")
                                     }
                                   else
                                     {
-                                      MotionToast.error(
-                                              description:
-                                                  Text("Registerasi Gagal"))
-                                          .show(context)
+                                      ToastWidget.ToastEror(
+                                          context, "Login gagal")
                                     }
                                 }
                               else
@@ -166,51 +164,6 @@ class PageRegister extends StatelessWidget {
           ),
         );
       },
-    );
-  }
-
-  Widget widgetTextForm(
-      {TextEditingController? text_kontrol,
-      String? hintText,
-      String? labelName,
-      bool? statusPasswordType = false,
-      String? pesanValidasi}) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        SizedBox(
-          height: 10.h,
-        ),
-        Text(
-          "${labelName}",
-          style: GoogleFonts.dmSans(
-              textStyle:
-                  TextStyle(fontWeight: FontWeight.normal, fontSize: 15.sp)),
-          textAlign: TextAlign.start,
-        ),
-        TextFormField(
-          validator: (value) {
-            if (value!.isEmpty || value == null) {
-              return "${pesanValidasi} Tidak Boleh Ksong";
-            }
-          },
-          controller: text_kontrol,
-          style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.normal),
-          obscureText: statusPasswordType!,
-          decoration: InputDecoration(
-              hintText: hintText,
-              enabledBorder: OutlineInputBorder(
-                  borderSide:
-                      BorderSide(width: 1, color: ListColor.warnaBiruSidoKare)),
-              focusedBorder: OutlineInputBorder(
-                  borderSide:
-                      BorderSide(width: 1, color: ListColor.warnaBiruSidoKare)),
-              border: OutlineInputBorder(
-                  borderSide: BorderSide(
-                      width: 1, color: ListColor.warnaBiruSidoKare))),
-        ),
-      ],
     );
   }
 }
