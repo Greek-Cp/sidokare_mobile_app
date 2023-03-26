@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server/gmail.dart';
 import 'package:sidokare_mobile_app/component/Toast.dart';
+import 'package:sidokare_mobile_app/component/jenis_button.dart';
 import 'package:sidokare_mobile_app/const/fontfix.dart';
 import 'package:sidokare_mobile_app/const/size.dart';
 import 'package:sidokare_mobile_app/pages/page_inputotp.dart';
@@ -94,7 +95,7 @@ class _LupaSandiState extends State<LupaSandi> {
                           hintText: "Masukkan Email",
                           labelName: "Email",
                           pesanValidasi: "Email"),
-                      _ButtonLupa()
+                      ButtonForm("Lanjjut", _formKey, sendMail)
                     ],
                   ),
                 ),
@@ -145,16 +146,14 @@ class _LupaSandiState extends State<LupaSandi> {
         // ignore: prefer_const_constructors
         Align(
           alignment: Alignment.topLeft,
-          child: Text(
-            "Email",
-            style: TextStyle(fontFamily: fontfix.DmSansBruh),
-          ),
         ),
         SizedBox(
           height: 10,
         ),
         // TextFieldPassword(),
-        TextFieldImport.TextForm(),
+        TextFieldImport.TextForm(
+          labelName: "Email",
+        ),
       ],
     );
   }

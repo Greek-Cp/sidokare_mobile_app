@@ -1,59 +1,50 @@
 import 'package:flutter/material.dart';
+import 'package:sidokare_mobile_app/component/jenis_button.dart';
+import 'package:sidokare_mobile_app/component/text_description.dart';
 import './page_login.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class IntroAwal extends StatelessWidget {
   static String? routeName = "/introawal";
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        padding: const EdgeInsets.all(15),
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              _imageIntro(),
-              _textNganu(),
-              const SizedBox(
-                height: 10,
+    return ScreenUtilInit(
+      builder: (context, child) {
+        return Scaffold(
+          body: Container(
+            padding: const EdgeInsets.all(15),
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  _imageIntro(),
+                  ComponentTextTittle("Masalah Teratasi Makmurkan Desa"),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  ComponentTextDescription(
+                      "Kami hadir dengan memudahkan segala urusan anda warga Desa Sidokare segeralah bergabung"),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  ButtonUtama(
+                    PageLogin.routeName,
+                    "Mulai",
+                  )
+                ],
               ),
-              _textDesc(),
-              const SizedBox(
-                height: 20,
-              ),
-              _button(context)
-            ],
+            ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 
   Widget _imageIntro() {
     return Image.asset(
       "assets/intro1.png",
-      width: 375,
-      height: 363,
-    );
-  }
-
-  Widget _textNganu() {
-    return Column(
-      children: const <Widget>[ 
-        Text(
-          "Masalah Teratasi",
-          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-        ),
-        Text("Makmurkan Desa",
-            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold))
-      ],
-    );
-  }
-
-  Widget _textDesc() {
-    return const Text(
-      "Kami hadir dengan memudahkan segala urusan anda warga Desa Sidokare segeralah bergabung",
-      textAlign: TextAlign.center,
+      width: 375.w,
+      height: 363.h,
     );
   }
 
