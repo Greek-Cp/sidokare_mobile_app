@@ -95,7 +95,7 @@ class _LupaSandiState extends State<LupaSandi> {
                           hintText: "Masukkan Email",
                           labelName: "Email",
                           pesanValidasi: "Email"),
-                      ButtonForm("Lanjjut", _formKey, sendMail)
+                      ButtonForm("Lanjut", _formKey, sendMail)
                     ],
                   ),
                 ),

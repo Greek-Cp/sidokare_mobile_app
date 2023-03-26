@@ -61,7 +61,7 @@ class _ButtonFormState extends State<ButtonForm> {
           });
         },
         child: Text(
-          "Lanjut",
+          "$namaButton ",
         ),
         style: ElevatedButton.styleFrom(minimumSize: Size.fromHeight(55)),
       ),
