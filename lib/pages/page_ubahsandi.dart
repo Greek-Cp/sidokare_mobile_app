@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:sidokare_mobile_app/component/jenis_button.dart';
 import 'package:sidokare_mobile_app/component/text_field.dart';
 import 'package:sidokare_mobile_app/const/fontfix.dart';
 import 'package:sidokare_mobile_app/const/size.dart';
+import 'package:sidokare_mobile_app/pages/page_login.dart';
 
 import '../const/list_color.dart';
 
@@ -67,7 +69,7 @@ class _UbahSandiState extends State<UbahSandi> {
                           _passwordvisible,
                           "Konfirmasi kata Sandi",
                           "Harap disi"),
-                      _ButtonUbah()
+                      ButtonUtama(PageLogin.routeName, "Mulai")
                     ],
                   ),
                 ),

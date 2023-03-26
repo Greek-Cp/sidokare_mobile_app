@@ -65,9 +65,10 @@ class _InputOtpState extends State<InputOtp> {
   }
 
   Widget _DescHeaderText() {
-    return const Text(
+    return Text(
       "Silakan Masukkan Kode OTP",
-      style: TextStyle(fontFamily: fontfix.DmSansBruh, fontSize: 16),
+      style: TextStyle(
+          fontFamily: fontfix.DmSansBruh, fontSize: size.HeaderText.sp),
       textAlign: TextAlign.center,
     );
   }
@@ -76,7 +77,7 @@ class _InputOtpState extends State<InputOtp> {
     return Align(
       alignment: Alignment.center,
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 10),
+        padding: EdgeInsets.symmetric(vertical: 10.h),
         child: Image.asset(
           "assets/imageotp.png",
           width: 260.w,
@@ -121,7 +122,7 @@ class _InputOtpState extends State<InputOtp> {
 
   Widget _ButtonVerif() {
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: 20),
+      padding: EdgeInsets.symmetric(vertical: 20.h),
       child: ElevatedButton(
         onPressed: () {
           if (codeVerif == "66666") {
@@ -143,7 +144,7 @@ class _InputOtpState extends State<InputOtp> {
           style: TextStyle(
               fontFamily: fontfix.DmSansBruh, fontSize: size.textButton.sp),
         ),
-        style: ElevatedButton.styleFrom(minimumSize: Size.fromHeight(55)),
+        style: ElevatedButton.styleFrom(minimumSize: Size.fromHeight(55.h)),
       ),
     );
   }

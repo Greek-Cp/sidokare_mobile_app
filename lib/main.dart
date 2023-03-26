@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sidokare_mobile_app/const/fontfix.dart';
 import 'package:sidokare_mobile_app/pages/page_berhasildaftar.dart';
 import 'package:sidokare_mobile_app/pages/page_berhasilotp.dart';
 import 'package:sidokare_mobile_app/pages/page_inputotp.dart';
@@ -24,8 +25,8 @@ class MainApp extends StatelessWidget {
       create: (context) => ProviderAccount(),
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        theme: ThemeData(),
-        initialRoute: berhasilOtp.routeName.toString(),
+        theme: ThemeData(fontFamily: fontfix.DmSansBruh),
+        initialRoute: SplashScreen.routeName.toString(),
         routes: {
           UbahSandi.routeName.toString(): (context) => UbahSandi(),
           berhasilOtp.routeName.toString(): (context) => berhasilOtp(),

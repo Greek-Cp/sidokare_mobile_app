@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sidokare_mobile_app/const/size.dart';
+import 'package:sidokare_mobile_app/component/jenis_button.dart';
+import 'package:sidokare_mobile_app/component/text_description.dart';
 import './page_login.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class IntroAwal extends StatelessWidget {
   static String? routeName = "/introawal";
@@ -17,15 +20,20 @@ class IntroAwal extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   _imageIntro(),
-                  _textNganu(),
+                  ComponentTextTittle("Masalah Teratasi"),
+                  ComponentTextTittle("Makmurkan Desa"),
                   SizedBox(
                     height: 10.h,
                   ),
-                  _textDesc(),
+                  ComponentTextDescription(
+                      "Kami hadir dengan memudahkan segala urusan anda warga Desa Sidokare segeralah bergabung"),
                   SizedBox(
                     height: 20.h,
                   ),
-                  _button(context)
+                  ButtonUtama(
+                    PageLogin.routeName,
+                    "Mulai",
+                  )
                 ],
               ),
             ),
@@ -40,29 +48,6 @@ class IntroAwal extends StatelessWidget {
       "assets/intro1.png",
       width: 375.w,
       height: 363.h,
-    );
-  }
-
-  Widget _textNganu() {
-    return Column(
-      children: <Widget>[
-        Text(
-          "Masalah Teratasi",
-          style: TextStyle(
-              fontSize: size.HeaderText.sp, fontWeight: FontWeight.bold),
-        ),
-        Text("Makmurkan Desa",
-            style: TextStyle(
-                fontSize: size.HeaderText.sp, fontWeight: FontWeight.bold))
-      ],
-    );
-  }
-
-  Widget _textDesc() {
-    return Text(
-      "Kami hadir dengan memudahkan segala urusan anda warga Desa Sidokare segeralah bergabung",
-      style: TextStyle(fontSize: size.DescTextKecil.sp),
-      textAlign: TextAlign.center,
     );
   }
 
