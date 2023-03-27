@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:sidokare_mobile_app/const/fontfix.dart';
 import 'package:sidokare_mobile_app/pages/page_berhasildaftar.dart';
 import 'package:sidokare_mobile_app/pages/page_berhasilotp.dart';
+import 'package:sidokare_mobile_app/pages/page_home.dart';
 import 'package:sidokare_mobile_app/pages/page_inputotp.dart';
 import 'package:sidokare_mobile_app/pages/page_introawal.dart';
 import 'package:sidokare_mobile_app/pages/page_login.dart';
@@ -26,7 +27,7 @@ class MainApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: ThemeData(fontFamily: fontfix.DmSansBruh),
-        initialRoute: SplashScreen.routeName.toString(),
+        initialRoute: HalamanUtama.routeName.toString(),
         routes: {
           UbahSandi.routeName.toString(): (context) => UbahSandi(),
           berhasilOtp.routeName.toString(): (context) => berhasilOtp(),
@@ -37,6 +38,7 @@ class MainApp extends StatelessWidget {
           IntroAwal.routeName.toString(): (context) => IntroAwal(),
           PageLogin.routeName.toString(): (context) => PageLogin(),
           PageRegister.routeName.toString(): (context) => PageRegister(),
+          HalamanUtama.routeName.toString(): (context) => HalamanUtama()
         },
       ),
     );
