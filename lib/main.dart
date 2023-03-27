@@ -26,7 +26,7 @@ class MainApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: ThemeData(fontFamily: fontfix.DmSansBruh),
-        initialRoute: SplashScreen.routeName.toString(),
+        initialRoute: UbahSandi.routeName.toString(),
         routes: {
           UbahSandi.routeName.toString(): (context) => UbahSandi(),
           berhasilOtp.routeName.toString(): (context) => berhasilOtp(),
