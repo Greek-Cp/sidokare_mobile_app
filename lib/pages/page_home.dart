@@ -16,9 +16,19 @@ class _HalamanUtamaState extends State<HalamanUtama> {
     });
   }
 
-  static const List<Widget> listPage = [
-    Text("Hello"),
-    Text("Hello"),
+  static List<int> arr = List.generate(100, (index) => index);
+
+  static List<Widget> listPage = [
+    Scaffold(
+        body: ListView.builder(
+      itemCount: arr.length,
+      itemBuilder: (BuildContext context, int index) {
+        return ListTile(
+          title: Text('Item ${index + 1}'),
+        );
+      },
+    )),
+    Text("Hello World")
   ];
   @override
   Widget build(BuildContext context) {
@@ -27,13 +37,17 @@ class _HalamanUtamaState extends State<HalamanUtama> {
       body: Center(
         child: listPage.elementAt(_selectedIndex),
       ),
-      bottomNavigationBar: BottomNavigationBar(onTap: _onItemTapped, items: [
-        BottomNavigationBarItem(
-          label: "Home",
-          icon: Icon(Icons.abc),
-        ),
-        BottomNavigationBarItem(icon: Icon(Icons.abc_outlined))
-      ]),
+      bottomNavigationBar: BottomNavigationBar(
+          currentIndex: _selectedIndex,
+          onTap: _onItemTapped,
+          items: [
+            BottomNavigationBarItem(
+              label: " ",
+              icon: Icon(Icons.home_filled),
+            ),
+            BottomNavigationBarItem(
+                label: " ", icon: Icon(Icons.person_pin_circle))
+          ]),
     );
   }
 }

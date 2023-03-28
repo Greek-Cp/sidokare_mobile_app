@@ -42,7 +42,6 @@ class _ButtonFormState extends State<ButtonForm> {
   String? namaButton;
   GlobalKey<FormState> _formKey;
   _ButtonFormState(this.namaButton, this._formKey, this.FungsiButton);
-
   @override
   Widget build(BuildContext context) {
     // TODO: implement build

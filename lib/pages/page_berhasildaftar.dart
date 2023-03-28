@@ -18,7 +18,6 @@ class berhasildaftar extends StatelessWidget {
                 SizedBox(
                   height: 20,
                 ),
-                _headerForm(),
                 _descSukses(),
                 SizedBox(
                   height: 20,
