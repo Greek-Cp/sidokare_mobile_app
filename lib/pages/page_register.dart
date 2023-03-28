@@ -166,4 +166,49 @@ class PageRegister extends StatelessWidget {
       },
     );
   }
+
+  Widget widgetTextForm(
+      {TextEditingController? text_kontrol,
+      String? hintText,
+      String? labelName,
+      bool? statusPasswordType = false,
+      String? pesanValidasi}) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SizedBox(
+          height: 10.h,
+        ),
+        Text(
+          "${labelName}",
+          style: GoogleFonts.dmSans(
+              textStyle:
+                  TextStyle(fontWeight: FontWeight.normal, fontSize: 15.sp)),
+          textAlign: TextAlign.start,
+        ),
+        TextFormField(
+          validator: (value) {
+            if (value!.isEmpty || value == null) {
+              return "${pesanValidasi} Tidak Boleh Ksong";
+            }
+          },
+          controller: text_kontrol,
+          style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.normal),
+          obscureText: statusPasswordType!,
+          decoration: InputDecoration(
+              hintText: hintText,
+              enabledBorder: OutlineInputBorder(
+                  borderSide:
+                      BorderSide(width: 1, color: ListColor.warnaBiruSidoKare)),
+              focusedBorder: OutlineInputBorder(
+                  borderSide:
+                      BorderSide(width: 1, color: ListColor.warnaBiruSidoKare)),
+              border: OutlineInputBorder(
+                  borderSide: BorderSide(
+                      width: 1, color: ListColor.warnaBiruSidoKare))),
+        ),
+      ],
+    );
+  }
 }
