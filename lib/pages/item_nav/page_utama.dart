@@ -71,62 +71,28 @@ class PageUtama extends StatelessWidget {
           body: SingleChildScrollView(
             child: Column(
               mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                Text(
-                  'Headline',
-                  style: TextStyle(fontSize: 18),
-                ),
-                _buildItem(context, "Linear Tab Bar", LinearIndicator()),
-
-                /*
+              children: [
                 SizedBox(
-                  height: 200.0,
-                  child: ListView(
-                    physics: ClampingScrollPhysics(),
-                    shrinkWrap: true,
-                    scrollDirection: Axis.horizontal,
-                    children: [
-                      buttonKategoryBerita("Pemerintahan Desa"),
-                      buttonKategoryBerita("Pembangunan Desa"),
-                      buttonKategoryBerita("aaa")
-                    ],
-                  ),
+                  height: 400,
+                  child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemBuilder: ((context, index) => Container(
+                            height: 100,
+                            width: 100,
+                            margin: EdgeInsets.all(10),
+                            child:
+                                Center(child: Container(child: Text("$index"))),
+                          ))),
                 ),
-                */
-                Text(
-                  'Demo Headline 2',
-                  style: TextStyle(fontSize: 18),
-                ),
-                Card(
-                  child: ListTile(
-                      title: Text('Motivation $int'),
-                      subtitle:
-                          Text('this is a description of the motivation')),
-                ),
-                Card(
-                  child: ListTile(
-                      title: Text('Motivation $int'),
-                      subtitle:
-                          Text('this is a description of the motivation')),
-                ),
-                Card(
-                  child: ListTile(
-                      title: Text('Motivation $int'),
-                      subtitle:
-                          Text('this is a description of the motivation')),
-                ),
-                Card(
-                  child: ListTile(
-                      title: Text('Motivation $int'),
-                      subtitle:
-                          Text('this is a description of the motivation')),
-                ),
-                Card(
-                  child: ListTile(
-                      title: Text('Motivation $int'),
-                      subtitle:
-                          Text('this is a description of the motivation')),
-                ),
+                Flexible(
+                    child: ListView.builder(
+                        scrollDirection: Axis.vertical,
+                        shrinkWrap: true,
+                        itemCount: 15,
+                        physics: BouncingScrollPhysics(),
+                        itemBuilder: ((context, index) => Container(
+                              child: Text("$index"),
+                            ))))
               ],
             ),
           ),
