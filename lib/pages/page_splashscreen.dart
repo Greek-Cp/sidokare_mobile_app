@@ -44,14 +44,14 @@ class _SplashScreenState extends State<SplashScreen> {
                       Text(
                         "D E S A  S I D O K A R E",
                         style: TextStyle(
-                            fontSize: size.HeaderText.sp,
+                            fontSize: size.sizeHeader.sp,
                             fontWeight: FontWeight.bold,
                             color: Colors.white),
                       ),
                       Text(
                         "Kecamatan Rejoso",
                         style: TextStyle(
-                            fontSize: size.SubHeader.sp,
+                            fontSize: size.sizeDescriptionSedang.sp,
                             fontWeight: FontWeight.bold,
                             color: Colors.white),
                       )
