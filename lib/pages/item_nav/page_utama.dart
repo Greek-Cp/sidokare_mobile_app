@@ -3,19 +3,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sidokare_mobile_app/component/text_description.dart';
 import 'package:sidokare_mobile_app/const/list_color.dart';
-import 'package:flutter_custom_tab_bar/custom_tab_bar.dart';
 import 'package:sidokare_mobile_app/const/size.dart';
-
-import 'package:flutter_custom_tab_bar/custom_tab_bar.dart';
-import 'package:flutter_custom_tab_bar/indicator/custom_indicator.dart';
-import 'package:flutter_custom_tab_bar/indicator/linear_indicator.dart';
-import 'package:flutter_custom_tab_bar/indicator/round_indicator.dart';
-import 'package:flutter_custom_tab_bar/indicator/standard_indicator.dart';
-import 'package:flutter_custom_tab_bar/library.dart';
-import 'package:flutter_custom_tab_bar/models.dart';
-import 'package:flutter_custom_tab_bar/transform/color_transform.dart';
-import 'package:flutter_custom_tab_bar/transform/scale_transform.dart';
-import 'package:flutter_custom_tab_bar/transform/tab_bar_transform.dart';
 
 class PageUtama extends StatelessWidget {
   Widget searchBar() {
@@ -48,7 +36,6 @@ class PageUtama extends StatelessWidget {
       ),
     );
   }
-  
 
   Widget _buildItem(BuildContext context, String title, Widget widget) {
     return InkWell(
@@ -77,7 +64,7 @@ class PageUtama extends StatelessWidget {
                   'Headline',
                   style: TextStyle(fontSize: 18),
                 ),
-                _buildItem(context, "Linear Tab Bar", LinearIndicator()),
+                // _buildItem(context, "Linear Tab Bar", LinearIndicator()),
 
                 /*
                 SizedBox(
