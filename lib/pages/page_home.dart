@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:sidokare_mobile_app/pages/item_nav/page_utama.dart';
+
+import 'item_nav/page_berita.dart';
 
 class HalamanUtama extends StatefulWidget {
   static String routeName = "/page_home ";
@@ -18,18 +21,7 @@ class _HalamanUtamaState extends State<HalamanUtama> {
 
   static List<int> arr = List.generate(100, (index) => index);
 
-  static List<Widget> listPage = [
-    Scaffold(
-        body: ListView.builder(
-      itemCount: arr.length,
-      itemBuilder: (BuildContext context, int index) {
-        return ListTile(
-          title: Text('Item ${index + 1}'),
-        );
-      },
-    )),
-    Text("Hello World")
-  ];
+  static List<Widget> listPage = [PageUtama(), Text("Hello World")];
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
