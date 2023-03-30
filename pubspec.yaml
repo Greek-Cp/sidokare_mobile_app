@@ -36,6 +36,7 @@ flutter:
     - assets/imagelupasandi.png
     - assets/imageotp.png
     - assets/imageubahsandi.png
+    - assets/laptop.jpg
 
   fonts:
     - family: DMsans
