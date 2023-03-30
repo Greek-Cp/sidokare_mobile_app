@@ -5,6 +5,8 @@ import 'package:flutter_custom_tab_bar/indicator/linear_indicator.dart';
 import 'package:flutter_custom_tab_bar/transform/color_transform.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sidokare_mobile_app/component/search_bar.dart';
+import 'package:sidokare_mobile_app/pages/item_nav/item_page_berita/page_pelayanan_desa.dart';
+import 'package:sidokare_mobile_app/pages/item_nav/item_page_berita/page_pemberdayaan_masyarakat.dart';
 import 'package:sidokare_mobile_app/pages/item_nav/item_page_berita/page_pemerintahan_desa.dart';
 
 class PageBerita extends StatefulWidget {
@@ -49,7 +51,11 @@ class _PageBeritaState extends State<PageBerita> {
                     child: PageView(
                   controller: _controller,
                   //Dibawha tempat untuk menaruh card ya ges yak
-                  children: [PagePemerintahanDesa()],
+                  children: [
+                    PagePemerintahanDesa(),
+                    pagePelayananDesa(),
+                    pagePemberdayaanMasyarakat()
+                  ],
                 ))
               ],
             ),
@@ -60,7 +66,7 @@ class _PageBeritaState extends State<PageBerita> {
   }
 
   var listKategoriBerita = [
-    "Pembayaran Desa",
+    "Pemerintahan Desa",
     "Pelayanan Desa ",
     "Pembuatan Surat Desa",
     "inpo Janda Desa"
