@@ -26,24 +26,31 @@ class _PagePemerintahanDesaState extends State<PagePemerintahanDesa> {
 
   Widget _cardInformasi() {
     return Padding(
-      padding: const EdgeInsets.all(6.0),
-      child: Container(
-        width: double.infinity,
-        decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(15),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey, offset: Offset(0.0, 1.0), //(x,y)
-                blurRadius: 6.0,
-              )
-            ]),
-        child: Padding(
-          padding: const EdgeInsets.all(15),
-          child: Column(
-            children: [_ImagesBruh(), _TextDesc(), _KetBawah()],
+      padding: const EdgeInsets.all(3.0),
+      child: Column(
+        children: [
+          Container(
+            width: double.infinity,
+            decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(15),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey, offset: Offset(0.0, 1.0), //(x,y)
+                    blurRadius: 6.0,
+                  )
+                ]),
+            child: Padding(
+              padding: const EdgeInsets.all(15),
+              child: Column(
+                children: [_ImagesBruh(), _TextDesc(), _KetBawah()],
+              ),
+            ),
           ),
-        ),
+          SizedBox(
+            height: 15,
+          )
+        ],
       ),
     );
   }
