@@ -3,7 +3,11 @@ import 'package:flutter_custom_tab_bar/custom_tab_bar.dart';
 import 'package:flutter_custom_tab_bar/indicator/custom_indicator.dart';
 import 'package:flutter_custom_tab_bar/indicator/linear_indicator.dart';
 import 'package:flutter_custom_tab_bar/transform/color_transform.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sidokare_mobile_app/component/search_bar.dart';
+import 'package:sidokare_mobile_app/pages/item_nav/item_page_berita/page_pelayanan_desa.dart';
+import 'package:sidokare_mobile_app/pages/item_nav/item_page_berita/page_pemberdayaan_masyarakat.dart';
+import 'package:sidokare_mobile_app/pages/item_nav/item_page_berita/page_pemerintahan_desa.dart';
 
 class PageBerita extends StatefulWidget {
   @override
@@ -23,37 +27,46 @@ class _PageBeritaState extends State<PageBerita> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return Scaffold(
-      body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-        child: Column(
-          children: [
-            SizedBox(
-              height: 20,
+    return ScreenUtilInit(
+      builder: (context, child) {
+        return Scaffold(
+          body: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            child: Column(
+              children: [
+                SizedBox(
+                  height: 40,
+                ),
+                SearchBar(),
+                CustomTabBar(
+                  tabBarController: _tabBarController,
+                  height: 40,
+                  itemCount: listKategoriBerita.length,
+                  builder: getTabbarChild,
+                  indicator:
+                      LinearIndicator(color: Colors.blueAccent, bottom: 1),
+                  pageController: _controller,
+                ),
+                Expanded(
+                    child: PageView(
+                  controller: _controller,
+                  //Dibawha tempat untuk menaruh card ya ges yak
+                  children: [
+                    PagePemerintahanDesa(),
+                    pagePelayananDesa(),
+                    pagePemberdayaanMasyarakat()
+                  ],
+                ))
+              ],
             ),
-            SearchBar(),
-            CustomTabBar(
-              tabBarController: _tabBarController,
-              height: 40,
-              itemCount: listKategoriBerita.length,
-              builder: getTabbarChild,
-              indicator: LinearIndicator(color: Colors.blueAccent, bottom: 1),
-              pageController: _controller,
-            ),
-            Expanded(
-                child: PageView(
-              controller: _controller,
-              //Dibawha tempat untuk menaruh card ya ges yak
-              // children: [PageSatu(), PageDua()],
-            ))
-          ],
-        ),
-      ),
+          ),
+        );
+      },
     );
   }
 
   var listKategoriBerita = [
-    "Pembayaran Desa",
+    "Pemerintahan Desa",
     "Pelayanan Desa ",
     "Pembuatan Surat Desa",
     "inpo Janda Desa"
