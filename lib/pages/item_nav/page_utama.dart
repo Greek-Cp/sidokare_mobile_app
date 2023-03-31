@@ -77,13 +77,8 @@ class PageUtama extends StatelessWidget {
                   child: ListView.builder(
                       itemCount: 30,
                       scrollDirection: Axis.horizontal,
-                      itemBuilder: ((context, index) => Container(
-                            margin: EdgeInsets.all(10),
-                            child: Center(
-                                child: Container(
-                                    color: Colors.amber,
-                                    child: Text("$index"))),
-                          ))),
+                      shrinkWrap: true,
+                      itemBuilder: ((context, index) => cardBeritaTerkini())),
                 ),
                 Flexible(
                     child: ListView.builder(
@@ -91,43 +86,103 @@ class PageUtama extends StatelessWidget {
                         shrinkWrap: true,
                         itemCount: 30,
                         physics: BouncingScrollPhysics(),
-                        itemBuilder: ((context, index) => Container(
-                              child: Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 20),
-                                child: Card(
-                                    margin: EdgeInsets.symmetric(vertical: 10),
-                                    color: Colors.white,
-                                    child: Padding(
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: 10.w, vertical: 10.h),
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Image.network(
-                                            "https://images.unsplash.com/photo-1679991811896-87ab6e0cd756?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80",
-                                            height: 200,
-                                            fit: BoxFit.fitWidth,
-                                          ),
-                                          Text(
-                                            "Hati-hati!! BMD akan mengadakan lombaasdsadasdas,sadsadasdasdas",
-                                            textAlign: TextAlign.start,
-                                            overflow: TextOverflow.ellipsis,
-                                            maxLines: 1,
-                                          )
-                                        ],
-                                      ),
-                                    )),
-                              ),
-                            ))))
+                        itemBuilder: ((context, index) => Text("a"))))
               ],
             ),
           ),
         );
       },
+    );
+  }
+
+  Widget cardBeritaTerkini() {
+    return Container(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        child: Card(
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+            margin: EdgeInsets.symmetric(vertical: 10),
+            color: Colors.white,
+            child: Container(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Image.network(
+                    "https://pbs.twimg.com/media/FbGejiWWQAAxLVG?format=jpg&name=large",
+                    fit: BoxFit.cover,
+                    height: 160.h,
+                    width: double.infinity,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    child: Text("Wah!! Resep Masakan Tradisional kKren anjay",
+                        textAlign: TextAlign.justify,
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
+                        style: TextStyle(
+                            fontSize: size.sizeDescriptionSedang,
+                            fontWeight: FontWeight.bold)),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    child: Text(
+                      "Para ibu-ibu muda Desa Sidokare telah menciptkan resep makan tradisional",
+                      style: TextStyle(color: ListColor.warnaDescriptionItem),
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 2,
+                      textAlign: TextAlign.start,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    child: Row(
+                      children: [
+                        Container(
+                          width: 30.w,
+                          child: CircleAvatar(
+                            backgroundColor: Colors.red,
+                          ),
+                        ),
+                        SizedBox(
+                          width: 5.w,
+                        ),
+                        Expanded(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Sang Dong-Min",
+                                style: TextStyle(fontSize: size.SubHeader),
+                              ),
+                              Text(
+                                "Sep 9, 2022",
+                                style: TextStyle(
+                                    color: ListColor.warnaDescriptionItem,
+                                    fontSize: size.SubHeader - 3),
+                                textAlign: TextAlign.start,
+                              )
+                            ],
+                          ),
+                        ),
+                        Card(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10)),
+                          color: ListColor.warnaBackgroundIcon,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Icon(Icons.wysiwyg),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            )),
+      ),
     );
   }
 }
