@@ -73,25 +73,55 @@ class PageUtama extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 SizedBox(
-                  height: 400,
+                  height: 100,
                   child: ListView.builder(
+                      itemCount: 30,
                       scrollDirection: Axis.horizontal,
                       itemBuilder: ((context, index) => Container(
-                            height: 100,
-                            width: 100,
                             margin: EdgeInsets.all(10),
-                            child:
-                                Center(child: Container(child: Text("$index"))),
+                            child: Center(
+                                child: Container(
+                                    color: Colors.amber,
+                                    child: Text("$index"))),
                           ))),
                 ),
                 Flexible(
                     child: ListView.builder(
                         scrollDirection: Axis.vertical,
                         shrinkWrap: true,
-                        itemCount: 15,
+                        itemCount: 30,
                         physics: BouncingScrollPhysics(),
                         itemBuilder: ((context, index) => Container(
-                              child: Text("$index"),
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 20),
+                                child: Card(
+                                    margin: EdgeInsets.symmetric(vertical: 10),
+                                    color: Colors.white,
+                                    child: Padding(
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 10.w, vertical: 10.h),
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Image.network(
+                                            "https://images.unsplash.com/photo-1679991811896-87ab6e0cd756?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80",
+                                            height: 200,
+                                            fit: BoxFit.fitWidth,
+                                          ),
+                                          Text(
+                                            "Hati-hati!! BMD akan mengadakan lombaasdsadasdas,sadsadasdasdas",
+                                            textAlign: TextAlign.start,
+                                            overflow: TextOverflow.ellipsis,
+                                            maxLines: 1,
+                                          )
+                                        ],
+                                      ),
+                                    )),
+                              ),
                             ))))
               ],
             ),
