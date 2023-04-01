@@ -6,40 +6,60 @@ import 'package:sidokare_mobile_app/const/size.dart';
 
 class ComponentTextTittle extends StatelessWidget {
   String? textContent;
-  ComponentTextTittle(this.textContent);
+  TextAlign textAlign;
+  Color warnaTeks = Colors.black;
+  ComponentTextTittle(this.textContent,
+      {this.textAlign = TextAlign.center, this.warnaTeks = Colors.black});
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return _textHeader(textHeader_1: textContent.toString());
+    return _textHeader(
+        textHeader_1: textContent.toString(),
+        textAlign: textAlign,
+        teksColor: warnaTeks);
   }
 
-  Widget _textHeader({String textHeader_1 = ""}) {
+  Widget _textHeader(
+      {Color teksColor = Colors.black,
+      String textHeader_1 = "",
+      TextAlign textAlign = TextAlign.center}) {
     return Text(
       "$textHeader_1",
       style: FontType.font_utama(
-          fontSize: size.sizeHeader.sp, fontWeight: FontWeight.bold),
-      textAlign: TextAlign.center,
+          fontSize: size.sizeHeader.sp,
+          fontWeight: FontWeight.bold,
+          color: teksColor),
+      textAlign: this.textAlign,
     );
   }
 }
 
 class ComponentTextDescription extends StatelessWidget {
   String? textContent;
-  ComponentTextDescription(this.textContent);
+  TextAlign textAlign = TextAlign.center;
+  Color teksColor = Colors.black;
+  ComponentTextDescription(this.textContent,
+      {this.textAlign = TextAlign.center, this.teksColor = Colors.black});
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return _textDesc(textDesc: textContent.toString());
+    return _textDesc(
+        textDesc: textContent.toString(),
+        textAlign: textAlign,
+        teksColor: this.teksColor);
   }
 
-  Widget _textDesc({String textDesc = ""}) {
+  Widget _textDesc(
+      {String textDesc = "",
+      textAlign = TextAlign.center,
+      Color teksColor = Colors.black}) {
     return Text(
       "$textDesc",
       style: FontType.font_utama(
-        fontSize: size.sizeDescriptionPas.sp,
-        fontWeight: FontWeight.normal,
-      ),
-      textAlign: TextAlign.center,
+          fontSize: size.sizeDescriptionPas.sp,
+          fontWeight: FontWeight.normal,
+          color: teksColor),
+      textAlign: textAlign,
     );
   }
 }
