@@ -141,36 +141,44 @@ class PageUtama extends StatelessWidget {
   Widget CardJumlahLaporan() {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 10.h),
+      decoration: BoxDecoration(),
       child: Card(
-        color: ListColor.warnaBiruSidoKare,
         child: InkWell(
           onTap: () => {},
           highlightColor: Colors.blue.withOpacity(0.4),
           splashColor: Colors.white.withOpacity(0.5),
-          child: Padding(
-            padding: EdgeInsets.all(10.0.h),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    ItemCardLaporan(),
-                    ItemCardLaporan(),
-                  ],
-                ),
-                SizedBox(
-                  height: 25.h,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    ItemCardLaporan(),
-                    ItemCardLaporan(),
-                  ],
-                )
-              ],
+          child: Container(
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(15),
+                gradient: LinearGradient(colors: [
+                  ListColor.GradientwarnaBiruSidoKare,
+                  ListColor.warnaBiruSidoKare
+                ])),
+            child: Padding(
+              padding: EdgeInsets.all(10.0.h),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      ItemCardLaporan(),
+                      ItemCardLaporan(),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 25.h,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      ItemCardLaporan(),
+                      ItemCardLaporan(),
+                    ],
+                  )
+                ],
+              ),
             ),
           ),
         ),

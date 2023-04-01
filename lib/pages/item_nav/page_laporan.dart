@@ -48,9 +48,10 @@ class PageLaporan extends StatelessWidget {
               ListColor.warnaBiruSidoKare
             ])),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          mainAxisSize: MainAxisSize.min,
           children: [
+            SizedBox(
+              width: 40,
+            ),
             CircleAvatar(
               radius: 40,
               backgroundColor: Colors.white,
