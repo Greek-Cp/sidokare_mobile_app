@@ -19,16 +19,21 @@ import 'package:flutter_custom_tab_bar/transform/tab_bar_transform.dart';
 
 class PageUtama extends StatelessWidget {
   Widget searchBar() {
-    return Padding(
-      padding: EdgeInsets.all(10),
-      child: Container(
-        child: TextField(
-            style: TextStyle(fontSize: size.textButton.sp),
-            decoration: InputDecoration(
-                hintText: "Cari Berita Terkini",
-                border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(30.h)),
-                prefixIcon: Icon(Icons.search))),
+    return Container(
+      height: 64.0.h,
+      child: Padding(
+        padding: EdgeInsets.all(10.h),
+        child: Container(
+          child: TextField(
+              style: TextStyle(fontSize: size.textButton.sp),
+              decoration: InputDecoration(
+                  contentPadding: EdgeInsets.only(
+                      left: 5.0.w, bottom: 1.0.h, top: 1.0.h, right: 5.0.w),
+                  hintText: "Cari Berita Terkini",
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30.h)),
+                  prefixIcon: Icon(Icons.search))),
+        ),
       ),
     );
   }
@@ -40,7 +45,7 @@ class PageUtama extends StatelessWidget {
         children: [
           ComponentTextButton("$namaButton"),
           Container(
-            height: 10.h,
+            height: 0.h,
             width: 200,
             color: ListColor.warnaBiruSidoKare,
           )
@@ -71,22 +76,60 @@ class PageUtama extends StatelessWidget {
           body: SingleChildScrollView(
             child: Column(
               mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 SizedBox(
-                  height: 100,
+                  height: 40.h,
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 20.h),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      ComponentTextTittle("Selamat Pagi Rama"),
+                      Container(
+                        width: 41.w,
+                        height: 41.h,
+                        child: CircleAvatar(
+                          backgroundColor: Colors.red,
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+                searchBar(),
+                SizedBox(
+                  height: 10.h,
+                ),
+                CardJumlahLaporan(),
+                SizedBox(
+                  height: 10.h,
+                ),
+                Container(
+                  margin:
+                      EdgeInsets.symmetric(horizontal: 20.h, vertical: 10.h),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      ComponentTextTittle("Berita Terkini"),
+                      ComponentTextDescription(
+                        "Lihat lainnya",
+                        teksColor: ListColor.warnaDescriptionItem,
+                      )
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 300.h,
                   child: ListView.builder(
-                      itemCount: 30,
+                      itemCount: 4,
                       scrollDirection: Axis.horizontal,
                       shrinkWrap: true,
                       itemBuilder: ((context, index) => cardBeritaTerkini())),
                 ),
-                Flexible(
-                    child: ListView.builder(
-                        scrollDirection: Axis.vertical,
-                        shrinkWrap: true,
-                        itemCount: 30,
-                        physics: BouncingScrollPhysics(),
-                        itemBuilder: ((context, index) => Text("a"))))
+                SizedBox(
+                  height: 40.h,
+                ),
               ],
             ),
           ),
@@ -95,91 +138,183 @@ class PageUtama extends StatelessWidget {
     );
   }
 
-  Widget cardBeritaTerkini() {
+  Widget CardJumlahLaporan() {
     return Container(
+      margin: EdgeInsets.symmetric(horizontal: 10.h),
+      child: Card(
+        color: ListColor.warnaBiruSidoKare,
+        child: InkWell(
+          onTap: () => {},
+          highlightColor: Colors.blue.withOpacity(0.4),
+          splashColor: Colors.white.withOpacity(0.5),
+          child: Padding(
+            padding: EdgeInsets.all(10.0.h),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    ItemCardLaporan(),
+                    ItemCardLaporan(),
+                  ],
+                ),
+                SizedBox(
+                  height: 25.h,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    ItemCardLaporan(),
+                    ItemCardLaporan(),
+                  ],
+                )
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget ItemCardLaporan() {
+    return Row(
+      children: [
+        Container(
+          width: 30.w,
+          height: 30.h,
+          child: CircleAvatar(
+            backgroundColor: Colors.white,
+          ),
+        ),
+        SizedBox(
+          width: 10.w,
+        ),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ComponentTextTittle(
+              "774,098",
+              textAlign: TextAlign.start,
+              warnaTeks: Colors.white,
+            ),
+            ComponentTextDescription(
+              "Jumlah Laporan",
+              textAlign: TextAlign.start,
+              teksColor: Colors.white,
+            )
+          ],
+        )
+      ],
+    );
+  }
+
+  Widget cardBeritaTerkini() {
+    return SizedBox(
+      width: 300.w,
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
+        padding: EdgeInsets.symmetric(horizontal: 20.h),
         child: Card(
             shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-            margin: EdgeInsets.symmetric(vertical: 10),
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            margin: EdgeInsets.symmetric(vertical: 10.h),
             color: Colors.white,
-            child: Container(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Image.network(
-                    "https://pbs.twimg.com/media/FbGejiWWQAAxLVG?format=jpg&name=large",
-                    fit: BoxFit.cover,
-                    height: 160.h,
-                    width: double.infinity,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
-                    child: Text("Wah!! Resep Masakan Tradisional kKren anjay",
-                        textAlign: TextAlign.justify,
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 1,
+            child: InkWell(
+              onTap: () => {},
+              highlightColor: Colors.blue.withOpacity(0.4),
+              splashColor: ListColor.warnaBiruSidoKare.withOpacity(0.5),
+              child: Container(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Image.network(
+                      "https://pbs.twimg.com/media/FbGejiWWQAAxLVG?format=jpg&name=large",
+                      fit: BoxFit.cover,
+                      height: 140.h,
+                      width: double.infinity.w,
+                    ),
+                    SizedBox(
+                      height: 10.h,
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 10.h),
+                      child: Text("Wah!! Resep Masakan Tradisional kKren anjay",
+                          textAlign: TextAlign.justify,
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 1,
+                          style: TextStyle(
+                              fontSize: size.sizeDescriptionSedang.sp,
+                              fontWeight: FontWeight.bold)),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 10.h),
+                      child: Text(
+                        "Para ibu-ibu muda Desa Sidokare telah menciptkan resep makan tradisional",
                         style: TextStyle(
-                            fontSize: size.sizeDescriptionSedang,
-                            fontWeight: FontWeight.bold)),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
-                    child: Text(
-                      "Para ibu-ibu muda Desa Sidokare telah menciptkan resep makan tradisional",
-                      style: TextStyle(color: ListColor.warnaDescriptionItem),
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 2,
-                      textAlign: TextAlign.start,
+                            color: ListColor.warnaDescriptionItem,
+                            fontSize: size.SubHeader.sp),
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 2,
+                        textAlign: TextAlign.start,
+                      ),
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
-                    child: Row(
-                      children: [
-                        Container(
-                          width: 30.w,
-                          child: CircleAvatar(
-                            backgroundColor: Colors.red,
+                    SizedBox(
+                      height: 10.h,
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 10.h),
+                      child: Row(
+                        children: [
+                          Container(
+                            width: 30.w,
+                            child: CircleAvatar(
+                              backgroundColor: Colors.red,
+                            ),
                           ),
-                        ),
-                        SizedBox(
-                          width: 5.w,
-                        ),
-                        Expanded(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "Sang Dong-Min",
-                                style: TextStyle(fontSize: size.SubHeader),
+                          SizedBox(
+                            width: 5.w,
+                          ),
+                          Expanded(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Sang Dong-Min",
+                                  style: TextStyle(fontSize: size.SubHeader.sp),
+                                ),
+                                Text(
+                                  "Sep 9, 2022",
+                                  style: TextStyle(
+                                      color: ListColor.warnaDescriptionItem,
+                                      fontSize: size.SubHeader.sp - 3),
+                                  textAlign: TextAlign.start,
+                                )
+                              ],
+                            ),
+                          ),
+                          Card(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10)),
+                            color: ListColor.warnaBackgroundIcon,
+                            child: Padding(
+                              padding: EdgeInsets.all(3.0.h),
+                              child: Container(
+                                width: 30.w,
+                                height: 30.h,
+                                child: Icon(
+                                  Icons.wysiwyg,
+                                ),
                               ),
-                              Text(
-                                "Sep 9, 2022",
-                                style: TextStyle(
-                                    color: ListColor.warnaDescriptionItem,
-                                    fontSize: size.SubHeader - 3),
-                                textAlign: TextAlign.start,
-                              )
-                            ],
-                          ),
-                        ),
-                        Card(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10)),
-                          color: ListColor.warnaBackgroundIcon,
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Icon(Icons.wysiwyg),
-                          ),
-                        )
-                      ],
+                            ),
+                          )
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             )),
       ),
