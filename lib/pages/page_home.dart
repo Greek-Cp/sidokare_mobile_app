@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:sidokare_mobile_app/pages/item_nav/item_page_berita/page_detail_berita.dart';
 import 'package:sidokare_mobile_app/pages/item_nav/page_laporan.dart';
 import 'package:sidokare_mobile_app/pages/item_nav/page_utama.dart';
+import 'package:sidokare_mobile_app/pages/page_formulirpengajuan.dart';
 
 import 'item_nav/page_berita.dart';
 
@@ -25,7 +26,7 @@ class _HalamanUtamaState extends State<HalamanUtama> {
 
   static List<int> arr = List.generate(100, (index) => index);
 
-  static List<Widget> listPage = [PageDetailBerita(), PageBerita()];
+  static List<Widget> listPage = [PageBerita(), PageBerita()];
 
   @override
   Widget build(BuildContext context) {

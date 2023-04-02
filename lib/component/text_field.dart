@@ -81,53 +81,56 @@ class _TextFieldPasswordState extends State<TextFieldPassword> {
 }
 
 class TextFieldImport {
-  static Column TextForm(
+  static Padding TextForm(
       {TextEditingController? text_kontrol,
       String? hintText,
       String? labelName,
       String? pesanValidasi}) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        SizedBox(
-          height: 10.h,
-        ),
-        Text(
-          "${labelName}",
-          style: GoogleFonts.dmSans(
-              textStyle:
-                  TextStyle(fontWeight: FontWeight.normal, fontSize: 13.sp)),
-          textAlign: TextAlign.start,
-        ),
-        SizedBox(
-          height: 5.h,
-        ),
-        TextFormField(
-          validator: (value) {
-            if (value!.isEmpty || value == null) {
-              return "${pesanValidasi} Tidak Boleh Kosong";
-            }
-          },
-          controller: text_kontrol,
-          style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.normal),
-          decoration: InputDecoration(
-              hintText: hintText,
-              contentPadding: EdgeInsets.all(15),
-              enabledBorder: OutlineInputBorder(
-                  borderSide:
-                      BorderSide(width: 1, color: ListColor.warnaBiruSidoKare),
-                  borderRadius: BorderRadius.all(Radius.circular(10))),
-              focusedBorder: OutlineInputBorder(
-                  borderSide:
-                      BorderSide(width: 2, color: ListColor.warnaBiruSidoKare),
-                  borderRadius: BorderRadius.all(Radius.circular(10))),
-              border: OutlineInputBorder(
-                  borderSide:
-                      BorderSide(width: 1, color: ListColor.warnaBiruSidoKare),
-                  borderRadius: BorderRadius.all(Radius.circular(10)))),
-        ),
-      ],
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(
+            height: 10.h,
+          ),
+          Text(
+            "${labelName}",
+            style: GoogleFonts.dmSans(
+                textStyle:
+                    TextStyle(fontWeight: FontWeight.normal, fontSize: 13.sp)),
+            textAlign: TextAlign.start,
+          ),
+          SizedBox(
+            height: 5.h,
+          ),
+          TextFormField(
+            validator: (value) {
+              if (value!.isEmpty || value == null) {
+                return "${pesanValidasi} Tidak Boleh Kosong";
+              }
+            },
+            controller: text_kontrol,
+            style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.normal),
+            decoration: InputDecoration(
+                hintText: hintText,
+                contentPadding: EdgeInsets.all(15),
+                enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                        width: 1, color: ListColor.warnaBiruSidoKare),
+                    borderRadius: BorderRadius.all(Radius.circular(10))),
+                focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                        width: 2, color: ListColor.warnaBiruSidoKare),
+                    borderRadius: BorderRadius.all(Radius.circular(10))),
+                border: OutlineInputBorder(
+                    borderSide: BorderSide(
+                        width: 1, color: ListColor.warnaBiruSidoKare),
+                    borderRadius: BorderRadius.all(Radius.circular(10)))),
+          ),
+        ],
+      ),
     );
   }
 

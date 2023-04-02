@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:sidokare_mobile_app/const/fontfix.dart';
 import 'package:sidokare_mobile_app/pages/page_berhasildaftar.dart';
 import 'package:sidokare_mobile_app/pages/page_berhasilotp.dart';
+import 'package:sidokare_mobile_app/pages/page_formulirpengajuan.dart';
 import 'package:sidokare_mobile_app/pages/page_home.dart';
 import 'package:sidokare_mobile_app/pages/page_inputotp.dart';
 import 'package:sidokare_mobile_app/pages/page_introawal.dart';
@@ -38,7 +39,9 @@ class MainApp extends StatelessWidget {
           IntroAwal.routeName.toString(): (context) => IntroAwal(),
           PageLogin.routeName.toString(): (context) => PageLogin(),
           PageRegister.routeName.toString(): (context) => PageRegister(),
-          HalamanUtama.routeName.toString(): (context) => HalamanUtama()
+          HalamanUtama.routeName.toString(): (context) => HalamanUtama(),
+          PageFormulirPengajuan.routeName.toString(): (context) =>
+              PageFormulirPengajuan()
         },
       ),
     );

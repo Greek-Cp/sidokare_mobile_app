@@ -8,6 +8,7 @@ import 'package:sidokare_mobile_app/component/search_bar.dart';
 import 'package:sidokare_mobile_app/pages/item_nav/item_page_berita/page_pelayanan_desa.dart';
 import 'package:sidokare_mobile_app/pages/item_nav/item_page_berita/page_pemberdayaan_masyarakat.dart';
 import 'package:sidokare_mobile_app/pages/item_nav/item_page_berita/page_pemerintahan_desa.dart';
+import 'package:sidokare_mobile_app/const/size.dart';
 
 class PageBerita extends StatefulWidget {
   @override
@@ -35,12 +36,12 @@ class _PageBeritaState extends State<PageBerita> {
             child: Column(
               children: [
                 SizedBox(
-                  height: 40,
+                  height: 40.h,
                 ),
-                SearchBar(),
+                searchBar(),
                 CustomTabBar(
                   tabBarController: _tabBarController,
-                  height: 40,
+                  height: 40.h,
                   itemCount: listKategoriBerita.length,
                   builder: getTabbarChild,
                   indicator:
@@ -65,6 +66,26 @@ class _PageBeritaState extends State<PageBerita> {
     );
   }
 
+  Widget searchBar() {
+    return Container(
+      height: 64.0.h,
+      child: Padding(
+        padding: EdgeInsets.all(10.h),
+        child: Container(
+          child: TextField(
+              style: TextStyle(fontSize: size.textButton.sp),
+              decoration: InputDecoration(
+                  contentPadding: EdgeInsets.only(
+                      left: 5.0.w, bottom: 1.0.h, top: 1.0.h, right: 5.0.w),
+                  hintText: "Cari Berita Terkini",
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30.h)),
+                  prefixIcon: Icon(Icons.search))),
+        ),
+      ),
+    );
+  }
+
   var listKategoriBerita = [
     "Pemerintahan Desa",
     "Pelayanan Desa ",
@@ -79,12 +100,12 @@ class _PageBeritaState extends State<PageBerita> {
           normalColor: Colors.black,
           builder: (context, color) {
             return Container(
-              padding: EdgeInsets.all(5),
+              padding: EdgeInsets.all(5.h),
               alignment: Alignment.center,
-              constraints: BoxConstraints(minWidth: 60),
+              constraints: BoxConstraints(minWidth: 60.w),
               child: (Text(
                 listKategoriBerita[index],
-                style: TextStyle(fontSize: 14, color: color),
+                style: TextStyle(fontSize: 14.sp, color: color),
               )),
             );
           }),

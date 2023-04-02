@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sidokare_mobile_app/const/size.dart';
+import 'package:rotated_corner_decoration/rotated_corner_decoration.dart';
+import '../../../const/list_color.dart';
 
 class PagePemerintahanDesa extends StatefulWidget {
   @override
@@ -13,7 +15,7 @@ class _PagePemerintahanDesaState extends State<PagePemerintahanDesa> {
     // TODO: implement build
     return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.all(3.0),
+        padding: const EdgeInsets.all(0.0),
         child: ListView(
           children: [
             _cardInformasi(),
@@ -26,7 +28,7 @@ class _PagePemerintahanDesaState extends State<PagePemerintahanDesa> {
 
   Widget _cardInformasi() {
     return Padding(
-      padding: const EdgeInsets.all(3.0),
+      padding: const EdgeInsets.only(),
       child: Column(
         children: [
           Container(
@@ -37,13 +39,23 @@ class _PagePemerintahanDesaState extends State<PagePemerintahanDesa> {
                 boxShadow: [
                   BoxShadow(
                     color: Colors.grey, offset: Offset(0.0, 1.0), //(x,y)
-                    blurRadius: 6.0,
                   )
                 ]),
-            child: Padding(
-              padding: const EdgeInsets.all(15),
-              child: Column(
-                children: [_ImagesBruh(), _TextDesc(), _KetBawah()],
+            child: Container(
+              foregroundDecoration: RotatedCornerDecoration.withColor(
+                  color: ListColor.warnaBiruSidoKare,
+                  badgeSize: Size(50.w, 50.h),
+                  badgePosition: BadgePosition.bottomStart,
+                  textDirection: TextDirection.rtl,
+                  badgeCornerRadius: Radius.circular(10)),
+              child: Padding(
+                padding: EdgeInsets.all(9),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.max,
+                  children: [_ImagesBruh(), _TextDesc(), _KetBawah()],
+                ),
               ),
             ),
           ),
@@ -64,30 +76,50 @@ class _PagePemerintahanDesaState extends State<PagePemerintahanDesa> {
 
   Widget _KetBawah() {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10),
+      padding: const EdgeInsets.symmetric(vertical: 0),
       child: GestureDetector(
         onTap: () {},
-        child: Container(
-          child: Row(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              IconButton(
-                onPressed: () {},
-                icon: Icon(Icons.date_range),
-                alignment: Alignment.topLeft,
-                padding: EdgeInsets.all(0),
+        child: Row(
+          children: [
+            IconButton(
+              iconSize: 20,
+              onPressed: () {},
+              icon: Icon(Icons.date_range),
+              padding: EdgeInsets.all(0),
+            ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Sep 9, 2022",
+                  style: TextStyle(
+                      color: ListColor.warnaDescriptionItem,
+                      fontSize: size.SubHeader.sp - 3),
+                  textAlign: TextAlign.start,
+                )
+              ],
+            ),
+            Card(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10)),
+              elevation: 0,
+              child: Padding(
+                padding: EdgeInsets.symmetric(),
+                child: Container(
+                  width: 30.w,
+                  height: 30.h,
+                  child: IconButton(
+                    iconSize: 20,
+                    onPressed: () {},
+                    icon: Icon(Icons.send),
+                    alignment: Alignment.topRight,
+                    padding: EdgeInsets.all(0),
+                  ),
+                ),
               ),
-              Text("9 September 2023"),
-              IconButton(
-                onPressed: () {},
-                icon: Icon(Icons.send),
-                alignment: Alignment.topRight,
-                padding: EdgeInsets.all(0),
-              )
-            ],
-          ),
+            )
+          ],
         ),
       ),
     );
