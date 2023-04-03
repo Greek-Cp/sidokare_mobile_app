@@ -7,6 +7,8 @@ import 'package:sidokare_mobile_app/component/Toast.dart';
 import 'package:sidokare_mobile_app/component/text_field.dart';
 import 'package:sidokare_mobile_app/const/list_color.dart';
 import 'package:sidokare_mobile_app/const/size.dart';
+import 'package:sidokare_mobile_app/model/api/http_statefull.dart';
+import 'package:sidokare_mobile_app/pages/page_login.dart';
 import 'package:sidokare_mobile_app/provider/provider_account.dart';
 
 class PageRegister extends StatelessWidget {
@@ -135,13 +137,34 @@ class PageRegister extends StatelessWidget {
                                               .text
                                               .toString()))
                                     {
-                                      ToastWidget.ToastSucces(
-                                          context, "Register Berhasil")
+                                      HttpStatefull.registerAkun(
+                                              textEditingControllerEmail.text,
+                                              textEditingControllerPassword
+                                                  .text,
+                                              textEditingControllerUsername
+                                                  .text,
+                                              textEditingControllerNomorTelepon
+                                                  .text)
+                                          .then((value) => {
+                                                if (value.code == 200)
+                                                  {
+                                                    Navigator.pop(context),
+                                                    ToastWidget.ToastSucces(
+                                                        context,
+                                                        "Daftar Berhasil")
+                                                  }
+                                                else
+                                                  {
+                                                    ToastWidget.ToastEror(
+                                                        context,
+                                                        "Daftar Gagal Akun Telah Ada")
+                                                  }
+                                              })
                                     }
                                   else
                                     {
                                       ToastWidget.ToastEror(
-                                          context, "Register gagal")
+                                          context, "Daftar Gagal")
                                     }
                                 }
                               else
