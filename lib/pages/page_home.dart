@@ -26,7 +26,7 @@ class _HalamanUtamaState extends State<HalamanUtama> {
 
   static List<int> arr = List.generate(100, (index) => index);
 
-  static List<Widget> listPage = [PageBerita(), PageBerita()];
+  static List<Widget> listPage = [PageBerita(), PageFormulirPengajuan()];
 
   @override
   Widget build(BuildContext context) {

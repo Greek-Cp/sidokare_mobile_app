@@ -56,6 +56,7 @@ class _PageFormulirPengajuanState extends State<PageFormulirPengajuan> {
                 flexibleSpace: FlexibleSpaceBar(
                   title: Text(
                     "Formulir Pengajuan PPID",
+                    textAlign: TextAlign.center,
                     style: TextStyle(fontSize: size.HeaderText.sp),
                   ),
                   titlePadding:
