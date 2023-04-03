@@ -118,12 +118,12 @@ class _PageLoginState extends State<PageLogin> {
                                       //     .show(context)
 
                                       ToastWidget.ToastSucces(context,
-                                          "Login Berhasil , Akun Ditemukan")
+                                          "Masuk Berhasil , Akun Ditemukan")
                                     }
                                   else
                                     {
                                       ToastWidget.ToastEror(context,
-                                          "Login Gagal, Akun Tidak Ditemukan")
+                                          "Masuk Gagal, Akun Tidak Ditemukan")
                                     }
                                 }
                               else

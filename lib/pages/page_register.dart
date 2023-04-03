@@ -76,10 +76,10 @@ class PageRegister extends StatelessWidget {
                             pesanValidasi: "Nama")),
                     SizedBox(
                         child: TextFieldImport.TextForm(
-                            labelName: "Username",
+                            labelName: "Nama Pengguna",
                             text_kontrol: textEditingControllerUsername,
-                            hintText: "Masukkan Username",
-                            pesanValidasi: "Username")),
+                            hintText: "Masukkan Nama Pengguna",
+                            pesanValidasi: "Nama Pengguna")),
                     SizedBox(
                         child: TextFieldImport.TextForm(
                             labelName: "Email",
@@ -141,7 +141,7 @@ class PageRegister extends StatelessWidget {
                                   else
                                     {
                                       ToastWidget.ToastEror(
-                                          context, "Login gagal")
+                                          context, "Register gagal")
                                     }
                                 }
                               else
