@@ -10,6 +10,9 @@ import 'package:sidokare_mobile_app/component/text_field.dart';
 import 'package:sidokare_mobile_app/const/fontfix.dart';
 import 'package:sidokare_mobile_app/const/list_color.dart';
 import 'package:sidokare_mobile_app/const/size.dart';
+import 'package:sidokare_mobile_app/model/api/http_statefull.dart';
+import 'package:sidokare_mobile_app/pages/item_nav/page_utama.dart';
+import 'package:sidokare_mobile_app/pages/page_home.dart';
 import 'package:sidokare_mobile_app/pages/page_lupasandi.dart';
 import 'package:sidokare_mobile_app/pages/page_register.dart';
 import 'package:motion_toast/motion_toast.dart';
@@ -108,23 +111,26 @@ class _PageLoginState extends State<PageLogin> {
                         onPressed: () => {
                               if (_formKey.currentState!.validate())
                                 {
-                                  if (providerAccount.validateLogin(
-                                      textEditingControllerEmail.text,
-                                      textEditingControllerPassword.text))
-                                    {
-                                      // MotionToast.success(
-                                      //         description: Text(
-                                      //             "Login Berhasil,Akun Ditemukan"))
-                                      //     .show(context)
-
-                                      ToastWidget.ToastSucces(context,
-                                          "Masuk Berhasil , Akun Ditemukan")
-                                    }
-                                  else
-                                    {
-                                      ToastWidget.ToastEror(context,
-                                          "Masuk Gagal, Akun Tidak Ditemukan")
-                                    }
+                                  HttpStatefull.loginAkun(
+                                          textEditingControllerEmail.text,
+                                          textEditingControllerPassword.text)
+                                      .then((value) => {
+                                            if (value.code == 200)
+                                              {
+                                                print(value.nama_lengkap),
+                                                Navigator.pushNamed(
+                                                    context,
+                                                    HalamanUtama.routeName
+                                                        .toString()),
+                                                ToastWidget.ToastSucces(context,
+                                                    "Masuk Berhasil , Akun Ditemukan")
+                                              }
+                                            else
+                                              {
+                                                ToastWidget.ToastEror(context,
+                                                    "Masuk Gagal , Akun Ditemukan")
+                                              }
+                                          })
                                 }
                               else
                                 {}
