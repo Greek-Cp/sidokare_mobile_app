@@ -32,18 +32,24 @@ class itemListStatus extends StatelessWidget {
             Text(
               "Rama",
               style: TextStyle(
-                  fontWeight: FontWeight.bold, fontSize: size.SubHeader),
+                  fontWeight: FontWeight.bold, fontSize: size.SubHeader.sp),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text("351717280712003"),
+                Text(
+                  "351717280712003",
+                  style: TextStyle(fontSize: size.DescTextKecil.sp),
+                ),
                 ElevatedButton(
                     onPressed: () {},
                     style: ElevatedButton.styleFrom(
                         padding: EdgeInsets.symmetric(
                             horizontal: 20.w, vertical: 5.h)),
-                    child: Text("Ajukan"))
+                    child: Text(
+                      "Ajukan",
+                      style: TextStyle(fontSize: size.DescTextKecil.sp),
+                    ))
               ],
             ),
             Divider(

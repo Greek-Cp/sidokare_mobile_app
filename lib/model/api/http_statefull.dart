@@ -7,6 +7,7 @@ class HttpStatefull {
   String? message;
   String? email, password, nomor_telepon, username;
   String? nama_lengkap;
+
   HttpStatefull({this.code, this.message, this.nama_lengkap});
   static Future<HttpStatefull> registerAkun(String email, String password,
       String username, String nomor_telepon) async {
@@ -19,7 +20,7 @@ class HttpStatefull {
       "role": "User"
     });
     var data = json.decode(HasilResponse.body);
-    return HttpStatefull(code: data['code'], message: data['pesan']);
+    return HttpStatefull(code: data['code'], message: data['message']);
   }
 
   static Future<HttpStatefull> loginAkun(String email, String Password) async {
@@ -28,8 +29,8 @@ class HttpStatefull {
         await http.post(url, body: {'email': email, 'password': Password});
     var data = json.decode(HasilResponse.body);
     return HttpStatefull(
-        code: data['code'],
-        message: data['message'],
-        nama_lengkap: data['data']['akun']['email']);
+      code: data['code'],
+      message: data['message'],
+    );
   }
 }

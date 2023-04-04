@@ -125,8 +125,9 @@ class _PageLoginState extends State<PageLogin> {
                                                 ToastWidget.ToastSucces(context,
                                                     "Masuk Berhasil , Akun Ditemukan")
                                               }
-                                            else
+                                            else if (value.code == 400)
                                               {
+                                                print("apakag eror kesini"),
                                                 ToastWidget.ToastEror(context,
                                                     "Masuk Gagal , Akun Ditemukan")
                                               }
