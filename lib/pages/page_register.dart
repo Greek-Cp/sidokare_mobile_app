@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -7,7 +9,9 @@ import 'package:sidokare_mobile_app/component/Toast.dart';
 import 'package:sidokare_mobile_app/component/text_field.dart';
 import 'package:sidokare_mobile_app/const/list_color.dart';
 import 'package:sidokare_mobile_app/const/size.dart';
+import 'package:sidokare_mobile_app/const/util.dart';
 import 'package:sidokare_mobile_app/model/api/http_statefull.dart';
+import 'package:sidokare_mobile_app/pages/page_inputotp.dart';
 import 'package:sidokare_mobile_app/pages/page_login.dart';
 import 'package:sidokare_mobile_app/provider/provider_account.dart';
 
@@ -21,7 +25,7 @@ class PageRegister extends StatelessWidget {
       TextEditingController();
   TextEditingController textEditingControllerEmail = TextEditingController();
   TextEditingController textEditingControllerPassword = TextEditingController();
-
+  String? otp_register = UtilFunction.generateOTP().toString();
   final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
@@ -144,11 +148,15 @@ class PageRegister extends StatelessWidget {
                                               textEditingControllerUsername
                                                   .text,
                                               textEditingControllerNomorTelepon
-                                                  .text)
+                                                  .text,
+                                              otp_register.toString())
                                           .then((value) => {
                                                 if (value.code == 200)
                                                   {
-                                                    Navigator.pop(context),
+                                                    Navigator.popAndPushNamed(
+                                                        context,
+                                                        InputOtp.routeName
+                                                            .toString()),
                                                     ToastWidget.ToastSucces(
                                                         context,
                                                         "Daftar Berhasil")

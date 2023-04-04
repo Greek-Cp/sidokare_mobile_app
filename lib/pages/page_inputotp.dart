@@ -6,11 +6,12 @@ import 'package:otp_text_field/otp_field.dart';
 import 'package:otp_text_field/style.dart';
 import 'package:sidokare_mobile_app/component/Toast.dart';
 import 'package:sidokare_mobile_app/const/list_color.dart';
+import 'package:sidokare_mobile_app/const/util.dart';
 import '../const/fontfix.dart';
 import '../const/size.dart';
 
 class InputOtp extends StatefulWidget {
-  static String? routeName = "/inputOtp";
+  static String? routeName = "/input_otp";
   @override
   State<InputOtp> createState() => _InputOtpState();
 }
@@ -33,8 +34,7 @@ class _InputOtpState extends State<InputOtp> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         IconButton(
-                            onPressed: () => {Navigator.pop(context)},
-                            icon: Icon(Icons.arrow_back)),
+                            onPressed: () => {}, icon: Icon(Icons.arrow_back)),
                       ]),
                   _HeaderText(),
                   _DescHeaderText(),
