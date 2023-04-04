@@ -22,7 +22,7 @@ class HttpStatefull {
       "otp": kode_otp
     });
     var data = json.decode(HasilResponse.body);
-    return HttpStatefull(code: data['code'], message: data['pesan']);
+    return HttpStatefull(code: data['code'], message: data['message']);
   }
 
   static Future<HttpStatefull> loginAkun(String email, String Password) async {
