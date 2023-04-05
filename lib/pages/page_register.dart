@@ -14,6 +14,8 @@ import 'package:sidokare_mobile_app/model/api/http_statefull.dart';
 import 'package:sidokare_mobile_app/pages/page_inputotp.dart';
 import 'package:sidokare_mobile_app/pages/page_login.dart';
 import 'package:sidokare_mobile_app/provider/provider_account.dart';
+import 'package:mailer/mailer.dart';
+import 'package:mailer/smtp_server/gmail.dart';
 
 class PageRegister extends StatelessWidget {
   static String? routeName = "/register";
@@ -27,9 +29,42 @@ class PageRegister extends StatelessWidget {
   TextEditingController textEditingControllerPassword = TextEditingController();
   String? otp_register = UtilFunction.generateOTP().toString();
   final _formKey = GlobalKey<FormState>();
+
+  sendMail(String? kodeOtp, String? email, BuildContext context) async {
+    String username = 'romu2ateam@gmail.com';
+    String password = 'uqrecynmrxlqpper';
+
+    final smtpServer = gmail(username, password);
+
+    final message = Message()
+      ..from = Address(username, 'Reuni321 TEAM')
+      ..recipients.add(email)
+      ..subject = 'Verifikasi Akun'
+      ..html =
+          "<h1>Kode Verifikasi</h1>\n<h3>Kode Verifikasi == $kodeOtp </h3>";
+
+    try {
+      final sendReport = await send(message, smtpServer);
+      print('Message sent: ' + sendReport.toString());
+      Navigator.pushNamed(context, InputOtp.routeName.toString(), arguments: {
+        'email': textEditingControllerEmail.text.toString(),
+        'otp': this.otp_register.toString()
+      });
+      ToastWidget.ToastSucces(context, "Daftar Berhasil");
+    } on MailerException catch (e) {
+      print('Message not sent.');
+      for (var p in e.problems) {
+        print('Problem: ${p.code}: ${p.msg}');
+        ToastWidget.ToastEror(context, ' Format Email Tidak Sesuai');
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
+    // TODO: implement buil
+    //
+
     final providerAccount = Provider.of<ProviderAccount>(context);
     return ScreenUtilInit(
       builder: (context, child) {
@@ -153,13 +188,12 @@ class PageRegister extends StatelessWidget {
                                           .then((value) => {
                                                 if (value.code == 200)
                                                   {
-                                                    Navigator.popAndPushNamed(
-                                                        context,
-                                                        InputOtp.routeName
-                                                            .toString()),
-                                                    ToastWidget.ToastSucces(
-                                                        context,
-                                                        "Daftar Berhasil")
+                                                    this.sendMail(
+                                                        otp_register.toString(),
+                                                        textEditingControllerEmail
+                                                            .text
+                                                            .toString(),
+                                                        context),
                                                   }
                                                 else
                                                   {

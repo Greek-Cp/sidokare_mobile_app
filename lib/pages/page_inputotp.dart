@@ -7,6 +7,8 @@ import 'package:otp_text_field/style.dart';
 import 'package:sidokare_mobile_app/component/Toast.dart';
 import 'package:sidokare_mobile_app/const/list_color.dart';
 import 'package:sidokare_mobile_app/const/util.dart';
+import 'package:sidokare_mobile_app/model/api/http_statefull.dart';
+import 'package:sidokare_mobile_app/pages/page_login.dart';
 import '../const/fontfix.dart';
 import '../const/size.dart';
 
@@ -18,11 +20,17 @@ class InputOtp extends StatefulWidget {
 
 class _InputOtpState extends State<InputOtp> {
   static String? codeVerif;
+  String? otp;
+  Map? receiveData;
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
+    receiveData = ModalRoute.of(context)?.settings?.arguments as Map;
+    String? otp = receiveData?['otp'];
+    String? email = receiveData?['email'];
     return ScreenUtilInit(
       builder: (context, child) {
+        print(otp.toString() + "OTP");
         return Scaffold(
           body: Container(
             child: Padding(
@@ -125,15 +133,25 @@ class _InputOtpState extends State<InputOtp> {
       padding: EdgeInsets.symmetric(vertical: 20.h),
       child: ElevatedButton(
         onPressed: () {
-          if (codeVerif == "66666") {
-            showDialog(
-                context: context,
-                builder: (context) {
-                  return AlertDialog(
-                    title: Text("Verification Code"),
-                    content: Text('Code entered is $codeVerif'),
-                  );
-                });
+          print(codeVerif.toString() + ":" + otp.toString());
+          if (codeVerif.toString() == receiveData?['otp'].toString()) {
+            HttpStatefull.verifikasiAkun(receiveData?['email'])
+                .then((value) => {
+                      if (value.code == 200)
+                        {
+                          Navigator.pushNamed(
+                              context, PageLogin.routeName.toString()),
+                          showDialog(
+                              context: context,
+                              builder: (context) {
+                                return AlertDialog(
+                                  title: Text("Akun Terverifikasi"),
+                                  content: Text(
+                                      'Selamat Akun Anda Telah Terverifikasi'),
+                                );
+                              })
+                        }
+                    });
           } else {
             ToastWidget.ToastEror(context, "Kode Otp Salah");
           }
