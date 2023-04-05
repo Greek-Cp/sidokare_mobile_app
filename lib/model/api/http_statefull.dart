@@ -10,8 +10,13 @@ class HttpStatefull {
   String? kode_otp;
 
   HttpStatefull({this.code, this.message, this.nama_lengkap, this.kode_otp});
-  static Future<HttpStatefull> registerAkun(String email, String password,
-      String username, String nomor_telepon, String kode_otp) async {
+  static Future<HttpStatefull> registerAkun(
+      String email,
+      String password,
+      String username,
+      String nomor_telepon,
+      String kode_otp,
+      String nama_lengkap) async {
     Uri url = Uri.parse("http://127.0.0.1:8000/api/akun/register");
     var HasilResponse = await http.post(url, body: {
       "email": email,
@@ -19,7 +24,8 @@ class HttpStatefull {
       "nomor_telepon": nomor_telepon,
       "password": password,
       "role": "User",
-      "otp": kode_otp
+      "otp": kode_otp,
+      "nama": nama_lengkap
     });
     var data = json.decode(HasilResponse.body);
     return HttpStatefull(code: data['code'], message: data['message']);

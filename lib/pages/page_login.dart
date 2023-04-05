@@ -75,7 +75,7 @@ class _PageLoginState extends State<PageLogin> {
                         child: TextFieldImport.TextForm(
                             labelName: "Email",
                             text_kontrol: textEditingControllerEmail,
-                            hintText: "masukkan Emailmu",
+                            hintText: "Masukkan Emailmu",
                             pesanValidasi: "Email")),
                     SizedBox(
                         child: TextFieldPassword(
