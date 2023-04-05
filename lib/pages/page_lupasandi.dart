@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -29,8 +30,12 @@ class _LupaSandiState extends State<LupaSandi> {
   TextEditingController input_email = TextEditingController();
 
   sendMail() async {
-    String username = 'romu2ateam@gmail.com';
-    String password = 'uqrecynmrxlqpper';
+    String username = 'e41211358@student.polije.ac.id';
+    String password = 'ojmqzqkblieamunx';
+
+    var rng = new Random();
+    var code = rng.nextInt(90000) + 10000;
+    print("kode nya adalah = ${code}");
 
     final smtpServer = gmail(username, password);
     String emailPenerima = input_email.text;
@@ -39,12 +44,16 @@ class _LupaSandiState extends State<LupaSandi> {
       ..from = Address(username, 'Reuni321 TEAM')
       ..recipients.add(emailPenerima)
       ..subject = 'Verifikasi Kode Lupa Sandi'
-      ..html = "<h1>Kode Verifikasi</h1>\n<h3>Kode Verifikasi == 66666 </h3>";
+      ..html = "<h1>Kode Verifikasi</h1>\n<h3>Kode Verifikasi == ${code} </h3>";
 
     try {
       final sendReport = await send(message, smtpServer);
       print('Message sent: ' + sendReport.toString());
-      Navigator.pushNamed(context, InputOtp.routeName.toString());
+      Navigator.pushNamed(context, InputOtp.routeName.toString(), arguments: {
+        'email': input_email.text.toString(),
+        'otp': code.toString(),
+        'code_page': "toLupaSandi"
+      });
     } on MailerException catch (e) {
       print('Message not sent.');
       for (var p in e.problems) {

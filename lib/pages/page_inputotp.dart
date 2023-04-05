@@ -9,6 +9,7 @@ import 'package:sidokare_mobile_app/const/list_color.dart';
 import 'package:sidokare_mobile_app/const/util.dart';
 import 'package:sidokare_mobile_app/model/api/http_statefull.dart';
 import 'package:sidokare_mobile_app/pages/page_login.dart';
+import 'package:sidokare_mobile_app/pages/page_ubahsandi.dart';
 import '../const/fontfix.dart';
 import '../const/size.dart';
 
@@ -21,6 +22,7 @@ class InputOtp extends StatefulWidget {
 class _InputOtpState extends State<InputOtp> {
   static String? codeVerif;
   String? otp;
+  static String? pilihPage;
   Map? receiveData;
   @override
   Widget build(BuildContext context) {
@@ -28,6 +30,7 @@ class _InputOtpState extends State<InputOtp> {
     receiveData = ModalRoute.of(context)?.settings?.arguments as Map;
     String? otp = receiveData?['otp'];
     String? email = receiveData?['email'];
+    pilihPage = receiveData?['code_page'];
     return ScreenUtilInit(
       builder: (context, child) {
         print(otp.toString() + "OTP");
@@ -134,24 +137,29 @@ class _InputOtpState extends State<InputOtp> {
       child: ElevatedButton(
         onPressed: () {
           print(codeVerif.toString() + ":" + otp.toString());
+          print("Tes Page ${pilihPage}");
           if (codeVerif.toString() == receiveData?['otp'].toString()) {
-            HttpStatefull.verifikasiAkun(receiveData?['email'])
-                .then((value) => {
-                      if (value.code == 200)
-                        {
-                          Navigator.pushNamed(
-                              context, PageLogin.routeName.toString()),
-                          showDialog(
-                              context: context,
-                              builder: (context) {
-                                return AlertDialog(
-                                  title: Text("Akun Terverifikasi"),
-                                  content: Text(
-                                      'Selamat Akun Anda Telah Terverifikasi'),
-                                );
-                              })
-                        }
-                    });
+            if (pilihPage == "toSuccesRegister") {
+              HttpStatefull.verifikasiAkun(receiveData?['email'])
+                  .then((value) => {
+                        if (value.code == 200)
+                          {
+                            Navigator.pushNamed(
+                                context, PageLogin.routeName.toString()),
+                            showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return AlertDialog(
+                                    title: Text("Akun Terverifikasi"),
+                                    content: Text(
+                                        'Selamat Akun Anda Telah Terverifikasi'),
+                                  );
+                                })
+                          }
+                      });
+            } else if (pilihPage == "toLupaSandi") {
+              Navigator.pushNamed(context, UbahSandi.routeName.toString());
+            }
           } else {
             ToastWidget.ToastEror(context, "Kode Otp Salah");
           }

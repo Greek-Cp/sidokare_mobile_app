@@ -31,8 +31,8 @@ class PageRegister extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
 
   sendMail(String? kodeOtp, String? email, BuildContext context) async {
-    String username = 'romu2ateam@gmail.com';
-    String password = 'uqrecynmrxlqpper';
+    String username = 'e41211358@student.polije.ac.id';
+    String password = 'ojmqzqkblieamunx';
 
     String templateMessage = """ 
     
@@ -223,11 +223,12 @@ class PageRegister extends StatelessWidget {
       print('Message sent: ' + sendReport.toString());
       Navigator.pushNamed(context, InputOtp.routeName.toString(), arguments: {
         'email': textEditingControllerEmail.text.toString(),
-        'otp': this.otp_register.toString()
+        'otp': this.otp_register.toString(),
+        'code_page': "toSuccesRegister"
       });
       ToastWidget.ToastSucces(context, "Daftar Berhasil");
     } on MailerException catch (e) {
-      print('Message not sent.');
+      print('Message not sent.' + e.message);
       for (var p in e.problems) {
         print('Problem: ${p.code}: ${p.msg}');
         ToastWidget.ToastEror(context, ' Format Email Tidak Sesuai');

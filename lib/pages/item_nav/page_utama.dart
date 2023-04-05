@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 import 'package:sidokare_mobile_app/component/text_description.dart';
 import 'package:sidokare_mobile_app/const/list_color.dart';
 import 'package:flutter_custom_tab_bar/custom_tab_bar.dart';
@@ -16,6 +17,8 @@ import 'package:flutter_custom_tab_bar/models.dart';
 import 'package:flutter_custom_tab_bar/transform/color_transform.dart';
 import 'package:flutter_custom_tab_bar/transform/scale_transform.dart';
 import 'package:flutter_custom_tab_bar/transform/tab_bar_transform.dart';
+
+import '../../provider/provider_account.dart';
 
 class PageUtama extends StatelessWidget {
   Widget searchBar() {
@@ -69,6 +72,11 @@ class PageUtama extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final id = ModalRoute.of(context)?.settings.arguments as int;
+
+    final DataDiri = Provider.of<ProviderAccount>(context)
+        .GetDataDiri
+        .firstWhere((idData) => idData.id_akun == id);
     // TODO: implement build
     return ScreenUtilInit(
       builder: (context, child) {
@@ -86,7 +94,7 @@ class PageUtama extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      ComponentTextTittle("Selamat Pagi Rama"),
+                      ComponentTextTittle("Selamat Pagi ${DataDiri.nama}"),
                       Container(
                         width: 41.w,
                         height: 41.h,

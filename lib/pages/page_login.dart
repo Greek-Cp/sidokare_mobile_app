@@ -117,11 +117,18 @@ class _PageLoginState extends State<PageLogin> {
                                       .then((value) => {
                                             if (value.code == 200)
                                               {
-                                                print(value.nama_lengkap),
+                                                print(
+                                                    "Nama anda adalah ${value.nama_lengkap}"),
+                                                print(
+                                                    "ID Akun adalah ${value.id_akun}"),
+                                                providerAccount.AddData(
+                                                    value.id_akun!,
+                                                    value.nama_lengkap!),
                                                 Navigator.pushNamed(
                                                     context,
                                                     HalamanUtama.routeName
-                                                        .toString()),
+                                                        .toString(),
+                                                    arguments: value.id_akun),
                                                 ToastWidget.ToastSucces(context,
                                                     "Masuk Berhasil , Akun Ditemukan")
                                               }

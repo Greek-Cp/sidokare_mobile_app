@@ -4,12 +4,18 @@ import 'package:http/http.dart' as http;
 
 class HttpStatefull {
   int? code;
+  int? id_akun;
   String? message;
   String? email, password, nomor_telepon, username;
   String? nama_lengkap;
   String? kode_otp;
 
-  HttpStatefull({this.code, this.message, this.nama_lengkap, this.kode_otp});
+  HttpStatefull(
+      {this.code,
+      this.message,
+      this.nama_lengkap,
+      this.kode_otp,
+      this.id_akun});
   static Future<HttpStatefull> registerAkun(
       String email,
       String password,
@@ -37,9 +43,10 @@ class HttpStatefull {
         await http.post(url, body: {'email': email, 'password': Password});
     var data = json.decode(HasilResponse.body);
     return HttpStatefull(
-      code: data['code'],
-      message: data['message'],
-    );
+        code: data['code'],
+        message: data['message'],
+        nama_lengkap: data["data"]["akun"]["nama"],
+        id_akun: data["data"]["akun"]["id_akun"]);
   }
 
   static Future<HttpStatefull> verifikasiAkun(String email) async {

@@ -6,6 +6,16 @@ import 'package:collection/collection.dart';
 class ProviderAccount extends ChangeNotifier {
   List<ModelAccount> listAccount = [];
 
+  //add Data
+  List<ModelAccount> get GetDataDiri {
+    return [...listAccount];
+  }
+
+  void AddData(int id_akun, String nama) {
+    listAccount.add(ModelAccount(id_akun: id_akun, nama: nama));
+    notifyListeners();
+  }
+
   bool validateLogin(String? email, String? password) {
     if (!email!.isEmpty && !password!.isEmpty) {
       var accountSelected = listAccount.firstWhereOrNull(
@@ -27,8 +37,12 @@ class ProviderAccount extends ChangeNotifier {
       password,
       konfirmasiPassword}) {
     if (password == konfirmasiPassword) {
-      listAccount
-          .add(ModelAccount(nama, username, email, nomorTelepon, password));
+      listAccount.add(ModelAccount(
+          nama: nama,
+          username: username,
+          email: email,
+          noTelepon: nomorTelepon,
+          password: password));
       notifyListeners();
       print("Register Berhasil");
       return true;
