@@ -8,6 +8,7 @@ import 'package:sidokare_mobile_app/component/Toast.dart';
 import 'package:sidokare_mobile_app/const/list_color.dart';
 import 'package:sidokare_mobile_app/const/util.dart';
 import 'package:sidokare_mobile_app/model/api/http_statefull.dart';
+import 'package:sidokare_mobile_app/pages/page_berhasilotp.dart';
 import 'package:sidokare_mobile_app/pages/page_login.dart';
 import 'package:sidokare_mobile_app/pages/page_ubahsandi.dart';
 import '../const/fontfix.dart';
@@ -144,8 +145,8 @@ class _InputOtpState extends State<InputOtp> {
                   .then((value) => {
                         if (value.code == 200)
                           {
-                            Navigator.pushNamed(
-                                context, PageLogin.routeName.toString()),
+                            Navigator.popAndPushNamed(
+                                context, berhasilOtp.routeName.toString()),
                             showDialog(
                                 context: context,
                                 builder: (context) {

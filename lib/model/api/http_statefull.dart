@@ -49,6 +49,14 @@ class HttpStatefull {
         id_akun: data["data"]["akun"]["id_akun"]);
   }
 
+  static Future<HttpStatefull> ubahSandi(String email, String password) async {
+    Uri url = Uri.parse("http://127.0.0.1:8000/api/akun/updatePassword");
+    var HasilResponse =
+        await http.post(url, body: {'email': email, "password": password});
+    var data = json.decode(HasilResponse.body);
+    return HttpStatefull(code: data['code'], message: data['message']);
+  }
+
   static Future<HttpStatefull> verifikasiAkun(String email) async {
     Uri url = Uri.parse("http://127.0.0.1:8000/api/akun/verifikasi_akun");
     var HasilResponse = await http.post(url, body: {'email': email});
