@@ -24,13 +24,14 @@ class _InputOtpState extends State<InputOtp> {
   static String? codeVerif;
   String? otp;
   static String? pilihPage;
+  static String? emailTerbawah;
   Map? receiveData;
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     receiveData = ModalRoute.of(context)?.settings?.arguments as Map;
     String? otp = receiveData?['otp'];
-    String? email = receiveData?['email'];
+    emailTerbawah = receiveData?['email'];
     pilihPage = receiveData?['code_page'];
     return ScreenUtilInit(
       builder: (context, child) {
@@ -159,7 +160,8 @@ class _InputOtpState extends State<InputOtp> {
                           }
                       });
             } else if (pilihPage == "toLupaSandi") {
-              Navigator.pushNamed(context, UbahSandi.routeName.toString());
+              Navigator.pushNamed(context, UbahSandi.routeName.toString(),
+                  arguments: emailTerbawah);
             }
           } else {
             ToastWidget.ToastEror(context, "Kode Otp Salah");

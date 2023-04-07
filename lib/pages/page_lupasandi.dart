@@ -45,22 +45,27 @@ class _LupaSandiState extends State<LupaSandi> {
       ..recipients.add(emailPenerima)
       ..subject = 'Verifikasi Kode Lupa Sandi'
       ..html = "<h1>Kode Verifikasi</h1>\n<h3>Kode Verifikasi == ${code} </h3>";
-
-    try {
-      final sendReport = await send(message, smtpServer);
-      print('Message sent: ' + sendReport.toString());
-      Navigator.pushNamed(context, InputOtp.routeName.toString(), arguments: {
-        'email': input_email.text.toString(),
-        'otp': code.toString(),
-        'code_page': "toLupaSandi"
-      });
-    } on MailerException catch (e) {
-      print('Message not sent.');
-      for (var p in e.problems) {
-        print('Problem: ${p.code}: ${p.msg}');
-        ToastWidget.ToastEror(context, ' Format Email Tidak Sesuai');
-      }
-    }
+    Navigator.pushNamed(context, InputOtp.routeName.toString(), arguments: {
+      'email': input_email.text.toString(),
+      'otp': code.toString(),
+      'code_page': "toLupaSandi"
+    });
+    //   print('Message sent: ' + sendReport.toString());
+    // try {
+    //   final sendReport = await send(message, smtpServer);
+    //   print('Message sent: ' + sendReport.toString());
+    //   Navigator.pushNamed(context, InputOtp.routeName.toString(), arguments: {
+    //     'email': input_email.text.toString(),
+    //     'otp': code.toString(),
+    //     'code_page': "toLupaSandi"
+    //   });
+    // } on MailerException catch (e) {
+    //   print('Message not sent.');
+    //   for (var p in e.problems) {
+    //     print('Problem: ${p.code}: ${p.msg}');
+    //     ToastWidget.ToastEror(context, ' Format Email Tidak Sesuai');
+    //   }
+    // }
   }
 
   @override
@@ -129,7 +134,7 @@ class _LupaSandiState extends State<LupaSandi> {
 
   Widget _DescHeaderText() {
     return const Text(
-      "Silahkan atur ulang passwordmu",
+      "Silahkan atur ulang kata sandi",
       style: TextStyle(fontFamily: fontfix.DmSansBruh, fontSize: 16),
       textAlign: TextAlign.center,
     );

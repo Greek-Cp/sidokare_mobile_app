@@ -4,6 +4,7 @@ import 'package:sidokare_mobile_app/component/jenis_button.dart';
 import 'package:sidokare_mobile_app/component/text_field.dart';
 import 'package:sidokare_mobile_app/const/fontfix.dart';
 import 'package:sidokare_mobile_app/const/size.dart';
+import 'package:sidokare_mobile_app/model/api/http_statefull.dart';
 import 'package:sidokare_mobile_app/pages/page_login.dart';
 
 import '../const/list_color.dart';
@@ -31,6 +32,7 @@ class _UbahSandiState extends State<UbahSandi> {
 
   @override
   Widget build(BuildContext context) {
+    final getEmail = ModalRoute.of(context)?.settings.arguments as String;
     // TODO: implement build
     return ScreenUtilInit(
       builder: (context, child) {
@@ -69,7 +71,7 @@ class _UbahSandiState extends State<UbahSandi> {
                           _passwordvisible,
                           "Konfirmasi kata Sandi",
                           "Harap disi"),
-                      ButtonUtama(PageLogin.routeName, "Mulai")
+                      getBruh(getEmail)
                     ],
                   ),
                 ),
@@ -78,6 +80,43 @@ class _UbahSandiState extends State<UbahSandi> {
           )),
         );
       },
+    );
+  }
+
+  Widget getBruh(String namaEmailTerbawah) {
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 20.h),
+      child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+              backgroundColor: ListColor.warnaBiruSidoKare,
+              minimumSize: Size.fromHeight(55.h)),
+          onPressed: () => {
+                if (_formKey.currentState!.validate())
+                  {
+                    print("email terbawah = ${namaEmailTerbawah}"),
+                    if (inputSandi.text.toString() ==
+                        inputSandi2.text.toString())
+                      {
+                        HttpStatefull.ubahSandi(
+                                namaEmailTerbawah, inputSandi.text.toString())
+                            .then((value) => {
+                                  if (value.code == 200)
+                                    {
+                                      print("berhasil bruh"),
+                                    }
+                                })
+                      }
+                    else
+                      {print("Goblok ra podo password e")}
+                  }
+              },
+          child: Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Text(
+              "Ubah Sandi",
+              style: TextStyle(fontSize: size.textButton.sp),
+            ),
+          )),
     );
   }
 

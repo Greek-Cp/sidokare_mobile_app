@@ -80,10 +80,10 @@ class _PageLoginState extends State<PageLogin> {
                     SizedBox(
                         child: TextFieldPassword(
                             textEditingControllerPassword,
-                            "Masukkan Password",
+                            "Masukkan Sandi",
                             false,
-                            "Password",
-                            "Password")),
+                            "Kata Sandi",
+                            "Kata Sandi")),
                     SizedBox(
                       height: 10.sp,
                     ),
@@ -93,11 +93,11 @@ class _PageLoginState extends State<PageLogin> {
                             context, LupaSandi.routeName.toString())
                       },
                       child: Text(
-                        "Lupa Password?",
+                        "Lupa Sandi?",
                         style: GoogleFonts.dmSans(
                             textStyle: TextStyle(
                                 fontStyle: FontStyle.italic,
-                                fontSize: size.SubHeader.sp)),
+                                fontSize: size.sizeDescriptionPas.sp)),
                         textAlign: TextAlign.end,
                       ),
                     ),

@@ -25,7 +25,7 @@ class berhasilOtp extends StatelessWidget {
                   ),
                   ComponentTextTittle("Berhasil Verifikasi"),
                   ComponentTextDescription(
-                      "Kode yang telah dimasukkan berhasil silahkan login ke akunmu"),
+                      "Kode yang telah dimasukkan berhasil silahkan masuk menggunakan akun yang telah dibuat"),
                   SizedBox(
                     height: 20.h,
                   ),

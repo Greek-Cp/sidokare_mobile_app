@@ -273,17 +273,17 @@ form button:hover {
                     SizedBox(
                         child: TextFieldPassword(
                             textEditingControllerPassword,
-                            "Masukkan Password",
+                            "Masukkan Sandi",
                             false,
-                            "Password",
-                            "Password")),
+                            "Kata Sandi",
+                            "Kata Sandi")),
                     SizedBox(
                         child: TextFieldPassword(
                             textEditingControllerKonfirmasiPassword,
-                            "Masukkan Ulang Password",
+                            "Masukkan Ulang Sandi",
                             false,
-                            "Ulangi Password",
-                            "Password")),
+                            "Ulangi Kata Sandi",
+                            "Kata Sandi")),
                     SizedBox(
                       height: 10.w,
                     ),
