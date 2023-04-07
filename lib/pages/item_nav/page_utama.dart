@@ -17,10 +17,24 @@ import 'package:flutter_custom_tab_bar/models.dart';
 import 'package:flutter_custom_tab_bar/transform/color_transform.dart';
 import 'package:flutter_custom_tab_bar/transform/scale_transform.dart';
 import 'package:flutter_custom_tab_bar/transform/tab_bar_transform.dart';
-
+import 'package:sidokare_mobile_app/model/response/berita.dart';
+import 'package:http/http.dart' as http;
 import '../../provider/provider_account.dart';
 
-class PageUtama extends StatelessWidget {
+class PageUtama extends StatefulWidget {
+  @override
+  State<PageUtama> createState() => _PageUtamaState();
+}
+
+class _PageUtamaState extends State<PageUtama> {
+  late Future<List<Berita>> listBerita;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    listBerita = fetchBerita();
+  }
+
   Widget searchBar() {
     return Container(
       height: 64.0.h,
@@ -128,13 +142,31 @@ class PageUtama extends StatelessWidget {
                   ),
                 ),
                 SizedBox(
-                  height: 300.h,
-                  child: ListView.builder(
-                      itemCount: 4,
-                      scrollDirection: Axis.horizontal,
-                      shrinkWrap: true,
-                      itemBuilder: ((context, index) => cardBeritaTerkini())),
-                ),
+                    height: 300.h,
+                    child: FutureBuilder<List<Berita>>(
+                        future: listBerita,
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return CircularProgressIndicator(); // menampilkan loading spinner
+                          } else if (snapshot.hasError) {
+                            return Text(
+                                'Terjadi error: ${snapshot.error}'); // menampilkan pesan error
+                          } else {
+                            List<Berita> data =
+                                snapshot.data!; // mengambil data dari snapshot
+
+                            return ListView.builder(
+                                itemCount: data
+                                    .length, // menggunakan panjang data dari List<Berita> yang telah diambil dari snapshot
+                                scrollDirection: Axis.horizontal,
+                                shrinkWrap: true,
+                                itemBuilder: ((context, index) =>
+                                    cardBeritaTerkini(data[
+                                        index])) // membangun widget cardBeritaTerkini dengan data yang ada di List<Berita>
+                                );
+                          }
+                        })),
                 SizedBox(
                   height: 40.h,
                 ),
@@ -226,7 +258,7 @@ class PageUtama extends StatelessWidget {
     );
   }
 
-  Widget cardBeritaTerkini() {
+  Widget cardBeritaTerkini(Berita berita) {
     return SizedBox(
       width: 300.w,
       child: Padding(
@@ -246,7 +278,7 @@ class PageUtama extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Image.network(
-                      "https://pbs.twimg.com/media/FbGejiWWQAAxLVG?format=jpg&name=large",
+                      "${berita.foto}",
                       fit: BoxFit.cover,
                       height: 140.h,
                       width: double.infinity.w,
@@ -256,7 +288,7 @@ class PageUtama extends StatelessWidget {
                     ),
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 10.h),
-                      child: Text("Wah!! Resep Masakan Tradisional kKren anjay",
+                      child: Text("${berita.judulBerita}",
                           textAlign: TextAlign.justify,
                           overflow: TextOverflow.ellipsis,
                           maxLines: 1,
@@ -267,7 +299,7 @@ class PageUtama extends StatelessWidget {
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 10.h),
                       child: Text(
-                        "Para ibu-ibu muda Desa Sidokare telah menciptkan resep makan tradisional",
+                        "${berita.isiBerita}",
                         style: TextStyle(
                             color: ListColor.warnaDescriptionItem,
                             fontSize: size.SubHeader.sp),
@@ -302,7 +334,7 @@ class PageUtama extends StatelessWidget {
                                   style: TextStyle(fontSize: size.SubHeader.sp),
                                 ),
                                 Text(
-                                  "Sep 9, 2022",
+                                  "${berita.tanggalPublikasi}",
                                   style: TextStyle(
                                       color: ListColor.warnaDescriptionItem,
                                       fontSize: size.SubHeader.sp - 3),
