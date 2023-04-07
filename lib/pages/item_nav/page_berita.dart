@@ -57,7 +57,10 @@ class _PageBeritaState extends State<PageBerita> {
                     pagePelayananDesa(),
                     pagePemberdayaanMasyarakat()
                   ],
-                ))
+                )),
+                SizedBox(
+                  height: 30.h,
+                )
               ],
             ),
           ),

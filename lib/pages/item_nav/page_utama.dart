@@ -27,12 +27,21 @@ class PageUtama extends StatefulWidget {
 }
 
 class _PageUtamaState extends State<PageUtama> {
+  bool startAnimation = false;
+  double screenHeight = 0;
+  double screenWidth = 0;
+
   late Future<List<Berita>> listBerita;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     listBerita = fetchBerita();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      setState(() {
+        startAnimation = true;
+      });
+    });
   }
 
   Widget searchBar() {
@@ -86,6 +95,8 @@ class _PageUtamaState extends State<PageUtama> {
 
   @override
   Widget build(BuildContext context) {
+    screenHeight = MediaQuery.of(context).size.height;
+    screenWidth = MediaQuery.of(context).size.width;
     final id = ModalRoute.of(context)?.settings.arguments as int;
 
     final DataDiri = Provider.of<ProviderAccount>(context)
@@ -148,7 +159,7 @@ class _PageUtamaState extends State<PageUtama> {
                         builder: (context, snapshot) {
                           if (snapshot.connectionState ==
                               ConnectionState.waiting) {
-                            return CircularProgressIndicator(); // menampilkan loading spinner
+                            return Container(); // menampilkan loading spinner
                           } else if (snapshot.hasError) {
                             return Text(
                                 'Terjadi error: ${snapshot.error}'); // menampilkan pesan error
@@ -161,9 +172,9 @@ class _PageUtamaState extends State<PageUtama> {
                                     .length, // menggunakan panjang data dari List<Berita> yang telah diambil dari snapshot
                                 scrollDirection: Axis.horizontal,
                                 shrinkWrap: true,
-                                itemBuilder: ((context, index) =>
-                                    cardBeritaTerkini(data[
-                                        index])) // membangun widget cardBeritaTerkini dengan data yang ada di List<Berita>
+                                itemBuilder: ((context, index) => cardBeritaTerkini(
+                                    data[index],
+                                    index)) // membangun widget cardBeritaTerkini dengan data yang ada di List<Berita>
                                 );
                           }
                         })),
@@ -258,7 +269,7 @@ class _PageUtamaState extends State<PageUtama> {
     );
   }
 
-  Widget cardBeritaTerkini(Berita berita) {
+  Widget cardBeritaTerkini(Berita berita, int index) {
     return SizedBox(
       width: 300.w,
       child: Padding(
@@ -272,7 +283,11 @@ class _PageUtamaState extends State<PageUtama> {
               onTap: () => {},
               highlightColor: Colors.blue.withOpacity(0.4),
               splashColor: ListColor.warnaBiruSidoKare.withOpacity(0.5),
-              child: Container(
+              child: AnimatedContainer(
+                curve: Curves.easeInOut,
+                duration: Duration(milliseconds: 300 + (index * 200)),
+                transform: Matrix4.translationValues(
+                    startAnimation ? 0 : screenWidth, 0, 0),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
