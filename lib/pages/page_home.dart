@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_custom_tab_bar/custom_tab_bar.dart';
 import 'package:flutter_custom_tab_bar/transform/color_transform.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:sidokare_mobile_app/const/list_color.dart';
 import 'package:sidokare_mobile_app/pages/item_nav/item_page_berita/page_detail_berita.dart';
 import 'package:sidokare_mobile_app/pages/item_nav/page_laporan.dart';
 import 'package:sidokare_mobile_app/pages/item_nav/page_status.dart';
@@ -60,29 +61,30 @@ class _HalamanUtamaState extends State<HalamanUtama> {
         backgroundColor: Colors.white,
         height: 60.h,
         animationCurve: Curves.easeInOut,
-        color: Colors.blueAccent,
+        buttonBackgroundColor: Colors.blueAccent,
+        color: Colors.grey.shade100,
         items: <Widget>[
           Icon(
-            Icons.add,
-            size: 30,
-            color: Colors.white,
+            Icons.home,
+            size: 25,
+            color: _selectedIndex == 0 ? Colors.white : Colors.blueAccent,
             semanticLabel: "ngengek",
           ),
           Icon(
-            Icons.list,
-            size: 30,
-            color: Colors.white,
+            Icons.newspaper,
+            size: 25,
+            color: _selectedIndex == 1 ? Colors.white : Colors.blueAccent,
           ),
           Icon(
-            Icons.compare_arrows,
-            size: 30,
-            color: Colors.white,
+            Icons.description,
+            size: 25,
+            color: _selectedIndex == 2 ? Colors.white : Colors.blueAccent,
             semanticLabel: "Inpokan",
           ),
           Icon(
-            Icons.bookmark_add,
-            size: 30,
-            color: Colors.white,
+            Icons.notifications,
+            size: 25,
+            color: _selectedIndex == 3 ? Colors.white : Colors.blueAccent,
             semanticLabel: "Inpokan",
           ),
         ],
