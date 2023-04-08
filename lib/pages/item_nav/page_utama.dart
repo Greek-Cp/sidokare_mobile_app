@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:provider/provider.dart';
 import 'package:sidokare_mobile_app/component/text_description.dart';
 import 'package:sidokare_mobile_app/const/list_color.dart';
@@ -119,22 +120,56 @@ class _PageUtamaState extends State<PageUtama> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      ComponentTextTittle("Selamat Pagi ${DataDiri.nama}"),
-                      Container(
-                        width: 41.w,
-                        height: 41.h,
-                        child: CircleAvatar(
-                          backgroundColor: Colors.red,
+                      AnimationLimiter(
+                          child: AnimationConfiguration.synchronized(
+                        duration: Duration(milliseconds: 375),
+                        child: SlideAnimation(
+                          horizontalOffset: -50.0,
+                          child: FadeInAnimation(
+                            child: ComponentTextTittle(
+                                "Selamat Pagi ${DataDiri.nama}"),
+                          ),
                         ),
-                      )
+                      )),
+                      AnimationLimiter(
+                          child: AnimationConfiguration.synchronized(
+                        duration: Duration(milliseconds: 375),
+                        child: SlideAnimation(
+                          horizontalOffset: 50.0,
+                          child: FadeInAnimation(
+                            child: Container(
+                              width: 41.w,
+                              height: 41.h,
+                              child: CircleAvatar(
+                                backgroundColor: Colors.red,
+                              ),
+                            ),
+                          ),
+                        ),
+                      )),
                     ],
                   ),
                 ),
-                searchBar(),
+                AnimationLimiter(
+                    child: AnimationConfiguration.synchronized(
+                  duration: Duration(milliseconds: 375),
+                  child: SlideAnimation(
+                    verticalOffset: 50.0,
+                    child: FadeInAnimation(child: searchBar()),
+                  ),
+                )),
+                // searchBar(),
                 SizedBox(
                   height: 10.h,
                 ),
-                CardJumlahLaporan(),
+                AnimationLimiter(
+                    child: AnimationConfiguration.synchronized(
+                  duration: Duration(milliseconds: 500),
+                  child: ScaleAnimation(
+                    child: FadeInAnimation(child: CardJumlahLaporan()),
+                  ),
+                )),
+                // CardJumlahLaporan(),
                 SizedBox(
                   height: 10.h,
                 ),
@@ -144,11 +179,27 @@ class _PageUtamaState extends State<PageUtama> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      ComponentTextTittle("Berita Terkini"),
-                      ComponentTextDescription(
-                        "Lihat lainnya",
-                        teksColor: ListColor.warnaDescriptionItem,
-                      )
+                      AnimationLimiter(
+                          child: AnimationConfiguration.synchronized(
+                        duration: Duration(milliseconds: 375),
+                        child: SlideAnimation(
+                          horizontalOffset: -50.0,
+                          child: FadeInAnimation(
+                              child: ComponentTextTittle("Berita Terkini")),
+                        ),
+                      )),
+                      AnimationLimiter(
+                          child: AnimationConfiguration.synchronized(
+                        duration: Duration(milliseconds: 375),
+                        child: SlideAnimation(
+                          horizontalOffset: 50.0,
+                          child: FadeInAnimation(
+                              child: ComponentTextDescription(
+                            "Lihat lainnya",
+                            teksColor: ListColor.warnaDescriptionItem,
+                          )),
+                        ),
+                      )),
                     ],
                   ),
                 ),
@@ -167,15 +218,27 @@ class _PageUtamaState extends State<PageUtama> {
                             List<Berita> data =
                                 snapshot.data!; // mengambil data dari snapshot
 
-                            return ListView.builder(
+                            return AnimationLimiter(
+                              child: ListView.builder(
                                 itemCount: data
                                     .length, // menggunakan panjang data dari List<Berita> yang telah diambil dari snapshot
                                 scrollDirection: Axis.horizontal,
                                 shrinkWrap: true,
-                                itemBuilder: ((context, index) => cardBeritaTerkini(
-                                    data[index],
-                                    index)) // membangun widget cardBeritaTerkini dengan data yang ada di List<Berita>
-                                );
+                                itemBuilder: (context, index) {
+                                  return AnimationConfiguration.staggeredList(
+                                      position: index,
+                                      duration:
+                                          const Duration(milliseconds: 375),
+                                      child: SlideAnimation(
+                                          verticalOffset: 50.0,
+                                          // delay: Duration(milliseconds: 400),
+                                          duration: Duration(milliseconds: 800),
+                                          child: FadeInAnimation(
+                                              child: cardBeritaTerkini(
+                                                  data[index]))));
+                                }, // membangun widget cardBeritaTerkini dengan data yang ada di List<Berita>
+                              ),
+                            );
                           }
                         })),
                 SizedBox(
@@ -269,7 +332,7 @@ class _PageUtamaState extends State<PageUtama> {
     );
   }
 
-  Widget cardBeritaTerkini(Berita berita, int index) {
+  Widget cardBeritaTerkini(Berita berita) {
     return SizedBox(
       width: 300.w,
       child: Padding(
@@ -283,11 +346,7 @@ class _PageUtamaState extends State<PageUtama> {
               onTap: () => {},
               highlightColor: Colors.blue.withOpacity(0.4),
               splashColor: ListColor.warnaBiruSidoKare.withOpacity(0.5),
-              child: AnimatedContainer(
-                curve: Curves.easeInOut,
-                duration: Duration(milliseconds: 300 + (index * 200)),
-                transform: Matrix4.translationValues(
-                    startAnimation ? 0 : screenWidth, 0, 0),
+              child: Container(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,

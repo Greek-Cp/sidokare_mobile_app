@@ -29,7 +29,7 @@ class _InputOtpState extends State<InputOtp> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    receiveData = ModalRoute.of(context)?.settings?.arguments as Map;
+    receiveData = ModalRoute.of(context)?.settings.arguments as Map;
     String? otp = receiveData?['otp'];
     emailTerbawah = receiveData?['email'];
     pilihPage = receiveData?['code_page'];
