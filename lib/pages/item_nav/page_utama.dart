@@ -37,7 +37,7 @@ class _PageUtamaState extends State<PageUtama> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    listBerita = fetchBerita();
+    listBerita = fetchBeritaKustom("ktg_berita01");
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       setState(() {
         startAnimation = true;
@@ -230,7 +230,7 @@ class _PageUtamaState extends State<PageUtama> {
                                       duration:
                                           const Duration(milliseconds: 375),
                                       child: SlideAnimation(
-                                          verticalOffset: 50.0,
+                                          verticalOffset: 350.0,
                                           // delay: Duration(milliseconds: 400),
                                           duration: Duration(milliseconds: 800),
                                           child: FadeInAnimation(
@@ -277,7 +277,9 @@ class _PageUtamaState extends State<PageUtama> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      ItemCardLaporan(),
+                      AnimationLimiter(
+                          child: AnimationConfiguration.synchronized(
+                              child: SlideAnimation(child: ItemCardLaporan()))),
                       ItemCardLaporan(),
                     ],
                   ),

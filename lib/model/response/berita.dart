@@ -36,6 +36,55 @@ class Berita {
   }
 }
 
+Future<List<Berita>> fetchData() async {
+  final response = await http.get(Uri.parse('https://example.com/api/berita'));
+
+  if (response.statusCode == 200) {
+    // Jika response sukses, convert data JSON ke dalam bentuk List<Berita>
+    List<dynamic> data = json.decode(response.body)['data'];
+    List<Berita> beritaList = data.map((e) => Berita.fromJson(e)).toList();
+    return beritaList;
+  } else {
+    // Jika response gagal, lempar exception
+    throw Exception('Gagal mengambil data dari API');
+  }
+}
+
+Future<List<Berita>> fetchBeritaKustom(String idKategori) async {
+  final response = await http.post(
+      Uri.parse('http://127.0.0.1:8000/api/berita/specific_berita'),
+      body: {"id_kategori": idKategori});
+
+  if (response.statusCode == 200) {
+    print("data = " + response.body);
+    final data = jsonDecode(response.body)['data'];
+
+    List<Berita> beritas = [];
+    for (var i = 0; i < data.length; i++) {
+      beritas.add(Berita.fromJson(data[i]));
+    }
+    return beritas;
+  } else {
+    throw Exception('Failed to load data');
+  }
+}
+
+Future<List<Berita>> fetchBeritaCustom(String KategoriBerita) async {
+  final response = await http.post(
+      Uri.parse(
+        'http://127.0.0.1:8000/api/berita/specific_berita',
+      ),
+      body: {"id_kategori": KategoriBerita});
+  if (response.statusCode == 200) {
+    final List<dynamic> data = jsonDecode(response.body)['data'];
+    final List<Berita> beritaList =
+        data.map((e) => Berita.fromJson(e)).toList();
+    return beritaList;
+  } else {
+    throw Exception('Failed to fetch berita');
+  }
+}
+
 Future<List<Berita>> fetchBerita() async {
   final response =
       await http.get(Uri.parse('http://127.0.0.1:8000/api/berita/get_berita'));

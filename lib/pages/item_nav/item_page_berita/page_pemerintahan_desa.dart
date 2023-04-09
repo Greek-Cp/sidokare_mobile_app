@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:sidokare_mobile_app/const/size.dart';
 import 'package:rotated_corner_decoration/rotated_corner_decoration.dart';
+import 'package:sidokare_mobile_app/model/response/berita.dart';
 import '../../../const/list_color.dart';
 
 class PagePemerintahanDesa extends StatefulWidget {
@@ -10,23 +12,60 @@ class PagePemerintahanDesa extends StatefulWidget {
 }
 
 class _PagePemerintahanDesaState extends State<PagePemerintahanDesa> {
+  bool startAnimation = false;
+  double screenHeight = 0;
+  double screenWidth = 0;
+  late Future<List<Berita>> listBerita;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
+    listBerita = fetchBeritaKustom("ktg_berita01");
     return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.all(0.0),
-        child: ListView(
-          children: [
-            _cardInformasi(),
-            _cardInformasi(),
-          ],
-        ),
-      ),
+          padding: const EdgeInsets.all(0.0),
+          child: FutureBuilder<List<Berita>>(
+              future: listBerita,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Container(); // menampilkan loading spinner
+                } else if (snapshot.hasError) {
+                  return Text(
+                      'Terjadi error: ${snapshot.error}'); // menampilkan pesan error
+                } else {
+                  List<Berita> data =
+                      snapshot.data!; // mengambil data dari snapshot
+
+                  return AnimationLimiter(
+                    child: ListView.builder(
+                      itemCount: data
+                          .length, // menggunakan panjang data dari List<Berita> yang telah diambil dari snapshot
+
+                      shrinkWrap: true,
+                      itemBuilder: (context, index) {
+                        return AnimationConfiguration.staggeredList(
+                            position: index,
+                            duration: const Duration(milliseconds: 375),
+                            child: SlideAnimation(
+                                verticalOffset: 350.0,
+                                // delay: Duration(milliseconds: 400),
+                                duration: Duration(milliseconds: 800),
+                                child: FadeInAnimation(
+                                    child: _cardInformasi(data[index]))));
+                      }, // membangun widget cardBeritaTerkini dengan data yang ada di List<Berita>
+                    ),
+                  );
+                }
+              })),
     );
   }
 
-  Widget _cardInformasi() {
+  Widget _cardInformasi(Berita berita) {
     return Padding(
       padding: const EdgeInsets.only(),
       child: Column(
