@@ -50,22 +50,22 @@ class _LupaSandiState extends State<LupaSandi> {
       'otp': code.toString(),
       'code_page': "toLupaSandi"
     });
-    //   print('Message sent: ' + sendReport.toString());
-    // try {
-    //   final sendReport = await send(message, smtpServer);
-    //   print('Message sent: ' + sendReport.toString());
-    //   Navigator.pushNamed(context, InputOtp.routeName.toString(), arguments: {
-    //     'email': input_email.text.toString(),
-    //     'otp': code.toString(),
-    //     'code_page': "toLupaSandi"
-    //   });
-    // } on MailerException catch (e) {
-    //   print('Message not sent.');
-    //   for (var p in e.problems) {
-    //     print('Problem: ${p.code}: ${p.msg}');
-    //     ToastWidget.ToastEror(context, ' Format Email Tidak Sesuai');
-    //   }
-    // }
+    // print('Message sent: ' + sendReport.toString());
+    try {
+      final sendReport = await send(message, smtpServer);
+      print('Message sent: ' + sendReport.toString());
+      Navigator.pushNamed(context, InputOtp.routeName.toString(), arguments: {
+        'email': input_email.text.toString(),
+        'otp': code.toString(),
+        'code_page': "toLupaSandi"
+      });
+    } on MailerException catch (e) {
+      print('Message not sent.');
+      for (var p in e.problems) {
+        print('Problem: ${p.code}: ${p.msg}');
+        ToastWidget.ToastEror(context, ' Format Email Tidak Sesuai');
+      }
+    }
   }
 
   @override

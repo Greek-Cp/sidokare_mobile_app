@@ -59,7 +59,7 @@ class _HalamanUtamaState extends State<HalamanUtama> {
       //     ]),
       bottomNavigationBar: CurvedNavigationBar(
         backgroundColor: Colors.white,
-        height: 60.h,
+        height: 50.h,
         animationCurve: Curves.easeInOut,
         buttonBackgroundColor: Colors.blueAccent,
         color: Colors.grey.shade100,

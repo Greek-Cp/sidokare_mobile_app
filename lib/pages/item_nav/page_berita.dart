@@ -4,6 +4,7 @@ import 'package:flutter_custom_tab_bar/indicator/custom_indicator.dart';
 import 'package:flutter_custom_tab_bar/indicator/linear_indicator.dart';
 import 'package:flutter_custom_tab_bar/transform/color_transform.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:sidokare_mobile_app/component/search_bar.dart';
 import 'package:sidokare_mobile_app/pages/item_nav/item_page_berita/page_bum_desa.dart';
 import 'package:sidokare_mobile_app/pages/item_nav/item_page_berita/page_pelayanan_desa.dart';
@@ -37,22 +38,33 @@ class _PageBeritaState extends State<PageBerita> {
       builder: (context, child) {
         return Scaffold(
           body: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             child: Column(
               children: [
                 SizedBox(
                   height: 40.h,
                 ),
-                searchBar(),
-                CustomTabBar(
-                  tabBarController: _tabBarController,
-                  height: 40.h,
-                  itemCount: listKategoriBerita.length,
-                  builder: getTabbarChild,
-                  indicator:
-                      LinearIndicator(color: Colors.blueAccent, bottom: 1),
-                  pageController: _controller,
-                ),
+                AnimationLimiter(
+                    child: AnimationConfiguration.synchronized(
+                        duration: const Duration(milliseconds: 500),
+                        child: FadeInAnimation(
+                            child: ScaleAnimation(child: searchBar())))),
+                AnimationLimiter(
+                    child: AnimationConfiguration.synchronized(
+                        duration: const Duration(milliseconds: 500),
+                        child: FadeInAnimation(
+                            child: SlideAnimation(
+                          verticalOffset: 50,
+                          child: CustomTabBar(
+                            tabBarController: _tabBarController,
+                            height: 40.h,
+                            itemCount: listKategoriBerita.length,
+                            builder: getTabbarChild,
+                            indicator: LinearIndicator(
+                                color: Colors.blueAccent, bottom: 1),
+                            pageController: _controller,
+                          ),
+                        )))),
                 Expanded(
                     child: PageView(
                   controller: _controller,

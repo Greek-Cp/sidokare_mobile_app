@@ -103,6 +103,8 @@ class _UbahSandiState extends State<UbahSandi> {
                                   if (value.code == 200)
                                     {
                                       print("berhasil bruh"),
+                                      Navigator.pushNamed(context,
+                                          PageLogin.routeName.toString()),
                                     }
                                 })
                       }
