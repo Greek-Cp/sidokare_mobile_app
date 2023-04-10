@@ -7,6 +7,8 @@ import 'package:sidokare_mobile_app/const/list_color.dart';
 import 'package:sidokare_mobile_app/const/size.dart';
 
 class PageDetailBerita extends StatefulWidget {
+  static String routeName = "/detail_berita";
+
   @override
   State<PageDetailBerita> createState() => _PageDetailBeritaState();
 }
@@ -14,10 +16,16 @@ class PageDetailBerita extends StatefulWidget {
 class _PageDetailBeritaState extends State<PageDetailBerita> {
   final _formKey = GlobalKey<FormState>();
   TextEditingController getNama = TextEditingController();
-
+  Map? receiveData;
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
+    receiveData = ModalRoute.of(context)?.settings.arguments as Map;
+    String judul_berita = receiveData?['judul'];
+    String isi_berita = receiveData?['isi_berita'];
+    String gambar_utama = receiveData?['gambar_utama'];
+    String tanggal_publikasi = receiveData?['tanggal_publikasi'];
+    String gambar_lain = receiveData?['gambar_lain'];
     return ScreenUtilInit(
       builder: (context, child) {
         return Scaffold(
@@ -26,7 +34,7 @@ class _PageDetailBeritaState extends State<PageDetailBerita> {
               SliverAppBar(
                 leading: IconButton(
                   icon: Icon(Icons.arrow_back),
-                  onPressed: () => {},
+                  onPressed: () => {Navigator.pop(context)},
                 ),
                 elevation: 10,
                 shadowColor: ListColor.warnaBiruSidoKare,
@@ -40,7 +48,7 @@ class _PageDetailBeritaState extends State<PageDetailBerita> {
                 expandedHeight: 180.w,
                 flexibleSpace: FlexibleSpaceBar(
                   title: Text(
-                    "Hati - hati!! BMD akan mengadakan lomba Agustusan",
+                    "${judul_berita}",
                     style: TextStyle(
                       fontSize: size.DescTextKecil.sp,
                     ),
@@ -48,17 +56,20 @@ class _PageDetailBeritaState extends State<PageDetailBerita> {
                   titlePadding:
                       EdgeInsetsDirectional.only(start: 50.0.h, bottom: 20.0.h),
                   collapseMode: CollapseMode.parallax,
-                  background: _Image("assets/laptop.jpg"),
+                  background: _Image(gambar_utama),
                 ),
               ),
               SliverList(
                 delegate: SliverChildListDelegate([
-                  _HeaderJudul(),
-                  _ListMbu(),
+                  _HeaderJudul(judul_berita),
+                  _ListMbu(
+                      kategoriBerita: "Pemerintah Desa",
+                      tanggalBerita: tanggal_publikasi.toString(),
+                      authBerita: "Deva Arie"),
                   AnimatedOpacity(
                       opacity: 1,
                       duration: Duration(milliseconds: 500),
-                      child: _isiBerita()),
+                      child: _isiBerita(isiBerita: isi_berita)),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 20.h),
                     child: Divider(
@@ -77,26 +88,27 @@ class _PageDetailBeritaState extends State<PageDetailBerita> {
   }
 
   Widget _Image(String urlImage) {
-    return Image(
-      image: AssetImage(urlImage),
+    return Image.network(
+      urlImage,
       fit: BoxFit.cover,
       width: double.infinity,
       height: 200.h,
     );
   }
 
-  Widget _HeaderJudul() {
+  Widget _HeaderJudul(String judul) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 20.h, vertical: 10.h),
       child: Text(
-        "Hati - hati!! BMD akan mengadakan lomba Agustusan",
+        judul,
         style: TextStyle(
             fontWeight: FontWeight.bold, fontSize: size.HeaderText.sp),
       ),
     );
   }
 
-  Widget _ListMbu() {
+  Widget _ListMbu(
+      {String? kategoriBerita, String? tanggalBerita, String? authBerita}) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 17.h),
       child: Row(
@@ -107,29 +119,30 @@ class _PageDetailBeritaState extends State<PageDetailBerita> {
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 10.h, vertical: 5.h),
               child: Text(
-                "Pemerintahan Desa",
+                "${kategoriBerita}",
                 style: TextStyle(fontSize: size.textButton.sp),
               ),
             ),
           ),
           Text(
-            "20 Oct, 2023",
+            "${tanggalBerita}",
             style: TextStyle(fontSize: size.DescTextKecil.sp),
           ),
           CircleAvatar(
             radius: 10,
           ),
-          Text("Deva Arie", style: TextStyle(fontSize: size.DescTextKecil.sp))
+          Text("${authBerita}",
+              style: TextStyle(fontSize: size.DescTextKecil.sp))
         ],
       ),
     );
   }
 
-  Widget _isiBerita() {
+  Widget _isiBerita({String? isiBerita}) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
       child: Text(
-        "Para ibu-ibu muda Desa Sidokare telah menciptkan resep makan tradisional untuk merayakan lomba Momen peringatan Hari Kemerdekaan RI sering dimeriahkan dengan beragam lomba, mulai dari tingkat RT/RW sampai di sekolah dan kantor. Tujuan lomba ini biasanya menguji kekompakan warga.Jika Anda menjadi panitia dan masih bingung ingin mengadakan apa, simak 20 ide lomba 17 Agustus yang seru dan menarik berikut ini",
+        "${isiBerita}",
         textAlign: TextAlign.justify,
         style: TextStyle(fontSize: size.sizeDescriptionPas.sp),
       ),

@@ -4,6 +4,7 @@ import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:sidokare_mobile_app/const/size.dart';
 import 'package:rotated_corner_decoration/rotated_corner_decoration.dart';
 import 'package:sidokare_mobile_app/model/response/berita.dart';
+import 'package:sidokare_mobile_app/pages/item_nav/page_detail_berita.dart';
 import '../../../const/list_color.dart';
 
 class PagePemerintahanDesa extends StatefulWidget {
@@ -54,7 +55,24 @@ class _PagePemerintahanDesaState extends State<PagePemerintahanDesa> {
                                 // delay: Duration(milliseconds: 400),
                                 duration: Duration(milliseconds: 800),
                                 child: FadeInAnimation(
-                                    child: _cardInformasi(data[index]))));
+                                    child: GestureDetector(
+                                        onTap: () {
+                                          Navigator.of(context).pushNamed(
+                                              PageDetailBerita.routeName,
+                                              arguments: {
+                                                "judul":
+                                                    data[index].judulBerita,
+                                                "isi_berita":
+                                                    data[index].isiBerita,
+                                                "gambar_utama":
+                                                    data[index].foto,
+                                                "tanggal_publikasi": data[index]
+                                                    .tanggalPublikasi,
+                                                "gambar_lain":
+                                                    data[index].unggahFileLain
+                                              });
+                                        },
+                                        child: _cardInformasi(data[index])))));
                       }, // membangun widget cardBeritaTerkini dengan data yang ada di List<Berita>
                     ),
                   );
