@@ -17,6 +17,21 @@ class _PageDetailBeritaState extends State<PageDetailBerita> {
   final _formKey = GlobalKey<FormState>();
   TextEditingController getNama = TextEditingController();
   Map? receiveData;
+  bool startAnimation = false;
+  double screenHeight = 0;
+  double screenWidth = 0;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      setState(() {
+        startAnimation = true;
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -26,6 +41,9 @@ class _PageDetailBeritaState extends State<PageDetailBerita> {
     String gambar_utama = receiveData?['gambar_utama'];
     String tanggal_publikasi = receiveData?['tanggal_publikasi'];
     String gambar_lain = receiveData?['gambar_lain'];
+    screenHeight = MediaQuery.of(context).size.height;
+    screenWidth = MediaQuery.of(context).size.width;
+    double opacity = 0.0;
     return ScreenUtilInit(
       builder: (context, child) {
         return Scaffold(
@@ -47,10 +65,17 @@ class _PageDetailBeritaState extends State<PageDetailBerita> {
                 pinned: true,
                 expandedHeight: 180.w,
                 flexibleSpace: FlexibleSpaceBar(
-                  title: Text(
-                    "${judul_berita}",
-                    style: TextStyle(
-                      fontSize: size.DescTextKecil.sp,
+                  title: AnimatedContainer(
+                    curve: Curves.easeInOut,
+                    duration: Duration(milliseconds: 1000),
+                    transform: Matrix4.translationValues(
+                        startAnimation ? 0 : screenWidth, 0, 0),
+                    width: screenWidth,
+                    child: Text(
+                      "${judul_berita}",
+                      style: TextStyle(
+                        fontSize: size.DescTextKecil.sp,
+                      ),
                     ),
                   ),
                   titlePadding:
@@ -61,14 +86,30 @@ class _PageDetailBeritaState extends State<PageDetailBerita> {
               ),
               SliverList(
                 delegate: SliverChildListDelegate([
-                  _HeaderJudul(judul_berita),
-                  _ListMbu(
-                      kategoriBerita: "Pemerintah Desa",
-                      tanggalBerita: tanggal_publikasi.toString(),
-                      authBerita: "Deva Arie"),
-                  AnimatedOpacity(
-                      opacity: 1,
+                  AnimatedContainer(
+                      curve: Curves.easeInOut,
                       duration: Duration(milliseconds: 500),
+                      transform: Matrix4.translationValues(
+                          startAnimation ? 0 : screenWidth, 0, 0),
+                      width: screenWidth,
+                      child: _HeaderJudul(judul_berita)),
+                  AnimatedContainer(
+                    curve: Curves.easeInOut,
+                    duration: Duration(milliseconds: 1000),
+                    transform: Matrix4.translationValues(
+                        startAnimation ? 0 : screenWidth, 0, 0),
+                    width: screenWidth,
+                    child: _ListMbu(
+                        kategoriBerita: "Pemerintah Desa",
+                        tanggalBerita: tanggal_publikasi.toString(),
+                        authBerita: "Deva Arie"),
+                  ),
+                  AnimatedContainer(
+                      curve: Curves.easeInOut,
+                      duration: Duration(milliseconds: 1500),
+                      transform: Matrix4.translationValues(
+                          startAnimation ? 0 : screenWidth, 0, 0),
+                      width: screenWidth,
                       child: _isiBerita(isiBerita: isi_berita)),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 20.h),

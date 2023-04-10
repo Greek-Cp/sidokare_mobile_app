@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sidokare_mobile_app/const/list_color.dart';
 import 'package:sidokare_mobile_app/const/size.dart';
+import 'package:wave_transition/wave_transition.dart';
 import './page_introawal.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -20,7 +21,13 @@ class _SplashScreenState extends State<SplashScreen> {
 
   _nextbro() async {
     await Future.delayed(Duration(milliseconds: 1500), () {
-      Navigator.pushNamed(context, IntroAwal.routeName.toString());
+      Navigator.push(
+          context,
+          WaveTransition(
+              child: IntroAwal(),
+              center: FractionalOffset(0.90, 0.90),
+              duration: Duration(milliseconds: 1000) // optional
+              ));
     });
   }
 
