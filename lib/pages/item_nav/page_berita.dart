@@ -5,10 +5,15 @@ import 'package:flutter_custom_tab_bar/indicator/linear_indicator.dart';
 import 'package:flutter_custom_tab_bar/transform/color_transform.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sidokare_mobile_app/component/search_bar.dart';
+import 'package:sidokare_mobile_app/pages/item_nav/item_page_berita/page_bum_desa.dart';
 import 'package:sidokare_mobile_app/pages/item_nav/item_page_berita/page_pelayanan_desa.dart';
+import 'package:sidokare_mobile_app/pages/item_nav/item_page_berita/page_pembangunan_desa.dart';
 import 'package:sidokare_mobile_app/pages/item_nav/item_page_berita/page_pemberdayaan_masyarakat.dart';
+import 'package:sidokare_mobile_app/pages/item_nav/item_page_berita/page_pembinaan_masyarakat.dart';
 import 'package:sidokare_mobile_app/pages/item_nav/item_page_berita/page_pemerintahan_desa.dart';
 import 'package:sidokare_mobile_app/const/size.dart';
+import 'package:sidokare_mobile_app/pages/item_nav/item_page_berita/page_pkk_desa.dart';
+import 'package:sidokare_mobile_app/pages/item_nav/item_page_berita/page_potensi_desa.dart';
 
 class PageBerita extends StatefulWidget {
   @override
@@ -54,8 +59,12 @@ class _PageBeritaState extends State<PageBerita> {
                   //Dibawha tempat untuk menaruh card ya ges yak
                   children: [
                     PagePemerintahanDesa(),
-                    pagePelayananDesa(),
-                    pagePemberdayaanMasyarakat()
+                    PagePembangunanDesa(),
+                    PagePemberdayaanMasyarakat(),
+                    PagePembinaanMasyarakat(),
+                    PageBumDesa(),
+                    PagePKK(),
+                    PagePotensiDesa()
                   ],
                 )),
                 SizedBox(
@@ -91,9 +100,12 @@ class _PageBeritaState extends State<PageBerita> {
 
   var listKategoriBerita = [
     "Pemerintahan Desa",
-    "Pelayanan Desa ",
-    "Pembuatan Surat Desa",
-    "inpo Janda Desa"
+    "Pembagunan Desa",
+    "Pemberdayaan Masyarakat",
+    "Pembinaan Masyarakat",
+    "BUM Desa",
+    "PKK",
+    "Potensi Desa"
   ];
   Widget getTabbarChild(BuildContext context, int index) {
     return TabBarItem(

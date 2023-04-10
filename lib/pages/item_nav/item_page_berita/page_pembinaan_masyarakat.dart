@@ -6,12 +6,13 @@ import 'package:rotated_corner_decoration/rotated_corner_decoration.dart';
 import 'package:sidokare_mobile_app/model/response/berita.dart';
 import '../../../const/list_color.dart';
 
-class pagePelayananDesa extends StatefulWidget {
+class PagePembinaanMasyarakat extends StatefulWidget {
   @override
-  State<pagePelayananDesa> createState() => _pagePelayananDesaState();
+  State<PagePembinaanMasyarakat> createState() =>
+      _PagePembinaanMasyarakatState();
 }
 
-class _pagePelayananDesaState extends State<pagePelayananDesa> {
+class _PagePembinaanMasyarakatState extends State<PagePembinaanMasyarakat> {
   bool startAnimation = false;
   double screenHeight = 0;
   double screenWidth = 0;
@@ -25,7 +26,7 @@ class _pagePelayananDesaState extends State<pagePelayananDesa> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    listBerita = fetchBeritaKustom("ktg_berita01");
+    listBerita = fetchBeritaKustom("ktg_berita06");
     return Scaffold(
       body: Padding(
           padding: const EdgeInsets.all(0.0),

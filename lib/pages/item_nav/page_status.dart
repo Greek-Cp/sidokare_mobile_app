@@ -87,7 +87,6 @@ class _PageStatusState extends State<PageStatus>
               child: TabBarView(controller: tabController, children: [
                 itemListStatus(),
                 pagePelayananDesa(),
-                pagePemberdayaanMasyarakat()
               ]),
             ));
       },

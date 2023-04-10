@@ -40,12 +40,10 @@ class _PagePemerintahanDesaState extends State<PagePemerintahanDesa> {
                 } else {
                   List<Berita> data =
                       snapshot.data!; // mengambil data dari snapshot
-
                   return AnimationLimiter(
                     child: ListView.builder(
                       itemCount: data
                           .length, // menggunakan panjang data dari List<Berita> yang telah diambil dari snapshot
-
                       shrinkWrap: true,
                       itemBuilder: (context, index) {
                         return AnimationConfiguration.staggeredList(
@@ -93,7 +91,11 @@ class _PagePemerintahanDesaState extends State<PagePemerintahanDesa> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.max,
-                  children: [_ImagesBruh(), _TextDesc(), _KetBawah()],
+                  children: [
+                    _ImagesBruh(berita.foto.toString()),
+                    _TextDesc(berita.judulBerita, berita.isiBerita),
+                    _KetBawah(berita.tanggalPublikasi.toString())
+                  ],
                 ),
               ),
             ),
@@ -106,14 +108,14 @@ class _PagePemerintahanDesaState extends State<PagePemerintahanDesa> {
     );
   }
 
-  Widget _ImagesBruh() {
-    return Image.asset(
-      "assets/laptop.jpg",
+  Widget _ImagesBruh(String? urlGambar) {
+    return Image.network(
+      "${urlGambar.toString()}",
       fit: BoxFit.contain,
     );
   }
 
-  Widget _KetBawah() {
+  Widget _KetBawah(String? tanggalBawah) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 0),
       child: GestureDetector(
@@ -131,7 +133,7 @@ class _PagePemerintahanDesaState extends State<PagePemerintahanDesa> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "Sep 9, 2022",
+                  "${tanggalBawah}",
                   style: TextStyle(
                       color: ListColor.warnaDescriptionItem,
                       fontSize: size.SubHeader.sp - 3),
@@ -164,7 +166,7 @@ class _PagePemerintahanDesaState extends State<PagePemerintahanDesa> {
     );
   }
 
-  Widget _TextDesc() {
+  Widget _TextDesc(String? textDesc, String? textHeader) {
     return Column(
       children: [
         SizedBox(
@@ -173,7 +175,7 @@ class _PagePemerintahanDesaState extends State<PagePemerintahanDesa> {
         Align(
           alignment: Alignment.topLeft,
           child: Text(
-            "Hati-hati!! BMD akan mengadakan lomba",
+            "${textHeader}",
             overflow: TextOverflow.ellipsis,
             maxLines: 1,
             style: TextStyle(
@@ -181,7 +183,7 @@ class _PagePemerintahanDesaState extends State<PagePemerintahanDesa> {
           ),
         ),
         Text(
-          "Para ibu-ibu muda Desa Sidokare telah menciptkan resep makan tradisional untuk merayakan lomba",
+          "${textDesc}",
           maxLines: 2,
           overflow: TextOverflow.ellipsis,
           style: TextStyle(fontSize: size.sizeDescriptionPas),

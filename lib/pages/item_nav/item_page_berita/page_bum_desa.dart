@@ -6,12 +6,12 @@ import 'package:rotated_corner_decoration/rotated_corner_decoration.dart';
 import 'package:sidokare_mobile_app/model/response/berita.dart';
 import '../../../const/list_color.dart';
 
-class pagePelayananDesa extends StatefulWidget {
+class PageBumDesa extends StatefulWidget {
   @override
-  State<pagePelayananDesa> createState() => _pagePelayananDesaState();
+  State<PageBumDesa> createState() => PageBumDesaDesaState();
 }
 
-class _pagePelayananDesaState extends State<pagePelayananDesa> {
+class PageBumDesaDesaState extends State<PageBumDesa> {
   bool startAnimation = false;
   double screenHeight = 0;
   double screenWidth = 0;
