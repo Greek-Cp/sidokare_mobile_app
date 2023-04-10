@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:sidokare_mobile_app/const/const.dart';
 
 class Berita {
   final int idBerita;
@@ -52,7 +53,7 @@ Future<List<Berita>> fetchData() async {
 
 Future<List<Berita>> fetchBeritaKustom(String idKategori) async {
   final response = await http.post(
-      Uri.parse('http://127.0.0.1:8000/api/berita/specific_berita'),
+      Uri.parse('http://${ApiPoint.BASE_URL}/api/berita/specific_berita'),
       body: {"id_kategori": idKategori});
 
   if (response.statusCode == 200) {
@@ -72,7 +73,7 @@ Future<List<Berita>> fetchBeritaKustom(String idKategori) async {
 Future<List<Berita>> fetchBeritaCustom(String KategoriBerita) async {
   final response = await http.post(
       Uri.parse(
-        'http://127.0.0.1:8000/api/berita/specific_berita',
+        'http://${ApiPoint.BASE_URL}/api/berita/specific_berita',
       ),
       body: {"id_kategori": KategoriBerita});
   if (response.statusCode == 200) {
@@ -86,8 +87,8 @@ Future<List<Berita>> fetchBeritaCustom(String KategoriBerita) async {
 }
 
 Future<List<Berita>> fetchBerita() async {
-  final response =
-      await http.get(Uri.parse('http://127.0.0.1:8000/api/berita/get_berita'));
+  final response = await http
+      .get(Uri.parse('http://${ApiPoint.BASE_URL}/api/berita/get_berita'));
 
   if (response.statusCode == 200) {
     final jsonData = json.decode(response.body);

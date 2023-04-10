@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:sidokare_mobile_app/const/const.dart';
 
 class HttpStatefull {
   int? code;
@@ -23,7 +24,7 @@ class HttpStatefull {
       String nomor_telepon,
       String kode_otp,
       String nama_lengkap) async {
-    Uri url = Uri.parse("http://127.0.0.1:8000/api/akun/register");
+    Uri url = Uri.parse("http://${ApiPoint.BASE_URL}/api/akun/register");
     var HasilResponse = await http.post(url, body: {
       "email": email,
       "username": username,
@@ -38,7 +39,7 @@ class HttpStatefull {
   }
 
   static Future<HttpStatefull> loginAkun(String email, String Password) async {
-    Uri url = Uri.parse("http://127.0.0.1:8000/api/akun/login");
+    Uri url = Uri.parse("http://${ApiPoint.BASE_URL}/api/akun/login");
     var HasilResponse =
         await http.post(url, body: {'email': email, 'password': Password});
     var data = json.decode(HasilResponse.body);
@@ -50,7 +51,7 @@ class HttpStatefull {
   }
 
   static Future<HttpStatefull> ubahSandi(String email, String password) async {
-    Uri url = Uri.parse("http://127.0.0.1:8000/api/akun/updatePassword");
+    Uri url = Uri.parse("http://${ApiPoint.BASE_URL}/api/akun/updatePassword");
     var HasilResponse =
         await http.post(url, body: {'email': email, "password": password});
     var data = json.decode(HasilResponse.body);
@@ -58,7 +59,7 @@ class HttpStatefull {
   }
 
   static Future<HttpStatefull> verifikasiAkun(String email) async {
-    Uri url = Uri.parse("http://127.0.0.1:8000/api/akun/verifikasi_akun");
+    Uri url = Uri.parse("http://${ApiPoint.BASE_URL}/api/akun/verifikasi_akun");
     var HasilResponse = await http.post(url, body: {'email': email});
     var data = json.decode(HasilResponse.body);
     return HttpStatefull(code: data['code'], message: data['message']);
