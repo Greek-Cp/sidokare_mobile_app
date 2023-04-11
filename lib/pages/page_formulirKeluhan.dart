@@ -2,22 +2,22 @@ import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
-
-import 'package:sidokare_mobile_app/component/Toast.dart';
-import 'package:sidokare_mobile_app/component/text_description.dart';
-import 'package:sidokare_mobile_app/component/text_field.dart';
-import 'package:sidokare_mobile_app/const/list_color.dart';
 import 'package:sidokare_mobile_app/const/size.dart';
-import 'package:sidokare_mobile_app/model/response/pengajuan.dart';
 
-class PageFormulirPengajuanPPID extends StatefulWidget {
-  static String routeName = "/formulir_pengajuan";
+import '../component/text_field.dart';
+import '../const/list_color.dart';
+import 'package:intl/intl.dart';
+
+class PageFormulirPengajuanKeluhan extends StatefulWidget {
+  static String routeName = "/formulir_pengajuanKeluhan";
+
   @override
-  State<PageFormulirPengajuanPPID> createState() =>
-      _PageFormulirPengajuanState();
+  State<PageFormulirPengajuanKeluhan> createState() =>
+      _PageFormulirPengajuanKeluhanState();
 }
 
-class _PageFormulirPengajuanState extends State<PageFormulirPengajuanPPID> {
+class _PageFormulirPengajuanKeluhanState
+    extends State<PageFormulirPengajuanKeluhan> {
   TextEditingController? textEditingControllerNamaLengkap =
       TextEditingController();
   TextEditingController? textEditingControllerNIK = TextEditingController();
@@ -27,16 +27,28 @@ class _PageFormulirPengajuanState extends State<PageFormulirPengajuanPPID> {
       TextEditingController();
   TextEditingController? textEditingControllerAsalPelapor =
       TextEditingController();
+  TextEditingController? controllerDate = TextEditingController();
 
-  final _formKey = GlobalKey<FormState>();
-  final List<String> listDusun = ['Sidokare', 'SidoMaju', 'SidoSido'];
-  final List<String> listPPID = ['PPID keren', 'PPID PDIP', 'PPID TEST'];
-  static String? randomValuePPID = "PPID keren";
-  static String? randomValueDusun = "Sidokare";
+  DateTime selectedDate = DateTime.now();
 
   @override
+  void initState() {
+    super.initState();
+    // selectedDate = DateTime.now();
+  }
+
+  final List<String> listDusun = ['Sidokare', 'SidoMaju', 'SidoSido'];
+  final List<String> listKategoriLaporan = [
+    'Laporan Hamil',
+    'Laporan Pelecehan Seksual',
+    'Laporan Kebakaran'
+  ];
+  static String? randomValueKategoriLaporan = "Laporan Hamil";
+  static String? randomValueKejadianDusun = "Sidokare";
+
+  final _formKey = GlobalKey<FormState>();
+  @override
   Widget build(BuildContext context) {
-    final idAkunnn = ModalRoute.of(context)?.settings.arguments as int;
     // TODO: implement build
     return ScreenUtilInit(
       builder: (context, child) {
@@ -59,7 +71,7 @@ class _PageFormulirPengajuanState extends State<PageFormulirPengajuanPPID> {
                 pinned: true,
                 flexibleSpace: FlexibleSpaceBar(
                   title: Text(
-                    "Formulir Pengajuan PPID",
+                    "Formulir Pengajuan Keluhan",
                     textAlign: TextAlign.center,
                     style: TextStyle(fontSize: size.HeaderText.sp),
                   ),
@@ -79,7 +91,7 @@ class _PageFormulirPengajuanState extends State<PageFormulirPengajuanPPID> {
                         child: TextFieldImport.TextForm(
                             text_kontrol: textEditingControllerNamaLengkap,
                             hintText: "Masukkan Nama Anda",
-                            labelName: "Nama",
+                            labelName: "Nama Lengkap",
                             pesanValidasi: "Nama")),
                   ),
                   Padding(
@@ -87,7 +99,7 @@ class _PageFormulirPengajuanState extends State<PageFormulirPengajuanPPID> {
                     child: SizedBox(
                         child: TextFieldImport.TextForm(
                             text_kontrol: textEditingControllerNIK,
-                            hintText: "Masukan Nik Anda",
+                            hintText: "Masukan NIK Anda",
                             labelName: "NIK",
                             pesanValidasi: "NIK")),
                   ),
@@ -109,19 +121,21 @@ class _PageFormulirPengajuanState extends State<PageFormulirPengajuanPPID> {
                             labelName: "Isi Laporan",
                             pesanValidasi: "Isi Laporan")),
                   ),
-                  customDropDownDusun(
+                  customDropDownLokasiKejadian(
                       listItem: listDusun,
-                      namaLabel: "Asal Pelapor",
+                      namaLabel: "Lokasi Kejadian",
                       hintText: "Pilih Dusun",
-                      randomlabel: randomValueDusun,
-                      errorKosong: "Dusun"),
-                  customDropDownPPID(
-                    listItem: listPPID,
-                    namaLabel: "Kategori PPID",
+                      errorKosong: "Kejadian",
+                      randomlabel: randomValueKejadianDusun),
+                  customDropDownKategoriLaporan(
+                    listItem: listKategoriLaporan,
+                    namaLabel: "Kategori Laporan",
                     hintText: "Pilih Kategori",
-                    errorKosong: "PPID",
-                    randomlabel: randomValuePPID,
+                    errorKosong: "Laporan",
+                    randomlabel: randomValueKategoriLaporan,
                   ),
+                  PilihTanggal(
+                      "Tanggal Kejadian", "Kejadian", controllerDate!, "tai"),
                   SizedBox(
                     height: 10.h,
                   ),
@@ -131,34 +145,15 @@ class _PageFormulirPengajuanState extends State<PageFormulirPengajuanPPID> {
                         style: ElevatedButton.styleFrom(
                             backgroundColor: ListColor.warnaBiruSidoKare,
                             minimumSize: Size.fromHeight(55.h)),
-                        onPressed: () => {
-                              print("Jenis PPID == ${randomValuePPID}"),
-                              print("Dusun Terpilih == ${randomValueDusun}"),
-                              print("IdAkunnyaa == ${idAkunnn.toString()}"),
-                              if (_formKey.currentState!.validate())
-                                {
-                                  PengajuanPPID.InsertDataPPID(
-                                          idAkunnn.toString(),
-                                          textEditingControllerJudulLaporan!
-                                              .text,
-                                          textEditingControllerIsiLaporan!.text,
-                                          randomValueDusun.toString(),
-                                          randomValuePPID.toString(),
-                                          "banh")
-                                      .then((value) => {
-                                            if (value.code == 200)
-                                              {print("Kenek paleng")}
-                                            else
-                                              {print("yahaha gagal")}
-                                          })
-                                }
-                              else
-                                {}
-                            },
+                        onPressed: () {
+                          String pp =
+                              DateFormat('yyyy-MM-dd').format(selectedDate);
+                          print("tanggal nya adalah ${pp}");
+                        },
                         child: Padding(
                           padding: const EdgeInsets.all(10.0),
                           child: Text(
-                            "Ajukan PPID",
+                            "Ajukan Keluhan",
                             style: TextStyle(fontSize: size.textButton.sp),
                           ),
                         )),
@@ -175,7 +170,75 @@ class _PageFormulirPengajuanState extends State<PageFormulirPengajuanPPID> {
     );
   }
 
-  Widget customDropDownPPID(
+  Widget PilihTanggal(String labelName, String pesanValidasi,
+      TextEditingController text_kontrol, String hintText) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(
+            height: 10.h,
+          ),
+          Text(
+            "${labelName}",
+            style: GoogleFonts.dmSans(
+                textStyle:
+                    TextStyle(fontWeight: FontWeight.normal, fontSize: 13.sp)),
+            textAlign: TextAlign.start,
+          ),
+          SizedBox(
+            height: 5.h,
+          ),
+          TextFormField(
+            validator: (value) {
+              if (value!.isEmpty || value == null) {
+                return "${pesanValidasi} Tidak Boleh Kosong";
+              }
+            },
+            controller: text_kontrol,
+            readOnly: true,
+            style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.normal),
+            decoration: InputDecoration(
+                suffixIcon: GestureDetector(
+                  onTap: () async {
+                    final DateTime? picked = await showDatePicker(
+                        context: context,
+                        initialDate: selectedDate,
+                        firstDate: DateTime(2000),
+                        lastDate: DateTime(2025));
+                    if (picked != null && picked != selectedDate) {
+                      setState(() {
+                        selectedDate = picked;
+                        text_kontrol.text =
+                            DateFormat('yyyy-MM-dd').format(selectedDate);
+                      });
+                    }
+                  },
+                  child: Icon(Icons.calendar_today),
+                ),
+                hintText: hintText,
+                contentPadding: EdgeInsets.all(15),
+                enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                        width: 1, color: ListColor.warnaBiruSidoKare),
+                    borderRadius: BorderRadius.all(Radius.circular(10))),
+                focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                        width: 2, color: ListColor.warnaBiruSidoKare),
+                    borderRadius: BorderRadius.all(Radius.circular(10))),
+                border: OutlineInputBorder(
+                    borderSide: BorderSide(
+                        width: 1, color: ListColor.warnaBiruSidoKare),
+                    borderRadius: BorderRadius.all(Radius.circular(10)))),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget customDropDownKategoriLaporan(
       {List<String>? listItem,
       String? namaLabel,
       String? hintText,
@@ -204,7 +267,9 @@ class _PageFormulirPengajuanState extends State<PageFormulirPengajuanPPID> {
               isDense: true,
               contentPadding:
                   EdgeInsets.only(bottom: 1.0.h, top: 1.0.h, right: 5.0.w),
-
+              enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: BorderSide(color: ListColor.warnaBiruSidoKare)),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
               ),
@@ -235,7 +300,7 @@ class _PageFormulirPengajuanState extends State<PageFormulirPengajuanPPID> {
             },
             onChanged: (value) {
               setState(() {
-                randomValuePPID = value;
+                randomValueKategoriLaporan = value;
               });
             },
             buttonStyleData: ButtonStyleData(
@@ -260,7 +325,7 @@ class _PageFormulirPengajuanState extends State<PageFormulirPengajuanPPID> {
     );
   }
 
-  Widget customDropDownDusun(
+  Widget customDropDownLokasiKejadian(
       {List<String>? listItem,
       String? namaLabel,
       String? hintText,
@@ -289,6 +354,9 @@ class _PageFormulirPengajuanState extends State<PageFormulirPengajuanPPID> {
               isDense: true,
               contentPadding:
                   EdgeInsets.only(bottom: 1.0.h, top: 1.0.h, right: 5.0.w),
+              enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: BorderSide(color: ListColor.warnaBiruSidoKare)),
 
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
@@ -320,7 +388,7 @@ class _PageFormulirPengajuanState extends State<PageFormulirPengajuanPPID> {
             },
             onChanged: (value) {
               setState(() {
-                randomValueDusun = value;
+                randomValueKejadianDusun = value;
               });
             },
             buttonStyleData: ButtonStyleData(

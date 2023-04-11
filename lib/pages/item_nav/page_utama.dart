@@ -108,64 +108,64 @@ class _PageUtamaState extends State<PageUtama> {
     return ScreenUtilInit(
       builder: (context, child) {
         return Scaffold(
-          body: SafeArea(
-            maintainBottomViewPadding: true,
-            child: SingleChildScrollView(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  SizedBox(
-                    height: 40.h,
-                  ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20.h),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        AnimationLimiter(
-                            child: AnimationConfiguration.synchronized(
-                          duration: Duration(milliseconds: 375),
-                          child: SlideAnimation(
-                            horizontalOffset: -50.0,
-                            child: FadeInAnimation(
-                              child: ComponentTextTittle(
-                                  "Selamat Pagi ${DataDiri.nama}"),
-                            ),
+            body: SafeArea(
+          maintainBottomViewPadding: true,
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                SizedBox(
+                  height: 40.h,
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 20.h),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      AnimationLimiter(
+                          child: AnimationConfiguration.synchronized(
+                        duration: Duration(milliseconds: 375),
+                        child: SlideAnimation(
+                          horizontalOffset: -50.0,
+                          child: FadeInAnimation(
+                            child: ComponentTextTittle(
+                                "Selamat Pagi ${DataDiri.nama}"),
                           ),
-                        )),
-                        AnimationLimiter(
-                            child: AnimationConfiguration.synchronized(
-                          duration: Duration(milliseconds: 375),
-                          child: SlideAnimation(
-                            horizontalOffset: 50.0,
-                            child: FadeInAnimation(
-                              child: Container(
-                                width: 41.w,
-                                height: 41.h,
-                                child: CircleAvatar(
-                                  backgroundColor: Colors.red,
-                                ),
+                        ),
+                      )),
+                      AnimationLimiter(
+                          child: AnimationConfiguration.synchronized(
+                        duration: Duration(milliseconds: 375),
+                        child: SlideAnimation(
+                          horizontalOffset: 50.0,
+                          child: FadeInAnimation(
+                            child: Container(
+                              width: 41.w,
+                              height: 41.h,
+                              child: CircleAvatar(
+                                backgroundColor: Colors.red,
                               ),
                             ),
                           ),
-                        )),
-                      ],
-                    ),
+                        ),
+                      )),
+                    ],
                   ),
-                  AnimationLimiter(
-                      child: AnimationConfiguration.synchronized(
-                    duration: Duration(milliseconds: 375),
-                    child: SlideAnimation(
-                      verticalOffset: 50.0,
-                      child: FadeInAnimation(child: searchBar()),
-                    ),
-                  )),
-                  // searchBar(),
-                  SizedBox(
-                    height: 10.h,
+                ),
+                AnimationLimiter(
+                    child: AnimationConfiguration.synchronized(
+                  duration: Duration(milliseconds: 375),
+                  child: SlideAnimation(
+                    verticalOffset: 50.0,
+                    child: FadeInAnimation(child: searchBar()),
                   ),
                 )),
+                // searchBar(),
+                SizedBox(
+                  height: 10.h,
+                ),
+
                 // searchBar(),
                 SizedBox(
                   height: 10.h,
@@ -248,48 +248,48 @@ class _PageUtamaState extends State<PageUtama> {
                   height: 10.h,
                 ),
                 Container(
-                  margin:
-                      EdgeInsets.symmetric(horizontal: 20.h, vertical: 10.h),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      AnimationLimiter(
-                          child: AnimationConfiguration.synchronized(
-                        duration: Duration(milliseconds: 375),
-                        child: SlideAnimation(
-                          horizontalOffset: -50.0,
-                          child: FadeInAnimation(
-                              child: ComponentTextTittle("Berita Terkini")),
-                        ),
-                      )),
-                      AnimationLimiter(
-                          child: AnimationConfiguration.synchronized(
-                        duration: Duration(milliseconds: 375),
-                        child: SlideAnimation(
-                          horizontalOffset: 50.0,
-                          child: FadeInAnimation(
-                              child: ComponentTextDescription(
-                            "Lihat lainnya",
-                            teksColor: ListColor.warnaDescriptionItem,
-                          )),
-                        ),
-                      )),
-                    ],
-                  ),
-                  SizedBox(
-                      height: 300.h,
-                      child: FutureBuilder<List<Berita>>(
-                          future: listBerita,
-                          builder: (context, snapshot) {
-                            if (snapshot.connectionState ==
-                                ConnectionState.waiting) {
-                              return Container(); // menampilkan loading spinner
-                            } else if (snapshot.hasError) {
-                              return Text(
-                                  'Terjadi error: ${snapshot.error}'); // menampilkan pesan error
-                            } else {
-                              List<Berita> data = snapshot
-                                  .data!; // mengambil data dari snapshot
+                    margin:
+                        EdgeInsets.symmetric(horizontal: 20.h, vertical: 10.h),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        AnimationLimiter(
+                            child: AnimationConfiguration.synchronized(
+                          duration: Duration(milliseconds: 375),
+                          child: SlideAnimation(
+                            horizontalOffset: -50.0,
+                            child: FadeInAnimation(
+                                child: ComponentTextTittle("Berita Terkini")),
+                          ),
+                        )),
+                        AnimationLimiter(
+                            child: AnimationConfiguration.synchronized(
+                          duration: Duration(milliseconds: 375),
+                          child: SlideAnimation(
+                            horizontalOffset: 50.0,
+                            child: FadeInAnimation(
+                                child: ComponentTextDescription(
+                              "Lihat lainnya",
+                              teksColor: ListColor.warnaDescriptionItem,
+                            )),
+                          ),
+                        )),
+                      ],
+                    )),
+                SizedBox(
+                    height: 300.h,
+                    child: FutureBuilder<List<Berita>>(
+                        future: listBerita,
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return Container(); // menampilkan loading spinner
+                          } else if (snapshot.hasError) {
+                            return Text(
+                                'Terjadi error: ${snapshot.error}'); // menampilkan pesan error
+                          } else {
+                            List<Berita> data =
+                                snapshot.data!; // mengambil data dari snapshot
 
                             return AnimationLimiter(
                               child: ListView.builder(
@@ -300,7 +300,7 @@ class _PageUtamaState extends State<PageUtama> {
                                 itemBuilder: (context, index) {
                                   return AnimationConfiguration.staggeredList(
                                       position: index,
-                                      duration: 
+                                      duration:
                                           const Duration(milliseconds: 1375),
                                       child: SlideAnimation(
                                           horizontalOffset: 550.0,
@@ -320,7 +320,7 @@ class _PageUtamaState extends State<PageUtama> {
               ],
             ),
           ),
-        );
+        ));
       },
     );
   }

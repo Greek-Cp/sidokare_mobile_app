@@ -57,7 +57,7 @@ Future<List<Berita>> fetchBeritaKustom(String idKategori) async {
       body: {"id_kategori": idKategori});
 
   if (response.statusCode == 200) {
-    print("data = " + response.body);
+    // print("data = " + response.body);
     final data = jsonDecode(response.body)['data'];
 
     List<Berita> beritas = [];
@@ -70,21 +70,21 @@ Future<List<Berita>> fetchBeritaKustom(String idKategori) async {
   }
 }
 
-Future<List<Berita>> fetchBeritaCustom(String KategoriBerita) async {
-  final response = await http.post(
-      Uri.parse(
-        'http://${ApiPoint.BASE_URL}/api/berita/specific_berita',
-      ),
-      body: {"id_kategori": KategoriBerita});
-  if (response.statusCode == 200) {
-    final List<dynamic> data = jsonDecode(response.body)['data'];
-    final List<Berita> beritaList =
-        data.map((e) => Berita.fromJson(e)).toList();
-    return beritaList;
-  } else {
-    throw Exception('Failed to fetch berita');
-  }
-}
+// Future<List<Berita>> fetchBeritaCustom(String KategoriBerita) async {
+//   final response = await http.post(
+//       Uri.parse(
+//         'http://${ApiPoint.BASE_URL}/api/berita/specific_berita',
+//       ),
+//       body: {"id_kategori": KategoriBerita});
+//   if (response.statusCode == 200) {
+//     final List<dynamic> data = jsonDecode(response.body)['data'];
+//     final List<Berita> beritaList =
+//         data.map((e) => Berita.fromJson(e)).toList();
+//     return beritaList;
+//   } else {
+//     throw Exception('Failed to fetch berita');
+//   }
+// }
 
 Future<List<Berita>> fetchBerita() async {
   final response = await http

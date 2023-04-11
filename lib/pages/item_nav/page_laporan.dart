@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:provider/provider.dart';
 import 'package:sidokare_mobile_app/const/list_color.dart';
+import 'package:sidokare_mobile_app/pages/page_formulirKeluhan.dart';
+import 'package:sidokare_mobile_app/pages/page_formulirpengajuan.dart';
+
+import '../../provider/provider_account.dart';
 
 class PageLaporan extends StatefulWidget {
   @override
@@ -45,6 +50,13 @@ class _PageLaporanState extends State<PageLaporan> {
   Widget build(BuildContext context) {
     screenHeight = MediaQuery.of(context).size.height;
     screenWidth = MediaQuery.of(context).size.width;
+    final id = ModalRoute.of(context)?.settings.arguments as int;
+
+    final DataDiri = Provider.of<ProviderAccount>(context)
+        .GetDataDiri
+        .firstWhere((idData) => idData.id_akun == id);
+
+    print("Idnya adalah = ${id} dengan nama == ${DataDiri.nama}");
     // TODO: implement build
     return Scaffold(
       body: Center(
@@ -64,14 +76,14 @@ class _PageLaporanState extends State<PageLaporan> {
                           child: SlideAnimation(
                               duration: Duration(milliseconds: 800),
                               horizontalOffset: 350.0,
-                              child: _MenuPpid(index)),
+                              child: _MenuPpid(index, id)),
                         )
                       : FadeInAnimation(
                           duration: Duration(milliseconds: 300),
                           child: SlideAnimation(
                               duration: Duration(milliseconds: 800),
                               horizontalOffset: -350.0,
-                              child: _MenuPpid(index)),
+                              child: _MenuPpid(index, id)),
                         ));
             },
           ),
@@ -80,11 +92,27 @@ class _PageLaporanState extends State<PageLaporan> {
     );
   }
 
-  Widget _MenuPpid(int index) {
+  Widget _MenuPpid(int index, int id) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 15),
       child: InkWell(
-        onTap: () => {},
+        onTap: () => {
+          if (index == 0)
+            {
+              Navigator.pushNamed(
+                  context, PageFormulirPengajuanPPID.routeName.toString(),
+                  arguments: id)
+            }
+          else if (index == 1)
+            {
+              Navigator.pushNamed(
+                  context, PageFormulirPengajuanKeluhan.routeName.toString(),
+                  arguments: id),
+              print("Page Kedua Disini"),
+            }
+          else
+            {print("Page Ketiga disini")}
+        },
         highlightColor: Colors.blue.withOpacity(0.4),
         splashColor: Colors.white.withOpacity(0.5),
         child: Container(
