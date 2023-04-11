@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:sidokare_mobile_app/const/list_color.dart';
 
 class PageLaporan extends StatefulWidget {
@@ -54,7 +55,24 @@ class _PageLaporanState extends State<PageLaporan> {
             shrinkWrap: true,
             itemCount: DescHead.length,
             itemBuilder: (context, index) {
-              return _MenuPpid(index);
+              return AnimationConfiguration.staggeredList(
+                  position: index,
+                  duration: Duration(milliseconds: 375),
+                  child: index % 2 == 0
+                      ? FadeInAnimation(
+                          duration: Duration(milliseconds: 300),
+                          child: SlideAnimation(
+                              duration: Duration(milliseconds: 800),
+                              horizontalOffset: 350.0,
+                              child: _MenuPpid(index)),
+                        )
+                      : FadeInAnimation(
+                          duration: Duration(milliseconds: 300),
+                          child: SlideAnimation(
+                              duration: Duration(milliseconds: 800),
+                              horizontalOffset: -350.0,
+                              child: _MenuPpid(index)),
+                        ));
             },
           ),
         ),
@@ -69,11 +87,7 @@ class _PageLaporanState extends State<PageLaporan> {
         onTap: () => {},
         highlightColor: Colors.blue.withOpacity(0.4),
         splashColor: Colors.white.withOpacity(0.5),
-        child: AnimatedContainer(
-          curve: Curves.easeInOut,
-          duration: Duration(milliseconds: 300 + (index * 200)),
-          transform:
-              Matrix4.translationValues(startAnimation ? 0 : screenWidth, 0, 0),
+        child: Container(
           width: screenWidth,
           height: 180,
           decoration: BoxDecoration(

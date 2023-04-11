@@ -50,8 +50,8 @@ class _PagePemerintahanDesaState extends State<PagePemerintahanDesa> {
                         return AnimationConfiguration.staggeredList(
                             position: index,
                             duration: const Duration(milliseconds: 375),
-                            child: SlideAnimation(
-                                verticalOffset: 350.0,
+                            child: FadeInAnimation(
+
                                 // delay: Duration(milliseconds: 400),
                                 duration: Duration(milliseconds: 800),
                                 child: FadeInAnimation(
@@ -72,7 +72,27 @@ class _PagePemerintahanDesaState extends State<PagePemerintahanDesa> {
                                                     data[index].unggahFileLain
                                               });
                                         },
-                                        child: _cardInformasi(data[index])))));
+                                        child: index % 2 == 0
+                                            ? FadeInAnimation(
+                                                duration:
+                                                    Duration(milliseconds: 300),
+                                                child: SlideAnimation(
+                                                    duration: Duration(
+                                                        milliseconds: 800),
+                                                    horizontalOffset: 350.0,
+                                                    child: _cardInformasi(
+                                                        data[index])),
+                                              )
+                                            : FadeInAnimation(
+                                                duration:
+                                                    Duration(milliseconds: 300),
+                                                child: SlideAnimation(
+                                                    duration: Duration(
+                                                        milliseconds: 800),
+                                                    horizontalOffset: -350.0,
+                                                    child: _cardInformasi(
+                                                        data[index])),
+                                              )))));
                       }, // membangun widget cardBeritaTerkini dengan data yang ada di List<Berita>
                     ),
                   );
