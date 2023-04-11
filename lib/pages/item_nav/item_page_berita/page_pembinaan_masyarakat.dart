@@ -26,7 +26,7 @@ class _PagePembinaanMasyarakatState extends State<PagePembinaanMasyarakat> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    listBerita = fetchBeritaKustom("ktg_berita06");
+    listBerita = fetchBeritaKustom("ktg_berita07");
     return Scaffold(
       body: Padding(
           padding: const EdgeInsets.all(0.0),

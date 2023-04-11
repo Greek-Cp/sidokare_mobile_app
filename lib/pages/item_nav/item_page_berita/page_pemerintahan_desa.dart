@@ -26,7 +26,7 @@ class _PagePemerintahanDesaState extends State<PagePemerintahanDesa> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    listBerita = fetchBeritaKustom("ktg_berita01");
+    listBerita = fetchBeritaKustom("ktg_berita03");
     return Scaffold(
       body: Padding(
           padding: const EdgeInsets.all(0.0),

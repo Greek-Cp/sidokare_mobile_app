@@ -94,6 +94,7 @@ class _PageUtamaState extends State<PageUtama> {
     );
   }
 
+  List<String> listPengajuan = ["PPID", "Keluhan", "Aspirasi", "Status"];
   @override
   Widget build(BuildContext context) {
     screenHeight = MediaQuery.of(context).size.height;
@@ -164,12 +165,78 @@ class _PageUtamaState extends State<PageUtama> {
                 ),
                 AnimationLimiter(
                     child: AnimationConfiguration.synchronized(
-                  duration: Duration(milliseconds: 500),
+                  duration: Duration(milliseconds: 500 * 2),
                   child: ScaleAnimation(
                     child: FadeInAnimation(child: CardJumlahLaporan()),
                   ),
                 )),
                 // CardJumlahLaporan(),
+                Padding(
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 20.h, vertical: 10.h),
+                  child: Container(
+                      child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      AnimationLimiter(
+                          child: AnimationConfiguration.synchronized(
+                        duration: Duration(milliseconds: 375),
+                        child: SlideAnimation(
+                          horizontalOffset: -50.0,
+                          child: FadeInAnimation(
+                              child: ComponentTextTittle("Pengajuan")),
+                        ),
+                      )),
+                    ],
+                  )),
+                ),
+                Padding(
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
+                  child: SizedBox(
+                      height: 100.h,
+                      child: ListView(
+                        scrollDirection: Axis.horizontal,
+                        children: [
+                          AnimationLimiter(
+                              child: AnimationConfiguration.synchronized(
+                            duration: Duration(milliseconds: 375),
+                            child: SlideAnimation(
+                              horizontalOffset: -50.0,
+                              child: FadeInAnimation(
+                                  child: buttonPengajuan("PPID", "a")),
+                            ),
+                          )),
+                          AnimationLimiter(
+                              child: AnimationConfiguration.synchronized(
+                            duration: Duration(milliseconds: 375 * 2),
+                            child: SlideAnimation(
+                              horizontalOffset: -50.0,
+                              child: FadeInAnimation(
+                                  child: buttonPengajuan("Keluhan", "a")),
+                            ),
+                          )),
+                          AnimationLimiter(
+                              child: AnimationConfiguration.synchronized(
+                            duration: Duration(milliseconds: 375 * 3),
+                            child: SlideAnimation(
+                              horizontalOffset: -50.0,
+                              child: FadeInAnimation(
+                                  child: buttonPengajuan("Aspirasi", "a")),
+                            ),
+                          )),
+                          AnimationLimiter(
+                              child: AnimationConfiguration.synchronized(
+                            duration: Duration(milliseconds: 375 * 4),
+                            child: SlideAnimation(
+                              horizontalOffset: -50.0,
+                              child: FadeInAnimation(
+                                  child: buttonPengajuan("Status", "a")),
+                            ),
+                          )),
+                        ],
+                      )),
+                ),
                 SizedBox(
                   height: 10.h,
                 ),
@@ -228,9 +295,9 @@ class _PageUtamaState extends State<PageUtama> {
                                   return AnimationConfiguration.staggeredList(
                                       position: index,
                                       duration:
-                                          const Duration(milliseconds: 375),
+                                          const Duration(milliseconds: 1375),
                                       child: SlideAnimation(
-                                          verticalOffset: 350.0,
+                                          horizontalOffset: 550.0,
                                           // delay: Duration(milliseconds: 400),
                                           duration: Duration(milliseconds: 800),
                                           child: FadeInAnimation(
@@ -249,6 +316,35 @@ class _PageUtamaState extends State<PageUtama> {
           ),
         );
       },
+    );
+  }
+
+  Widget buttonPengajuan(String text, String image) {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 10.h),
+      child: Column(
+        children: [
+          Card(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(30.h)),
+            color: ListColor.warnaBiruSidoKare,
+            child: InkWell(
+              child: Padding(
+                padding: EdgeInsets.all(10.0.h),
+                child: Container(
+                  width: 30.w,
+                  height: 30.h,
+                  child: Icon(
+                    Icons.message,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ),
+          ),
+          ComponentTextDescription("${text}")
+        ],
+      ),
     );
   }
 

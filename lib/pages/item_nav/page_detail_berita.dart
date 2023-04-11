@@ -118,6 +118,14 @@ class _PageDetailBeritaState extends State<PageDetailBerita> {
                       height: 2,
                     ),
                   ),
+                  _CommentItemUser(),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 20.h),
+                    child: Divider(
+                      thickness: 2,
+                      height: 2,
+                    ),
+                  ),
                   _isiKomen(),
                 ]),
               )
@@ -125,6 +133,54 @@ class _PageDetailBeritaState extends State<PageDetailBerita> {
           ),
         );
       },
+    );
+  }
+
+  Widget _CommentItemUser() {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 20.h, vertical: 10.h),
+      child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              "Komentar Berita",
+              textAlign: TextAlign.left,
+              style: TextStyle(
+                  fontWeight: FontWeight.bold, fontSize: size.HeaderText.sp),
+            ),
+            SizedBox(
+              height: 10.h,
+            ),
+            Row(
+              children: [
+                SizedBox(
+                  height: 20.h,
+                  width: 20.w,
+                  child: CircleAvatar(backgroundColor: Colors.red),
+                ),
+                SizedBox(
+                  width: 10.w,
+                ),
+                Expanded(
+                  child: Text(
+                    "Deva Arie",
+                    style: TextStyle(
+                        fontSize: size.SubHeader.sp,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ),
+                Icon(Icons.menu_sharp)
+              ],
+            ),
+            SizedBox(
+              height: 10.h,
+            ),
+            Text(
+              "Jika Anda menjadi panitia dan masih bingung ingin mengadakan apa, simak 20 ide lomba 17 Agustus yang seru dan menarik berikut ini.",
+              style: TextStyle(fontSize: size.sizeDescriptionPas.sp),
+            )
+          ]),
     );
   }
 
