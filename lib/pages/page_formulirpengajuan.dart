@@ -47,7 +47,7 @@ class _PageFormulirPengajuanState extends State<PageFormulirPengajuanPPID> {
                 expandedHeight: 200,
                 leading: IconButton(
                   icon: Icon(Icons.arrow_back),
-                  onPressed: () => {},
+                  onPressed: () => {Navigator.pop(context)},
                 ),
                 snap: false,
                 floating: true,
