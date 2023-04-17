@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:intl/intl.dart';
 import 'package:sidokare_mobile_app/component/jenis_button.dart';
 import 'package:sidokare_mobile_app/component/text_field.dart';
 import 'package:sidokare_mobile_app/const/list_color.dart';
@@ -39,7 +41,12 @@ class _PageDetailBeritaState extends State<PageDetailBerita> {
     String judul_berita = receiveData?['judul'];
     String isi_berita = receiveData?['isi_berita'];
     String gambar_utama = receiveData?['gambar_utama'];
+    //convert
+
     String tanggal_publikasi = receiveData?['tanggal_publikasi'];
+    DateTime tempDate =
+        new DateFormat("yyyy-MM-dd hh:mm:ss").parse(tanggal_publikasi);
+    String HasilFormatTgl = DateFormat('yyyy-MM-dd').format(tempDate);
     String gambar_lain = receiveData?['gambar_lain'];
     screenHeight = MediaQuery.of(context).size.height;
     screenWidth = MediaQuery.of(context).size.width;
@@ -65,52 +72,43 @@ class _PageDetailBeritaState extends State<PageDetailBerita> {
                 pinned: true,
                 expandedHeight: 180.w,
                 flexibleSpace: FlexibleSpaceBar(
-                  title: AnimatedContainer(
-                    curve: Curves.easeInOut,
-                    duration: Duration(milliseconds: 1000),
-                    transform: Matrix4.translationValues(
-                        startAnimation ? 0 : screenWidth, 0, 0),
-                    width: screenWidth,
-                    child: Text(
-                      "${judul_berita}",
-                      style: TextStyle(
-                        fontSize: size.DescTextKecil.sp,
+                  title: AnimationConfiguration.synchronized(
+                    duration: Duration(milliseconds: 800),
+                    child: SlideAnimation(
+                      verticalOffset: 200,
+                      child: Text(
+                        "${judul_berita}",
+                        style: TextStyle(
+                          fontSize: size.DescTextKecil.sp,
+                        ),
                       ),
                     ),
                   ),
                   titlePadding:
                       EdgeInsetsDirectional.only(start: 50.0.h, bottom: 20.0.h),
                   collapseMode: CollapseMode.parallax,
-                  background: _Image(gambar_utama),
+                  background: AnimationConfiguration.synchronized(
+                      child: ScaleAnimation(
+                          duration: Duration(milliseconds: 700),
+                          curve: Curves.easeInOut,
+                          scale: 2.0,
+                          child: _Image(gambar_utama))),
                 ),
               ),
               SliverList(
                 delegate: SliverChildListDelegate([
-                  AnimatedContainer(
-                      curve: Curves.easeInOut,
-                      duration: Duration(milliseconds: 500),
-                      transform: Matrix4.translationValues(
-                          startAnimation ? 0 : screenWidth, 0, 0),
-                      width: screenWidth,
-                      child: _HeaderJudul(judul_berita)),
-                  AnimatedContainer(
-                    curve: Curves.easeInOut,
-                    duration: Duration(milliseconds: 1000),
-                    transform: Matrix4.translationValues(
-                        startAnimation ? 0 : screenWidth, 0, 0),
-                    width: screenWidth,
-                    child: _ListMbu(
-                        kategoriBerita: "Pemerintah Desa",
-                        tanggalBerita: tanggal_publikasi.toString(),
-                        authBerita: "Deva Arie"),
+                  AnimationConfiguration.synchronized(
+                      duration: Duration(milliseconds: 800),
+                      child: SlideAnimation(
+                          verticalOffset: -200,
+                          child: _HeaderJudul(judul_berita))),
+                  _ListMbu(
+                    kategoriBerita: "Pemerintah Desa",
                   ),
-                  AnimatedContainer(
-                      curve: Curves.easeInOut,
-                      duration: Duration(milliseconds: 1500),
-                      transform: Matrix4.translationValues(
-                          startAnimation ? 0 : screenWidth, 0, 0),
-                      width: screenWidth,
-                      child: _isiBerita(isiBerita: isi_berita)),
+                  _ListBerita(
+                      tanggalBerita: HasilFormatTgl.toString(),
+                      authBerita: "Deva Arie"),
+                  _isiBerita(isiBerita: isi_berita),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 20.h),
                     child: Divider(
@@ -204,32 +202,62 @@ class _PageDetailBeritaState extends State<PageDetailBerita> {
     );
   }
 
-  Widget _ListMbu(
-      {String? kategoriBerita, String? tanggalBerita, String? authBerita}) {
+  Widget _ListBerita({String? tanggalBerita, String? authBerita}) {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 18.h),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          AnimationConfiguration.synchronized(
+              duration: Duration(milliseconds: 700),
+              child: SlideAnimation(
+                horizontalOffset: -500,
+                child: Text(
+                  "Tanggal Publikasi : ${tanggalBerita}",
+                  style: TextStyle(fontSize: size.DescTextKecil.sp),
+                ),
+              )),
+          AnimationConfiguration.synchronized(
+              duration: Duration(milliseconds: 700),
+              child: SlideAnimation(
+                  horizontalOffset: 500,
+                  child: Row(
+                    children: [
+                      CircleAvatar(
+                        radius: 10,
+                      ),
+                      Text("${authBerita}",
+                          style: TextStyle(fontSize: size.DescTextKecil.sp))
+                    ],
+                  ))),
+        ],
+      ),
+    );
+  }
+
+  Widget _ListMbu({String? kategoriBerita}) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 17.h),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Card(
-            color: Color.fromARGB(255, 236, 241, 255),
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 10.h, vertical: 5.h),
-              child: Text(
-                "${kategoriBerita}",
-                style: TextStyle(fontSize: size.textButton.sp),
+          AnimationConfiguration.synchronized(
+            duration: Duration(milliseconds: 700),
+            child: SlideAnimation(
+              horizontalOffset: -500,
+              child: Card(
+                color: Color.fromARGB(255, 236, 241, 255),
+                child: Padding(
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 10.h, vertical: 5.h),
+                  child: Text(
+                    "${kategoriBerita}",
+                    style: TextStyle(fontSize: size.textButton.sp),
+                  ),
+                ),
               ),
             ),
           ),
-          Text(
-            "${tanggalBerita}",
-            style: TextStyle(fontSize: size.DescTextKecil.sp),
-          ),
-          CircleAvatar(
-            radius: 10,
-          ),
-          Text("${authBerita}",
-              style: TextStyle(fontSize: size.DescTextKecil.sp))
         ],
       ),
     );
@@ -238,10 +266,18 @@ class _PageDetailBeritaState extends State<PageDetailBerita> {
   Widget _isiBerita({String? isiBerita}) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-      child: Text(
-        "${isiBerita}",
-        textAlign: TextAlign.justify,
-        style: TextStyle(fontSize: size.sizeDescriptionPas.sp),
+      child: AnimationConfiguration.synchronized(
+        child: FadeInAnimation(
+          child: SlideAnimation(
+            verticalOffset: 500,
+            duration: Duration(milliseconds: 1000),
+            child: Text(
+              "${isiBerita}",
+              textAlign: TextAlign.justify,
+              style: TextStyle(fontSize: size.sizeDescriptionPas.sp),
+            ),
+          ),
+        ),
       ),
     );
   }
