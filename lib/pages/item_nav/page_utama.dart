@@ -20,7 +20,10 @@ import 'package:flutter_custom_tab_bar/transform/scale_transform.dart';
 import 'package:flutter_custom_tab_bar/transform/tab_bar_transform.dart';
 import 'package:sidokare_mobile_app/model/response/berita.dart';
 import 'package:http/http.dart' as http;
+import 'package:sidokare_mobile_app/pages/page_formulirAspirasi.dart';
+import 'package:sidokare_mobile_app/pages/page_formulirKeluhan.dart';
 import '../../provider/provider_account.dart';
+import '../page_formulirpengajuan.dart';
 import 'page_detail_berita.dart';
 
 class PageUtama extends StatefulWidget {
@@ -214,7 +217,11 @@ class _PageUtamaState extends State<PageUtama> {
                               horizontalOffset: -50.0,
                               child: FadeInAnimation(
                                   child: buttonPengajuan(
-                                      "PPID", Icons.assignment)),
+                                      "PPID",
+                                      Icons.assignment,
+                                      id,
+                                      PageFormulirPengajuanPPID.routeName
+                                          .toString())),
                             ),
                           )),
                           AnimationLimiter(
@@ -224,7 +231,11 @@ class _PageUtamaState extends State<PageUtama> {
                               horizontalOffset: -50.0,
                               child: FadeInAnimation(
                                   child: buttonPengajuan(
-                                      "Keluhan", Icons.analytics)),
+                                      "Keluhan",
+                                      Icons.analytics,
+                                      id,
+                                      PageFormulirPengajuanKeluhan.routeName
+                                          .toString())),
                             ),
                           )),
                           AnimationLimiter(
@@ -234,7 +245,11 @@ class _PageUtamaState extends State<PageUtama> {
                               horizontalOffset: -50.0,
                               child: FadeInAnimation(
                                   child: buttonPengajuan(
-                                      "Aspirasi", Icons.library_books_rounded)),
+                                      "Aspirasi",
+                                      Icons.library_books_rounded,
+                                      id,
+                                      PageFormulirAspirasi.routeName
+                                          .toString())),
                             ),
                           )),
                           // AnimationLimiter(
@@ -339,7 +354,7 @@ class _PageUtamaState extends State<PageUtama> {
     );
   }
 
-  Widget buttonPengajuan(String text, IconData data) {
+  Widget buttonPengajuan(String text, IconData data, int id, String Route) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 10.h),
       child: Column(
@@ -349,6 +364,9 @@ class _PageUtamaState extends State<PageUtama> {
                 borderRadius: BorderRadius.circular(30.h)),
             color: ListColor.warnaBiruSidoKare,
             child: InkWell(
+              onTap: () {
+                Navigator.pushNamed(context, Route, arguments: id);
+              },
               child: Padding(
                 padding: EdgeInsets.all(10.0.h),
                 child: Container(

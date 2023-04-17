@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -12,7 +14,6 @@ class PengajuanPPID {
   String? isiLaporan;
   String? asalLaporan;
   String? kategoriPPID;
-  String? File;
 
   PengajuanPPID({
     this.code,
@@ -21,12 +22,12 @@ class PengajuanPPID {
   });
 
   static Future<PengajuanPPID> InsertDataPPID(
-      String idAkun,
-      String JudulLaporan,
-      String isiLaporan,
-      String asalLaporan,
-      String kategoriPPID,
-      String File) async {
+      {String? idAkun,
+      String? JudulLaporan,
+      String? isiLaporan,
+      String? asalLaporan,
+      String? kategoriPPID,
+      String? File}) async {
     Uri url = Uri.parse("http://${ApiPoint.BASE_URL}/api/pengajuan/ppid");
     var HasilResponse = await http.post(url, body: {
       "id_akun": idAkun,
@@ -39,5 +40,20 @@ class PengajuanPPID {
 
     var dataa = json.decode(HasilResponse.body);
     return PengajuanPPID(code: dataa['code'], message: dataa['message']);
+  }
+
+  static Future<void> uploadFilePPID(File file) async {
+    var uri =
+        Uri.parse('http://${ApiPoint.BASE_URL}/api/pengajuan/uploadfileppid');
+    var request = http.MultipartRequest('POST', uri)
+      ..files.add(await http.MultipartFile.fromPath('file', file.path));
+
+    var response = await request.send();
+
+    if (response.statusCode == 200) {
+      print('File uploaded successfully');
+    } else {
+      print('Error uploading file: ${response.reasonPhrase}');
+    }
   }
 }

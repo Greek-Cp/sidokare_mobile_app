@@ -1,7 +1,11 @@
+import 'dart:io';
+
 import 'package:dropdown_button2/dropdown_button2.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:image_picker/image_picker.dart';
 
 import 'package:sidokare_mobile_app/component/Toast.dart';
 import 'package:sidokare_mobile_app/component/text_description.dart';
@@ -20,6 +24,7 @@ class PageFormulirPengajuanPPID extends StatefulWidget {
 class _PageFormulirPengajuanState extends State<PageFormulirPengajuanPPID> {
   TextEditingController? textEditingControllerNamaLengkap =
       TextEditingController();
+  TextEditingController? fileUp = TextEditingController();
   TextEditingController? textEditingControllerNIK = TextEditingController();
   TextEditingController? textEditingControllerJudulLaporan =
       TextEditingController();
@@ -29,6 +34,7 @@ class _PageFormulirPengajuanState extends State<PageFormulirPengajuanPPID> {
       TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
+  static File? _file;
   final List<String> listDusun = ['Sidokare', 'SidoMaju', 'SidoSido'];
   final List<String> listPPID = ['PPID keren', 'PPID PDIP', 'PPID TEST'];
   static String? randomValuePPID = "PPID keren";
@@ -122,6 +128,8 @@ class _PageFormulirPengajuanState extends State<PageFormulirPengajuanPPID> {
                     errorKosong: "PPID",
                     randomlabel: randomValuePPID,
                   ),
+                  UpfilePendukung("Upload File Pendukung", "gatau", fileUp!,
+                      "Silakan Upload File"),
                   SizedBox(
                     height: 10.h,
                   ),
@@ -137,17 +145,34 @@ class _PageFormulirPengajuanState extends State<PageFormulirPengajuanPPID> {
                               print("IdAkunnyaa == ${idAkunnn.toString()}"),
                               if (_formKey.currentState!.validate())
                                 {
+                                  print(
+                                      "Tes file :: " + fileUp!.text.toString()),
                                   PengajuanPPID.InsertDataPPID(
-                                          idAkunnn.toString(),
-                                          textEditingControllerJudulLaporan!
-                                              .text,
-                                          textEditingControllerIsiLaporan!.text,
-                                          randomValueDusun.toString(),
-                                          randomValuePPID.toString(),
-                                          "banh")
+                                          idAkun: idAkunnn.toString(),
+                                          JudulLaporan:
+                                              textEditingControllerJudulLaporan!
+                                                  .text,
+                                          isiLaporan:
+                                              textEditingControllerIsiLaporan!
+                                                  .text,
+                                          asalLaporan:
+                                              randomValueDusun.toString(),
+                                          kategoriPPID:
+                                              randomValuePPID.toString(),
+                                          File: fileUp!.text.toString())
                                       .then((value) => {
                                             if (value.code == 200)
-                                              {print("Kenek paleng")}
+                                              {
+                                                print("Kenek paleng"),
+                                                if (fileUp!.text.toString() !=
+                                                    "")
+                                                  {
+                                                    PengajuanPPID
+                                                            .uploadFilePPID(
+                                                                _file!)
+                                                        .then((value) => {}),
+                                                  },
+                                              }
                                             else
                                               {print("yahaha gagal")}
                                           })
@@ -172,6 +197,84 @@ class _PageFormulirPengajuanState extends State<PageFormulirPengajuanPPID> {
           ),
         );
       },
+    );
+  }
+
+  Future<void> _pickFile() async {
+    // final picker = ImagePicker();
+    // final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+
+    // if (pickedFile != null) {
+    //   setState(() {
+    //     _file = File(pickedFile.path);
+
+    //     fileUp?.text = pickedFile.path;
+    //   });
+    // }
+  }
+
+  Widget UpfilePendukung(String labelName, String pesanValidasi,
+      TextEditingController text_kontrol, String hintText) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(
+            height: 10.h,
+          ),
+          Text(
+            "${labelName}",
+            style: GoogleFonts.dmSans(
+                textStyle:
+                    TextStyle(fontWeight: FontWeight.normal, fontSize: 13.sp)),
+            textAlign: TextAlign.start,
+          ),
+          SizedBox(
+            height: 5.h,
+          ),
+          TextFormField(
+            // validator: (value) {
+            //   if (value!.isEmpty || value == null) {
+            //     return "${pesanValidasi} Tidak Boleh Kosong";
+            //   }
+            // },
+            controller: text_kontrol,
+            readOnly: true,
+            style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.normal),
+            decoration: InputDecoration(
+                suffixIcon: GestureDetector(
+                  onTap: () async {
+                    // _pickFile();
+                    final FilePickerResult? result =
+                        await FilePicker.platform.pickFiles();
+
+                    if (result != null) {
+                      _file = File(result.files.single.path!);
+                      PlatformFile namaFile = result.files.first;
+                      fileUp?.text = namaFile.name.toString();
+                    }
+                  },
+                  child: Icon(Icons.file_upload),
+                ),
+                hintText: hintText,
+                contentPadding: EdgeInsets.all(15),
+                enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                        width: 1, color: ListColor.warnaBiruSidoKare),
+                    borderRadius: BorderRadius.all(Radius.circular(10))),
+                focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                        width: 2, color: ListColor.warnaBiruSidoKare),
+                    borderRadius: BorderRadius.all(Radius.circular(10))),
+                border: OutlineInputBorder(
+                    borderSide: BorderSide(
+                        width: 1, color: ListColor.warnaBiruSidoKare),
+                    borderRadius: BorderRadius.all(Radius.circular(10)))),
+          ),
+        ],
+      ),
     );
   }
 

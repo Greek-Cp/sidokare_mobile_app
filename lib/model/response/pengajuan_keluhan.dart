@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -33,5 +35,20 @@ class PengajuhanKeluhan {
 
     var data = json.decode(HasilResponse.body);
     return PengajuhanKeluhan(code: data['code'], message: data['message']);
+  }
+
+  static Future<void> uploadFileKeluhan(File file) async {
+    var uri = Uri.parse(
+        'http://${ApiPoint.BASE_URL}/api/pengajuan/uploadfilekeluhan');
+    var request = http.MultipartRequest('POST', uri)
+      ..files.add(await http.MultipartFile.fromPath('file', file.path));
+
+    var response = await request.send();
+
+    if (response.statusCode == 200) {
+      print('File uploaded successfully || Keluhan');
+    } else {
+      print('Error uploading file: ${response.reasonPhrase}');
+    }
   }
 }
