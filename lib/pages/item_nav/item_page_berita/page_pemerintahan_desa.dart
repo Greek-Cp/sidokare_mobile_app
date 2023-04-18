@@ -47,52 +47,49 @@ class _PagePemerintahanDesaState extends State<PagePemerintahanDesa> {
                           .length, // menggunakan panjang data dari List<Berita> yang telah diambil dari snapshot
                       shrinkWrap: true,
                       itemBuilder: (context, index) {
-                        return AnimationConfiguration.staggeredList(
-                            position: index,
-                            duration: const Duration(milliseconds: 375),
-                            child: FadeInAnimation(
+                        return GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).pushNamed(
+                                PageDetailBerita.routeName,
+                                arguments: {
+                                  "judul": data[index].judulBerita,
+                                  "isi_berita": data[index].isiBerita,
+                                  "gambar_utama": data[index].foto,
+                                  "tanggal_publikasi":
+                                      data[index].tanggalPublikasi,
+                                  "gambar_lain": data[index].unggahFileLain
+                                });
+                          },
+                          child: AnimationConfiguration.staggeredList(
+                              position: index,
+                              duration: const Duration(milliseconds: 375),
+                              child: FadeInAnimation(
 
-                                // delay: Duration(milliseconds: 400),
-                                duration: Duration(milliseconds: 800),
-                                child: FadeInAnimation(
-                                    child: GestureDetector(
-                                        onTap: () {
-                                          Navigator.of(context).pushNamed(
-                                              PageDetailBerita.routeName,
-                                              arguments: {
-                                                "judul":
-                                                    data[index].judulBerita,
-                                                "isi_berita":
-                                                    data[index].isiBerita,
-                                                "gambar_utama":
-                                                    data[index].foto,
-                                                "tanggal_publikasi": data[index]
-                                                    .tanggalPublikasi,
-                                                "gambar_lain":
-                                                    data[index].unggahFileLain
-                                              });
-                                        },
-                                        child: index % 2 == 0
-                                            ? FadeInAnimation(
-                                                duration:
-                                                    Duration(milliseconds: 300),
-                                                child: SlideAnimation(
-                                                    duration: Duration(
-                                                        milliseconds: 800),
-                                                    horizontalOffset: 350.0,
-                                                    child: _cardInformasi(
-                                                        data[index])),
-                                              )
-                                            : FadeInAnimation(
-                                                duration:
-                                                    Duration(milliseconds: 300),
-                                                child: SlideAnimation(
-                                                    duration: Duration(
-                                                        milliseconds: 800),
-                                                    horizontalOffset: -350.0,
-                                                    child: _cardInformasi(
-                                                        data[index])),
-                                              )))));
+                                  // delay: Duration(milliseconds: 400),
+                                  duration: Duration(milliseconds: 800),
+                                  child: FadeInAnimation(
+                                      child: index % 2 == 0
+                                          ? FadeInAnimation(
+                                              duration:
+                                                  Duration(milliseconds: 300),
+                                              child: SlideAnimation(
+                                                  duration: Duration(
+                                                      milliseconds: 800),
+                                                  horizontalOffset: 350.0,
+                                                  child: _cardInformasi(
+                                                      data[index])),
+                                            )
+                                          : FadeInAnimation(
+                                              duration:
+                                                  Duration(milliseconds: 300),
+                                              child: SlideAnimation(
+                                                  duration: Duration(
+                                                      milliseconds: 800),
+                                                  horizontalOffset: -350.0,
+                                                  child: _cardInformasi(
+                                                      data[index])),
+                                            )))),
+                        );
                       }, // membangun widget cardBeritaTerkini dengan data yang ada di List<Berita>
                     ),
                   );

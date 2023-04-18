@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:provider/provider.dart';
 import 'package:sidokare_mobile_app/const/list_color.dart';
+import 'package:sidokare_mobile_app/pages/page_formulirAspirasi.dart';
 import 'package:sidokare_mobile_app/pages/page_formulirKeluhan.dart';
 import 'package:sidokare_mobile_app/pages/page_formulirpengajuan.dart';
 
@@ -111,7 +112,10 @@ class _PageLaporanState extends State<PageLaporan> {
               print("Page Kedua Disini"),
             }
           else
-            {print("Page Ketiga disini")}
+            Navigator.pushNamed(
+                context, PageFormulirAspirasi.routeName.toString(),
+                arguments: id),
+          {print("Page Ketiga disini")}
         },
         highlightColor: Colors.blue.withOpacity(0.4),
         splashColor: Colors.white.withOpacity(0.5),

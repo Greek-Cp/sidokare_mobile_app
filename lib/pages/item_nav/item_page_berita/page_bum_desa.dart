@@ -5,6 +5,7 @@ import 'package:sidokare_mobile_app/const/size.dart';
 import 'package:rotated_corner_decoration/rotated_corner_decoration.dart';
 import 'package:sidokare_mobile_app/model/response/berita.dart';
 import '../../../const/list_color.dart';
+import '../page_detail_berita.dart';
 
 class PageBumDesa extends StatefulWidget {
   @override
@@ -46,15 +47,38 @@ class PageBumDesaDesaState extends State<PageBumDesa> {
                           .length, // menggunakan panjang data dari List<Berita> yang telah diambil dari snapshot
                       shrinkWrap: true,
                       itemBuilder: (context, index) {
-                        return AnimationConfiguration.staggeredList(
-                            position: index,
-                            duration: const Duration(milliseconds: 375),
-                            child: SlideAnimation(
-                                verticalOffset: 350.0,
-                                // delay: Duration(milliseconds: 400),
-                                duration: Duration(milliseconds: 800),
-                                child: FadeInAnimation(
-                                    child: _cardInformasi(data[index]))));
+                        return GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).pushNamed(
+                                PageDetailBerita.routeName,
+                                arguments: {
+                                  "judul": data[index].judulBerita,
+                                  "isi_berita": data[index].isiBerita,
+                                  "gambar_utama": data[index].foto,
+                                  "tanggal_publikasi":
+                                      data[index].tanggalPublikasi,
+                                  "gambar_lain": data[index].unggahFileLain
+                                });
+                          },
+                          child: AnimationConfiguration.staggeredList(
+                              position: index,
+                              duration: const Duration(milliseconds: 375),
+                              child: index % 2 == 0
+                                  ? FadeInAnimation(
+                                      duration: Duration(milliseconds: 300),
+                                      child: SlideAnimation(
+                                          duration: Duration(milliseconds: 800),
+                                          horizontalOffset: 350.0,
+                                          child: _cardInformasi(data[index])),
+                                    )
+                                  : FadeInAnimation(
+                                      duration: Duration(milliseconds: 300),
+                                      child: SlideAnimation(
+                                          duration: Duration(milliseconds: 800),
+                                          horizontalOffset: -350.0,
+                                          child: _cardInformasi(data[index])),
+                                    )),
+                        );
                       }, // membangun widget cardBeritaTerkini dengan data yang ada di List<Berita>
                     ),
                   );

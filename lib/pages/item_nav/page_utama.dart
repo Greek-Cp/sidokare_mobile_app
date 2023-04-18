@@ -20,7 +20,11 @@ import 'package:flutter_custom_tab_bar/transform/scale_transform.dart';
 import 'package:flutter_custom_tab_bar/transform/tab_bar_transform.dart';
 import 'package:sidokare_mobile_app/model/response/berita.dart';
 import 'package:http/http.dart' as http;
+import 'package:sidokare_mobile_app/pages/page_formulirAspirasi.dart';
+import 'package:sidokare_mobile_app/pages/page_formulirKeluhan.dart';
 import '../../provider/provider_account.dart';
+import '../page_formulirpengajuan.dart';
+import 'page_detail_berita.dart';
 
 class PageUtama extends StatefulWidget {
   @override
@@ -202,8 +206,9 @@ class _PageUtamaState extends State<PageUtama> {
                       EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
                   child: SizedBox(
                       height: 100.h,
-                      child: ListView(
-                        scrollDirection: Axis.horizontal,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        // scrollDirection: Axis.horizontal,
                         children: [
                           AnimationLimiter(
                               child: AnimationConfiguration.synchronized(
@@ -211,7 +216,12 @@ class _PageUtamaState extends State<PageUtama> {
                             child: SlideAnimation(
                               horizontalOffset: -50.0,
                               child: FadeInAnimation(
-                                  child: buttonPengajuan("PPID", "a")),
+                                  child: buttonPengajuan(
+                                      "PPID",
+                                      Icons.assignment,
+                                      id,
+                                      PageFormulirPengajuanPPID.routeName
+                                          .toString())),
                             ),
                           )),
                           AnimationLimiter(
@@ -220,7 +230,12 @@ class _PageUtamaState extends State<PageUtama> {
                             child: SlideAnimation(
                               horizontalOffset: -50.0,
                               child: FadeInAnimation(
-                                  child: buttonPengajuan("Keluhan", "a")),
+                                  child: buttonPengajuan(
+                                      "Keluhan",
+                                      Icons.analytics,
+                                      id,
+                                      PageFormulirPengajuanKeluhan.routeName
+                                          .toString())),
                             ),
                           )),
                           AnimationLimiter(
@@ -229,18 +244,23 @@ class _PageUtamaState extends State<PageUtama> {
                             child: SlideAnimation(
                               horizontalOffset: -50.0,
                               child: FadeInAnimation(
-                                  child: buttonPengajuan("Aspirasi", "a")),
+                                  child: buttonPengajuan(
+                                      "Aspirasi",
+                                      Icons.library_books_rounded,
+                                      id,
+                                      PageFormulirAspirasi.routeName
+                                          .toString())),
                             ),
                           )),
-                          AnimationLimiter(
-                              child: AnimationConfiguration.synchronized(
-                            duration: Duration(milliseconds: 375 * 4),
-                            child: SlideAnimation(
-                              horizontalOffset: -50.0,
-                              child: FadeInAnimation(
-                                  child: buttonPengajuan("Status", "a")),
-                            ),
-                          )),
+                          // AnimationLimiter(
+                          //     child: AnimationConfiguration.synchronized(
+                          //   duration: Duration(milliseconds: 375 * 4),
+                          //   child: SlideAnimation(
+                          //     horizontalOffset: -50.0,
+                          //     child: FadeInAnimation(
+                          //         child: buttonPengajuan("Status", "a")),
+                          //   ),
+                          // )),
                         ],
                       )),
                 ),
@@ -307,7 +327,16 @@ class _PageUtamaState extends State<PageUtama> {
                                           duration: Duration(milliseconds: 800),
                                           child: FadeInAnimation(
                                               child: cardBeritaTerkini(
-                                                  data[index]))));
+                                                  berita: data[index],
+                                                  judul:
+                                                      data[index].judulBerita,
+                                                  gambar: data[index]
+                                                      .unggahFileLain,
+                                                  foto: data[index].foto,
+                                                  tanggal: data[index]
+                                                      .tanggalPublikasi,
+                                                  isiBerita:
+                                                      data[index].isiBerita))));
                                 }, // membangun widget cardBeritaTerkini dengan data yang ada di List<Berita>
                               ),
                             );
@@ -324,7 +353,7 @@ class _PageUtamaState extends State<PageUtama> {
     );
   }
 
-  Widget buttonPengajuan(String text, String image) {
+  Widget buttonPengajuan(String text, IconData data, int id, String Route) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 10.h),
       child: Column(
@@ -334,13 +363,16 @@ class _PageUtamaState extends State<PageUtama> {
                 borderRadius: BorderRadius.circular(30.h)),
             color: ListColor.warnaBiruSidoKare,
             child: InkWell(
+              onTap: () {
+                Navigator.pushNamed(context, Route, arguments: id);
+              },
               child: Padding(
                 padding: EdgeInsets.all(10.0.h),
                 child: Container(
                   width: 30.w,
                   height: 30.h,
                   child: Icon(
-                    Icons.message,
+                    data,
                     color: Colors.white,
                   ),
                 ),
@@ -435,7 +467,13 @@ class _PageUtamaState extends State<PageUtama> {
     );
   }
 
-  Widget cardBeritaTerkini(Berita berita) {
+  Widget cardBeritaTerkini(
+      {Berita? berita,
+      String? judul,
+      String? isiBerita,
+      String? foto,
+      String? tanggal,
+      String? gambar}) {
     return SizedBox(
       width: 300.w,
       child: Padding(
@@ -446,7 +484,16 @@ class _PageUtamaState extends State<PageUtama> {
             margin: EdgeInsets.symmetric(vertical: 10.h),
             color: Colors.white,
             child: InkWell(
-              onTap: () => {},
+              onTap: () => {
+                Navigator.of(context)
+                    .pushNamed(PageDetailBerita.routeName, arguments: {
+                  "judul": judul,
+                  "isi_berita": isiBerita,
+                  "gambar_utama": foto,
+                  "tanggal_publikasi": tanggal,
+                  "gambar_lain": gambar
+                })
+              },
               highlightColor: Colors.blue.withOpacity(0.4),
               splashColor: ListColor.warnaBiruSidoKare.withOpacity(0.5),
               child: Container(
@@ -455,7 +502,7 @@ class _PageUtamaState extends State<PageUtama> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Image.network(
-                      "${berita.foto}",
+                      "${berita?.foto}",
                       fit: BoxFit.cover,
                       height: 140.h,
                       width: double.infinity.w,
@@ -465,7 +512,7 @@ class _PageUtamaState extends State<PageUtama> {
                     ),
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 10.h),
-                      child: Text("${berita.judulBerita}",
+                      child: Text("${berita?.judulBerita}",
                           textAlign: TextAlign.justify,
                           overflow: TextOverflow.ellipsis,
                           maxLines: 1,
@@ -476,7 +523,7 @@ class _PageUtamaState extends State<PageUtama> {
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 10.h),
                       child: Text(
-                        "${berita.isiBerita}",
+                        "${berita?.isiBerita}",
                         style: TextStyle(
                             color: ListColor.warnaDescriptionItem,
                             fontSize: size.SubHeader.sp),
@@ -511,7 +558,7 @@ class _PageUtamaState extends State<PageUtama> {
                                   style: TextStyle(fontSize: size.SubHeader.sp),
                                 ),
                                 Text(
-                                  "${berita.tanggalPublikasi}",
+                                  "${berita?.tanggalPublikasi}",
                                   style: TextStyle(
                                       color: ListColor.warnaDescriptionItem,
                                       fontSize: size.SubHeader.sp - 3),
