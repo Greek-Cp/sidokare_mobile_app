@@ -5,19 +5,20 @@ import 'package:sidokare_mobile_app/const/list_color.dart';
 import 'package:sidokare_mobile_app/const/size.dart';
 import 'package:sidokare_mobile_app/model/controller_idakun.dart';
 import 'package:sidokare_mobile_app/model/response/get/controller_get.dart';
+import 'package:sidokare_mobile_app/model/response/get/response_keluhan.dart';
 import 'package:sidokare_mobile_app/model/response/get/response_ppid.dart';
 
 import 'package:sidokare_mobile_app/provider/provider_account.dart';
 
-class itemListStatus extends StatefulWidget {
-  itemListStatus(id_akun, jenis_pengajuan);
+class itemListStatusKeluhan extends StatefulWidget {
+  itemListStatusKeluhan(id_akun, jenis_pengajuan);
 
   @override
-  State<itemListStatus> createState() => _itemListStatusState();
+  State<itemListStatusKeluhan> createState() => _itemListStatusKeluhanState();
 }
 
-class _itemListStatusState extends State<itemListStatus> {
-  Future<ResponseModelPPID>? listData;
+class _itemListStatusKeluhanState extends State<itemListStatusKeluhan> {
+  Future<ResponseModelKELUHAN>? listData;
   @override
   void initState() {
     // TODO: implement initState
@@ -27,11 +28,11 @@ class _itemListStatusState extends State<itemListStatus> {
   Widget build(BuildContext context) {
     // TODO: implement build
     final provider = Provider.of<ProviderAccount>(context);
-    listData = ControllerAPI.getStatusPPID(provider.getIdAkun);
+    listData = ControllerAPI.getStatusKELUHAN(provider.getIdAkun);
 
     return Scaffold(
       body: Center(
-        child: FutureBuilder<ResponseModelPPID>(
+        child: FutureBuilder<ResponseModelKELUHAN>(
           future: listData,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
@@ -39,13 +40,13 @@ class _itemListStatusState extends State<itemListStatus> {
                   itemBuilder: (context, index) {
                     return _containerListStatus(
                         judul_pengajuan: snapshot
-                            .data!.data![index].idPengajuanPpid
+                            .data!.data![index].idPengajuanKeluhan
                             .toString(),
                         isi_pengajuan: snapshot.data!.data![index].isiLaporan);
                   },
                   itemCount: snapshot.data!.data!.length);
             } else {
-              return Text(snapshot.error.toString());
+              return CircularProgressIndicator();
             }
           },
         ),

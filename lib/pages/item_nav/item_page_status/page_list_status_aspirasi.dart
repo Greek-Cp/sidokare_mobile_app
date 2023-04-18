@@ -5,19 +5,21 @@ import 'package:sidokare_mobile_app/const/list_color.dart';
 import 'package:sidokare_mobile_app/const/size.dart';
 import 'package:sidokare_mobile_app/model/controller_idakun.dart';
 import 'package:sidokare_mobile_app/model/response/get/controller_get.dart';
+import 'package:sidokare_mobile_app/model/response/get/response_aspirasi.dart';
+import 'package:sidokare_mobile_app/model/response/get/response_keluhan.dart';
 import 'package:sidokare_mobile_app/model/response/get/response_ppid.dart';
 
 import 'package:sidokare_mobile_app/provider/provider_account.dart';
 
-class itemListStatus extends StatefulWidget {
-  itemListStatus(id_akun, jenis_pengajuan);
+class itemListStatusAspirasi extends StatefulWidget {
+  itemListStatusAspirasi(id_akun, jenis_pengajuan);
 
   @override
-  State<itemListStatus> createState() => _itemListStatusState();
+  State<itemListStatusAspirasi> createState() => _itemListStatusAspirasiState();
 }
 
-class _itemListStatusState extends State<itemListStatus> {
-  Future<ResponseModelPPID>? listData;
+class _itemListStatusAspirasiState extends State<itemListStatusAspirasi> {
+  Future<ResponseModelASPIRASI>? listData;
   @override
   void initState() {
     // TODO: implement initState
@@ -27,11 +29,11 @@ class _itemListStatusState extends State<itemListStatus> {
   Widget build(BuildContext context) {
     // TODO: implement build
     final provider = Provider.of<ProviderAccount>(context);
-    listData = ControllerAPI.getStatusPPID(provider.getIdAkun);
+    listData = ControllerAPI.getStatusASPIRASI(provider.getIdAkun);
 
     return Scaffold(
       body: Center(
-        child: FutureBuilder<ResponseModelPPID>(
+        child: FutureBuilder<ResponseModelASPIRASI>(
           future: listData,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
@@ -39,9 +41,9 @@ class _itemListStatusState extends State<itemListStatus> {
                   itemBuilder: (context, index) {
                     return _containerListStatus(
                         judul_pengajuan: snapshot
-                            .data!.data![index].idPengajuanPpid
+                            .data!.data![index].idPengajuanAspirasi
                             .toString(),
-                        isi_pengajuan: snapshot.data!.data![index].isiLaporan);
+                        isi_pengajuan: snapshot.data!.data![index].isiAspirasi);
                   },
                   itemCount: snapshot.data!.data!.length);
             } else {
@@ -68,11 +70,12 @@ class _itemListStatusState extends State<itemListStatus> {
                   fontWeight: FontWeight.bold, fontSize: size.SubHeader.sp),
             ),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  "$isi_pengajuan",
-                  style: TextStyle(fontSize: size.DescTextKecil.sp),
+                SizedBox(
+                  child: Text(
+                    "$isi_pengajuan",
+                    style: TextStyle(fontSize: size.DescTextKecil.sp),
+                  ),
                 ),
                 ElevatedButton(
                     onPressed: () {},

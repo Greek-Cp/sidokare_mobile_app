@@ -4,6 +4,15 @@ import 'package:sidokare_mobile_app/model/model_account.dart';
 import 'package:collection/collection.dart';
 
 class ProviderAccount extends ChangeNotifier {
+  int? id_akun;
+
+  void setIdAkun(int id_akun) {
+    this.id_akun = id_akun;
+    print("Id Akun Berhasil Di Set");
+  }
+
+  get getIdAkun => id_akun;
+
   List<ModelAccount> listAccount = [];
 
   //add Data

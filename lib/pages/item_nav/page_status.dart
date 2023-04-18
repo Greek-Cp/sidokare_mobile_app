@@ -4,9 +4,13 @@ import 'package:flutter_custom_tab_bar/indicator/custom_indicator.dart';
 import 'package:flutter_custom_tab_bar/indicator/linear_indicator.dart';
 import 'package:flutter_custom_tab_bar/transform/color_transform.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 import 'package:sidokare_mobile_app/component/text_description.dart';
 import 'package:sidokare_mobile_app/const/list_color.dart';
 import 'package:sidokare_mobile_app/pages/item_nav/item_page_status/page_list_status.dart';
+import 'package:sidokare_mobile_app/pages/item_nav/item_page_status/page_list_status_aspirasi.dart';
+import 'package:sidokare_mobile_app/pages/item_nav/item_page_status/page_list_status_keluhan.dart';
+import 'package:sidokare_mobile_app/provider/provider_account.dart';
 
 import 'item_page_berita/page_pelayanan_desa.dart';
 import 'item_page_berita/page_pemberdayaan_masyarakat.dart';
@@ -53,6 +57,7 @@ class _PageStatusState extends State<PageStatus>
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
+    final providerAccount = Provider.of<ProviderAccount>(context);
     return ScreenUtilInit(
       builder: (context, child) {
         return Scaffold(
@@ -85,8 +90,9 @@ class _PageStatusState extends State<PageStatus>
             body: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
               child: TabBarView(controller: tabController, children: [
-                itemListStatus(),
-                pagePelayananDesa(),
+                itemListStatus(providerAccount.getIdAkun, "PPID"),
+                itemListStatusKeluhan(providerAccount.getIdAkun, "KELUHAN"),
+                itemListStatusAspirasi(providerAccount.getIdAkun, "ASPIRASI"),
               ]),
             ));
       },

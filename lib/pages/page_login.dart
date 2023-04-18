@@ -124,6 +124,8 @@ class _PageLoginState extends State<PageLogin> {
                                                 providerAccount.AddData(
                                                     value.id_akun!,
                                                     value.nama_lengkap!),
+                                                providerAccount.setIdAkun(
+                                                    value.id_akun!.toInt()),
                                                 Navigator.pushNamed(
                                                     context,
                                                     HalamanUtama.routeName

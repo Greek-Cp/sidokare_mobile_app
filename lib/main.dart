@@ -15,6 +15,7 @@ import 'package:sidokare_mobile_app/pages/page_lupasandi.dart';
 import 'package:sidokare_mobile_app/pages/page_register.dart';
 import 'package:sidokare_mobile_app/pages/page_ubahsandi.dart';
 import 'package:sidokare_mobile_app/provider/provider_account.dart';
+
 import './pages/page_splashscreen.dart';
 
 void main() {
