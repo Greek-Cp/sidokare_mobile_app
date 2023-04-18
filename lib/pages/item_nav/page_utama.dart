@@ -290,7 +290,6 @@ class _PageUtamaState extends State<PageUtama> {
                           } else {
                             List<Berita> data =
                                 snapshot.data!; // mengambil data dari snapshot
-
                             return AnimationLimiter(
                               child: ListView.builder(
                                 itemCount: data

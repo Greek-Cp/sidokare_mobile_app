@@ -47,7 +47,7 @@ class MainApp extends StatelessWidget {
           PageFormulirPengajuanPPID.routeName.toString(): (context) =>
               PageFormulirPengajuanPPID(),
           PageFormulirPengajuanKeluhan.routeName.toString(): (context) =>
-              PageFormulirPengajuanKeluhan()
+              PageFormulirPengajuanKeluhan(),
         },
       ),
     );
