@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_native_timezone/flutter_native_timezone.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:provider/provider.dart';
@@ -20,11 +21,14 @@ import 'package:flutter_custom_tab_bar/transform/scale_transform.dart';
 import 'package:flutter_custom_tab_bar/transform/tab_bar_transform.dart';
 import 'package:sidokare_mobile_app/model/response/berita.dart';
 import 'package:http/http.dart' as http;
+import 'package:sidokare_mobile_app/model/response/get/response_jumlahLaporan.dart';
 import 'package:sidokare_mobile_app/pages/page_formulirAspirasi.dart';
 import 'package:sidokare_mobile_app/pages/page_formulirKeluhan.dart';
+import '../../const/const.dart';
 import '../../provider/provider_account.dart';
 import '../page_formulirpengajuan.dart';
 import 'page_detail_berita.dart';
+import 'package:intl/intl.dart';
 
 class PageUtama extends StatefulWidget {
   @override
@@ -35,18 +39,35 @@ class _PageUtamaState extends State<PageUtama> {
   bool startAnimation = false;
   double screenHeight = 0;
   double screenWidth = 0;
+  String? waktu = "";
+
+  static JumlahLaporan _jumlahLaporan = JumlahLaporan();
 
   late Future<List<Berita>> listBerita;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+
+    JumlahLaporan.getLaporan().then((value) => _jumlahLaporan = value);
+
     listBerita = fetchBeritaKustom("ktg_berita01");
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       setState(() {
         startAnimation = true;
       });
     });
+  }
+
+  static String greeting() {
+    var hour = DateTime.now().hour;
+    if (hour < 12) {
+      return 'Pagi';
+    }
+    if (hour < 17) {
+      return 'Siang';
+    }
+    return 'Malam';
   }
 
   Widget searchBar() {
@@ -134,7 +155,7 @@ class _PageUtamaState extends State<PageUtama> {
                           horizontalOffset: -50.0,
                           child: FadeInAnimation(
                             child: ComponentTextTittle(
-                                "Selamat Pagi ${DataDiri.nama}"),
+                                "Selamat ${greeting()} ${DataDiri.nama}"),
                           ),
                         ),
                       )),
@@ -148,7 +169,8 @@ class _PageUtamaState extends State<PageUtama> {
                               width: 41.w,
                               height: 41.h,
                               child: CircleAvatar(
-                                backgroundColor: Colors.red,
+                                backgroundImage: NetworkImage(
+                                    "http://${ApiPoint.BASE_URL}/storage/profile/${DataDiri.urlGambar}"),
                               ),
                             ),
                           ),
@@ -171,9 +193,7 @@ class _PageUtamaState extends State<PageUtama> {
                 ),
 
                 // searchBar(),
-                SizedBox(
-                  height: 10.h,
-                ),
+
                 AnimationLimiter(
                     child: AnimationConfiguration.synchronized(
                   duration: Duration(milliseconds: 500 * 2),
@@ -205,7 +225,7 @@ class _PageUtamaState extends State<PageUtama> {
                   padding:
                       EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
                   child: SizedBox(
-                      height: 100.h,
+                      height: 80.h,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         // scrollDirection: Axis.horizontal,
@@ -404,26 +424,38 @@ class _PageUtamaState extends State<PageUtama> {
             child: Padding(
               padding: EdgeInsets.all(10.0.h),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      AnimationLimiter(
-                          child: AnimationConfiguration.synchronized(
-                              child: SlideAnimation(child: ItemCardLaporan()))),
-                      ItemCardLaporan(),
+                      ItemCardLaporan(
+                          namaLaporan: "Jumlah Laporan",
+                          Jumlah: _jumlahLaporan.total),
+                      Padding(
+                        padding: EdgeInsets.only(left: 16.w),
+                        child: ItemCardLaporan(
+                            namaLaporan: "Laporan PPID",
+                            Jumlah: _jumlahLaporan.ppid),
+                      ),
                     ],
                   ),
                   SizedBox(
                     height: 25.h,
+                    width: 25.w,
                   ),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      ItemCardLaporan(),
-                      ItemCardLaporan(),
+                      ItemCardLaporan(
+                          Jumlah: _jumlahLaporan.jumlahAspirasi,
+                          namaLaporan: "Laporan Aspirasi"),
+                      Padding(
+                        padding: EdgeInsets.only(left: 10.w),
+                        child: ItemCardLaporan(
+                            Jumlah: _jumlahLaporan.jumlahKeluhan,
+                            namaLaporan: "Laporan Keluhan"),
+                      ),
                     ],
                   )
                 ],
@@ -435,7 +467,7 @@ class _PageUtamaState extends State<PageUtama> {
     );
   }
 
-  Widget ItemCardLaporan() {
+  Widget ItemCardLaporan({String? Jumlah, String? namaLaporan}) {
     return Row(
       children: [
         Container(
@@ -452,12 +484,12 @@ class _PageUtamaState extends State<PageUtama> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             ComponentTextTittle(
-              "774,098",
+              Jumlah,
               textAlign: TextAlign.start,
               warnaTeks: Colors.white,
             ),
             ComponentTextDescription(
-              "Jumlah Laporan",
+              namaLaporan,
               textAlign: TextAlign.start,
               teksColor: Colors.white,
             )

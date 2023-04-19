@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 
 import 'package:sidokare_mobile_app/component/Toast.dart';
 import 'package:sidokare_mobile_app/component/text_description.dart';
@@ -13,6 +14,8 @@ import 'package:sidokare_mobile_app/component/text_field.dart';
 import 'package:sidokare_mobile_app/const/list_color.dart';
 import 'package:sidokare_mobile_app/const/size.dart';
 import 'package:sidokare_mobile_app/model/response/pengajuan.dart';
+
+import '../provider/provider_account.dart';
 
 class PageFormulirPengajuanPPID extends StatefulWidget {
   static String routeName = "/formulir_pengajuan";
@@ -41,8 +44,23 @@ class _PageFormulirPengajuanState extends State<PageFormulirPengajuanPPID> {
   static String? randomValueDusun = "Sidokare";
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final idAkunnn = ModalRoute.of(context)?.settings.arguments as int;
+
+    final DataDiri = Provider.of<ProviderAccount>(context)
+        .GetDataDiri
+        .firstWhere((idData) => idData.id_akun == idAkunnn);
+
+    setState(() {
+      textEditingControllerNIK!.text = DataDiri.Nik.toString();
+      textEditingControllerNamaLengkap!.text = DataDiri.nama.toString();
+    });
     // TODO: implement build
     return ScreenUtilInit(
       builder: (context, child) {
@@ -83,6 +101,7 @@ class _PageFormulirPengajuanState extends State<PageFormulirPengajuanPPID> {
                     padding: const EdgeInsets.symmetric(horizontal: 20.0),
                     child: SizedBox(
                         child: TextFieldImport.TextForm(
+                            readyOnlyTydack: true,
                             text_kontrol: textEditingControllerNamaLengkap,
                             hintText: "Masukkan Nama Anda",
                             labelName: "Nama",
@@ -92,6 +111,7 @@ class _PageFormulirPengajuanState extends State<PageFormulirPengajuanPPID> {
                     padding: const EdgeInsets.symmetric(horizontal: 20.0),
                     child: SizedBox(
                         child: TextFieldImport.TextForm(
+                            readyOnlyTydack: true,
                             text_kontrol: textEditingControllerNIK,
                             hintText: "Masukan Nik Anda",
                             labelName: "NIK",

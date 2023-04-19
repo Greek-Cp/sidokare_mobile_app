@@ -121,9 +121,15 @@ class _PageLoginState extends State<PageLogin> {
                                                     "Nama anda adalah ${value.nama_lengkap}"),
                                                 print(
                                                     "ID Akun adalah ${value.id_akun}"),
+                                                print(
+                                                    "Nik Akun adalah ${value.nik}"),
+                                                print(
+                                                    "mamagambar Akun adalah ${value.namaProfile}"),
                                                 providerAccount.AddData(
                                                     value.id_akun!,
-                                                    value.nama_lengkap!),
+                                                    value.nama_lengkap!,
+                                                    value.nik!,
+                                                    value.namaProfile!),
                                                 providerAccount.setIdAkun(
                                                     value.id_akun!.toInt()),
                                                 Navigator.pushNamed(

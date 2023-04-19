@@ -70,10 +70,14 @@ class _itemListStatusAspirasiState extends State<itemListStatusAspirasi> {
                   fontWeight: FontWeight.bold, fontSize: size.SubHeader.sp),
             ),
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 SizedBox(
                   child: Text(
-                    "$isi_pengajuan",
+                    isi_pengajuan.toString().length > 25
+                        ? isi_pengajuan.toString().substring(0, 25) + '...'
+                        : "$isi_pengajuan",
+                    overflow: TextOverflow.ellipsis,
                     style: TextStyle(fontSize: size.DescTextKecil.sp),
                   ),
                 ),

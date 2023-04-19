@@ -5,12 +5,15 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'package:sidokare_mobile_app/const/size.dart';
 import 'package:sidokare_mobile_app/model/response/pengajuan_keluhan.dart';
 
 import '../component/text_field.dart';
 import '../const/list_color.dart';
 import 'package:intl/intl.dart';
+
+import '../provider/provider_account.dart';
 
 class PageFormulirPengajuanKeluhan extends StatefulWidget {
   static String routeName = "/formulir_pengajuanKeluhan";
@@ -57,6 +60,15 @@ class _PageFormulirPengajuanKeluhanState
   @override
   Widget build(BuildContext context) {
     final idAkunnn = ModalRoute.of(context)?.settings.arguments as int;
+
+    final DataDiri = Provider.of<ProviderAccount>(context)
+        .GetDataDiri
+        .firstWhere((idData) => idData.id_akun == idAkunnn);
+
+    setState(() {
+      textEditingControllerNIK!.text = DataDiri.Nik.toString();
+      textEditingControllerNamaLengkap!.text = DataDiri.nama.toString();
+    });
     // TODO: implement build
     return ScreenUtilInit(
       builder: (context, child) {
@@ -97,6 +109,7 @@ class _PageFormulirPengajuanKeluhanState
                     padding: const EdgeInsets.symmetric(horizontal: 20.0),
                     child: SizedBox(
                         child: TextFieldImport.TextForm(
+                            readyOnlyTydack: true,
                             text_kontrol: textEditingControllerNamaLengkap,
                             hintText: "Masukkan Nama Anda",
                             labelName: "Nama Lengkap",
@@ -106,6 +119,7 @@ class _PageFormulirPengajuanKeluhanState
                     padding: const EdgeInsets.symmetric(horizontal: 20.0),
                     child: SizedBox(
                         child: TextFieldImport.TextForm(
+                            readyOnlyTydack: true,
                             text_kontrol: textEditingControllerNIK,
                             hintText: "Masukan NIK Anda",
                             labelName: "NIK",

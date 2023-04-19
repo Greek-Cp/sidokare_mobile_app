@@ -20,8 +20,9 @@ class ProviderAccount extends ChangeNotifier {
     return [...listAccount];
   }
 
-  void AddData(int id_akun, String nama) {
-    listAccount.add(ModelAccount(id_akun: id_akun, nama: nama));
+  void AddData(int id_akun, String nama, String nik, String urlGambar) {
+    listAccount.add(ModelAccount(
+        id_akun: id_akun, nama: nama, Nik: nik, urlGambar: urlGambar));
     notifyListeners();
   }
 

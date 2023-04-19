@@ -28,6 +28,7 @@ dependencies:
   wave_transition: ^0.0.6
   intl: ^0.17.0
   file_picker: ^5.2.9
+  flutter_native_timezone: ^2.0.0
 
 dev_dependencies:
   flutter_lints: ^2.0.0
@@ -42,6 +43,7 @@ flutter:
     - assets/nganjuk.png
     - assets/intro1.png
     - assets/sukses.png
+    - assets/profileBlank.png
     - assets/imagelupasandi.png
     - assets/imageotp.png
     - assets/imageubahsandi.png

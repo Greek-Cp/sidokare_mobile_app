@@ -84,6 +84,7 @@ class TextFieldImport {
   static Padding TextForm(
       {TextEditingController? text_kontrol,
       String? hintText,
+      bool? readyOnlyTydack = false,
       String? labelName,
       String? pesanValidasi}) {
     return Padding(
@@ -111,6 +112,7 @@ class TextFieldImport {
                 return "${pesanValidasi} Tidak Boleh Kosong";
               }
             },
+            readOnly: readyOnlyTydack!,
             controller: text_kontrol,
             style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.normal),
             decoration: InputDecoration(

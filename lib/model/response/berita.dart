@@ -37,19 +37,19 @@ class Berita {
   }
 }
 
-Future<List<Berita>> fetchData() async {
-  final response = await http.get(Uri.parse('https://example.com/api/berita'));
+// Future<List<Berita>> fetchData() async {
+//   final response = await http.get(Uri.parse('https://example.com/api/berita'));
 
-  if (response.statusCode == 200) {
-    // Jika response sukses, convert data JSON ke dalam bentuk List<Berita>
-    List<dynamic> data = json.decode(response.body)['data'];
-    List<Berita> beritaList = data.map((e) => Berita.fromJson(e)).toList();
-    return beritaList;
-  } else {
-    // Jika response gagal, lempar exception
-    throw Exception('Gagal mengambil data dari API');
-  }
-}
+//   if (response.statusCode == 200) {
+//     // Jika response sukses, convert data JSON ke dalam bentuk List<Berita>
+//     List<dynamic> data = json.decode(response.body)['data'];
+//     List<Berita> beritaList = data.map((e) => Berita.fromJson(e)).toList();
+//     return beritaList;
+//   } else {
+//     // Jika response gagal, lempar exception
+//     throw Exception('Gagal mengambil data dari API');
+//   }
+// }
 
 Future<List<Berita>> fetchBeritaKustom(String idKategori) async {
   final response = await http.post(
@@ -57,7 +57,7 @@ Future<List<Berita>> fetchBeritaKustom(String idKategori) async {
       body: {"id_kategori": idKategori});
 
   if (response.statusCode == 200) {
-    // print("data = " + response.body);
+    // print("data Berita = " + response.body);
     final data = jsonDecode(response.body)['data'];
 
     List<Berita> beritas = [];
@@ -86,17 +86,17 @@ Future<List<Berita>> fetchBeritaKustom(String idKategori) async {
 //   }
 // }
 
-Future<List<Berita>> fetchBerita() async {
-  final response = await http
-      .get(Uri.parse('http://${ApiPoint.BASE_URL}/api/berita/get_berita'));
+// Future<List<Berita>> fetchBerita() async {
+//   final response = await http
+//       .get(Uri.parse('http://${ApiPoint.BASE_URL}/api/berita/get_berita'));
 
-  if (response.statusCode == 200) {
-    final jsonData = json.decode(response.body);
-    List<dynamic> beritaListJson = jsonData['data'];
-    List<Berita> beritaList =
-        beritaListJson.map((json) => Berita.fromJson(json)).toList();
-    return beritaList;
-  } else {
-    throw Exception('Failed to load data');
-  }
-}
+//   if (response.statusCode == 200) {
+//     final jsonData = json.decode(response.body);
+//     List<dynamic> beritaListJson = jsonData['data'];
+//     List<Berita> beritaList =
+//         beritaListJson.map((json) => Berita.fromJson(json)).toList();
+//     return beritaList;
+//   } else {
+//     throw Exception('Failed to load data');
+//   }
+// }

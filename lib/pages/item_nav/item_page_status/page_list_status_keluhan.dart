@@ -72,7 +72,9 @@ class _itemListStatusKeluhanState extends State<itemListStatusKeluhan> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  "$isi_pengajuan",
+                  isi_pengajuan.toString().length > 25
+                      ? isi_pengajuan.toString().substring(0, 25) + '...'
+                      : "$isi_pengajuan",
                   style: TextStyle(fontSize: size.DescTextKecil.sp),
                 ),
                 ElevatedButton(

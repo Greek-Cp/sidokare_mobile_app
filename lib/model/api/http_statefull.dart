@@ -10,13 +10,17 @@ class HttpStatefull {
   String? email, password, nomor_telepon, username;
   String? nama_lengkap;
   String? kode_otp;
+  String? nik;
+  String? namaProfile;
 
   HttpStatefull(
       {this.code,
       this.message,
       this.nama_lengkap,
       this.kode_otp,
-      this.id_akun});
+      this.id_akun,
+      this.nik,
+      this.namaProfile});
   static Future<HttpStatefull> registerAkun(
       String email,
       String password,
@@ -47,7 +51,9 @@ class HttpStatefull {
         code: data['code'],
         message: data['message'],
         nama_lengkap: data["data"]["akun"]["nama"],
-        id_akun: data["data"]["akun"]["id_akun"]);
+        id_akun: data["data"]["akun"]["id_akun"],
+        nik: data["data"]["akun"]["nik"],
+        namaProfile: data["data"]["akun"]["profile_img"]);
   }
 
   static Future<HttpStatefull> ubahSandi(String email, String password) async {
