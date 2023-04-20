@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_native_timezone/flutter_native_timezone.dart';
@@ -40,8 +42,7 @@ class _PageUtamaState extends State<PageUtama> {
   double screenHeight = 0;
   double screenWidth = 0;
   String? waktu = "";
-
-  static JumlahLaporan _jumlahLaporan = JumlahLaporan();
+  Map<String, dynamic> dataLaporan = {};
 
   late Future<List<Berita>> listBerita;
   @override
@@ -49,7 +50,11 @@ class _PageUtamaState extends State<PageUtama> {
     // TODO: implement initState
     super.initState();
 
-    JumlahLaporan.getLaporan().then((value) => _jumlahLaporan = value);
+    JumlahLaporan.getDataLaporan().then((value) {
+      setState(() {
+        dataLaporan = value;
+      });
+    });
 
     listBerita = fetchBeritaKustom("ktg_berita01");
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
@@ -431,12 +436,12 @@ class _PageUtamaState extends State<PageUtama> {
                     children: [
                       ItemCardLaporan(
                           namaLaporan: "Jumlah Laporan",
-                          Jumlah: _jumlahLaporan.total),
+                          Jumlah: "${dataLaporan['TotalLaporan']}"),
                       Padding(
                         padding: EdgeInsets.only(left: 16.w),
                         child: ItemCardLaporan(
                             namaLaporan: "Laporan PPID",
-                            Jumlah: _jumlahLaporan.ppid),
+                            Jumlah: "${dataLaporan['JumlahPPID']}"),
                       ),
                     ],
                   ),
@@ -448,12 +453,12 @@ class _PageUtamaState extends State<PageUtama> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       ItemCardLaporan(
-                          Jumlah: _jumlahLaporan.jumlahAspirasi,
+                          Jumlah: "${dataLaporan['JumlahAspirasi']}",
                           namaLaporan: "Laporan Aspirasi"),
                       Padding(
                         padding: EdgeInsets.only(left: 10.w),
                         child: ItemCardLaporan(
-                            Jumlah: _jumlahLaporan.jumlahKeluhan,
+                            Jumlah: "${dataLaporan['JumlahKeluhan']}",
                             namaLaporan: "Laporan Keluhan"),
                       ),
                     ],

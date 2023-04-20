@@ -26,4 +26,13 @@ class JumlahLaporan {
         ppid: data['JumlahPPID'].toString(),
         total: data['TotalLaporan'].toString());
   }
+
+  static Future<Map<String, dynamic>> getDataLaporan() async {
+    Uri url =
+        Uri.parse("http://${ApiPoint.BASE_URL}/api/jumlahLaporan/Jumlahhnya");
+    var HasilResponse = await http.get(url);
+    var data = (json.decode(HasilResponse.body))['data'];
+    print("Laporan data nya :: ${data.toString()} ");
+    return data;
+  }
 }
