@@ -45,6 +45,7 @@ class _PageUtamaState extends State<PageUtama> {
   Map<String, dynamic> dataLaporan = {};
 
   late Future<List<Berita>> listBerita;
+  late Future<List<Berita>> listBerita2;
   @override
   void initState() {
     // TODO: implement initState
@@ -57,6 +58,7 @@ class _PageUtamaState extends State<PageUtama> {
     });
 
     listBerita = fetchBeritaKustom("ktg_berita01");
+    listBerita2 = fetchBeritaKustom2();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       setState(() {
         startAnimation = true;
@@ -134,6 +136,15 @@ class _PageUtamaState extends State<PageUtama> {
     final DataDiri = Provider.of<ProviderAccount>(context)
         .GetDataDiri
         .firstWhere((idData) => idData.id_akun == id);
+
+    String namaFormat(String nameFull) {
+      String NamaFull = nameFull;
+      print("Nama Full ${NamaFull}");
+      String convertBruh = NamaFull.split(" ")[0];
+      print("hasil Convert : ${convertBruh}");
+      return convertBruh;
+    }
+
     // TODO: implement build
     return ScreenUtilInit(
       builder: (context, child) {
@@ -160,7 +171,7 @@ class _PageUtamaState extends State<PageUtama> {
                           horizontalOffset: -50.0,
                           child: FadeInAnimation(
                             child: ComponentTextTittle(
-                                "Selamat ${greeting()} ${DataDiri.nama}"),
+                                "Selamat ${greeting()} ${namaFormat(DataDiri.nama.toString())}"),
                           ),
                         ),
                       )),
@@ -324,7 +335,7 @@ class _PageUtamaState extends State<PageUtama> {
                 SizedBox(
                     height: 300.h,
                     child: FutureBuilder<List<Berita>>(
-                        future: listBerita,
+                        future: listBerita2,
                         builder: (context, snapshot) {
                           if (snapshot.connectionState ==
                               ConnectionState.waiting) {
@@ -360,6 +371,10 @@ class _PageUtamaState extends State<PageUtama> {
                                                   foto: data[index].foto,
                                                   tanggal: data[index]
                                                       .tanggalPublikasi,
+                                                  namaPengupload:
+                                                      data[index].namaUpload,
+                                                  fotoPengupload:
+                                                      data[index].foto_profile,
                                                   isiBerita:
                                                       data[index].isiBerita))));
                                 }, // membangun widget cardBeritaTerkini dengan data yang ada di List<Berita>
@@ -510,7 +525,12 @@ class _PageUtamaState extends State<PageUtama> {
       String? isiBerita,
       String? foto,
       String? tanggal,
-      String? gambar}) {
+      String? gambar,
+      String? namaPengupload,
+      String? fotoPengupload}) {
+    DateTime tempDate = new DateFormat("yyyy-MM-dd hh:mm:ss")
+        .parse("${berita?.tanggalPublikasi}");
+    String HasilFormatTgl = DateFormat('EEEE, dd-MM-yyyy').format(tempDate);
     return SizedBox(
       width: 300.w,
       child: Padding(
@@ -528,7 +548,9 @@ class _PageUtamaState extends State<PageUtama> {
                   "isi_berita": isiBerita,
                   "gambar_utama": foto,
                   "tanggal_publikasi": tanggal,
-                  "gambar_lain": gambar
+                  "gambar_lain": gambar,
+                  "nama_pengupload": namaPengupload,
+                  "profile_pengupload": fotoPengupload
                 })
               },
               highlightColor: Colors.blue.withOpacity(0.4),
@@ -579,6 +601,8 @@ class _PageUtamaState extends State<PageUtama> {
                           Container(
                             width: 30.w,
                             child: CircleAvatar(
+                              backgroundImage: NetworkImage(
+                                  "http://${ApiPoint.BASE_URL}/storage/profile/${berita?.foto_profile}"),
                               backgroundColor: Colors.red,
                             ),
                           ),
@@ -591,11 +615,11 @@ class _PageUtamaState extends State<PageUtama> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  "Sang Dong-Min",
+                                  "${berita?.namaUpload}",
                                   style: TextStyle(fontSize: size.SubHeader.sp),
                                 ),
                                 Text(
-                                  "${berita?.tanggalPublikasi}",
+                                  HasilFormatTgl,
                                   style: TextStyle(
                                       color: ListColor.warnaDescriptionItem,
                                       fontSize: size.SubHeader.sp - 3),

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+// import 'package:intl/intl.dart';
+import 'package:intl/intl.dart' as intl;
 import 'package:sidokare_mobile_app/const/size.dart';
 import 'package:rotated_corner_decoration/rotated_corner_decoration.dart';
 import 'package:sidokare_mobile_app/model/response/berita.dart';
@@ -57,7 +59,9 @@ class _PagePemerintahanDesaState extends State<PagePemerintahanDesa> {
                                   "gambar_utama": data[index].foto,
                                   "tanggal_publikasi":
                                       data[index].tanggalPublikasi,
-                                  "gambar_lain": data[index].unggahFileLain
+                                  "gambar_lain": data[index].unggahFileLain,
+                                  "nama_pengupload": data[index].namaUpload,
+                                  "profile_pengupload": data[index].foto_profile
                                 });
                           },
                           child: AnimationConfiguration.staggeredList(
@@ -117,8 +121,8 @@ class _PagePemerintahanDesaState extends State<PagePemerintahanDesa> {
               foregroundDecoration: RotatedCornerDecoration.withColor(
                   color: ListColor.warnaBiruSidoKare,
                   badgeSize: Size(50.w, 50.h),
-                  badgePosition: BadgePosition.bottomStart,
                   textDirection: TextDirection.rtl,
+                  badgePosition: BadgePosition.bottomStart,
                   badgeCornerRadius: Radius.circular(10)),
               child: Padding(
                 padding: EdgeInsets.all(9),
@@ -151,6 +155,10 @@ class _PagePemerintahanDesaState extends State<PagePemerintahanDesa> {
   }
 
   Widget _KetBawah(String? tanggalBawah) {
+    DateTime tempDate =
+        new intl.DateFormat("yyyy-MM-dd hh:mm:ss").parse("${tanggalBawah}");
+    String HasilFormatTgl =
+        intl.DateFormat('EEEE, dd MMMM yyyy').format(tempDate);
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 0),
       child: GestureDetector(
@@ -168,7 +176,7 @@ class _PagePemerintahanDesaState extends State<PagePemerintahanDesa> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "${tanggalBawah}",
+                  HasilFormatTgl,
                   style: TextStyle(
                       color: ListColor.warnaDescriptionItem,
                       fontSize: size.SubHeader.sp - 3),
@@ -176,25 +184,25 @@ class _PagePemerintahanDesaState extends State<PagePemerintahanDesa> {
                 )
               ],
             ),
-            Card(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10)),
-              elevation: 0,
-              child: Padding(
-                padding: EdgeInsets.symmetric(),
-                child: Container(
-                  width: 30.w,
-                  height: 30.h,
-                  child: IconButton(
-                    iconSize: 20,
-                    onPressed: () {},
-                    icon: Icon(Icons.send),
-                    alignment: Alignment.topRight,
-                    padding: EdgeInsets.all(0),
-                  ),
-                ),
-              ),
-            )
+            // Card(
+            //   shape: RoundedRectangleBorder(
+            //       borderRadius: BorderRadius.circular(10)),
+            //   elevation: 0,
+            //   child: Padding(
+            //     padding: EdgeInsets.symmetric(),
+            //     child: Container(
+            //       width: 30.w,
+            //       height: 30.h,
+            //       child: IconButton(
+            //         iconSize: 20,
+            //         onPressed: () {},
+            //         icon: Icon(Icons.send),
+            //         alignment: Alignment.topRight,
+            //         padding: EdgeInsets.all(0),
+            //       ),
+            //     ),
+            //   ),
+            // )
           ],
         ),
       ),

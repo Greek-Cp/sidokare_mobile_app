@@ -6,6 +6,7 @@ import 'package:rotated_corner_decoration/rotated_corner_decoration.dart';
 import 'package:sidokare_mobile_app/model/response/berita.dart';
 import '../../../const/list_color.dart';
 import '../page_detail_berita.dart';
+import 'package:intl/intl.dart' as intl;
 
 class PagePembinaanMasyarakat extends StatefulWidget {
   @override
@@ -58,7 +59,9 @@ class _PagePembinaanMasyarakatState extends State<PagePembinaanMasyarakat> {
                                   "gambar_utama": data[index].foto,
                                   "tanggal_publikasi":
                                       data[index].tanggalPublikasi,
-                                  "gambar_lain": data[index].unggahFileLain
+                                  "gambar_lain": data[index].unggahFileLain,
+                                  "nama_pengupload": data[index].namaUpload,
+                                  "profile_pengupload": data[index].foto_profile
                                 });
                           },
                           child: AnimationConfiguration.staggeredList(
@@ -141,6 +144,10 @@ class _PagePembinaanMasyarakatState extends State<PagePembinaanMasyarakat> {
   }
 
   Widget _KetBawah(String? tanggalBawah) {
+    DateTime tempDate =
+        new intl.DateFormat("yyyy-MM-dd hh:mm:ss").parse("${tanggalBawah}");
+    String HasilFormatTgl =
+        intl.DateFormat('EEEE, dd MMMM yyyy').format(tempDate);
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 0),
       child: GestureDetector(
@@ -158,7 +165,7 @@ class _PagePembinaanMasyarakatState extends State<PagePembinaanMasyarakat> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "${tanggalBawah}",
+                  HasilFormatTgl,
                   style: TextStyle(
                       color: ListColor.warnaDescriptionItem,
                       fontSize: size.SubHeader.sp - 3),

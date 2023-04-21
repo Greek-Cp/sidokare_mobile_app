@@ -8,6 +8,8 @@ import 'package:sidokare_mobile_app/component/text_field.dart';
 import 'package:sidokare_mobile_app/const/list_color.dart';
 import 'package:sidokare_mobile_app/const/size.dart';
 
+import '../../const/const.dart';
+
 class PageDetailBerita extends StatefulWidget {
   static String routeName = "/detail_berita";
 
@@ -41,6 +43,8 @@ class _PageDetailBeritaState extends State<PageDetailBerita> {
     String judul_berita = receiveData?['judul'];
     String isi_berita = receiveData?['isi_berita'];
     String gambar_utama = receiveData?['gambar_utama'];
+    String fotoProfile = receiveData?['profile_pengupload'];
+    String namaProfile = receiveData?['nama_pengupload'];
     //convert
 
     String tanggal_publikasi = receiveData?['tanggal_publikasi'];
@@ -107,24 +111,50 @@ class _PageDetailBeritaState extends State<PageDetailBerita> {
                   ),
                   _ListBerita(
                       tanggalBerita: HasilFormatTgl.toString(),
-                      authBerita: "Deva Arie"),
+                      profilePic: fotoProfile.toString(),
+                      authBerita: "${namaProfile.toString()}"),
                   _isiBerita(isiBerita: isi_berita),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 20.h),
-                    child: Divider(
-                      thickness: 2,
-                      height: 2,
+                    child: AnimationConfiguration.synchronized(
+                      child: FadeInAnimation(
+                        duration: Duration(milliseconds: 700),
+                        child: SlideAnimation(
+                          verticalOffset: 500,
+                          duration: Duration(milliseconds: 700),
+                          child: Divider(
+                            thickness: 2,
+                            height: 2,
+                          ),
+                        ),
+                      ),
                     ),
                   ),
-                  _CommentItemUser(),
+                  AnimationConfiguration.synchronized(
+                      child: ScaleAnimation(
+                          duration: Duration(milliseconds: 700),
+                          child: _CommentItemUser())),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 20.h),
-                    child: Divider(
-                      thickness: 2,
-                      height: 2,
+                    child: AnimationConfiguration.synchronized(
+                      child: FadeInAnimation(
+                        duration: Duration(milliseconds: 700),
+                        child: SlideAnimation(
+                          verticalOffset: 500,
+                          duration: Duration(milliseconds: 700),
+                          child: Divider(
+                            thickness: 2,
+                            height: 2,
+                          ),
+                        ),
+                      ),
                     ),
                   ),
-                  _isiKomen(),
+                  AnimationConfiguration.synchronized(
+                      child: ScaleAnimation(
+                    duration: Duration(milliseconds: 700),
+                    child: _isiKomen(),
+                  ))
                 ]),
               )
             ],
@@ -202,7 +232,8 @@ class _PageDetailBeritaState extends State<PageDetailBerita> {
     );
   }
 
-  Widget _ListBerita({String? tanggalBerita, String? authBerita}) {
+  Widget _ListBerita(
+      {String? tanggalBerita, String? authBerita, String? profilePic}) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 18.h),
       child: Row(
@@ -224,8 +255,9 @@ class _PageDetailBeritaState extends State<PageDetailBerita> {
                   child: Row(
                     children: [
                       CircleAvatar(
-                        radius: 10,
-                      ),
+                          radius: 10,
+                          backgroundImage: NetworkImage(
+                              "http://${ApiPoint.BASE_URL}/storage/profile/${profilePic}")),
                       Text("${authBerita}",
                           style: TextStyle(fontSize: size.DescTextKecil.sp))
                     ],

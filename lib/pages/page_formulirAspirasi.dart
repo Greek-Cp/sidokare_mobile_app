@@ -7,6 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:sidokare_mobile_app/const/size.dart';
 import 'package:sidokare_mobile_app/model/response/pengajuan_aspirasi.dart';
+import 'package:sidokare_mobile_app/pages/page_BerhasilBuatLaporan.dart';
 
 import '../component/text_field.dart';
 import '../const/list_color.dart';
@@ -152,7 +153,26 @@ class _PageFormulirAspirasiState extends State<PageFormulirAspirasi> {
                                           if (fileUp!.text.toString() != "")
                                             {
                                               PengajuanAspirasi
-                                                  .uploadFileAspirasi(_file!)
+                                                      .uploadFileAspirasi(
+                                                          _file!)
+                                                  .then((value) => {
+                                                        Navigator.pushNamed(
+                                                            context,
+                                                            BerhasilBuatLaporan
+                                                                .routeName
+                                                                .toString(),
+                                                            arguments: idAkunnn
+                                                                .toString())
+                                                      })
+                                            }
+                                          else
+                                            {
+                                              Navigator.pushNamed(
+                                                  context,
+                                                  BerhasilBuatLaporan.routeName
+                                                      .toString(),
+                                                  arguments:
+                                                      idAkunnn.toString())
                                             },
                                         }
                                       else

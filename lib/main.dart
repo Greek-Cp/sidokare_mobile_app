@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sidokare_mobile_app/const/fontfix.dart';
 import 'package:sidokare_mobile_app/pages/item_nav/page_detail_berita.dart';
+import 'package:sidokare_mobile_app/pages/page_BerhasilBuatLaporan.dart';
 import 'package:sidokare_mobile_app/pages/page_berhasildaftar.dart';
 import 'package:sidokare_mobile_app/pages/page_berhasilotp.dart';
 import 'package:sidokare_mobile_app/pages/page_formulirAspirasi.dart';
@@ -51,7 +52,9 @@ class MainApp extends StatelessWidget {
           PageFormulirPengajuanKeluhan.routeName.toString(): (context) =>
               PageFormulirPengajuanKeluhan(),
           PageFormulirAspirasi.routeName.toString(): (context) =>
-              PageFormulirAspirasi()
+              PageFormulirAspirasi(),
+          BerhasilBuatLaporan.routeName.toString(): (context) =>
+              BerhasilBuatLaporan()
         },
       ),
     );

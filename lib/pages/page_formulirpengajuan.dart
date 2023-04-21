@@ -14,6 +14,7 @@ import 'package:sidokare_mobile_app/component/text_field.dart';
 import 'package:sidokare_mobile_app/const/list_color.dart';
 import 'package:sidokare_mobile_app/const/size.dart';
 import 'package:sidokare_mobile_app/model/response/pengajuan.dart';
+import 'package:sidokare_mobile_app/pages/page_BerhasilBuatLaporan.dart';
 
 import '../provider/provider_account.dart';
 
@@ -190,7 +191,26 @@ class _PageFormulirPengajuanState extends State<PageFormulirPengajuanPPID> {
                                                     PengajuanPPID
                                                             .uploadFilePPID(
                                                                 _file!)
-                                                        .then((value) => {}),
+                                                        .then((value) => {
+                                                              Navigator.pushNamed(
+                                                                  context,
+                                                                  BerhasilBuatLaporan
+                                                                      .routeName
+                                                                      .toString(),
+                                                                  arguments:
+                                                                      idAkunnn
+                                                                          .toString())
+                                                            }),
+                                                  }
+                                                else
+                                                  {
+                                                    Navigator.pushNamed(
+                                                        context,
+                                                        BerhasilBuatLaporan
+                                                            .routeName
+                                                            .toString(),
+                                                        arguments:
+                                                            idAkunnn.toString())
                                                   },
                                               }
                                             else
