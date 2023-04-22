@@ -7,7 +7,9 @@ import 'package:sidokare_mobile_app/const/size.dart';
 import 'package:rotated_corner_decoration/rotated_corner_decoration.dart';
 import 'package:sidokare_mobile_app/model/response/berita.dart';
 import 'package:sidokare_mobile_app/pages/item_nav/page_detail_berita.dart';
+import 'package:sidokare_mobile_app/provider/provider_account.dart';
 import '../../../const/list_color.dart';
+import 'package:provider/provider.dart';
 
 class PagePemerintahanDesa extends StatefulWidget {
   @override
@@ -28,7 +30,9 @@ class _PagePemerintahanDesaState extends State<PagePemerintahanDesa> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
+
     listBerita = fetchBeritaKustom("ktg_berita03");
+    final provider = Provider.of<ProviderAccount>(context);
     return Scaffold(
       body: Padding(
           padding: const EdgeInsets.all(0.0),
@@ -51,6 +55,7 @@ class _PagePemerintahanDesaState extends State<PagePemerintahanDesa> {
                       itemBuilder: (context, index) {
                         return GestureDetector(
                           onTap: () {
+                            provider.setBerita(data[index]);
                             Navigator.of(context).pushNamed(
                                 PageDetailBerita.routeName,
                                 arguments: {

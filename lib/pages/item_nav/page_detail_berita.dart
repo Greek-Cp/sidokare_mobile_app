@@ -3,10 +3,16 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import 'package:sidokare_mobile_app/component/jenis_button.dart';
 import 'package:sidokare_mobile_app/component/text_field.dart';
 import 'package:sidokare_mobile_app/const/list_color.dart';
 import 'package:sidokare_mobile_app/const/size.dart';
+import 'package:sidokare_mobile_app/model/response/berita.dart';
+import 'package:sidokare_mobile_app/model/response/get/controller_get.dart';
+import 'package:sidokare_mobile_app/model/response/modelkomentar.dart';
+import 'package:sidokare_mobile_app/model/response/modelkomentarlist.dart';
+import 'package:sidokare_mobile_app/provider/provider_account.dart';
 
 import '../../const/const.dart';
 
@@ -25,6 +31,7 @@ class _PageDetailBeritaState extends State<PageDetailBerita> {
   double screenHeight = 0;
   double screenWidth = 0;
 
+  late Future<ModelKomentarList> future;
   @override
   void initState() {
     // TODO: implement initState
@@ -40,18 +47,24 @@ class _PageDetailBeritaState extends State<PageDetailBerita> {
   Widget build(BuildContext context) {
     // TODO: implement build
     receiveData = ModalRoute.of(context)?.settings.arguments as Map;
-    String judul_berita = receiveData?['judul'];
-    String isi_berita = receiveData?['isi_berita'];
-    String gambar_utama = receiveData?['gambar_utama'];
-    String fotoProfile = receiveData?['profile_pengupload'];
-    String namaProfile = receiveData?['nama_pengupload'];
-    //convert
+    final provider = Provider.of<ProviderAccount>(context);
+    Berita berita = provider.getBerita;
 
-    String tanggal_publikasi = receiveData?['tanggal_publikasi'];
+    String judul_berita = berita.judulBerita.toString();
+    String isi_berita = berita.isiBerita.toString();
+    String gambar_utama = berita.foto.toString();
+    String fotoProfile = berita.foto_profile.toString();
+    String namaProfile = berita.namaUpload.toString();
+    String idBerita = berita.idBerita.toString();
+    print(idBerita.toString());
+    future = ControllerAPI.getKomentar(idBerita);
+    String idAkun = provider.id_akun.toString();
+
+    String tanggal_publikasi = berita.tanggalPublikasi.toString();
     DateTime tempDate =
         new DateFormat("yyyy-MM-dd hh:mm:ss").parse(tanggal_publikasi);
     String HasilFormatTgl = DateFormat('yyyy-MM-dd').format(tempDate);
-    String gambar_lain = receiveData?['gambar_lain'];
+    String gambar_lain = berita.unggahFileLain.toString();
     screenHeight = MediaQuery.of(context).size.height;
     screenWidth = MediaQuery.of(context).size.width;
     double opacity = 0.0;
@@ -130,10 +143,33 @@ class _PageDetailBeritaState extends State<PageDetailBerita> {
                       ),
                     ),
                   ),
-                  AnimationConfiguration.synchronized(
-                      child: ScaleAnimation(
-                          duration: Duration(milliseconds: 700),
-                          child: _CommentItemUser())),
+                  Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Text(
+                      "Komentar Berita",
+                      textAlign: TextAlign.left,
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: size.HeaderText.sp),
+                    ),
+                  ),
+                  FutureBuilder<ModelKomentarList>(
+                    future: future,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        return ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: snapshot.data!.data!.length,
+                          itemBuilder: (context, index) {
+                            return _CommentItemUser(
+                                snapshot.data!.data![index]);
+                          },
+                        );
+                      } else {
+                        return CircularProgressIndicator();
+                      }
+                    },
+                  ),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 20.h),
                     child: AnimationConfiguration.synchronized(
@@ -153,7 +189,8 @@ class _PageDetailBeritaState extends State<PageDetailBerita> {
                   AnimationConfiguration.synchronized(
                       child: ScaleAnimation(
                     duration: Duration(milliseconds: 700),
-                    child: _isiKomen(),
+                    child: _isiKomen(
+                        idAkun, idBerita, isi_berita, "2023-04-11 11:28:12"),
                   ))
                 ]),
               )
@@ -164,19 +201,13 @@ class _PageDetailBeritaState extends State<PageDetailBerita> {
     );
   }
 
-  Widget _CommentItemUser() {
+  Widget _CommentItemUser(DataBerita data) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 20.h, vertical: 10.h),
       child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              "Komentar Berita",
-              textAlign: TextAlign.left,
-              style: TextStyle(
-                  fontWeight: FontWeight.bold, fontSize: size.HeaderText.sp),
-            ),
             SizedBox(
               height: 10.h,
             ),
@@ -192,7 +223,7 @@ class _PageDetailBeritaState extends State<PageDetailBerita> {
                 ),
                 Expanded(
                   child: Text(
-                    "Deva Arie",
+                    data.idAkun.toString(),
                     style: TextStyle(
                         fontSize: size.SubHeader.sp,
                         fontWeight: FontWeight.bold),
@@ -205,7 +236,7 @@ class _PageDetailBeritaState extends State<PageDetailBerita> {
               height: 10.h,
             ),
             Text(
-              "Jika Anda menjadi panitia dan masih bingung ingin mengadakan apa, simak 20 ide lomba 17 Agustus yang seru dan menarik berikut ini.",
+              data.isiKomentar.toString(),
               style: TextStyle(fontSize: size.sizeDescriptionPas.sp),
             )
           ]),
@@ -314,7 +345,12 @@ class _PageDetailBeritaState extends State<PageDetailBerita> {
     );
   }
 
-  Widget _isiKomen() {
+  TextEditingController? texteditingControllerNama = TextEditingController();
+  TextEditingController? texteditingControllerMasukkanKomenta =
+      TextEditingController();
+
+  Widget _isiKomen(String id_akun, id_berita, isi_komentar, waktuBerkomentar) {
+    print("Isi Komentar");
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
       child: Form(
@@ -331,21 +367,34 @@ class _PageDetailBeritaState extends State<PageDetailBerita> {
               ),
               Padding(
                 padding: EdgeInsets.symmetric(vertical: 10.h),
-                child: textFieldResponsive(hint: "Nama", radiusCorner: 10),
+                child: textFieldResponsive(
+                    hint: "Nama",
+                    radiusCorner: 10,
+                    controllerText: texteditingControllerNama),
               ),
               Padding(
                   padding: EdgeInsets.symmetric(vertical: 5.h),
-                  child:
-                      textFieldMultiLineResponsive(hint: "Masukkan Komentar")),
-              ButtonForm("Kirim Komentar", _formKey, KirimPesan()),
+                  child: textFieldMultiLineResponsive(
+                      hint: "Masukkan Komentar",
+                      controllerText: texteditingControllerMasukkanKomenta)),
+              ElevatedButton(
+                  onPressed: () {
+                    Future<ModelKomentar> d = ControllerAPI.buatKomentar(
+                        id_akun, id_berita, isi_komentar, waktuBerkomentar);
+                  },
+                  child: Text("Insert"))
             ],
           )),
     );
   }
 
   Widget textFieldResponsive(
-      {String? hint, double radiusCorner = 10, TextInputControl? controller}) {
+      {String? hint,
+      double radiusCorner = 10,
+      TextInputControl? controller,
+      TextEditingController? controllerText}) {
     return TextFormField(
+        controller: controllerText,
         style: TextStyle(fontSize: size.textButton.sp),
         decoration: InputDecoration(
           contentPadding: EdgeInsets.only(
@@ -357,8 +406,12 @@ class _PageDetailBeritaState extends State<PageDetailBerita> {
   }
 
   Widget textFieldMultiLineResponsive(
-      {String? hint, double radiusCorner = 10, TextInputControl? controller}) {
+      {String? hint,
+      double radiusCorner = 10,
+      TextInputControl? controller,
+      TextEditingController? controllerText}) {
     return TextFormField(
+        controller: controllerText,
         style: TextStyle(fontSize: size.textButton.sp),
         minLines: 3,
         maxLines: 8,
@@ -369,5 +422,5 @@ class _PageDetailBeritaState extends State<PageDetailBerita> {
         ));
   }
 
-  KirimPesan() {}
+  KirimPesan(String id_akun, id_berita, isi_komentar, waktuBerkomentar) {}
 }

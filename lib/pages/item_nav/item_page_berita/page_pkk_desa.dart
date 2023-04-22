@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:provider/provider.dart';
 import 'package:sidokare_mobile_app/const/size.dart';
 import 'package:rotated_corner_decoration/rotated_corner_decoration.dart';
 import 'package:sidokare_mobile_app/model/response/berita.dart';
+import 'package:sidokare_mobile_app/provider/provider_account.dart';
 import '../../../const/list_color.dart';
 import '../page_detail_berita.dart';
 import 'package:intl/intl.dart' as intl;
@@ -27,6 +29,8 @@ class PagePKKDesaState extends State<PagePKK> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
+    final provider = Provider.of<ProviderAccount>(context);
+
     listBerita = fetchBeritaKustom("ktg_berita02");
     return Scaffold(
       body: Padding(
@@ -50,6 +54,8 @@ class PagePKKDesaState extends State<PagePKK> {
                       itemBuilder: (context, index) {
                         return GestureDetector(
                           onTap: () {
+                            provider.setBerita(data[index]);
+
                             Navigator.of(context).pushNamed(
                                 PageDetailBerita.routeName,
                                 arguments: {

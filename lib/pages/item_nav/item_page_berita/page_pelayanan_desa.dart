@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:provider/provider.dart';
 import 'package:sidokare_mobile_app/const/size.dart';
 import 'package:rotated_corner_decoration/rotated_corner_decoration.dart';
 import 'package:sidokare_mobile_app/model/response/berita.dart';
+import 'package:sidokare_mobile_app/provider/provider_account.dart';
 import '../../../const/list_color.dart';
 
 class pagePelayananDesa extends StatefulWidget {
@@ -24,6 +26,7 @@ class _pagePelayananDesaState extends State<pagePelayananDesa> {
 
   @override
   Widget build(BuildContext context) {
+    final provider = Provider.of<ProviderAccount>(context);
     // TODO: implement build
     listBerita = fetchBeritaKustom("ktg_berita01");
     return Scaffold(
@@ -46,6 +49,7 @@ class _pagePelayananDesaState extends State<pagePelayananDesa> {
                           .length, // menggunakan panjang data dari List<Berita> yang telah diambil dari snapshot
                       shrinkWrap: true,
                       itemBuilder: (context, index) {
+                        provider.setBerita(data[index]);
                         return AnimationConfiguration.staggeredList(
                             position: index,
                             duration: const Duration(milliseconds: 375),

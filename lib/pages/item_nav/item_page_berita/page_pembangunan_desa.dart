@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:provider/provider.dart';
 import 'package:sidokare_mobile_app/const/size.dart';
 import 'package:rotated_corner_decoration/rotated_corner_decoration.dart';
 import 'package:sidokare_mobile_app/model/response/berita.dart';
+import 'package:sidokare_mobile_app/provider/provider_account.dart';
 import '../../../const/list_color.dart';
 import '../page_detail_berita.dart';
 import 'package:intl/intl.dart' as intl;
@@ -28,6 +30,7 @@ class _PagePembangunanDesaState extends State<PagePembangunanDesa> {
   Widget build(BuildContext context) {
     // TODO: implement build
     listBerita = fetchBeritaKustom("ktg_berita05");
+    final provider = Provider.of<ProviderAccount>(context);
     return Scaffold(
       body: Padding(
           padding: const EdgeInsets.all(0.0),
@@ -53,6 +56,7 @@ class _PagePembangunanDesaState extends State<PagePembangunanDesa> {
                             duration: const Duration(milliseconds: 375),
                             child: GestureDetector(
                               onTap: () {
+                                provider.setBerita(data[index]);
                                 Navigator.of(context).pushNamed(
                                     PageDetailBerita.routeName,
                                     arguments: {

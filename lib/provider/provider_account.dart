@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sidokare_mobile_app/model/model_account.dart';
 import 'package:collection/collection.dart';
+import 'package:sidokare_mobile_app/model/response/berita.dart';
 
 class ProviderAccount extends ChangeNotifier {
   int? id_akun;
@@ -12,6 +13,13 @@ class ProviderAccount extends ChangeNotifier {
   }
 
   get getIdAkun => id_akun;
+  Berita? beritaSelected;
+  void setBerita(Berita? berita) {
+    this.beritaSelected = berita;
+    notifyListeners();
+  }
+
+  get getBerita => beritaSelected;
 
   List<ModelAccount> listAccount = [];
 
