@@ -58,6 +58,7 @@ class _PageStatusState extends State<PageStatus>
   Widget build(BuildContext context) {
     // TODO: implement build
     final providerAccount = Provider.of<ProviderAccount>(context);
+    print("Id akunnya adalah berapa ? = ${providerAccount.getIdAkun}");
     return ScreenUtilInit(
       builder: (context, child) {
         return Scaffold(

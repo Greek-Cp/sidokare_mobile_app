@@ -26,6 +26,8 @@ class PageDetailBerita extends StatefulWidget {
 class _PageDetailBeritaState extends State<PageDetailBerita> {
   final _formKey = GlobalKey<FormState>();
   TextEditingController getNama = TextEditingController();
+  TextEditingController? getKomen = TextEditingController();
+
   Map? receiveData;
   bool startAnimation = false;
   double screenHeight = 0;
@@ -56,6 +58,8 @@ class _PageDetailBeritaState extends State<PageDetailBerita> {
     String fotoProfile = berita.foto_profile.toString();
     String namaProfile = berita.namaUpload.toString();
     String idBerita = berita.idBerita.toString();
+    String namaKategori = berita.namaKategoriBerita.toString();
+    print("Nama Kategori == ${namaKategori}");
     print(idBerita.toString());
     future = ControllerAPI.getKomentar(idBerita);
     String idAkun = provider.id_akun.toString();
@@ -63,7 +67,7 @@ class _PageDetailBeritaState extends State<PageDetailBerita> {
     String tanggal_publikasi = berita.tanggalPublikasi.toString();
     DateTime tempDate =
         new DateFormat("yyyy-MM-dd hh:mm:ss").parse(tanggal_publikasi);
-    String HasilFormatTgl = DateFormat('yyyy-MM-dd').format(tempDate);
+    String HasilFormatTgl = DateFormat('dd MMM, yyyy').format(tempDate);
     String gambar_lain = berita.unggahFileLain.toString();
     screenHeight = MediaQuery.of(context).size.height;
     screenWidth = MediaQuery.of(context).size.width;
@@ -119,12 +123,10 @@ class _PageDetailBeritaState extends State<PageDetailBerita> {
                       child: SlideAnimation(
                           verticalOffset: -200,
                           child: _HeaderJudul(judul_berita))),
-                  _ListMbu(
-                    kategoriBerita: "Pemerintah Desa",
-                  ),
                   _ListBerita(
                       tanggalBerita: HasilFormatTgl.toString(),
                       profilePic: fotoProfile.toString(),
+                      namaKategori: namaKategori,
                       authBerita: "${namaProfile.toString()}"),
                   _isiBerita(isiBerita: isi_berita),
                   Padding(
@@ -144,13 +146,22 @@ class _PageDetailBeritaState extends State<PageDetailBerita> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: Text(
-                      "Komentar Berita",
-                      textAlign: TextAlign.left,
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: size.HeaderText.sp),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20.0, vertical: 10.0),
+                    child: AnimationConfiguration.synchronized(
+                      child: FadeInAnimation(
+                        duration: Duration(milliseconds: 700),
+                        child: ScaleAnimation(
+                          duration: Duration(milliseconds: 700),
+                          child: Text(
+                            "Komentar Berita",
+                            textAlign: TextAlign.left,
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: size.HeaderText.sp),
+                          ),
+                        ),
+                      ),
                     ),
                   ),
                   FutureBuilder<ModelKomentarList>(
@@ -161,8 +172,16 @@ class _PageDetailBeritaState extends State<PageDetailBerita> {
                           shrinkWrap: true,
                           itemCount: snapshot.data!.data!.length,
                           itemBuilder: (context, index) {
-                            return _CommentItemUser(
-                                snapshot.data!.data![index]);
+                            return AnimationConfiguration.synchronized(
+                              child: FadeInAnimation(
+                                duration: Duration(milliseconds: 700),
+                                child: ScaleAnimation(
+                                  duration: Duration(milliseconds: 700),
+                                  child: _CommentItemUser(
+                                      snapshot.data!.data![index]),
+                                ),
+                              ),
+                            );
                           },
                         );
                       } else {
@@ -190,7 +209,11 @@ class _PageDetailBeritaState extends State<PageDetailBerita> {
                       child: ScaleAnimation(
                     duration: Duration(milliseconds: 700),
                     child: _isiKomen(
-                        idAkun, idBerita, isi_berita, "2023-04-11 11:28:12"),
+                      idAkun,
+                      idBerita,
+                      getKomen?.text.toString(),
+                      "2023-04-11 11:28:12",
+                    ),
                   ))
                 ]),
               )
@@ -216,20 +239,24 @@ class _PageDetailBeritaState extends State<PageDetailBerita> {
                 SizedBox(
                   height: 20.h,
                   width: 20.w,
-                  child: CircleAvatar(backgroundColor: Colors.red),
+                  child: CircleAvatar(
+                    backgroundColor: Colors.red,
+                    backgroundImage: NetworkImage(
+                        "http://${ApiPoint.BASE_URL}/storage/profile/${data.profilePicKomen.toString()}"),
+                  ),
                 ),
                 SizedBox(
                   width: 10.w,
                 ),
                 Expanded(
                   child: Text(
-                    data.idAkun.toString(),
+                    data.namaPengkomen.toString(),
                     style: TextStyle(
                         fontSize: size.SubHeader.sp,
                         fontWeight: FontWeight.bold),
                   ),
                 ),
-                Icon(Icons.menu_sharp)
+                Icon(Icons.more_vert_outlined)
               ],
             ),
             SizedBox(
@@ -264,38 +291,44 @@ class _PageDetailBeritaState extends State<PageDetailBerita> {
   }
 
   Widget _ListBerita(
-      {String? tanggalBerita, String? authBerita, String? profilePic}) {
+      {String? tanggalBerita,
+      String? authBerita,
+      String? profilePic,
+      String? namaKategori}) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 18.h),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          AnimationConfiguration.synchronized(
-              duration: Duration(milliseconds: 700),
-              child: SlideAnimation(
-                horizontalOffset: -500,
-                child: Text(
-                  "Tanggal Publikasi : ${tanggalBerita}",
-                  style: TextStyle(fontSize: size.DescTextKecil.sp),
+        padding: EdgeInsets.symmetric(horizontal: 0.h),
+        child: AnimationConfiguration.synchronized(
+          child: ScaleAnimation(
+            duration: Duration(milliseconds: 700),
+            child: Column(
+              children: [
+                ListTile(
+                  leading: CircleAvatar(
+                      radius: 20,
+                      backgroundImage: NetworkImage(
+                          "http://${ApiPoint.BASE_URL}/storage/profile/${profilePic}")),
+                  title: Text("${authBerita}"),
+                  subtitle: Text("${tanggalBerita}"),
+                  trailing: Card(
+                    color: Color.fromARGB(255, 236, 241, 255),
+                    child: Padding(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 10.h, vertical: 5.h),
+                      child: Text(
+                        "${namaKategori}",
+                        style: TextStyle(fontSize: size.DescTextKecil.sp),
+                      ),
+                    ),
+                  ),
                 ),
-              )),
-          AnimationConfiguration.synchronized(
-              duration: Duration(milliseconds: 700),
-              child: SlideAnimation(
-                  horizontalOffset: 500,
-                  child: Row(
-                    children: [
-                      CircleAvatar(
-                          radius: 10,
-                          backgroundImage: NetworkImage(
-                              "http://${ApiPoint.BASE_URL}/storage/profile/${profilePic}")),
-                      Text("${authBerita}",
-                          style: TextStyle(fontSize: size.DescTextKecil.sp))
-                    ],
-                  ))),
-        ],
-      ),
-    );
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                  child: Divider(),
+                )
+              ],
+            ),
+          ),
+        ));
   }
 
   Widget _ListMbu({String? kategoriBerita}) {
@@ -345,10 +378,6 @@ class _PageDetailBeritaState extends State<PageDetailBerita> {
     );
   }
 
-  TextEditingController? texteditingControllerNama = TextEditingController();
-  TextEditingController? texteditingControllerMasukkanKomenta =
-      TextEditingController();
-
   Widget _isiKomen(String id_akun, id_berita, isi_komentar, waktuBerkomentar) {
     print("Isi Komentar");
     return Padding(
@@ -366,23 +395,17 @@ class _PageDetailBeritaState extends State<PageDetailBerita> {
                 ),
               ),
               Padding(
-                padding: EdgeInsets.symmetric(vertical: 10.h),
-                child: textFieldResponsive(
-                    hint: "Nama",
-                    radiusCorner: 10,
-                    controllerText: texteditingControllerNama),
-              ),
-              Padding(
                   padding: EdgeInsets.symmetric(vertical: 5.h),
                   child: textFieldMultiLineResponsive(
-                      hint: "Masukkan Komentar",
-                      controllerText: texteditingControllerMasukkanKomenta)),
+                      hint: "Masukkan Komentar", controllerText: getKomen)),
               ElevatedButton(
                   onPressed: () {
                     Future<ModelKomentar> d = ControllerAPI.buatKomentar(
-                        id_akun, id_berita, isi_komentar, waktuBerkomentar);
+                        id_akun, id_berita, getKomen!.text, waktuBerkomentar);
                   },
-                  child: Text("Insert"))
+                  style: ElevatedButton.styleFrom(
+                      minimumSize: Size.fromHeight(45.h)),
+                  child: Text("Kirim Komentar"))
             ],
           )),
     );
@@ -408,7 +431,6 @@ class _PageDetailBeritaState extends State<PageDetailBerita> {
   Widget textFieldMultiLineResponsive(
       {String? hint,
       double radiusCorner = 10,
-      TextInputControl? controller,
       TextEditingController? controllerText}) {
     return TextFormField(
         controller: controllerText,
@@ -421,6 +443,4 @@ class _PageDetailBeritaState extends State<PageDetailBerita> {
               borderRadius: BorderRadius.circular(radiusCorner.h)),
         ));
   }
-
-  KirimPesan(String id_akun, id_berita, isi_komentar, waktuBerkomentar) {}
 }

@@ -41,7 +41,7 @@ class _itemListStatusAspirasiState extends State<itemListStatusAspirasi> {
                   itemBuilder: (context, index) {
                     return _containerListStatus(
                         judul_pengajuan: snapshot
-                            .data!.data![index].idPengajuanAspirasi
+                            .data!.data![index].judulAspirasi
                             .toString(),
                         isi_pengajuan: snapshot.data!.data![index].isiAspirasi);
                   },

@@ -39,6 +39,10 @@ class ControllerAPI {
 
   static Future<ModelKomentar> buatKomentar(String idAkun, String idBerita,
       String isiKomentar, String waktuBerkomentar) async {
+    print("tes idAkun = ${idAkun}");
+    print("tes idBerita = ${idBerita}");
+    print("tes isiKomentar= ${isiKomentar}");
+    print("tes Waktu = ${waktuBerkomentar}");
     String? baseURL = ApiPoint.BASE_URL;
     String url = "http://${baseURL}/api/komentar/buatkomentar";
     Uri uri = Uri.parse(url);
@@ -48,6 +52,7 @@ class ControllerAPI {
       'isi_komentar': isiKomentar,
       'waktu_berkomentar': waktuBerkomentar
     });
+    print(jsonDecode(res.body));
     return ModelKomentar.fromJson(jsonDecode(res.body));
   }
 

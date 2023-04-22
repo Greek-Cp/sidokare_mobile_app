@@ -179,25 +179,6 @@ class _PagePemberdayaanMasyarakatState
                 )
               ],
             ),
-            Card(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10)),
-              elevation: 0,
-              child: Padding(
-                padding: EdgeInsets.symmetric(),
-                child: Container(
-                  width: 30.w,
-                  height: 30.h,
-                  child: IconButton(
-                    iconSize: 20,
-                    onPressed: () {},
-                    icon: Icon(Icons.send),
-                    alignment: Alignment.topRight,
-                    padding: EdgeInsets.all(0),
-                  ),
-                ),
-              ),
-            )
           ],
         ),
       ),

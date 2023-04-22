@@ -127,11 +127,13 @@ class _PageUtamaState extends State<PageUtama> {
   }
 
   List<String> listPengajuan = ["PPID", "Keluhan", "Aspirasi", "Status"];
+  late ProviderAccount providerDiri;
   @override
   Widget build(BuildContext context) {
     screenHeight = MediaQuery.of(context).size.height;
     screenWidth = MediaQuery.of(context).size.width;
     final id = ModalRoute.of(context)?.settings.arguments as int;
+    providerDiri = Provider.of<ProviderAccount>(context);
 
     final DataDiri = Provider.of<ProviderAccount>(context)
         .GetDataDiri
@@ -542,6 +544,7 @@ class _PageUtamaState extends State<PageUtama> {
             color: Colors.white,
             child: InkWell(
               onTap: () => {
+                providerDiri.setBerita(berita),
                 Navigator.of(context)
                     .pushNamed(PageDetailBerita.routeName, arguments: {
                   "judul": judul,
@@ -628,21 +631,6 @@ class _PageUtamaState extends State<PageUtama> {
                               ],
                             ),
                           ),
-                          Card(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10)),
-                            color: ListColor.warnaBackgroundIcon,
-                            child: Padding(
-                              padding: EdgeInsets.all(3.0.h),
-                              child: Container(
-                                width: 30.w,
-                                height: 30.h,
-                                child: Icon(
-                                  Icons.wysiwyg,
-                                ),
-                              ),
-                            ),
-                          )
                         ],
                       ),
                     ),

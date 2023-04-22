@@ -13,6 +13,7 @@ class Berita {
   final String? namaUpload;
   final String? unggahFileLain;
   final String? judulBerita;
+  final String? namaKategoriBerita;
 
   Berita(
       {required this.idBerita,
@@ -24,7 +25,8 @@ class Berita {
       required this.unggahFileLain,
       required this.judulBerita,
       required this.foto_profile,
-      required this.namaUpload});
+      required this.namaUpload,
+      required this.namaKategoriBerita});
 
   factory Berita.fromJson(Map<String, dynamic> json) {
     return Berita(
@@ -37,7 +39,8 @@ class Berita {
         unggahFileLain: json['unggah_file_lain'],
         judulBerita: json['judul_berita'],
         foto_profile: json['profile_img'],
-        namaUpload: json['nama']);
+        namaUpload: json['nama'],
+        namaKategoriBerita: json['nama_kategori']);
   }
 }
 

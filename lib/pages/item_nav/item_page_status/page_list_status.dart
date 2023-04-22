@@ -38,9 +38,8 @@ class _itemListStatusState extends State<itemListStatus> {
               return ListView.builder(
                   itemBuilder: (context, index) {
                     return _containerListStatus(
-                        judul_pengajuan: snapshot
-                            .data!.data![index].idPengajuanPpid
-                            .toString(),
+                        judul_pengajuan:
+                            snapshot.data!.data![index].judulLaporan.toString(),
                         isi_pengajuan: snapshot.data!.data![index].isiLaporan);
                   },
                   itemCount: snapshot.data!.data!.length);

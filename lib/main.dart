@@ -13,6 +13,7 @@ import 'package:sidokare_mobile_app/pages/page_inputotp.dart';
 import 'package:sidokare_mobile_app/pages/page_introawal.dart';
 import 'package:sidokare_mobile_app/pages/page_login.dart';
 import 'package:sidokare_mobile_app/pages/page_lupasandi.dart';
+import 'package:sidokare_mobile_app/pages/page_profileSettings.dart';
 import 'package:sidokare_mobile_app/pages/page_register.dart';
 import 'package:sidokare_mobile_app/pages/page_ubahsandi.dart';
 import 'package:sidokare_mobile_app/provider/provider_account.dart';
@@ -33,7 +34,7 @@ class MainApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: ThemeData(fontFamily: fontfix.DmSansBruh),
-        initialRoute: SplashScreen.routeName.toString(),
+        initialRoute: PageProfileUser.routeName.toString(),
         routes: {
           UbahSandi.routeName.toString(): (context) => UbahSandi(),
           berhasilOtp.routeName.toString(): (context) => berhasilOtp(),
@@ -54,7 +55,8 @@ class MainApp extends StatelessWidget {
           PageFormulirAspirasi.routeName.toString(): (context) =>
               PageFormulirAspirasi(),
           BerhasilBuatLaporan.routeName.toString(): (context) =>
-              BerhasilBuatLaporan()
+              BerhasilBuatLaporan(),
+          PageProfileUser.routeName.toString(): (context) => PageProfileUser()
         },
       ),
     );

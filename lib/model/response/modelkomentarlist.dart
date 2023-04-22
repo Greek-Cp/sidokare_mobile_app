@@ -33,13 +33,17 @@ class DataBerita {
   int? idBerita;
   String? isiKomentar;
   String? waktuBerkomentar;
+  String? namaPengkomen;
+  String? profilePicKomen;
 
   DataBerita(
       {this.idKomentar,
       this.idAkun,
       this.idBerita,
       this.isiKomentar,
-      this.waktuBerkomentar});
+      this.waktuBerkomentar,
+      this.namaPengkomen,
+      this.profilePicKomen});
 
   DataBerita.fromJson(Map<String, dynamic> json) {
     idKomentar = json['id_komentar'];
@@ -47,6 +51,8 @@ class DataBerita {
     idBerita = json['id_berita'];
     isiKomentar = json['isi_komentar'];
     waktuBerkomentar = json['waktu_berkomentar'];
+    namaPengkomen = json['nama'];
+    profilePicKomen = json['profile_img'];
   }
 
   Map<String, dynamic> toJson() {

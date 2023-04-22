@@ -29,6 +29,7 @@ class _itemListStatusKeluhanState extends State<itemListStatusKeluhan> {
     // TODO: implement build
     final provider = Provider.of<ProviderAccount>(context);
     listData = ControllerAPI.getStatusKELUHAN(provider.getIdAkun);
+    print("Pada keluhannn ${provider.getIdAkun}");
 
     return Scaffold(
       body: Center(
@@ -39,9 +40,8 @@ class _itemListStatusKeluhanState extends State<itemListStatusKeluhan> {
               return ListView.builder(
                   itemBuilder: (context, index) {
                     return _containerListStatus(
-                        judul_pengajuan: snapshot
-                            .data!.data![index].idPengajuanKeluhan
-                            .toString(),
+                        judul_pengajuan:
+                            snapshot.data!.data![index].judulLaporan.toString(),
                         isi_pengajuan: snapshot.data!.data![index].isiLaporan);
                   },
                   itemCount: snapshot.data!.data!.length);
