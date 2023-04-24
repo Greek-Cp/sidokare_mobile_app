@@ -39,6 +39,7 @@ class _PageLoginState extends State<PageLogin> {
     return ScreenUtilInit(
       builder: (context, child) {
         return Scaffold(
+          resizeToAvoidBottomInset: true,
           body: Center(
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 20.0.h),
@@ -129,7 +130,9 @@ class _PageLoginState extends State<PageLogin> {
                                                     value.id_akun!,
                                                     value.nama_lengkap!,
                                                     value.nik!,
-                                                    value.namaProfile!),
+                                                    value.namaProfile!,
+                                                    value.nomor_telepon!,
+                                                    value.email!),
                                                 providerAccount.setIdAkun(
                                                     value.id_akun!.toInt()),
                                                 Navigator.pushNamed(

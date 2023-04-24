@@ -26,6 +26,7 @@ import 'package:http/http.dart' as http;
 import 'package:sidokare_mobile_app/model/response/get/response_jumlahLaporan.dart';
 import 'package:sidokare_mobile_app/pages/page_formulirAspirasi.dart';
 import 'package:sidokare_mobile_app/pages/page_formulirKeluhan.dart';
+import 'package:sidokare_mobile_app/pages/page_profileSettings.dart';
 import '../../const/const.dart';
 import '../../provider/provider_account.dart';
 import '../page_formulirpengajuan.dart';
@@ -46,6 +47,7 @@ class _PageUtamaState extends State<PageUtama> {
 
   late Future<List<Berita>> listBerita;
   late Future<List<Berita>> listBerita2;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -186,9 +188,23 @@ class _PageUtamaState extends State<PageUtama> {
                             child: Container(
                               width: 41.w,
                               height: 41.h,
-                              child: CircleAvatar(
-                                backgroundImage: NetworkImage(
-                                    "http://${ApiPoint.BASE_URL}/storage/profile/${DataDiri.urlGambar}"),
+                              child: GestureDetector(
+                                onTap: () {
+                                  providerDiri
+                                      .setIdAkun(DataDiri.id_akun!.toInt());
+                                  print(
+                                      "Kontol memek ${DataDiri.urlGambar?.replaceAll("'", "")}");
+                                  Navigator.pushNamed(context,
+                                      PageProfileUser.routeName.toString(),
+                                      arguments: id);
+                                },
+                                child: Container(
+                                  width: 40.w,
+                                  child: CircleAvatar(
+                                    backgroundImage: NetworkImage(
+                                        "http://${ApiPoint.BASE_URL}/storage/profile/${DataDiri.urlGambar?.replaceAll("'", "")}"),
+                                  ),
+                                ),
                               ),
                             ),
                           ),

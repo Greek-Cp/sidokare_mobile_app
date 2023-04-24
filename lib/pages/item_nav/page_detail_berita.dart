@@ -1,3 +1,4 @@
+import 'package:bottom_bar_matu/utils/app_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -32,6 +33,8 @@ class _PageDetailBeritaState extends State<PageDetailBerita> {
   bool startAnimation = false;
   double screenHeight = 0;
   double screenWidth = 0;
+
+  List<DataBerita>? BeritaList = [];
 
   late Future<ModelKomentarList> future;
   @override
@@ -80,7 +83,10 @@ class _PageDetailBeritaState extends State<PageDetailBerita> {
               SliverAppBar(
                 leading: IconButton(
                   icon: Icon(Icons.arrow_back),
-                  onPressed: () => {Navigator.pop(context)},
+                  onPressed: () {
+                    FocusManager.instance.primaryFocus!.unfocus();
+                    Navigator.pop(context);
+                  },
                 ),
                 elevation: 10,
                 shadowColor: ListColor.warnaBiruSidoKare,
@@ -168,9 +174,11 @@ class _PageDetailBeritaState extends State<PageDetailBerita> {
                     future: future,
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
+                        BeritaList = snapshot.data!.data!;
                         return ListView.builder(
                           shrinkWrap: true,
-                          itemCount: snapshot.data!.data!.length,
+                          physics: NeverScrollableScrollPhysics(),
+                          itemCount: BeritaList!.length,
                           itemBuilder: (context, index) {
                             return AnimationConfiguration.synchronized(
                               child: FadeInAnimation(
@@ -209,11 +217,12 @@ class _PageDetailBeritaState extends State<PageDetailBerita> {
                       child: ScaleAnimation(
                     duration: Duration(milliseconds: 700),
                     child: _isiKomen(
-                      idAkun,
-                      idBerita,
-                      getKomen?.text.toString(),
-                      "2023-04-11 11:28:12",
-                    ),
+                        idAkun,
+                        idBerita,
+                        getKomen?.text.toString(),
+                        "2023-04-11 11:28:12",
+                        namaProfile.toString(),
+                        fotoProfile.toString()),
                   ))
                 ]),
               )
@@ -378,7 +387,8 @@ class _PageDetailBeritaState extends State<PageDetailBerita> {
     );
   }
 
-  Widget _isiKomen(String id_akun, id_berita, isi_komentar, waktuBerkomentar) {
+  Widget _isiKomen(
+      String id_akun, id_berita, isi_komentar, waktuBerkomentar, nama, profil) {
     print("Isi Komentar");
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
@@ -400,6 +410,16 @@ class _PageDetailBeritaState extends State<PageDetailBerita> {
                       hint: "Masukkan Komentar", controllerText: getKomen)),
               ElevatedButton(
                   onPressed: () {
+                    setState(() {
+                      BeritaList!.add(DataBerita(
+                          idAkun: id_akun.toInt(),
+                          idBerita: id_berita.toString().toInt(),
+                          isiKomentar: getKomen!.text,
+                          waktuBerkomentar: waktuBerkomentar,
+                          namaPengkomen: nama,
+                          profilePicKomen: profil));
+                    });
+
                     Future<ModelKomentar> d = ControllerAPI.buatKomentar(
                         id_akun, id_berita, getKomen!.text, waktuBerkomentar);
                   },
