@@ -71,6 +71,19 @@ class HttpStatefull {
     return HttpStatefull(code: data['code'], message: data['message']);
   }
 
+  static Future<HttpStatefull> UpdateProfileSaja(
+      {String? idAkun, String? namaProfile, String? NomorTelp}) async {
+    Uri url =
+        Uri.parse("http://${ApiPoint.BASE_URL}/api/Profile/UpdateDataSaja");
+    var hasilResponse = await http.post(url, body: {
+      "id_akun": idAkun,
+      "nama": namaProfile,
+      "nomor_telepon": NomorTelp
+    });
+    var data = json.decode(hasilResponse.body);
+    return HttpStatefull(code: data['code'], message: data['message']);
+  }
+
   static Future<HttpStatefull> verifikasiAkun(String email) async {
     Uri url = Uri.parse("http://${ApiPoint.BASE_URL}/api/akun/verifikasi_akun");
     var HasilResponse = await http.post(url, body: {'email': email});

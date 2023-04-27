@@ -10,6 +10,7 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:sidokare_mobile_app/component/Toast.dart';
 import 'package:sidokare_mobile_app/component/text_description.dart';
 import 'package:sidokare_mobile_app/component/text_field.dart';
 import 'package:sidokare_mobile_app/const/size.dart';
@@ -210,6 +211,34 @@ class _PageProfileUserState extends State<PageProfileUser> {
               print("Telp == adalah ${getTelp?.text}");
               if (_image == null || _namaFile == "") {
                 print("Kosong");
+                HttpStatefull.UpdateProfileSaja(
+                        idAkun: idakun,
+                        namaProfile: getNama?.text.toString(),
+                        NomorTelp: getTelp?.text.toString())
+                    .then((value) => {
+                          if (value.code == 200)
+                            {
+                              print(
+                                  "Nama File Update data saja adalah ${_namaFile}"),
+                              providerAccount?.updateData(
+                                  0,
+                                  idakun.toInt(),
+                                  getNama!.text.toString(),
+                                  nik.toString(),
+                                  _namaFile == "" || _namaFile == null
+                                      ? namaGmbrHps.toString()
+                                      : _namaFile!,
+                                  getTelp!.text.toString(),
+                                  emaill.toString()),
+                              _image == null,
+                              _namaFile == null,
+                              Navigator.pushNamed(
+                                  context, HalamanUtama.routeName.toString(),
+                                  arguments: idakun.toInt()),
+                              ToastWidget.ToastSucces(
+                                  context, "Berhasil Update Data"),
+                            }
+                        });
               } else {
                 HttpStatefull.sendRequestWithFile(
                         id_akun: idakun,
@@ -227,9 +256,13 @@ class _PageProfileUserState extends State<PageProfileUser> {
                               _namaFile!,
                               getTelp!.text.toString(),
                               emaill.toString()),
+                          _image == null,
+                          _namaFile == null,
                           Navigator.pushNamed(
                               context, HalamanUtama.routeName.toString(),
-                              arguments: idakun.toInt())
+                              arguments: idakun.toInt()),
+                          ToastWidget.ToastSucces(
+                              context, "Berhasil Update Data"),
                         });
               }
             },
