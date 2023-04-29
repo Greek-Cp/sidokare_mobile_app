@@ -64,7 +64,10 @@ class _itemListStatusKeluhanState extends State<itemListStatusKeluhan> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "${judul_pengajuan}",
+              judul_pengajuan.toString().length > 20
+                  ? judul_pengajuan.toString().substring(0, 20) + '...'
+                  : "$isi_pengajuan",
+              overflow: TextOverflow.ellipsis,
               style: TextStyle(
                   fontWeight: FontWeight.bold, fontSize: size.SubHeader.sp),
             ),

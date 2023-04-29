@@ -313,9 +313,14 @@ class _PageDetailBeritaState extends State<PageDetailBerita> {
               children: [
                 ListTile(
                   leading: CircleAvatar(
-                      radius: 20,
-                      backgroundImage: NetworkImage(
-                          "http://${ApiPoint.BASE_URL}/storage/profile/${profilePic}")),
+                    radius: 20,
+                    backgroundImage: profilePic.toString() == "" ||
+                            profilePic.toString() == null
+                        ? AssetImage("assets/accountBlank.png") as ImageProvider
+                        : NetworkImage(
+                                "http://${ApiPoint.BASE_URL}/storage/profile/${profilePic.toString().replaceAll("'", "")}")
+                            as ImageProvider,
+                  ),
                   title: Text("${authBerita}"),
                   subtitle: Text("${tanggalBerita}"),
                   trailing: Card(

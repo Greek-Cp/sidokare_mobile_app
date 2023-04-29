@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:sidokare_mobile_app/const/list_color.dart';
 import 'package:sidokare_mobile_app/const/size.dart';
 import 'package:sidokare_mobile_app/component/jenis_button.dart';
 import 'package:sidokare_mobile_app/component/text_description.dart';
@@ -59,6 +60,7 @@ class IntroAwal extends StatelessWidget {
           Navigator.pushNamed(context, PageLogin.routeName.toString());
         },
         style: ElevatedButton.styleFrom(
+            backgroundColor: ListColor.warnaBiruSidoKare,
             minimumSize: Size.fromHeight(30.h),
             padding: EdgeInsets.symmetric(vertical: 18.h)),
         child: Text(

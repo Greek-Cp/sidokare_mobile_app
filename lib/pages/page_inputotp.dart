@@ -148,15 +148,15 @@ class _InputOtpState extends State<InputOtp> {
                           {
                             Navigator.popAndPushNamed(
                                 context, berhasilOtp.routeName.toString()),
-                            showDialog(
-                                context: context,
-                                builder: (context) {
-                                  return AlertDialog(
-                                    title: Text("Akun Terverifikasi"),
-                                    content: Text(
-                                        'Selamat Akun Anda Telah Terverifikasi'),
-                                  );
-                                })
+                            // showDialog(
+                            //     context: context,
+                            //     builder: (context) {
+                            //       return AlertDialog(
+                            //         title: Text("Akun Terverifikasi"),
+                            //         content: Text(
+                            //             'Selamat Akun Anda Telah Terverifikasi'),
+                            //       );
+                            //     })
                           }
                       });
             } else if (pilihPage == "toLupaSandi") {

@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lottie/lottie.dart';
 import 'package:motion_toast/resources/arrays.dart';
 import 'package:provider/provider.dart';
 import 'package:sidokare_mobile_app/component/Toast.dart';
@@ -30,6 +31,7 @@ class _PageLoginState extends State<PageLogin> {
   TextEditingController textEditingControllerPassword = TextEditingController();
   // not a GlobalKey<MyCustomFormState>.
   final _formKey = GlobalKey<FormState>();
+  bool _isHovering = false;
 
   @override
   Widget build(BuildContext context) {
@@ -67,8 +69,8 @@ class _PageLoginState extends State<PageLogin> {
                       )),
                       textAlign: TextAlign.center,
                     ),
-                    Image.asset(
-                      "assets/img_login.jpg",
+                    Lottie.asset(
+                      "assets/login_animasi.json",
                       width: 120.w,
                       height: 300.h,
                     ),
@@ -93,13 +95,28 @@ class _PageLoginState extends State<PageLogin> {
                         Navigator.pushNamed(
                             context, LupaSandi.routeName.toString())
                       },
-                      child: Text(
-                        "Lupa Sandi?",
-                        style: GoogleFonts.dmSans(
-                            textStyle: TextStyle(
-                                fontStyle: FontStyle.italic,
-                                fontSize: size.sizeDescriptionPas.sp)),
-                        textAlign: TextAlign.end,
+                      child: MouseRegion(
+                        onHover: (event) {
+                          setState(() {
+                            _isHovering = true;
+                          });
+                        },
+                        onExit: (event) {
+                          setState(() {
+                            _isHovering = false;
+                          });
+                        },
+                        child: Text(
+                          "Lupa Sandi?",
+                          style: GoogleFonts.dmSans(
+                              textStyle: TextStyle(
+                                  color: _isHovering
+                                      ? ListColor.warnaBiruSidoKare
+                                      : Colors.grey.shade700,
+                                  fontStyle: FontStyle.italic,
+                                  fontSize: size.sizeDescriptionPas.sp)),
+                          textAlign: TextAlign.end,
+                        ),
                       ),
                     ),
                     SizedBox(
@@ -147,7 +164,7 @@ class _PageLoginState extends State<PageLogin> {
                                               {
                                                 print("apakag eror kesini"),
                                                 ToastWidget.ToastEror(context,
-                                                    "Masuk Gagal , Akun Ditemukan")
+                                                    "Masuk Gagal , Akun Tidak Ditemukan")
                                               }
                                           })
                                 }

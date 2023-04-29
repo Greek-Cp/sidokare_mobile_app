@@ -52,6 +52,11 @@ flutter:
     - assets/imageubahsandi.png
     - assets/laptop.jpg
     - assets/report_done.json
+    - assets/profile_blank.svg
+    - assets/blank_account.png
+    - assets/accountBlank.png
+    - assets/done_animasi.json
+    - assets/login_animasi.json
 
   fonts:
     - family: DMsans

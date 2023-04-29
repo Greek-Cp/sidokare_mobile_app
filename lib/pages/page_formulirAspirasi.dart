@@ -112,7 +112,7 @@ class _PageFormulirAspirasiState extends State<PageFormulirAspirasi> {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20.0),
                     child: SizedBox(
-                        child: TextFieldImport.TextForm(
+                        child: TextFieldImport.TextFormMultiLine(
                             text_kontrol: textEditingControllerIsiAspirasi,
                             hintText: "Masukkan Isi Aspirasi",
                             labelName: "Isi Aspirasi",

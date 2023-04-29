@@ -201,8 +201,16 @@ class _PageUtamaState extends State<PageUtama> {
                                 child: Container(
                                   width: 40.w,
                                   child: CircleAvatar(
-                                    backgroundImage: NetworkImage(
-                                        "http://${ApiPoint.BASE_URL}/storage/profile/${DataDiri.urlGambar?.replaceAll("'", "")}"),
+                                    backgroundImage: DataDiri.urlGambar
+                                                    .toString() ==
+                                                "" ||
+                                            DataDiri.urlGambar.toString() ==
+                                                null
+                                        ? AssetImage("assets/accountBlank.png")
+                                            as ImageProvider
+                                        : NetworkImage(
+                                                "http://${ApiPoint.BASE_URL}/storage/profile/${DataDiri.urlGambar?.replaceAll("'", "")}")
+                                            as ImageProvider,
                                   ),
                                 ),
                               ),
@@ -468,11 +476,13 @@ class _PageUtamaState extends State<PageUtama> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       ItemCardLaporan(
+                          iconnya: Icons.all_inbox,
                           namaLaporan: "Jumlah Laporan",
                           Jumlah: "${dataLaporan['TotalLaporan']}"),
                       Padding(
                         padding: EdgeInsets.only(left: 16.w),
                         child: ItemCardLaporan(
+                            iconnya: Icons.assignment,
                             namaLaporan: "Laporan PPID",
                             Jumlah: "${dataLaporan['JumlahPPID']}"),
                       ),
@@ -486,11 +496,13 @@ class _PageUtamaState extends State<PageUtama> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       ItemCardLaporan(
+                          iconnya: Icons.analytics,
                           Jumlah: "${dataLaporan['JumlahAspirasi']}",
                           namaLaporan: "Laporan Aspirasi"),
                       Padding(
                         padding: EdgeInsets.only(left: 10.w),
                         child: ItemCardLaporan(
+                            iconnya: Icons.library_books_rounded,
                             Jumlah: "${dataLaporan['JumlahKeluhan']}",
                             namaLaporan: "Laporan Keluhan"),
                       ),
@@ -505,7 +517,8 @@ class _PageUtamaState extends State<PageUtama> {
     );
   }
 
-  Widget ItemCardLaporan({String? Jumlah, String? namaLaporan}) {
+  Widget ItemCardLaporan(
+      {String? Jumlah, String? namaLaporan, IconData? iconnya}) {
     return Row(
       children: [
         Container(
@@ -513,6 +526,10 @@ class _PageUtamaState extends State<PageUtama> {
           height: 30.h,
           child: CircleAvatar(
             backgroundColor: Colors.white,
+            child: Icon(
+              iconnya,
+              size: 20,
+            ),
           ),
         ),
         SizedBox(
@@ -620,8 +637,13 @@ class _PageUtamaState extends State<PageUtama> {
                           Container(
                             width: 30.w,
                             child: CircleAvatar(
-                              backgroundImage: NetworkImage(
-                                  "http://${ApiPoint.BASE_URL}/storage/profile/${berita?.foto_profile}"),
+                              backgroundImage: berita?.foto_profile == "" ||
+                                      berita?.foto_profile == null
+                                  ? AssetImage("assets/accountBlank.png")
+                                      as ImageProvider
+                                  : NetworkImage(
+                                          "http://${ApiPoint.BASE_URL}/storage/profile/${berita?.foto_profile!.replaceAll("'", "")}")
+                                      as ImageProvider,
                               backgroundColor: Colors.red,
                             ),
                           ),

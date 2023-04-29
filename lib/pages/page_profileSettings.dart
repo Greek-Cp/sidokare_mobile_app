@@ -63,6 +63,20 @@ class _PageProfileUserState extends State<PageProfileUser> {
     }
   }
 
+  ImageProvider ChangeProfile({String? urlGambar, File? gambar}) {
+    if (gambar == null) {
+      if (urlGambar == "" || urlGambar == null) {
+        return AssetImage("assets/accountBlank.png") as ImageProvider;
+      } else {
+        return NetworkImage(
+                "http://${ApiPoint.BASE_URL}/storage/profile/${urlGambar.replaceAll("'", "")}")
+            as ImageProvider;
+      }
+    } else {
+      return FileImage(gambar) as ImageProvider;
+    }
+  }
+
   Future<File?> _cropImage({required File imageFile}) async {
     CroppedFile? croppedImage =
         await ImageCropper().cropImage(sourcePath: imageFile.path);
@@ -129,11 +143,9 @@ class _PageProfileUserState extends State<PageProfileUser> {
                               width: 130.w,
                               height: 130.h,
                               child: CircleAvatar(
-                                backgroundImage: _image == null
-                                    ? NetworkImage(
-                                        "http://${ApiPoint.BASE_URL}/storage/profile/${DataDiri.urlGambar?.replaceAll("'", "")}",
-                                      ) as ImageProvider
-                                    : FileImage(_image!) as ImageProvider,
+                                backgroundImage: ChangeProfile(
+                                    urlGambar: DataDiri.urlGambar.toString(),
+                                    gambar: _image),
                                 backgroundColor: Colors.amberAccent,
                                 // maxRadius: 70,
                               ),
@@ -154,7 +166,7 @@ class _PageProfileUserState extends State<PageProfileUser> {
                         ),
                       ),
                     ),
-                    TextFieldImport.TextForm(
+                    TextFieldImport.TextFormNama(
                         labelName: "Nama",
                         text_kontrol: getNama,
                         pesanValidasi: "Nama"),
@@ -171,6 +183,7 @@ class _PageProfileUserState extends State<PageProfileUser> {
                     TextFieldImport.TextFormTelp(
                         labelName: "Nomor Telepon",
                         text_kontrol: getTelp,
+                        length: 12,
                         pesanValidasi: "Telepon"),
                     _Button(
                         idakun: DataDiri.id_akun.toString(),

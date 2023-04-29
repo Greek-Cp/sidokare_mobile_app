@@ -43,6 +43,14 @@ class _TextFieldPasswordState extends State<TextFieldPassword> {
             if (value!.isEmpty || value == null) {
               return "${widget.pesanValidasi} Tidak Boleh Kosong";
             }
+            if (value.length < 7) {
+              return 'Password minimal terdiri dari 7 karakter';
+            }
+            final regex = RegExp(r'^(?=.*?[A-Z])(?=.*?[0-9]).{7,}$');
+            if (!regex.hasMatch(value)) {
+              return 'Password harus mengandung huruf besar dan angka';
+            }
+            return null;
           },
           obscureText: !widget.passwordType!,
           controller: widget.text_kontrol,
@@ -136,9 +144,187 @@ class TextFieldImport {
     );
   }
 
+  static Padding TextFormMultiLine(
+      {TextEditingController? text_kontrol,
+      String? hintText,
+      bool? readyOnlyTydack = false,
+      String? labelName,
+      String? pesanValidasi}) {
+    return Padding(
+      padding: const EdgeInsets.all(2.0),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(
+            height: 10.h,
+          ),
+          Text(
+            "${labelName}",
+            style: GoogleFonts.dmSans(
+                textStyle:
+                    TextStyle(fontWeight: FontWeight.normal, fontSize: 13.sp)),
+            textAlign: TextAlign.start,
+          ),
+          SizedBox(
+            height: 5.h,
+          ),
+          TextFormField(
+            validator: (value) {
+              if (value!.isEmpty || value == null) {
+                return "${pesanValidasi} Tidak Boleh Kosong";
+              }
+            },
+            readOnly: readyOnlyTydack!,
+            minLines: 3,
+            maxLines: 8,
+            keyboardType: TextInputType.multiline,
+            controller: text_kontrol,
+            style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.normal),
+            decoration: InputDecoration(
+                hintText: hintText,
+                contentPadding: EdgeInsets.all(15),
+                enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                        width: 1, color: ListColor.warnaBiruSidoKare),
+                    borderRadius: BorderRadius.all(Radius.circular(10))),
+                focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                        width: 2, color: ListColor.warnaBiruSidoKare),
+                    borderRadius: BorderRadius.all(Radius.circular(10))),
+                border: OutlineInputBorder(
+                    borderSide: BorderSide(
+                        width: 1, color: ListColor.warnaBiruSidoKare),
+                    borderRadius: BorderRadius.all(Radius.circular(10)))),
+          ),
+        ],
+      ),
+    );
+  }
+
+  static Padding TextFormNama(
+      {TextEditingController? text_kontrol,
+      String? hintText,
+      bool? readyOnlyTydack = false,
+      String? labelName,
+      String? pesanValidasi}) {
+    return Padding(
+      padding: const EdgeInsets.all(2.0),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(
+            height: 10.h,
+          ),
+          Text(
+            "${labelName}",
+            style: GoogleFonts.dmSans(
+                textStyle:
+                    TextStyle(fontWeight: FontWeight.normal, fontSize: 13.sp)),
+            textAlign: TextAlign.start,
+          ),
+          SizedBox(
+            height: 5.h,
+          ),
+          TextFormField(
+            validator: (value) {
+              if (value!.isEmpty || value == null) {
+                return "${pesanValidasi} Tidak Boleh Kosong";
+              }
+            },
+            inputFormatters: [
+              FilteringTextInputFormatter.allow(RegExp('[a-zA-Z\\s]'))
+            ],
+            readOnly: readyOnlyTydack!,
+            controller: text_kontrol,
+            style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.normal),
+            decoration: InputDecoration(
+                hintText: hintText,
+                contentPadding: EdgeInsets.all(15),
+                enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                        width: 1, color: ListColor.warnaBiruSidoKare),
+                    borderRadius: BorderRadius.all(Radius.circular(10))),
+                focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                        width: 2, color: ListColor.warnaBiruSidoKare),
+                    borderRadius: BorderRadius.all(Radius.circular(10))),
+                border: OutlineInputBorder(
+                    borderSide: BorderSide(
+                        width: 1, color: ListColor.warnaBiruSidoKare),
+                    borderRadius: BorderRadius.all(Radius.circular(10)))),
+          ),
+        ],
+      ),
+    );
+  }
+
+  static Padding TextFormEmail(
+      {TextEditingController? text_kontrol,
+      String? hintText,
+      bool? readyOnlyTydack = false,
+      String? labelName,
+      String? pesanValidasi}) {
+    return Padding(
+      padding: const EdgeInsets.all(2.0),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(
+            height: 10.h,
+          ),
+          Text(
+            "${labelName}",
+            style: GoogleFonts.dmSans(
+                textStyle:
+                    TextStyle(fontWeight: FontWeight.normal, fontSize: 13.sp)),
+            textAlign: TextAlign.start,
+          ),
+          SizedBox(
+            height: 5.h,
+          ),
+          TextFormField(
+            validator: (value) {
+              if (value!.isEmpty || value == null) {
+                return "${pesanValidasi} Tidak Boleh Kosong";
+              }
+              final regex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+              if (!regex.hasMatch(value)) {
+                return 'Format email tidak valid';
+              }
+              return null;
+            },
+            readOnly: readyOnlyTydack!,
+            controller: text_kontrol,
+            keyboardType: TextInputType.emailAddress,
+            style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.normal),
+            decoration: InputDecoration(
+                hintText: hintText,
+                contentPadding: EdgeInsets.all(15),
+                enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                        width: 1, color: ListColor.warnaBiruSidoKare),
+                    borderRadius: BorderRadius.all(Radius.circular(10))),
+                focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                        width: 2, color: ListColor.warnaBiruSidoKare),
+                    borderRadius: BorderRadius.all(Radius.circular(10))),
+                border: OutlineInputBorder(
+                    borderSide: BorderSide(
+                        width: 1, color: ListColor.warnaBiruSidoKare),
+                    borderRadius: BorderRadius.all(Radius.circular(10)))),
+          ),
+        ],
+      ),
+    );
+  }
+
   static Column TextFormTelp(
       {TextEditingController? text_kontrol,
       String? hintText,
+      int? length,
       String? labelName,
       String? pesanValidasi}) {
     return Column(
@@ -167,7 +353,7 @@ class TextFieldImport {
           controller: text_kontrol,
           inputFormatters: [
             FilteringTextInputFormatter.digitsOnly,
-            LengthLimitingTextInputFormatter(12)
+            LengthLimitingTextInputFormatter(length)
           ],
           style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.normal),
           keyboardType: TextInputType.number,

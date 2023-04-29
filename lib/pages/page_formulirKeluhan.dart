@@ -138,7 +138,7 @@ class _PageFormulirPengajuanKeluhanState
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20.0),
                     child: SizedBox(
-                        child: TextFieldImport.TextForm(
+                        child: TextFieldImport.TextFormMultiLine(
                             text_kontrol: textEditingControllerIsiLaporan,
                             hintText: "Masukkan Isi Laporan",
                             labelName: "Isi Laporan",

@@ -27,12 +27,13 @@ class HttpStatefull {
       this.email,
       this.nomor_telepon});
   static Future<HttpStatefull> registerAkun(
-      String email,
-      String password,
-      String username,
-      String nomor_telepon,
-      String kode_otp,
-      String nama_lengkap) async {
+      {String? email,
+      String? password,
+      String? username,
+      String? nomor_telepon,
+      String? kode_otp,
+      String? nama_lengkap,
+      String? nik}) async {
     Uri url = Uri.parse("http://${ApiPoint.BASE_URL}/api/akun/register");
     var HasilResponse = await http.post(url, body: {
       "email": email,
@@ -41,7 +42,8 @@ class HttpStatefull {
       "password": password,
       "role": "User",
       "otp": kode_otp,
-      "nama": nama_lengkap
+      "nama": nama_lengkap,
+      "nik": nik
     });
     var data = json.decode(HasilResponse.body);
     return HttpStatefull(code: data['code'], message: data['message']);
@@ -88,6 +90,13 @@ class HttpStatefull {
     Uri url = Uri.parse("http://${ApiPoint.BASE_URL}/api/akun/verifikasi_akun");
     var HasilResponse = await http.post(url, body: {'email': email});
     var data = json.decode(HasilResponse.body);
+    return HttpStatefull(code: data['code'], message: data['message']);
+  }
+
+  static Future<HttpStatefull> checkAkunExist({String? email}) async {
+    Uri url = Uri.parse("http://${ApiPoint.BASE_URL}/api/akun/chekEmail");
+    var HasilRespose = await http.post(url, body: {'email': email});
+    var data = json.decode(HasilRespose.body);
     return HttpStatefull(code: data['code'], message: data['message']);
   }
 

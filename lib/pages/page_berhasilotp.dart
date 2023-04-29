@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:sidokare_mobile_app/component/jenis_button.dart';
 import 'package:sidokare_mobile_app/component/text_description.dart';
 import 'package:sidokare_mobile_app/const/size.dart';
@@ -38,10 +39,10 @@ class berhasilOtp extends StatelessWidget {
   }
 
   Widget _gambarSukses() {
-    return Image.asset(
-      "assets/sukses.png",
-      width: 200.w,
-      height: 200.h,
+    return Lottie.asset(
+      "assets/done_animasi.json",
+      width: 250.w,
+      height: 250.h,
     );
   }
 

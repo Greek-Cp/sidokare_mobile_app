@@ -10,6 +10,7 @@ import 'package:sidokare_mobile_app/component/Toast.dart';
 import 'package:sidokare_mobile_app/component/jenis_button.dart';
 import 'package:sidokare_mobile_app/const/fontfix.dart';
 import 'package:sidokare_mobile_app/const/size.dart';
+import 'package:sidokare_mobile_app/model/api/http_statefull.dart';
 import 'package:sidokare_mobile_app/pages/page_inputotp.dart';
 import 'package:sidokare_mobile_app/pages/page_ubahsandi.dart';
 
@@ -63,7 +64,7 @@ class _LupaSandiState extends State<LupaSandi> {
       print('Message not sent.');
       for (var p in e.problems) {
         print('Problem: ${p.code}: ${p.msg}');
-        ToastWidget.ToastEror(context, ' Format Email Tidak Sesuai');
+        // ToastWidget.ToastEror(context, ' Format Email Tidak Sesuai');
       }
     }
   }
@@ -109,7 +110,18 @@ class _LupaSandiState extends State<LupaSandi> {
                           hintText: "Masukkan Email",
                           labelName: "Email",
                           pesanValidasi: "Email"),
-                      ButtonForm("Lanjut", _formKey, sendMail)
+                      ButtonForm("Lanjut", _formKey, () {
+                        HttpStatefull.checkAkunExist(email: input_email.text)
+                            .then((value) => {
+                                  if (value.code == 200)
+                                    {sendMail()}
+                                  else
+                                    {
+                                      ToastWidget.ToastEror(
+                                          context, "Akun Tidak Ditemukan")
+                                    }
+                                });
+                      })
                     ],
                   ),
                 ),

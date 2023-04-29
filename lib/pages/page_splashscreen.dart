@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:sidokare_mobile_app/const/list_color.dart';
 import 'package:sidokare_mobile_app/const/size.dart';
 import 'package:wave_transition/wave_transition.dart';
@@ -20,7 +22,7 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   _nextbro() async {
-    await Future.delayed(Duration(milliseconds: 1500), () {
+    await Future.delayed(Duration(milliseconds: 2000), () {
       Navigator.push(
           context,
           WaveTransition(
@@ -40,28 +42,57 @@ class _SplashScreenState extends State<SplashScreen> {
           body: Container(
             color: ListColor.warnaBiruSidoKare,
             child: Center(
-              child: Row(
+              child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  _iconLogin(),
+                  AnimationConfiguration.synchronized(
+                      child: FadeInAnimation(
+                    delay: Duration(milliseconds: 500),
+                    duration: Duration(milliseconds: 500),
+                    child: ScaleAnimation(
+                      delay: Duration(milliseconds: 500),
+                      duration: Duration(milliseconds: 500),
+                      child: _iconLogin(),
+                    ),
+                  )),
+                  SizedBox(
+                    height: 10.h,
+                  ),
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
-                      Text(
-                        "D E S A  S I D O K A R E",
-                        style: TextStyle(
-                            fontSize: size.sizeHeader.sp,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white),
-                      ),
-                      Text(
-                        "Kecamatan Rejoso",
-                        style: TextStyle(
-                            fontSize: size.sizeDescriptionSedang.sp,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white),
-                      )
+                      AnimationConfiguration.synchronized(
+                          child: FadeInAnimation(
+                        duration: Duration(milliseconds: 1000),
+                        child: SlideAnimation(
+                          horizontalOffset: 500,
+                          delay: Duration(milliseconds: 1000),
+                          duration: Duration(milliseconds: 1000),
+                          child: Text(
+                            "D E S A  S I D O K A R E",
+                            style: GoogleFonts.dmSans(
+                                fontSize: size.sizeHeader.sp,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white),
+                          ),
+                        ),
+                      )),
+                      AnimationConfiguration.synchronized(
+                          child: FadeInAnimation(
+                        duration: Duration(milliseconds: 1000),
+                        child: SlideAnimation(
+                          horizontalOffset: -500,
+                          delay: Duration(milliseconds: 1000),
+                          duration: Duration(milliseconds: 1000),
+                          child: Text(
+                            "Kecamatan Rejoso",
+                            style: GoogleFonts.dmSans(
+                                fontSize: size.sizeDescriptionSedang.sp,
+                                color: Colors.white),
+                          ),
+                        ),
+                      )),
                     ],
                   )
                 ],

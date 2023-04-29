@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:sidokare_mobile_app/const/size.dart';
 
 class berhasildaftar extends StatelessWidget {
@@ -30,8 +31,8 @@ class berhasildaftar extends StatelessWidget {
   }
 
   Widget _gambarSukses() {
-    return Image.asset(
-      "assets/sukses.png",
+    return Lottie.asset(
+      "assets/done_animasi.json",
       width: 200,
       height: 200,
     );

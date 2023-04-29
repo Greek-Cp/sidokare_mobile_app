@@ -20,6 +20,7 @@ import 'package:mailer/smtp_server/gmail.dart';
 class PageRegister extends StatelessWidget {
   static String? routeName = "/register";
   TextEditingController textEditingControllerNama = TextEditingController();
+  TextEditingController textEditingControllerNik = TextEditingController();
   TextEditingController textEditingControllerUsername = TextEditingController();
   TextEditingController textEditingControllerNomorTelepon =
       TextEditingController();
@@ -247,11 +248,18 @@ form button:hover {
                       height: 300.h,
                     ),
                     SizedBox(
-                        child: TextFieldImport.TextForm(
+                        child: TextFieldImport.TextFormNama(
                             text_kontrol: textEditingControllerNama,
                             hintText: "Masukkan Nama",
                             labelName: "Nama",
                             pesanValidasi: "Nama")),
+                    SizedBox(
+                        child: TextFieldImport.TextFormTelp(
+                            text_kontrol: textEditingControllerNik,
+                            hintText: "Masukkan NIK",
+                            length: 16,
+                            labelName: "NIK",
+                            pesanValidasi: "NIK")),
                     SizedBox(
                         child: TextFieldImport.TextForm(
                             labelName: "Nama Pengguna",
@@ -259,7 +267,7 @@ form button:hover {
                             hintText: "Masukkan Nama Pengguna",
                             pesanValidasi: "Nama Pengguna")),
                     SizedBox(
-                        child: TextFieldImport.TextForm(
+                        child: TextFieldImport.TextFormEmail(
                             labelName: "Email",
                             text_kontrol: textEditingControllerEmail,
                             hintText: "Masukkan Email",
@@ -267,6 +275,7 @@ form button:hover {
                     SizedBox(
                         child: TextFieldImport.TextFormTelp(
                             labelName: "Nomor Telepon",
+                            length: 12,
                             text_kontrol: textEditingControllerNomorTelepon,
                             hintText: "Masukkan Nomor Telepon",
                             pesanValidasi: "Nomor Telepon")),
@@ -294,38 +303,52 @@ form button:hover {
                         onPressed: () => {
                               if (_formKey.currentState!.validate())
                                 {
-                                  if (providerAccount.registerAkun(
-                                      nama: textEditingControllerNama.text
-                                          .toString(),
-                                      username: textEditingControllerUsername
+                                  if (textEditingControllerNik.text
+                                          .toString()
+                                          .length !=
+                                      16)
+                                    {
+                                      ToastWidget.ToastEror(
+                                          context, "NIK harus 16 karakter")
+                                    }
+                                  else if (textEditingControllerNomorTelepon
                                           .text
-                                          .toString(),
-                                      email: textEditingControllerEmail.text
-                                          .toString(),
-                                      nomorTelepon:
-                                          textEditingControllerNomorTelepon.text
-                                              .toString(),
-                                      password: textEditingControllerPassword
+                                          .toString()
+                                          .length <
+                                      11)
+                                    {
+                                      ToastWidget.ToastEror(context,
+                                          "Nomer Telp harus 12 karakter")
+                                    }
+                                  else if (textEditingControllerKonfirmasiPassword
                                           .text
-                                          .toString(),
-                                      konfirmasiPassword:
-                                          textEditingControllerKonfirmasiPassword
-                                              .text
-                                              .toString()))
+                                          .toString() !=
+                                      textEditingControllerPassword.text
+                                          .toString())
+                                    {
+                                      ToastWidget.ToastEror(
+                                          context, "Katasandi Tidak Sama")
+                                    }
+                                  else
                                     {
                                       HttpStatefull.registerAkun(
-                                              textEditingControllerEmail.text,
-                                              textEditingControllerPassword
+                                              email: textEditingControllerEmail
                                                   .text,
-                                              textEditingControllerUsername
-                                                  .text,
-                                              textEditingControllerNomorTelepon
-                                                  .text,
-                                              otp_register.toString(),
-                                              this
-                                                  .textEditingControllerNama
-                                                  .text
-                                                  .toString())
+                                              password:
+                                                  textEditingControllerPassword
+                                                      .text,
+                                              username:
+                                                  textEditingControllerUsername
+                                                      .text,
+                                              nomor_telepon:
+                                                  textEditingControllerNomorTelepon
+                                                      .text,
+                                              kode_otp: otp_register.toString(),
+                                              nama_lengkap:
+                                                  textEditingControllerNama.text
+                                                      .toString(),
+                                              nik:
+                                                  textEditingControllerNik.text)
                                           .then((value) => {
                                                 if (value.code == 200)
                                                   {
@@ -344,14 +367,9 @@ form button:hover {
                                                   }
                                               })
                                     }
-                                  else
-                                    {
-                                      ToastWidget.ToastEror(
-                                          context, "Daftar Gagal")
-                                    }
                                 }
                               else
-                                {}
+                                {print("cuok mbuh")}
                             },
                         child: Padding(
                           padding: const EdgeInsets.all(10.0),
