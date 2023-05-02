@@ -95,6 +95,24 @@ Future<List<Berita>> fetchBeritaKustom2() async {
   }
 }
 
+Future<List<Berita>> fetchBeritaKustomAll() async {
+  final response = await http.get(
+      Uri.parse('http://${ApiPoint.BASE_URL}/api/berita/specific_berita3'));
+
+  if (response.statusCode == 200) {
+    print("data Berita2 custom = " + response.body);
+    final data = jsonDecode(response.body)['data'];
+
+    List<Berita> beritas2 = [];
+    for (var i = 0; i < data.length; i++) {
+      beritas2.add(Berita.fromJson(data[i]));
+    }
+    return beritas2;
+  } else {
+    throw Exception('Failed to load data');
+  }
+}
+
 // Future<List<Berita>> fetchBeritaCustom(String KategoriBerita) async {
 //   final response = await http.post(
 //       Uri.parse(
