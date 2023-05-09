@@ -109,7 +109,7 @@ class _UbahSandiState extends State<UbahSandi> {
                                 })
                       }
                     else
-                      {print("Goblok ra podo password e")}
+                      {print("Password Tidak Sama")}
                   }
               },
           child: Padding(

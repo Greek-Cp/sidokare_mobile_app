@@ -8,6 +8,7 @@ import 'package:sidokare_mobile_app/model/response/get/controller_get.dart';
 import 'package:sidokare_mobile_app/model/response/get/response_aspirasi.dart';
 import 'package:sidokare_mobile_app/model/response/get/response_keluhan.dart';
 import 'package:sidokare_mobile_app/model/response/get/response_ppid.dart';
+import 'package:sidokare_mobile_app/pages/page_detail_aspirasi.dart';
 
 import 'package:sidokare_mobile_app/provider/provider_account.dart';
 
@@ -43,7 +44,13 @@ class _itemListStatusAspirasiState extends State<itemListStatusAspirasi> {
                         judul_pengajuan: snapshot
                             .data!.data![index].judulAspirasi
                             .toString(),
-                        isi_pengajuan: snapshot.data!.data![index].isiAspirasi);
+                        isi_pengajuan: snapshot.data!.data![index].isiAspirasi,
+                        idAkun: snapshot.data!.data![index].idAkun,
+                        laporan: snapshot.data!.data![index].judulAspirasi
+                            .toString(),
+                        isiLaporan: snapshot.data!.data![index].isiAspirasi,
+                        uploadFile:
+                            snapshot.data!.data![index].uploadFilePendukung);
                   },
                   itemCount: snapshot.data!.data!.length);
             } else {
@@ -55,7 +62,13 @@ class _itemListStatusAspirasiState extends State<itemListStatusAspirasi> {
     );
   }
 
-  Widget _containerListStatus({String? judul_pengajuan, isi_pengajuan}) {
+  Widget _containerListStatus(
+      {String? judul_pengajuan,
+      isi_pengajuan,
+      idAkun,
+      laporan,
+      isiLaporan,
+      uploadFile}) {
     return Container(
       width: double.infinity,
       child: Padding(
@@ -85,7 +98,17 @@ class _itemListStatusAspirasiState extends State<itemListStatusAspirasi> {
                   ),
                 ),
                 ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.pushNamed(
+                          context, PageDetailAspirasi.routeName.toString(),
+                          arguments: {
+                            "id_akun": idAkun,
+                            "judulLaporan": laporan,
+                            "isiLaporan": isiLaporan,
+                            "uploadFile": uploadFile != null ? uploadFile : ""
+                          });
+                      print("Tes Kon ${uploadFile}");
+                    },
                     style: ElevatedButton.styleFrom(
                         padding: EdgeInsets.symmetric(
                             horizontal: 20.w, vertical: 5.h)),

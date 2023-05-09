@@ -100,7 +100,7 @@ Future<List<Berita>> fetchBeritaKustomAll() async {
       Uri.parse('http://${ApiPoint.BASE_URL}/api/berita/specific_berita3'));
 
   if (response.statusCode == 200) {
-    print("data Berita2 custom = " + response.body);
+    // print("data Berita2 custom = " + response.body);
     final data = jsonDecode(response.body)['data'];
 
     List<Berita> beritas2 = [];

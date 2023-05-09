@@ -6,6 +6,7 @@ import 'package:sidokare_mobile_app/const/size.dart';
 import 'package:sidokare_mobile_app/model/controller_idakun.dart';
 import 'package:sidokare_mobile_app/model/response/get/controller_get.dart';
 import 'package:sidokare_mobile_app/model/response/get/response_ppid.dart';
+import 'package:sidokare_mobile_app/pages/page_detail_status.dart';
 
 import 'package:sidokare_mobile_app/provider/provider_account.dart';
 
@@ -40,7 +41,15 @@ class _itemListStatusState extends State<itemListStatus> {
                     return _containerListStatus(
                         judul_pengajuan:
                             snapshot.data!.data![index].judulLaporan.toString(),
-                        isi_pengajuan: snapshot.data!.data![index].isiLaporan);
+                        isi_pengajuan: snapshot.data!.data![index].isiLaporan,
+                        laporan:
+                            snapshot.data!.data![index].judulLaporan.toString(),
+                        isiLaporan: snapshot.data!.data![index].isiLaporan,
+                        asalPelapor: snapshot.data!.data![index].asalPelapor,
+                        kategoriPPID: snapshot.data!.data![index].kategoriPpid,
+                        uploadFile:
+                            snapshot.data!.data![index].uploadFilePendukung,
+                        idAkun: snapshot.data!.data![index].idAkun);
                   },
                   itemCount: snapshot.data!.data!.length);
             } else {
@@ -52,7 +61,15 @@ class _itemListStatusState extends State<itemListStatus> {
     );
   }
 
-  Widget _containerListStatus({String? judul_pengajuan, isi_pengajuan}) {
+  Widget _containerListStatus(
+      {String? judul_pengajuan,
+      isi_pengajuan,
+      idAkun,
+      laporan,
+      isiLaporan,
+      asalPelapor,
+      kategoriPPID,
+      uploadFile}) {
     return Container(
       width: double.infinity,
       child: Padding(
@@ -79,7 +96,18 @@ class _itemListStatusState extends State<itemListStatus> {
                   style: TextStyle(fontSize: size.DescTextKecil.sp),
                 ),
                 ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.pushNamed(
+                          context, PageDetailStatus.routeName.toString(),
+                          arguments: {
+                            "id_akun": idAkun,
+                            "judulLaporan": laporan,
+                            "isiLaporan": isiLaporan,
+                            "AsalPelapor": asalPelapor,
+                            "kategoriPPID": kategoriPPID,
+                            "uploadFile": uploadFile != null ? uploadFile : ""
+                          });
+                    },
                     style: ElevatedButton.styleFrom(
                         padding: EdgeInsets.symmetric(
                             horizontal: 20.w, vertical: 5.h)),

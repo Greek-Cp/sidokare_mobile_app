@@ -6,6 +6,9 @@ import 'package:sidokare_mobile_app/pages/item_nav/page_detail_berita.dart';
 import 'package:sidokare_mobile_app/pages/page_BerhasilBuatLaporan.dart';
 import 'package:sidokare_mobile_app/pages/page_berhasildaftar.dart';
 import 'package:sidokare_mobile_app/pages/page_berhasilotp.dart';
+import 'package:sidokare_mobile_app/pages/page_detail_aspirasi.dart';
+import 'package:sidokare_mobile_app/pages/page_detail_keluhan.dart';
+import 'package:sidokare_mobile_app/pages/page_detail_status.dart';
 import 'package:sidokare_mobile_app/pages/page_formulirAspirasi.dart';
 import 'package:sidokare_mobile_app/pages/page_formulirKeluhan.dart';
 import 'package:sidokare_mobile_app/pages/page_formulirpengajuan.dart';
@@ -58,7 +61,14 @@ class MainApp extends StatelessWidget {
           BerhasilBuatLaporan.routeName.toString(): (context) =>
               BerhasilBuatLaporan(),
           PageProfileUser.routeName.toString(): (context) => PageProfileUser(),
-          PageSearchBerita.routeName.toString(): (context) => PageSearchBerita()
+          PageSearchBerita.routeName.toString(): (context) =>
+              PageSearchBerita(),
+          PageDetailStatus.routeName.toString(): (context) =>
+              PageDetailStatus(),
+          PageDetailKeluhan.routeName.toString(): (context) =>
+              PageDetailKeluhan(),
+          PageDetailAspirasi.routeName.toString(): (context) =>
+              PageDetailAspirasi()
         },
       ),
     );

@@ -24,6 +24,7 @@ import 'package:flutter_custom_tab_bar/transform/tab_bar_transform.dart';
 import 'package:sidokare_mobile_app/model/response/berita.dart';
 import 'package:http/http.dart' as http;
 import 'package:sidokare_mobile_app/model/response/get/response_jumlahLaporan.dart';
+import 'package:sidokare_mobile_app/pages/item_nav/item_page_berita/page_search_berita.dart';
 import 'package:sidokare_mobile_app/pages/page_formulirAspirasi.dart';
 import 'package:sidokare_mobile_app/pages/page_formulirKeluhan.dart';
 import 'package:sidokare_mobile_app/pages/page_profileSettings.dart';
@@ -79,13 +80,19 @@ class _PageUtamaState extends State<PageUtama> {
     return 'Malam';
   }
 
-  Widget searchBar() {
+  Widget searchBar({String? idakun}) {
     return Container(
       height: 64.0.h,
       child: Padding(
         padding: EdgeInsets.all(10.h),
         child: Container(
           child: TextField(
+              onTap: () {
+                print("object");
+                Navigator.pushNamed(
+                    context, PageSearchBerita.routeName.toString(),
+                    arguments: idakun);
+              },
               style: TextStyle(fontSize: size.textButton.sp),
               decoration: InputDecoration(
                   contentPadding: EdgeInsets.only(
@@ -192,8 +199,6 @@ class _PageUtamaState extends State<PageUtama> {
                                 onTap: () {
                                   providerDiri
                                       .setIdAkun(DataDiri.id_akun!.toInt());
-                                  print(
-                                      "Kontol memek ${DataDiri.urlGambar?.replaceAll("'", "")}");
                                   Navigator.pushNamed(context,
                                       PageProfileUser.routeName.toString(),
                                       arguments: id);
@@ -226,7 +231,10 @@ class _PageUtamaState extends State<PageUtama> {
                   duration: Duration(milliseconds: 375),
                   child: SlideAnimation(
                     verticalOffset: 50.0,
-                    child: FadeInAnimation(child: searchBar()),
+                    child: FadeInAnimation(
+                        child: GestureDetector(
+                            child: searchBar(
+                                idakun: DataDiri.id_akun.toString()))),
                   ),
                 )),
                 // searchBar(),

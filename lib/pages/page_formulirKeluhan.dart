@@ -49,13 +49,13 @@ class _PageFormulirPengajuanKeluhanState
 
   final List<String> listDusun = ['Sidokare', 'SidoMaju', 'SidoSido'];
   final List<String> listKategoriLaporan = [
-    'Laporan Hamil',
-    'Laporan Pelecehan Seksual',
-    'Laporan Kebakaran'
+    'Lingkungan',
+    'Kewarganegaraan',
+    'Topik lainnya'
   ];
-  static String? randomValueKategoriLaporan = "Laporan Hamil";
-  static String? randomValueKejadianDusun = "Sidokare";
-  static String? randomValueAsalPelapor = "Sidokare";
+  static String? randomValueKategoriLaporan = "Lingkungan";
+  static String? randomValueKejadianDusun = "Kewarganegaraan";
+  static String? randomValueAsalPelapor = "Topik lainnya";
 
   final _formKey = GlobalKey<FormState>();
   @override

@@ -52,6 +52,8 @@ class _PageDetailBeritaState extends State<PageDetailBerita> {
   Widget build(BuildContext context) {
     // TODO: implement build
     receiveData = ModalRoute.of(context)?.settings.arguments as Map;
+    // String p = receiveData?['judul'];
+    // print("Kontol Hitam :: ${p}");
     final provider = Provider.of<ProviderAccount>(context);
     Berita berita = provider.getBerita;
 

@@ -7,6 +7,7 @@ import 'package:sidokare_mobile_app/model/controller_idakun.dart';
 import 'package:sidokare_mobile_app/model/response/get/controller_get.dart';
 import 'package:sidokare_mobile_app/model/response/get/response_keluhan.dart';
 import 'package:sidokare_mobile_app/model/response/get/response_ppid.dart';
+import 'package:sidokare_mobile_app/pages/page_detail_keluhan.dart';
 
 import 'package:sidokare_mobile_app/provider/provider_account.dart';
 
@@ -42,7 +43,17 @@ class _itemListStatusKeluhanState extends State<itemListStatusKeluhan> {
                     return _containerListStatus(
                         judul_pengajuan:
                             snapshot.data!.data![index].judulLaporan.toString(),
-                        isi_pengajuan: snapshot.data!.data![index].isiLaporan);
+                        isi_pengajuan: snapshot.data!.data![index].isiLaporan,
+                        idAkun: snapshot.data!.data![index].idAkun,
+                        isiLaporan: snapshot.data!.data![index].isiLaporan,
+                        laporan: snapshot.data!.data![index].judulLaporan,
+                        asalPelapor: snapshot.data!.data![index].asalPelapor,
+                        LocKejadian: snapshot.data!.data![index].lokasiKejadian,
+                        KategoriLaporan:
+                            snapshot.data!.data![index].kategoriLaporan,
+                        tglJadian: snapshot.data!.data![index].tanggalKejadian,
+                        uploadFile:
+                            snapshot.data!.data![index].uploadFilePendukung);
                   },
                   itemCount: snapshot.data!.data!.length);
             } else {
@@ -54,7 +65,17 @@ class _itemListStatusKeluhanState extends State<itemListStatusKeluhan> {
     );
   }
 
-  Widget _containerListStatus({String? judul_pengajuan, isi_pengajuan}) {
+  Widget _containerListStatus(
+      {String? judul_pengajuan,
+      isi_pengajuan,
+      idAkun,
+      laporan,
+      isiLaporan,
+      asalPelapor,
+      LocKejadian,
+      KategoriLaporan,
+      tglJadian,
+      uploadFile}) {
     return Container(
       width: double.infinity,
       child: Padding(
@@ -81,7 +102,20 @@ class _itemListStatusKeluhanState extends State<itemListStatusKeluhan> {
                   style: TextStyle(fontSize: size.DescTextKecil.sp),
                 ),
                 ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.pushNamed(
+                          context, PageDetailKeluhan.routeName.toString(),
+                          arguments: {
+                            "id_akun": idAkun,
+                            "judulLaporan": laporan,
+                            "isiLaporan": isiLaporan,
+                            "AsalPelapor": asalPelapor,
+                            "LokasiKejadian": LocKejadian,
+                            "KategoriLaporan": KategoriLaporan,
+                            "TanggalKejadian": tglJadian,
+                            "uploadFile": uploadFile != null ? uploadFile : ""
+                          });
+                    },
                     style: ElevatedButton.styleFrom(
                         padding: EdgeInsets.symmetric(
                             horizontal: 20.w, vertical: 5.h)),

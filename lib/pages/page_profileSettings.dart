@@ -106,9 +106,7 @@ class _PageProfileUserState extends State<PageProfileUser> {
   @override
   Widget build(BuildContext context) {
     final idAkunnn = ModalRoute.of(context)?.settings.arguments as int;
-
     providerAccount = Provider.of<ProviderAccount>(context);
-
     final DataDiri = Provider.of<ProviderAccount>(context)
         .GetDataDiri
         .firstWhere((idData) => idData.id_akun == idAkunnn);

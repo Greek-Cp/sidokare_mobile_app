@@ -1,3 +1,4 @@
+import 'package:bottom_bar_matu/utils/app_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
@@ -34,19 +35,32 @@ class _PageSearchBeritaState extends State<PageSearchBerita> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    //final id = ModalRoute.of(context)?.settings.arguments as int;
-    final id = 53;
-    // providerDiri = Provider.of<ProviderAccount>(context);
-    // final DataDiri = Provider.of<ProviderAccount>(context)
-    //     .GetDataDiri
-    //     .firstWhere((idData) => idData.id_akun == id);
+    final id = ModalRoute.of(context)?.settings.arguments as String;
+    //final id = 54;
+    providerDiri = Provider.of<ProviderAccount>(context);
+    final DataDiri = Provider.of<ProviderAccount>(context)
+        .GetDataDiri
+        .firstWhere((idData) => idData.id_akun == id.toInt());
     return ScreenUtilInit(
       builder: (context, child) {
         return Scaffold(
+          appBar: AppBar(
+            title: Text(
+              "Cari Berita",
+              style: TextStyle(color: Colors.black),
+            ),
+            centerTitle: true,
+            backgroundColor: Colors.white,
+            elevation: 0,
+            iconTheme: IconThemeData(color: Colors.black),
+          ),
           body: SingleChildScrollView(
             physics: AlwaysScrollableScrollPhysics(),
             child: Column(mainAxisSize: MainAxisSize.max, children: [
-              searchBar(),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                child: searchBar(),
+              ),
               FutureBuilder<List<Berita>>(
                   future: listBerita2,
                   builder: (context, snapshot) {
@@ -104,6 +118,7 @@ class _PageSearchBeritaState extends State<PageSearchBerita> {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 15),
       child: TextField(
+        autofocus: true,
         onChanged: (value) {
           if (value.isNotEmpty) {
             listDicari = hasilGetData

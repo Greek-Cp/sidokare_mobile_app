@@ -325,6 +325,7 @@ class TextFieldImport {
       {TextEditingController? text_kontrol,
       String? hintText,
       int? length,
+      bool? readyOnlyTydack = false,
       String? labelName,
       String? pesanValidasi}) {
     return Column(
@@ -351,6 +352,7 @@ class TextFieldImport {
             }
           },
           controller: text_kontrol,
+          readOnly: readyOnlyTydack!,
           inputFormatters: [
             FilteringTextInputFormatter.digitsOnly,
             LengthLimitingTextInputFormatter(length)
