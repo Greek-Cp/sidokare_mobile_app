@@ -4,6 +4,7 @@ import 'package:sidokare_mobile_app/const/fontfix.dart';
 import 'package:sidokare_mobile_app/pages/item_nav/item_page_berita/page_search_berita.dart';
 import 'package:sidokare_mobile_app/pages/item_nav/page_detail_berita.dart';
 import 'package:sidokare_mobile_app/pages/page_BerhasilBuatLaporan.dart';
+import 'package:sidokare_mobile_app/pages/page_DetailPengajuanPPID.dart';
 import 'package:sidokare_mobile_app/pages/page_berhasildaftar.dart';
 import 'package:sidokare_mobile_app/pages/page_berhasilotp.dart';
 import 'package:sidokare_mobile_app/pages/page_detail_aspirasi.dart';
@@ -71,7 +72,9 @@ class MainApp extends StatelessWidget {
           PageDetailAspirasi.routeName.toString(): (context) =>
               PageDetailAspirasi(),
           PageFormulirKeberatanPPID.routeName.toString(): (context) =>
-              PageFormulirKeberatanPPID()
+              PageFormulirKeberatanPPID(),
+          DetailPengajuanPPID.routeName.toString(): (context) =>
+              DetailPengajuanPPID()
         },
       ),
     );
