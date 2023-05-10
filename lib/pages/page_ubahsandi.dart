@@ -7,6 +7,7 @@ import 'package:sidokare_mobile_app/const/size.dart';
 import 'package:sidokare_mobile_app/model/api/http_statefull.dart';
 import 'package:sidokare_mobile_app/pages/page_login.dart';
 
+import '../component/Toast.dart';
 import '../const/list_color.dart';
 
 class UbahSandi extends StatefulWidget {
@@ -109,7 +110,10 @@ class _UbahSandiState extends State<UbahSandi> {
                                 })
                       }
                     else
-                      {print("Password Tidak Sama")}
+                      {
+                        print("Password Tidak Sama"),
+                        ToastWidget.ToastEror(context, "Password Tidak Sama")
+                      }
                   }
               },
           child: Padding(
