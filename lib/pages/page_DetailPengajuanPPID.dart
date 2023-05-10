@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 import 'package:sidokare_mobile_app/component/jenis_button.dart';
 import 'package:sidokare_mobile_app/component/text_description.dart';
 import 'package:sidokare_mobile_app/const/font_type.dart';
 import 'package:sidokare_mobile_app/const/size.dart';
+
+import '../provider/provider_account.dart';
 
 class DetailPengajuanPPID extends StatefulWidget {
   static String? routeName = "/DetailPengajuanPPID";
@@ -13,8 +16,19 @@ class DetailPengajuanPPID extends StatefulWidget {
 }
 
 class _DetailPengajuanPPIDState extends State<DetailPengajuanPPID> {
+  Map? getData;
   @override
   Widget build(BuildContext context) {
+    getData = ModalRoute.of(context)?.settings.arguments as Map;
+    int Akunn = getData?['id_akun'];
+    final DataDiri = Provider.of<ProviderAccount>(context)
+        .GetDataDiri
+        .firstWhere((idData) => idData.id_akun == Akunn.toInt());
+    String isiLaporan = getData?['isiLaporan'];
+    String judullaporan = getData?['judulLaporan'];
+    String asalPelapor = getData?['AsalPelapor'];
+    String KategoriPPID = getData?['kategoriPPID'];
+
     // TODO: implement build
     return ScreenUtilInit(
       builder: (context, child) {
@@ -56,9 +70,8 @@ class _DetailPengajuanPPIDState extends State<DetailPengajuanPPID> {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            ComponentTextDescription(
-                                ": Daffa Aditya Rejasa R.R."),
-                            ComponentTextDescription(": 3512312321313213"),
+                            ComponentTextDescription(": ${DataDiri.nama}"),
+                            ComponentTextDescription(": ${DataDiri.Nik}"),
                           ],
                         ),
                       ],
@@ -68,7 +81,7 @@ class _DetailPengajuanPPIDState extends State<DetailPengajuanPPID> {
                     ),
                     ComponentTextDescription("Judul Laporan"),
                     ComponentTittleCustom(
-                      "KEHAMILAN MASSAL DI DESA SIDOKARE",
+                      "${judullaporan}",
                       textAlign: TextAlign.start,
                     ),
                     SizedBox(
@@ -82,10 +95,7 @@ class _DetailPengajuanPPIDState extends State<DetailPengajuanPPID> {
                       child: Padding(
                         padding: EdgeInsets.all(10.0.w),
                         child: ComponentTextDescription(
-                          """ Para ibu-ibu muda Desa Sidokare telah menciptkan resep makan tradisional untuk merayakan lomba Momen peringatan Hari Kemerdekaan RI sering dimeriahkan dengan beragam lomba, mulai dari tingkat RT/RW sampai di sekolah dan kantor. Tujuan lomba ini biasanya menguji kekompakan warga. 
-                
-                Jika Anda menjadi panitia dan masih bingung ingin mengadakan apa, simak 20 ide lomba 17 Agustus yang seru dan menarik berikut ini.
-                    """,
+                          "${isiLaporan}",
                           teksColor: Colors.grey,
                           textAlign: TextAlign.start,
                         ),
@@ -111,9 +121,9 @@ class _DetailPengajuanPPIDState extends State<DetailPengajuanPPID> {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            ComponentTextDescription(": Desa Sidokare"),
-                            ComponentTextDescription(": Perorangan"),
-                            ComponentTextDescription(": Sampah.pdf"),
+                            ComponentTextDescription(": ${asalPelapor}"),
+                            ComponentTextDescription(": ${KategoriPPID}"),
+                            ComponentTextDescription(": PPID2134.pdf"),
                           ],
                         ),
                       ],
