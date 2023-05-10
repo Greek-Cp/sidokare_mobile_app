@@ -26,6 +26,7 @@ import 'package:http/http.dart' as http;
 import 'package:sidokare_mobile_app/model/response/get/response_jumlahLaporan.dart';
 import 'package:sidokare_mobile_app/pages/item_nav/item_page_berita/page_search_berita.dart';
 import 'package:sidokare_mobile_app/pages/page_formulirAspirasi.dart';
+import 'package:sidokare_mobile_app/pages/page_formulirKeberatan.dart';
 import 'package:sidokare_mobile_app/pages/page_formulirKeluhan.dart';
 import 'package:sidokare_mobile_app/pages/page_profileSettings.dart';
 import '../../const/const.dart';
@@ -319,6 +320,21 @@ class _PageUtamaState extends State<PageUtama> {
                                       Icons.library_books_rounded,
                                       id,
                                       PageFormulirAspirasi.routeName
+                                          .toString())),
+                            ),
+                          )),
+
+                          AnimationLimiter(
+                              child: AnimationConfiguration.synchronized(
+                            duration: Duration(milliseconds: 375 * 3),
+                            child: SlideAnimation(
+                              horizontalOffset: -50.0,
+                              child: FadeInAnimation(
+                                  child: buttonPengajuan(
+                                      "Keberatan",
+                                      Icons.library_books_rounded,
+                                      id,
+                                      PageFormulirKeberatanPPID.routeName
                                           .toString())),
                             ),
                           )),

@@ -3,6 +3,7 @@ import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:provider/provider.dart';
 import 'package:sidokare_mobile_app/const/list_color.dart';
 import 'package:sidokare_mobile_app/pages/page_formulirAspirasi.dart';
+import 'package:sidokare_mobile_app/pages/page_formulirKeberatan.dart';
 import 'package:sidokare_mobile_app/pages/page_formulirKeluhan.dart';
 import 'package:sidokare_mobile_app/pages/page_formulirpengajuan.dart';
 
@@ -21,20 +22,28 @@ class _PageLaporanState extends State<PageLaporan> {
   List<IconData> iconssnya = [
     Icons.assignment,
     Icons.analytics,
+    Icons.library_books_rounded,
     Icons.library_books_rounded
   ];
 
   List<String> HeaderJudul = [
     "Pengajuan PPID",
     "Lapor Keluhan",
-    "Lapor Aspirasi"
+    "Lapor Aspirasi",
+    "Lapor Keberatan PPID"
   ];
   List<String> DescHead = [
     "Meminta informasi dokumen oleh \nbadan publik dan pemerintah",
     "Melaporkan keluhan untuk \nmengatasi permasalahan",
-    "Memberikan kritik dan saran \nuntuk pembangunan desa"
+    "Memberikan kritik dan saran \nuntuk pembangunan desa",
+    "Melaporkan keberatan pengajuan PPID"
   ];
-  List<String> namaButton = ["Buat PPID", "Buat Keluhan", "Buat Aspirasi"];
+  List<String> namaButton = [
+    "Buat PPID",
+    "Buat Keluhan",
+    "Buat Aspirasi",
+    "Buat Keberatan"
+  ];
 
   @override
   void initState() {
@@ -111,9 +120,16 @@ class _PageLaporanState extends State<PageLaporan> {
                   arguments: id),
               print("Page Kedua Disini"),
             }
+          else if (index == 2)
+            {
+              Navigator.pushNamed(
+                  context, PageFormulirPengajuanKeluhan.routeName.toString(),
+                  arguments: id),
+              print("Page Kedua Disini"),
+            }
           else
             Navigator.pushNamed(
-                context, PageFormulirAspirasi.routeName.toString(),
+                context, PageFormulirKeberatanPPID.routeName.toString(),
                 arguments: id),
           {print("Page Ketiga disini")}
         },

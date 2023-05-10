@@ -10,6 +10,7 @@ import 'package:sidokare_mobile_app/pages/page_detail_aspirasi.dart';
 import 'package:sidokare_mobile_app/pages/page_detail_keluhan.dart';
 import 'package:sidokare_mobile_app/pages/page_detail_status.dart';
 import 'package:sidokare_mobile_app/pages/page_formulirAspirasi.dart';
+import 'package:sidokare_mobile_app/pages/page_formulirKeberatan.dart';
 import 'package:sidokare_mobile_app/pages/page_formulirKeluhan.dart';
 import 'package:sidokare_mobile_app/pages/page_formulirpengajuan.dart';
 import 'package:sidokare_mobile_app/pages/page_home.dart';
@@ -68,7 +69,9 @@ class MainApp extends StatelessWidget {
           PageDetailKeluhan.routeName.toString(): (context) =>
               PageDetailKeluhan(),
           PageDetailAspirasi.routeName.toString(): (context) =>
-              PageDetailAspirasi()
+              PageDetailAspirasi(),
+          PageFormulirKeberatanPPID.routeName.toString(): (context) =>
+              PageFormulirKeberatanPPID()
         },
       ),
     );
