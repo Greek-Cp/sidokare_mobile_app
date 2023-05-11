@@ -55,7 +55,22 @@ class _PageFormulirKeberatanPPIDState extends State<PageFormulirKeberatanPPID> {
   static String? randomValueKategoriLaporan = "Lingkungan";
   static String? randomValueKejadianDusun = "Kewarganegaraan";
   static String? randomValueAsalPelapor = "Topik lainnya";
+  String? selectedRt = 'RT 01';
+  String? selectedRw = 'RW 01';
 
+  List<String> rtList = [
+    'RT 01',
+    'RT 02',
+    'RT 03',
+    // Tambahkan RT lainnya di sini sesuai kebutuhan
+  ];
+
+  List<String> rwList = [
+    'RW 01',
+    'RW 02',
+    'RW 03',
+    // Tambahkan RW lainnya di sini sesuai kebutuhan
+  ];
   final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
@@ -131,21 +146,14 @@ class _PageFormulirKeberatanPPIDState extends State<PageFormulirKeberatanPPID> {
                       hintText: "pilih lokasi",
                       errorKosong: "pelapor",
                       randomlabel: randomValueAsalPelapor),
-                  customDropDownKategoriLaporan(
-                    listItem: listKategoriLaporan,
-                    namaLabel: "Alasan Keberatan",
-                    hintText: "Pilih Kategori",
-                    errorKosong: "Keberatan",
-                    randomlabel: randomValueKategoriLaporan,
-                  ),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20.0),
                     child: SizedBox(
                         child: TextFieldImport.TextFormMultiLine(
                             text_kontrol: textEditingControllerIsiLaporan,
-                            hintText: "Isi Catatan Tambahan",
+                            hintText: "Catatan Tambahan",
                             labelName: "Catatan Tambahan",
-                            pesanValidasi: "Catatan Tambahan")),
+                            pesanValidasi: "Isi Laporan")),
                   ),
                   UpfilePendukung("Upload File Pendukung", "gatau", fileUp!,
                       "Silakan Upload File"),

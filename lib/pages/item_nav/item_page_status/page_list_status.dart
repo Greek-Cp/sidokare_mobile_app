@@ -6,6 +6,7 @@ import 'package:sidokare_mobile_app/const/size.dart';
 import 'package:sidokare_mobile_app/model/controller_idakun.dart';
 import 'package:sidokare_mobile_app/model/response/get/controller_get.dart';
 import 'package:sidokare_mobile_app/model/response/get/response_ppid.dart';
+import 'package:sidokare_mobile_app/pages/page_DetailPengajuanPPID.dart';
 import 'package:sidokare_mobile_app/pages/page_detail_status.dart';
 
 import 'package:sidokare_mobile_app/provider/provider_account.dart';
@@ -98,7 +99,7 @@ class _itemListStatusState extends State<itemListStatus> {
                 ElevatedButton(
                     onPressed: () {
                       Navigator.pushNamed(
-                          context, PageDetailStatus.routeName.toString(),
+                          context, DetailPengajuanPPID.routeName.toString(),
                           arguments: {
                             "id_akun": idAkun,
                             "judulLaporan": laporan,
@@ -112,7 +113,7 @@ class _itemListStatusState extends State<itemListStatus> {
                         padding: EdgeInsets.symmetric(
                             horizontal: 20.w, vertical: 5.h)),
                     child: Text(
-                      "Ajukan",
+                      "Detail",
                       style: TextStyle(fontSize: size.DescTextKecil.sp),
                     ))
               ],
