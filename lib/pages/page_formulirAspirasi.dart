@@ -66,7 +66,7 @@ class _PageFormulirAspirasiState extends State<PageFormulirAspirasi> {
                 pinned: true,
                 flexibleSpace: FlexibleSpaceBar(
                   title: Text(
-                    "Formulir Pengajuan Keluhan",
+                    "Formulir Pengajuan Aspirasi",
                     textAlign: TextAlign.center,
                     style: TextStyle(fontSize: size.HeaderText.sp),
                   ),
