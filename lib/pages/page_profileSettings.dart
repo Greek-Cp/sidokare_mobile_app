@@ -19,6 +19,7 @@ import 'package:path/path.dart' as Path;
 import 'package:path_provider/path_provider.dart';
 import 'package:sidokare_mobile_app/pages/page_home.dart';
 
+import '../component/jenis_button.dart';
 import '../const/const.dart';
 import '../const/list_color.dart';
 import '../provider/provider_account.dart';
@@ -39,6 +40,7 @@ class _PageProfileUserState extends State<PageProfileUser> {
   TextEditingController? getEmail;
   TextEditingController? getTelp;
   ProviderAccount? providerAccount;
+  final _formKey = GlobalKey<FormState>();
 
   File? _image;
   String? _namaFile;
@@ -124,75 +126,79 @@ class _PageProfileUserState extends State<PageProfileUser> {
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20.0),
               child: Center(
-                child: ListView(
-                  children: [
-                    SizedBox(
-                      height: 20.h,
-                    ),
-                    ComponentTextTittle("Akun Saya"),
-                    SizedBox(
-                      height: 20.h,
-                    ),
-                    Center(
-                      child: Container(
-                        child: Stack(
-                          children: [
-                            Container(
-                              width: 130.w,
-                              height: 130.h,
-                              child: CircleAvatar(
-                                backgroundImage: ChangeProfile(
-                                    urlGambar: DataDiri.urlGambar.toString(),
-                                    gambar: _image),
-                                backgroundColor: Colors.amberAccent,
-                                // maxRadius: 70,
+                child: Form(
+                  key: _formKey,
+                  child: ListView(
+                    children: [
+                      SizedBox(
+                        height: 20.h,
+                      ),
+                      ComponentTextTittle("Akun Saya"),
+                      SizedBox(
+                        height: 20.h,
+                      ),
+                      Center(
+                        child: Container(
+                          child: Stack(
+                            children: [
+                              Container(
+                                width: 130.w,
+                                height: 130.h,
+                                child: CircleAvatar(
+                                  backgroundImage: ChangeProfile(
+                                      urlGambar: DataDiri.urlGambar.toString(),
+                                      gambar: _image),
+                                  backgroundColor: Colors.amberAccent,
+                                  // maxRadius: 70,
+                                ),
                               ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(left: 90.w, top: 80.h),
-                              child: CircleAvatar(
-                                backgroundColor: ListColor.warnaBiruSidoKare,
-                                child: IconButton(
-                                    color: Colors.white,
-                                    onPressed: () {
-                                      _pickImage(ImageSource.gallery);
-                                    },
-                                    icon: Icon(Icons.mode_edit_outline)),
-                              ),
-                            )
-                          ],
+                              Padding(
+                                padding: EdgeInsets.only(left: 90.w, top: 80.h),
+                                child: CircleAvatar(
+                                  backgroundColor: ListColor.warnaBiruSidoKare,
+                                  child: IconButton(
+                                      color: Colors.white,
+                                      onPressed: () {
+                                        _pickImage(ImageSource.gallery);
+                                      },
+                                      icon: Icon(Icons.mode_edit_outline)),
+                                ),
+                              )
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                    TextFieldImport.TextFormNama(
-                        labelName: "Nama",
-                        text_kontrol: getNama,
-                        pesanValidasi: "Nama"),
-                    TextFieldImport.TextForm(
-                        labelName: "NIK",
-                        readyOnlyTydack: true,
-                        text_kontrol: getNik,
-                        pesanValidasi: "NIk"),
-                    TextFieldImport.TextForm(
-                        labelName: "Email",
-                        readyOnlyTydack: true,
-                        text_kontrol: getEmail,
-                        pesanValidasi: "Telepon"),
-                    TextFieldImport.TextFormTelp(
-                        labelName: "Nomor Telepon",
-                        text_kontrol: getTelp,
-                        length: 12,
-                        pesanValidasi: "Telepon"),
-                    _Button(
-                        idakun: DataDiri.id_akun.toString(),
-                        namaGmbrHps:
-                            DataDiri.urlGambar.toString().replaceAll("'", ""),
-                        nama: getNama?.text,
-                        nomor: getTelp?.text,
-                        nik: getNik?.text,
-                        emaill: getEmail?.text,
-                        fileBaru: _image)
-                  ],
+                      TextFieldImport.TextFormNama(
+                          labelName: "Nama",
+                          text_kontrol: getNama,
+                          pesanValidasi: "Nama"),
+                      TextFieldImport.TextForm(
+                          labelName: "NIK",
+                          readyOnlyTydack: true,
+                          text_kontrol: getNik,
+                          pesanValidasi: "NIk"),
+                      TextFieldImport.TextForm(
+                          labelName: "Email",
+                          readyOnlyTydack: true,
+                          text_kontrol: getEmail,
+                          pesanValidasi: "Telepon"),
+                      TextFieldImport.TextFormTelp(
+                          labelName: "Nomor Telepon",
+                          text_kontrol: getTelp,
+                          length: 12,
+                          pesanValidasi: "Telepon"),
+                      _Button(
+                          idakun: DataDiri.id_akun.toString(),
+                          namaGmbrHps:
+                              DataDiri.urlGambar.toString().replaceAll("'", ""),
+                          nama: getNama?.text,
+                          nomor: getTelp?.text,
+                          nik: getNik?.text,
+                          emaill: getEmail?.text,
+                          fileBaru: _image),
+                      ButtonForm("Keluar", _formKey, () {}),
+                    ],
+                  ),
                 ),
               ),
             ),

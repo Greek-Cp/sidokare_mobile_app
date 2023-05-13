@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
+
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:sidokare_mobile_app/component/jenis_button.dart';
 import 'package:sidokare_mobile_app/component/text_description.dart';
 import 'package:sidokare_mobile_app/const/font_type.dart';
+import 'package:sidokare_mobile_app/const/list_color.dart';
 import 'package:sidokare_mobile_app/const/size.dart';
 
-import '../provider/provider_account.dart';
+import '../../const/const.dart';
+import '../../model/response/get/controller_get.dart';
+import '../../provider/provider_account.dart';
 
 class DetailPengajuanPPID extends StatefulWidget {
   static String? routeName = "/DetailPengajuanPPID";
@@ -28,6 +34,13 @@ class _DetailPengajuanPPIDState extends State<DetailPengajuanPPID> {
     String judullaporan = getData?['judulLaporan'];
     String asalPelapor = getData?['AsalPelapor'];
     String KategoriPPID = getData?['kategoriPPID'];
+    String RT = getData?['RT'];
+    String RW = getData?['RW'];
+    String status = getData?['status'];
+    String DocPPID = getData?['dokumenUp'];
+    String? filePendukung = getData?['uploadFile'];
+    DateTime currentTime = DateTime.now();
+    String timeStamp = currentTime.toString();
 
     // TODO: implement build
     return ScreenUtilInit(
@@ -61,7 +74,7 @@ class _DetailPengajuanPPIDState extends State<DetailPengajuanPPID> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             ComponentTextDescription("Nama Lengkap"),
-                            ComponentTextDescription("Nik"),
+                            ComponentTextDescription("NIK"),
                           ],
                         ),
                         SizedBox(
@@ -70,7 +83,13 @@ class _DetailPengajuanPPIDState extends State<DetailPengajuanPPID> {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            ComponentTextDescription(": ${DataDiri.nama}"),
+                            Text(
+                              ": ${DataDiri.nama}",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: size.sizeDescriptionPas.sp),
+                            ),
+                            // ComponentTextDescription(": ${DataDiri.nama}"),
                             ComponentTextDescription(": ${DataDiri.Nik}"),
                           ],
                         ),
@@ -94,10 +113,13 @@ class _DetailPengajuanPPIDState extends State<DetailPengajuanPPID> {
                           borderRadius: BorderRadius.circular(10.r)),
                       child: Padding(
                         padding: EdgeInsets.all(10.0.w),
-                        child: ComponentTextDescription(
-                          "${isiLaporan}",
-                          teksColor: Colors.grey,
-                          textAlign: TextAlign.start,
+                        child: Container(
+                          width: double.infinity,
+                          child: ComponentTextDescription(
+                            "${isiLaporan}",
+                            teksColor: Colors.grey,
+                            textAlign: TextAlign.start,
+                          ),
                         ),
                       ),
                     ),
@@ -111,6 +133,7 @@ class _DetailPengajuanPPIDState extends State<DetailPengajuanPPID> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             ComponentTextDescription("Asal Pelapor"),
+                            ComponentTextDescription("RT / RW"),
                             ComponentTextDescription("Kategori PPID"),
                             ComponentTextDescription("Upload File Pendukung"),
                           ],
@@ -121,9 +144,15 @@ class _DetailPengajuanPPIDState extends State<DetailPengajuanPPID> {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            ComponentTextDescription(": ${asalPelapor}"),
+                            ComponentTextDescription(": ${asalPelapor} "),
+                            ComponentTextDescription(": ${RT} / ${RW}"),
                             ComponentTextDescription(": ${KategoriPPID}"),
-                            ComponentTextDescription(": PPID2134.pdf"),
+                            Text(filePendukung.toString().length > 20
+                                ? ": " +
+                                    filePendukung.toString().substring(0, 20) +
+                                    '...'
+                                : ": ${filePendukung}"),
+                            // ComponentTextDescription(": ${filePendukung}"),
                           ],
                         ),
                       ],
@@ -136,19 +165,47 @@ class _DetailPengajuanPPIDState extends State<DetailPengajuanPPID> {
                       color: Colors.grey,
                     ),
                     ComponentTextDescription("Hasil PPID: "),
-                    Card(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10.r)),
-                      color: Color.fromARGB(255, 130, 225, 197),
-                      child: Padding(
-                        padding: EdgeInsets.all(20.0.w),
-                        child: Row(children: [
-                          Icon(
-                            Icons.file_copy,
-                            color: Colors.white,
-                          ),
-                          ComponentTextButton("PPID_21334.pdf")
-                        ]),
+                    GestureDetector(
+                      onTap: () async {
+                        print("halooo");
+                        if (DocPPID.toString() != "kosong") {
+                          String url =
+                              'http://${ApiPoint.BASE_URL}/storage/dummyOutput/${DocPPID.toString()}'; // Ganti dengan URL file yang ingin Anda unduh
+                          // String savedDir =
+                          //     '/storage/emulated/0/Download/${timeStamp}-${DocPPID.toString()}';
+                          DateTime currentTime = DateTime.now();
+                          DateFormat formatter = DateFormat('yyyyMMddHHmmss');
+                          String timestamp = formatter.format(currentTime);
+                          var getDownload = await getDownloadsDirectory();
+                          String path =
+                              "${getDownload}\\${timestamp}_${DocPPID.toString()}";
+                          String replaceBruh = path.replaceAll("'", "");
+                          replaceBruh =
+                              replaceBruh.replaceAll("Directory: ", "");
+                          print(replaceBruh);
+                          String savedDir =
+                              "C:\\Users\\LENOVO\\Downloads\\Named123_ppid677.pdf";
+                          print("${savedDir}");
+                          ControllerAPI.downloadFile(url, replaceBruh, context,
+                              "Tersimpan folder download \n Nama File : ${timeStamp}-${DocPPID.toString()}");
+                        }
+                      },
+                      child: Card(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10.r)),
+                        color: ButtonDownload(sama: status),
+                        child: Padding(
+                          padding: EdgeInsets.all(20.0.w),
+                          child: Row(children: [
+                            Icon(
+                              Icons.file_copy,
+                              color: Colors.white,
+                            ),
+                            ComponentTextButton(DocPPID == "kosong"
+                                ? status
+                                : DocPPID.toString())
+                          ]),
+                        ),
                       ),
                     ),
                     ComponentTextDescriptionBawah(
@@ -168,6 +225,18 @@ class _DetailPengajuanPPIDState extends State<DetailPengajuanPPID> {
         );
       },
     );
+  }
+}
+
+Color ButtonDownload({String? sama}) {
+  if (sama == "diajukan") {
+    return Colors.amberAccent;
+  } else if (sama == "diproses") {
+    return ListColor.warnaBiruSidoKare;
+  } else if (sama == "ditolak") {
+    return Colors.redAccent;
+  } else {
+    return Colors.greenAccent;
   }
 }
 

@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
@@ -36,18 +37,60 @@ class _PageFormulirPengajuanState extends State<PageFormulirPengajuanPPID> {
       TextEditingController();
   TextEditingController? textEditingControllerAsalPelapor =
       TextEditingController();
+  TextEditingController? textEditingControllerNomorTelepon =
+      TextEditingController();
+  TextEditingController? textEditingControllerEmail = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
   static File? _file;
   final List<String> listDusun = ['Sidokare', 'SidoMaju', 'SidoSido'];
-  final List<String> listPPID = ['PPID keren', 'PPID PDIP', 'PPID TEST'];
-  static String? randomValuePPID = "PPID keren";
+  final List<String> listPPID = ['Perorangan', 'Badan Hukum', 'Badan Usaha'];
+  final List<String> RT = [
+    '001',
+    '002',
+    '003',
+    '004',
+    '005',
+    '006',
+    '007',
+    '008'
+  ];
+  final List<String> RW = [
+    '001',
+    '002',
+    '003',
+    '004',
+    '005',
+    '006',
+    '007',
+    '008'
+  ];
+  static String? randomValuePPID = "";
   static String? randomValueDusun = "Sidokare";
+  static String? randomValueRT = "001";
+  static String? randomValueRW = "001";
+
+  bool isVisibleText = false;
+  static String boolq = "";
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    print("apa awal nyaa :: ${randomValuePPID}");
+  }
+
+  String textBeritahu({String? cocokne}) {
+    if (cocokne == "Perorangan") {
+      print("tes 1");
+      return "Harap Upload KTP";
+    } else if (cocokne == "Badan Hukum") {
+      print("tes 2");
+      return "Harap Upload Surat Pendirian Badan Hukum";
+    } else {
+      print("tes 3");
+      return "Harap Upload Surat Pendirian Badan Usaha";
+    }
   }
 
   @override
@@ -61,6 +104,10 @@ class _PageFormulirPengajuanState extends State<PageFormulirPengajuanPPID> {
     setState(() {
       textEditingControllerNIK!.text = DataDiri.Nik.toString();
       textEditingControllerNamaLengkap!.text = DataDiri.nama.toString();
+      textEditingControllerAsalPelapor!.text = "Desa Sidokare";
+      // textBeritahu();
+      // randomValuePPID;
+      print("random ${randomValuePPID}");
     });
     // TODO: implement build
     return ScreenUtilInit(
@@ -119,6 +166,23 @@ class _PageFormulirPengajuanState extends State<PageFormulirPengajuanPPID> {
                             pesanValidasi: "NIK")),
                   ),
                   Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: TextFieldImport.TextFormTelp(
+                        labelName: "Nomor Telepon",
+                        length: 12,
+                        text_kontrol: textEditingControllerNomorTelepon,
+                        hintText: "Masukkan Nomor Telepon",
+                        pesanValidasi: "Nomor Telepon"),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 20),
+                    child: TextFieldImport.TextFormEmail(
+                        labelName: "Email",
+                        text_kontrol: textEditingControllerEmail,
+                        hintText: "Masukkan Email",
+                        pesanValidasi: "Email"),
+                  ),
+                  Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20.0),
                     child: SizedBox(
                         child: TextFieldImport.TextForm(
@@ -136,21 +200,46 @@ class _PageFormulirPengajuanState extends State<PageFormulirPengajuanPPID> {
                             labelName: "Isi Laporan",
                             pesanValidasi: "Isi Laporan")),
                   ),
-                  customDropDownDusun(
-                      listItem: listDusun,
-                      namaLabel: "Asal Pelapor",
-                      hintText: "Pilih Dusun",
-                      randomlabel: randomValueDusun,
-                      errorKosong: "Dusun"),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 20.0),
+                    child: TextFieldImport.TextForm(
+                        readyOnlyTydack: true,
+                        text_kontrol: textEditingControllerAsalPelapor,
+                        labelName: "Alamat",
+                        pesanValidasi: "Alamat"),
+                  ),
+                  // customDropDownDusun(
+                  //     listItem: listDusun,
+                  //     namaLabel: "Asal Pelapor",
+                  //     hintText: "Pilih Dusun",
+                  //     randomlabel: randomValueDusun,
+                  //     errorKosong: "Dusun"),
+                  DropdownRTRW(
+                      listItemRT: RT,
+                      listItemRW: RW,
+                      namaLabelRT: "RT",
+                      namaLabelRW: "RW",
+                      hintTextRT: "Pilih RT",
+                      hintTextRW: "Pilih RW",
+                      errorKosong: "RT / RW",
+                      randomlabelRT: randomValueRT,
+                      randomlabelRW: randomValueRW),
                   customDropDownPPID(
                     listItem: listPPID,
                     namaLabel: "Kategori PPID",
                     hintText: "Pilih Kategori",
                     errorKosong: "PPID",
-                    randomlabel: randomValuePPID,
+                    // randomlabel: randomValuePPID,
                   ),
                   UpfilePendukung("Upload File Pendukung", "gatau", fileUp!,
                       "Silakan Upload File"),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                    child: Visibility(
+                        visible: true,
+                        child: Text(
+                            " Catatan : ${textBeritahu(cocokne: randomValuePPID)} ")),
+                  ),
                   SizedBox(
                     height: 10.h,
                   ),
@@ -164,20 +253,39 @@ class _PageFormulirPengajuanState extends State<PageFormulirPengajuanPPID> {
                               print("Jenis PPID == ${randomValuePPID}"),
                               print("Dusun Terpilih == ${randomValueDusun}"),
                               print("IdAkunnyaa == ${idAkunnn.toString()}"),
+                              print(
+                                  "nama == ${textEditingControllerNamaLengkap!.text}"),
+                              print(
+                                  "Telp ${textEditingControllerNomorTelepon!.text}"),
+                              print(
+                                  "email == ${textEditingControllerEmail!.text}"),
+                              print("RT == ${randomValueRT}"),
+                              print("RW == ${randomValueRW}"),
                               if (_formKey.currentState!.validate())
                                 {
                                   print(
                                       "Tes file :: " + fileUp!.text.toString()),
                                   PengajuanPPID.InsertDataPPID(
                                           idAkun: idAkunnn.toString(),
+                                          nama_pelapor:
+                                              textEditingControllerNamaLengkap!
+                                                  .text,
+                                          noTelp:
+                                              textEditingControllerNomorTelepon!
+                                                  .text
+                                                  .toString(),
+                                          emailUser: textEditingControllerEmail!
+                                              .text
+                                              .toString(),
                                           JudulLaporan:
                                               textEditingControllerJudulLaporan!
                                                   .text,
                                           isiLaporan:
                                               textEditingControllerIsiLaporan!
                                                   .text,
-                                          asalLaporan:
-                                              randomValueDusun.toString(),
+                                          asalLaporan: "Sidokare",
+                                          RT: randomValueRT.toString(),
+                                          RW: randomValueRW.toString(),
                                           kategoriPPID:
                                               randomValuePPID.toString(),
                                           File: fileUp!.text.toString())
@@ -237,6 +345,233 @@ class _PageFormulirPengajuanState extends State<PageFormulirPengajuanPPID> {
           ),
         );
       },
+    );
+  }
+
+  Widget DropdownRTRW(
+      {List<String>? listItemRT,
+      List<String>? listItemRW,
+      String? namaLabelRT,
+      String? namaLabelRW,
+      String? hintTextRT,
+      String? hintTextRW,
+      String? randomlabelRT,
+      String? randomlabelRW,
+      String? errorKosong}) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+      child: Row(
+        children: [
+          Expanded(
+            child: Padding(
+              padding: EdgeInsets.only(right: 10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    height: 10.h,
+                  ),
+                  Text(
+                    "$namaLabelRT",
+                    style: GoogleFonts.dmSans(
+                        textStyle: TextStyle(
+                            fontWeight: FontWeight.normal, fontSize: 13.sp)),
+                    textAlign: TextAlign.start,
+                  ),
+                  DropdownButtonFormField2(
+                    decoration: InputDecoration(
+                      //Add isDense true and zero Padding.
+                      //Add Horizontal padding using buttonPadding and Vertical padding by increasing buttonHeight instead of add Padding here so that The whole TextField Button become clickable, and also the dropdown menu open under The whole TextField Button.
+                      isDense: true,
+                      contentPadding: EdgeInsets.only(
+                          bottom: 1.0.h, top: 1.0.h, right: 5.0.w),
+                      enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide:
+                              BorderSide(color: ListColor.warnaBiruSidoKare)),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      //Add more decoration as you want here
+                      //Add label If you want but add hint outside the decoration to be aligned in the button perfectly.
+                    ),
+                    isExpanded: true,
+                    hint: Text(
+                      '$hintTextRT',
+                      style: TextStyle(fontSize: 14.sp),
+                    ),
+                    items: listItemRT
+                        ?.map((item) => DropdownMenuItem<String>(
+                              value: item,
+                              child: Text(
+                                item,
+                                style: TextStyle(
+                                  fontSize: 14.sp,
+                                ),
+                              ),
+                            ))
+                        .toList(),
+                    validator: (value) {
+                      if (value == null) {
+                        return 'Harap Memilih $errorKosong !.';
+                      }
+                      return null;
+                    },
+                    onChanged: (value) {
+                      setState(() {
+                        randomValueRT = value;
+                      });
+                    },
+                    buttonStyleData: ButtonStyleData(
+                      height: 50.h,
+                      padding: EdgeInsets.only(right: 10),
+                    ),
+                    iconStyleData: const IconStyleData(
+                      icon: Icon(
+                        Icons.arrow_drop_down,
+                        color: Colors.black45,
+                      ),
+                      iconSize: 30,
+                    ),
+                    dropdownStyleData: DropdownStyleData(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                    ),
+                  ),
+                  // TextFormField(
+                  //   validator: (value) {
+                  //     if (value.toString().isEmpty) {
+                  //       return "Harap isi Jumlah Posyandu";
+                  //     }
+                  //   },
+                  //   // controller: getJmlPosyandu,
+                  //   keyboardType: TextInputType.number,
+                  //   inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                  //   decoration: InputDecoration(
+                  //       hintText: "Masukkan Jumlah",
+                  //       enabledBorder: OutlineInputBorder(
+                  //           borderSide: BorderSide(
+                  //               width: 1, color: ListColor.warnaBiruSidoKare),
+                  //           borderRadius:
+                  //               BorderRadius.all(Radius.circular(10))),
+                  //       focusedBorder: OutlineInputBorder(
+                  //           borderSide: BorderSide(
+                  //               width: 1, color: ListColor.warnaBiruSidoKare),
+                  //           borderRadius:
+                  //               BorderRadius.all(Radius.circular(10)))),
+                  //   // controller: nameController,
+                  // ),
+                ],
+              ),
+            ),
+          ),
+          Expanded(
+            child: Padding(
+              padding: EdgeInsets.only(right: 10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    height: 10.h,
+                  ),
+                  Text(
+                    "$namaLabelRW",
+                    style: GoogleFonts.dmSans(
+                        textStyle: TextStyle(
+                            fontWeight: FontWeight.normal, fontSize: 13.sp)),
+                    textAlign: TextAlign.start,
+                  ),
+                  DropdownButtonFormField2(
+                    decoration: InputDecoration(
+                      //Add isDense true and zero Padding.
+                      //Add Horizontal padding using buttonPadding and Vertical padding by increasing buttonHeight instead of add Padding here so that The whole TextField Button become clickable, and also the dropdown menu open under The whole TextField Button.
+                      isDense: true,
+                      contentPadding: EdgeInsets.only(
+                          bottom: 1.0.h, top: 1.0.h, right: 5.0.w),
+                      enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide:
+                              BorderSide(color: ListColor.warnaBiruSidoKare)),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      //Add more decoration as you want here
+                      //Add label If you want but add hint outside the decoration to be aligned in the button perfectly.
+                    ),
+                    isExpanded: true,
+                    hint: Text(
+                      '$hintTextRW',
+                      style: TextStyle(fontSize: 14.sp),
+                    ),
+                    items: listItemRW
+                        ?.map((item) => DropdownMenuItem<String>(
+                              value: item,
+                              child: Text(
+                                item,
+                                style: TextStyle(
+                                  fontSize: 14.sp,
+                                ),
+                              ),
+                            ))
+                        .toList(),
+                    validator: (value) {
+                      if (value == null) {
+                        return 'Harap Memilih $errorKosong !.';
+                      }
+                      return null;
+                    },
+                    onChanged: (value) {
+                      setState(() {
+                        randomValueRW = value;
+                      });
+                    },
+                    buttonStyleData: ButtonStyleData(
+                      height: 50.h,
+                      padding: EdgeInsets.only(right: 10),
+                    ),
+                    iconStyleData: const IconStyleData(
+                      icon: Icon(
+                        Icons.arrow_drop_down,
+                        color: Colors.black45,
+                      ),
+                      iconSize: 30,
+                    ),
+                    dropdownStyleData: DropdownStyleData(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                    ),
+                  ),
+                  // TextFormField(
+                  //   validator: (value) {
+                  //     if (value.toString().isEmpty) {
+                  //       return "Harap isi Jumlah Posyandu";
+                  //     }
+                  //   },
+                  //   // controller: getJmlPosyandu,
+                  //   keyboardType: TextInputType.number,
+                  //   inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                  //   decoration: InputDecoration(
+                  //       hintText: "Masukkan Jumlah",
+                  //       enabledBorder: OutlineInputBorder(
+                  //           borderSide: BorderSide(
+                  //               width: 1, color: ListColor.warnaBiruSidoKare),
+                  //           borderRadius:
+                  //               BorderRadius.all(Radius.circular(10))),
+                  //       focusedBorder: OutlineInputBorder(
+                  //           borderSide: BorderSide(
+                  //               width: 1, color: ListColor.warnaBiruSidoKare),
+                  //           borderRadius:
+                  //               BorderRadius.all(Radius.circular(10)))),
+                  //   // controller: nameController,
+                  // ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -353,7 +688,9 @@ class _PageFormulirPengajuanState extends State<PageFormulirPengajuanPPID> {
               isDense: true,
               contentPadding:
                   EdgeInsets.only(bottom: 1.0.h, top: 1.0.h, right: 5.0.w),
-
+              enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: BorderSide(color: ListColor.warnaBiruSidoKare)),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
               ),
@@ -385,6 +722,8 @@ class _PageFormulirPengajuanState extends State<PageFormulirPengajuanPPID> {
             onChanged: (value) {
               setState(() {
                 randomValuePPID = value;
+                print("banhhhhh ${value}");
+                print("${randomValuePPID} cynnaaa");
               });
             },
             buttonStyleData: ButtonStyleData(
@@ -438,7 +777,9 @@ class _PageFormulirPengajuanState extends State<PageFormulirPengajuanPPID> {
               isDense: true,
               contentPadding:
                   EdgeInsets.only(bottom: 1.0.h, top: 1.0.h, right: 5.0.w),
-
+              enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: BorderSide(color: ListColor.warnaBiruSidoKare)),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
               ),
