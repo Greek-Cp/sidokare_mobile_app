@@ -54,7 +54,7 @@ class Data {
       this.uploadFilePendukung});
 
   Data.fromJson(Map<String, dynamic> json) {
-    idPengajuanPpid = json['id_pengajuan_ppid'];
+    idPengajuanPpid = json['id'].toString();
     idAkun = json['id_akun'];
     judulLaporan = json['judul_laporan'];
     isiLaporan = json['isi_laporan'];

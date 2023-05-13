@@ -42,6 +42,7 @@ class _itemListStatusState extends State<itemListStatus> {
               return ListView.builder(
                   itemBuilder: (context, index) {
                     return _containerListStatus(
+                        id_ppid: snapshot.data!.data![index].idPengajuanPpid,
                         statusUser: snapshot.data!.data![index].status,
                         docUp: snapshot.data!.data![index].OutputDocPPID ==
                                     null ||
@@ -79,6 +80,8 @@ class _itemListStatusState extends State<itemListStatus> {
       ListColor.GradientwarnaBiruSidoKare;
     } else if (samakan == "ditolak") {
       return Colors.redAccent;
+    } else if (samakan == "revisi") {
+      return Colors.pinkAccent;
     } else {
       return Colors.greenAccent;
     }
@@ -88,6 +91,7 @@ class _itemListStatusState extends State<itemListStatus> {
       {String? judul_pengajuan,
       isi_pengajuan,
       idAkun,
+      id_ppid,
       laporan,
       RTuser,
       RWuser,
@@ -129,6 +133,7 @@ class _itemListStatusState extends State<itemListStatus> {
                         Navigator.pushNamed(
                             context, DetailPengajuanPPID.routeName.toString(),
                             arguments: {
+                              "id_ppid": id_ppid,
                               "id_akun": idAkun,
                               "judulLaporan": laporan,
                               "isiLaporan": isiLaporan,
