@@ -324,20 +324,6 @@ class _PageUtamaState extends State<PageUtama> {
                             ),
                           )),
 
-                          AnimationLimiter(
-                              child: AnimationConfiguration.synchronized(
-                            duration: Duration(milliseconds: 375 * 3),
-                            child: SlideAnimation(
-                              horizontalOffset: -50.0,
-                              child: FadeInAnimation(
-                                  child: buttonPengajuan(
-                                      "Keberatan",
-                                      Icons.library_books_rounded,
-                                      id,
-                                      PageFormulirKeberatanPPID.routeName
-                                          .toString())),
-                            ),
-                          )),
                           // AnimationLimiter(
                           //     child: AnimationConfiguration.synchronized(
                           //   duration: Duration(milliseconds: 375 * 4),

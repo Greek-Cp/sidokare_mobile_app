@@ -30,6 +30,10 @@ class ResponseModelPPID {
 class Data {
   String? idPengajuanPpid;
   int? idAkun;
+  String? status;
+  String? RT;
+  String? RW;
+  String? OutputDocPPID;
   String? judulLaporan;
   String? isiLaporan;
   String? asalPelapor;
@@ -39,6 +43,10 @@ class Data {
   Data(
       {this.idPengajuanPpid,
       this.idAkun,
+      this.status,
+      this.OutputDocPPID,
+      this.RT,
+      this.RW,
       this.judulLaporan,
       this.isiLaporan,
       this.asalPelapor,
@@ -46,13 +54,17 @@ class Data {
       this.uploadFilePendukung});
 
   Data.fromJson(Map<String, dynamic> json) {
-    idPengajuanPpid = json['id_pengajuan_ppid'];
+    idPengajuanPpid = json['id'].toString();
     idAkun = json['id_akun'];
     judulLaporan = json['judul_laporan'];
     isiLaporan = json['isi_laporan'];
-    asalPelapor = json['asal_pelapor'];
+    asalPelapor = json['Alamat'];
     kategoriPpid = json['kategori_ppid'];
     uploadFilePendukung = json['upload_file_pendukung'];
+    OutputDocPPID = json['doc_hasil_ppid'];
+    status = json['status'];
+    RT = json['RT'];
+    RW = json['RW'];
   }
 
   Map<String, dynamic> toJson() {
@@ -61,7 +73,7 @@ class Data {
     data['id_akun'] = this.idAkun;
     data['judul_laporan'] = this.judulLaporan;
     data['isi_laporan'] = this.isiLaporan;
-    data['asal_pelapor'] = this.asalPelapor;
+    data['Alamat'] = this.asalPelapor;
     data['kategori_ppid'] = this.kategoriPpid;
     data['upload_file_pendukung'] = this.uploadFilePendukung;
     return data;

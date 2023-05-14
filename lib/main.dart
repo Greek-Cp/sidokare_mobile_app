@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:permission_handler/permission_handler.dart';
+
 import 'package:provider/provider.dart';
 import 'package:sidokare_mobile_app/const/fontfix.dart';
 import 'package:sidokare_mobile_app/pages/item_nav/item_page_berita/page_search_berita.dart';
 import 'package:sidokare_mobile_app/pages/item_nav/page_detail_berita.dart';
 import 'package:sidokare_mobile_app/pages/page_BerhasilBuatLaporan.dart';
-import 'package:sidokare_mobile_app/pages/page_DetailPengajuanPPID.dart';
+import 'package:sidokare_mobile_app/pages/item_page_detailPengajuan/page_DetailPengajuanPPID.dart';
 import 'package:sidokare_mobile_app/pages/page_berhasildaftar.dart';
 import 'package:sidokare_mobile_app/pages/page_berhasilotp.dart';
 import 'package:sidokare_mobile_app/pages/page_detail_aspirasi.dart';
@@ -26,7 +28,11 @@ import 'package:sidokare_mobile_app/provider/provider_account.dart';
 
 import './pages/page_splashscreen.dart';
 
-void main() {
+void main() async {
+  // WidgetsFlutterBinding.ensureInitialized();
+  // await FlutterDownloader.initialize(debug: true, ignoreSsl: true);
+  WidgetsFlutterBinding.ensureInitialized();
+  await Permission.storage.request();
   runApp(const MainApp());
 }
 

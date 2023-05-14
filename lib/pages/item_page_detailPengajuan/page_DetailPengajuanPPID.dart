@@ -207,7 +207,7 @@ class _DetailPengajuanPPIDState extends State<DetailPengajuanPPID> {
                             SizedBox(
                               width: 10,
                             ),
-                            ComponentTextButton(DocPPID == "kosong"
+                            ComponentTextButton(status != "selesai"
                                 ? " ${status}"
                                 : " ${DocPPID.toString()}")
                           ]),
@@ -218,6 +218,9 @@ class _DetailPengajuanPPIDState extends State<DetailPengajuanPPID> {
                       visible: status != "selesai" ? false : true,
                       child: ComponentTextDescriptionBawah(
                           "Silakan Download file , file akan tersimpan dalam device pada folder download"),
+                    ),
+                    Divider(
+                      color: Colors.grey,
                     ),
                     SizedBox(
                       height: 30.h,
@@ -266,6 +269,8 @@ Color ButtonDownload({String? sama}) {
     return ListColor.warnaBiruSidoKare;
   } else if (sama == "ditolak") {
     return Colors.redAccent;
+  } else if (sama == "revisi") {
+    return Colors.pinkAccent;
   } else {
     return Colors.greenAccent;
   }

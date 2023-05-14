@@ -1,5 +1,9 @@
 import 'dart:convert';
+import 'dart:io';
 
+import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:sidokare_mobile_app/component/Toast.dart';
 import 'package:sidokare_mobile_app/const/const.dart';
 import 'package:sidokare_mobile_app/model/response/get/response_aspirasi.dart';
 import 'package:sidokare_mobile_app/model/response/get/response_keluhan.dart';
@@ -17,6 +21,14 @@ class ControllerAPI {
     Uri uri = Uri.parse(url);
     var res = await http.post(uri, body: {'id_akun': idAkun.toString()});
     return ResponseModelPPID.fromJson(jsonDecode(res.body));
+  }
+
+  static Future<void> downloadFile(
+      String url, String savePath, BuildContext context, String Ucapan) async {
+    var response = await http.get(Uri.parse(url));
+    var file = File(savePath);
+    await file.writeAsBytes(response.bodyBytes);
+    ToastWidget.ToastSucces(context, "Berhasil Download File");
   }
 
   static Future<ResponseModelKELUHAN> getStatusKELUHAN(int idAkun) async {

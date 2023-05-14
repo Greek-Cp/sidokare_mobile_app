@@ -23,26 +23,22 @@ class _PageLaporanState extends State<PageLaporan> {
     Icons.assignment,
     Icons.analytics,
     Icons.library_books_rounded,
-    Icons.library_books_rounded
   ];
 
   List<String> HeaderJudul = [
     "Pengajuan PPID",
     "Lapor Keluhan",
     "Lapor Aspirasi",
-    "Lapor Keberatan PPID"
   ];
   List<String> DescHead = [
     "Meminta informasi dokumen oleh \nbadan publik dan pemerintah",
     "Melaporkan keluhan untuk \nmengatasi permasalahan",
     "Memberikan kritik dan saran \nuntuk pembangunan desa",
-    "Melaporkan keberatan pengajuan PPID"
   ];
   List<String> namaButton = [
     "Buat PPID",
     "Buat Keluhan",
     "Buat Aspirasi",
-    "Buat Keberatan"
   ];
 
   @override
@@ -127,11 +123,6 @@ class _PageLaporanState extends State<PageLaporan> {
                   arguments: id),
               print("Page Kedua Disini"),
             }
-          else
-            Navigator.pushNamed(
-                context, PageFormulirKeberatanPPID.routeName.toString(),
-                arguments: id),
-          {print("Page Ketiga disini")}
         },
         highlightColor: Colors.blue.withOpacity(0.4),
         splashColor: Colors.white.withOpacity(0.5),

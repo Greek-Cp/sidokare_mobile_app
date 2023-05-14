@@ -23,19 +23,29 @@ class PengajuanPPID {
 
   static Future<PengajuanPPID> InsertDataPPID(
       {String? idAkun,
+      String? nama_pelapor,
+      String? noTelp,
+      String? emailUser,
       String? JudulLaporan,
       String? isiLaporan,
       String? asalLaporan,
       String? kategoriPPID,
+      String? RT,
+      String? RW,
       String? File}) async {
     Uri url = Uri.parse("http://${ApiPoint.BASE_URL}/api/pengajuan/ppid");
     var HasilResponse = await http.post(url, body: {
       "id_akun": idAkun,
+      "nama_pelapor": nama_pelapor,
+      "no_telfon": noTelp,
+      "email": emailUser,
       "judul_laporan": JudulLaporan,
       "isi_laporan": isiLaporan,
-      "asal_pelapor": asalLaporan,
+      "Alamat": asalLaporan,
       "kategori_ppid": kategoriPPID,
-      "upload_file_pendukung": File
+      "upload_file_pendukung": File,
+      "RT": RT,
+      "RW": RW
     });
 
     var dataa = json.decode(HasilResponse.body);

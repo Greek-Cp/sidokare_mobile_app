@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:sidokare_mobile_app/const/list_color.dart';
@@ -6,10 +7,11 @@ import 'package:sidokare_mobile_app/const/size.dart';
 import 'package:sidokare_mobile_app/model/controller_idakun.dart';
 import 'package:sidokare_mobile_app/model/response/get/controller_get.dart';
 import 'package:sidokare_mobile_app/model/response/get/response_ppid.dart';
-import 'package:sidokare_mobile_app/pages/page_DetailPengajuanPPID.dart';
 import 'package:sidokare_mobile_app/pages/page_detail_status.dart';
 
 import 'package:sidokare_mobile_app/provider/provider_account.dart';
+
+import '../../item_page_detailPengajuan/page_DetailPengajuanPPID.dart';
 
 class itemListStatus extends StatefulWidget {
   itemListStatus(id_akun, jenis_pengajuan);
@@ -40,6 +42,15 @@ class _itemListStatusState extends State<itemListStatus> {
               return ListView.builder(
                   itemBuilder: (context, index) {
                     return _containerListStatus(
+                        id_ppid: snapshot.data!.data![index].idPengajuanPpid,
+                        statusUser: snapshot.data!.data![index].status,
+                        docUp: snapshot.data!.data![index].OutputDocPPID ==
+                                    null ||
+                                snapshot.data!.data![index].OutputDocPPID == ""
+                            ? "kosong"
+                            : snapshot.data!.data![index].OutputDocPPID,
+                        RTuser: snapshot.data!.data![index].RT,
+                        RWuser: snapshot.data!.data![index].RW,
                         judul_pengajuan:
                             snapshot.data!.data![index].judulLaporan.toString(),
                         isi_pengajuan: snapshot.data!.data![index].isiLaporan,
@@ -62,11 +73,30 @@ class _itemListStatusState extends State<itemListStatus> {
     );
   }
 
+  Color? warnaButton({String? samakan}) {
+    if (samakan == "diajukan") {
+      return Colors.amberAccent;
+    } else if (samakan == "diproses") {
+      ListColor.GradientwarnaBiruSidoKare;
+    } else if (samakan == "ditolak") {
+      return Colors.redAccent;
+    } else if (samakan == "revisi") {
+      return Colors.pinkAccent;
+    } else {
+      return Colors.greenAccent;
+    }
+  }
+
   Widget _containerListStatus(
       {String? judul_pengajuan,
       isi_pengajuan,
       idAkun,
+      id_ppid,
       laporan,
+      RTuser,
+      RWuser,
+      statusUser,
+      docUp,
       isiLaporan,
       asalPelapor,
       kategoriPPID,
@@ -82,7 +112,7 @@ class _itemListStatusState extends State<itemListStatus> {
             Text(
               judul_pengajuan.toString().length > 20
                   ? judul_pengajuan.toString().substring(0, 20) + '...'
-                  : "$isi_pengajuan",
+                  : "$judul_pengajuan",
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
                   fontWeight: FontWeight.bold, fontSize: size.SubHeader.sp),
@@ -96,26 +126,36 @@ class _itemListStatusState extends State<itemListStatus> {
                       : "$isi_pengajuan",
                   style: TextStyle(fontSize: size.DescTextKecil.sp),
                 ),
-                ElevatedButton(
-                    onPressed: () {
-                      Navigator.pushNamed(
-                          context, DetailPengajuanPPID.routeName.toString(),
-                          arguments: {
-                            "id_akun": idAkun,
-                            "judulLaporan": laporan,
-                            "isiLaporan": isiLaporan,
-                            "AsalPelapor": asalPelapor,
-                            "kategoriPPID": kategoriPPID,
-                            "uploadFile": uploadFile != null ? uploadFile : ""
-                          });
-                    },
-                    style: ElevatedButton.styleFrom(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 20.w, vertical: 5.h)),
-                    child: Text(
-                      "Detail",
-                      style: TextStyle(fontSize: size.DescTextKecil.sp),
-                    ))
+                Container(
+                  width: 100.w,
+                  child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.pushNamed(
+                            context, DetailPengajuanPPID.routeName.toString(),
+                            arguments: {
+                              "id_ppid": id_ppid,
+                              "id_akun": idAkun,
+                              "judulLaporan": laporan,
+                              "isiLaporan": isiLaporan,
+                              "AsalPelapor": asalPelapor,
+                              "RT": RTuser,
+                              "RW": RWuser,
+                              "status": statusUser,
+                              "dokumenUp": docUp,
+                              "kategoriPPID": kategoriPPID,
+                              "uploadFile": uploadFile != null ? uploadFile : ""
+                            });
+                      },
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor:
+                              warnaButton(samakan: statusUser.toString()),
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 20.w, vertical: 5.h)),
+                      child: Text(
+                        statusUser.toString(),
+                        style: TextStyle(fontSize: size.DescTextKecil.sp),
+                      )),
+                )
               ],
             ),
             Divider(
