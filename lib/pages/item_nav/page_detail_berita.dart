@@ -24,6 +24,8 @@ class PageDetailBerita extends StatefulWidget {
   State<PageDetailBerita> createState() => _PageDetailBeritaState();
 }
 
+enum itemEdit { Edit, Hapus }
+
 class _PageDetailBeritaState extends State<PageDetailBerita> {
   final _formKey = GlobalKey<FormState>();
   TextEditingController getNama = TextEditingController();
@@ -35,7 +37,7 @@ class _PageDetailBeritaState extends State<PageDetailBerita> {
   double screenWidth = 0;
 
   List<DataBerita>? BeritaList = [];
-
+  late Future<bool> removeKomentar;
   late Future<ModelKomentarList> future;
   @override
   void initState() {
@@ -76,6 +78,7 @@ class _PageDetailBeritaState extends State<PageDetailBerita> {
     String gambar_lain = berita.unggahFileLain.toString();
     screenHeight = MediaQuery.of(context).size.height;
     screenWidth = MediaQuery.of(context).size.width;
+    late List<Berita> listBerita;
     double opacity = 0.0;
     return ScreenUtilInit(
       builder: (context, child) {
@@ -188,7 +191,7 @@ class _PageDetailBeritaState extends State<PageDetailBerita> {
                                 child: ScaleAnimation(
                                   duration: Duration(milliseconds: 700),
                                   child: _CommentItemUser(
-                                      snapshot.data!.data![index]),
+                                      snapshot.data!.data![index], index),
                                 ),
                               ),
                             );
@@ -235,7 +238,7 @@ class _PageDetailBeritaState extends State<PageDetailBerita> {
     );
   }
 
-  Widget _CommentItemUser(DataBerita data) {
+  Widget _CommentItemUser(DataBerita data, int index) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 20.h, vertical: 10.h),
       child: Column(
@@ -267,7 +270,72 @@ class _PageDetailBeritaState extends State<PageDetailBerita> {
                         fontWeight: FontWeight.bold),
                   ),
                 ),
-                Icon(Icons.more_vert_outlined)
+                PopupMenuButton(
+                    itemBuilder: (context) => <PopupMenuEntry<itemEdit>>[
+                          PopupMenuItem(
+                              onTap: () {
+                                removeKomentar =
+                                    ControllerAPI.hapusKomentarById(
+                                        id_akun: data.idAkun,
+                                        id_berita: data.idBerita.toString(),
+                                        id_komentar: data.idKomentar,
+                                        waktu_berkomentar:
+                                            data.waktuBerkomentar);
+                                setState(() {
+                                  BeritaList!.remove(index);
+                                });
+                                FutureBuilder<bool>(
+                                  future: removeKomentar,
+                                  builder: (context, snapshot) {
+                                    print("Snapshot = " +
+                                        snapshot.data.toString());
+                                    if (snapshot.data == true) {
+                                      return Text("Hapus Berhasil");
+                                    } else {
+                                      return Text("c");
+                                    }
+                                  },
+                                );
+                              },
+                              child: Row(
+                                children: [
+                                  Icon(Icons.delete_outline),
+                                  SizedBox(
+                                    width: 10.w,
+                                  ),
+                                  Text("Hapus")
+                                ],
+                              )),
+                          PopupMenuItem(
+                              onTap: () {
+                                setState(() {
+                                  showDialog(
+                                      context: context,
+                                      builder: (context) => AlertDialog(
+                                            title: Text("Isi Komentar"),
+                                            content: TextField(
+                                              decoration: InputDecoration(
+                                                  hintText:
+                                                      "Komentar Yang Akan Di Edit"),
+                                            ),
+                                            actions: [
+                                              TextButton(
+                                                  onPressed: () => {},
+                                                  child: Text("Simpan"))
+                                            ],
+                                          ));
+                                });
+                              },
+                              child: Row(
+                                children: [
+                                  Icon(Icons.edit),
+                                  SizedBox(
+                                    width: 10.w,
+                                  ),
+                                  Text("Edit")
+                                ],
+                              ))
+                        ])
               ],
             ),
             SizedBox(

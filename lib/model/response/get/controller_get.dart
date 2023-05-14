@@ -71,11 +71,57 @@ class ControllerAPI {
 
   static Future<ModelKomentarList> getKomentar(String idBerita) async {
     String? baseURL = ApiPoint.BASE_URL;
+
     String url = "http://${baseURL}/api/komentar/getkomentar";
     Uri uri = Uri.parse(url);
     var res = await http.post(uri, body: {
       'id_berita': idBerita,
     });
     return ModelKomentarList.fromJson(jsonDecode(res.body));
+  }
+
+  static Future<bool> editKomentar(
+      {String? idKomentar, String? isiKomentar}) async {
+    String? baseURL = ApiPoint.BASE_URL;
+    String url = "http://${baseURL}/api/komentar/editKomentar";
+    Uri uri = Uri.parse(url);
+    var res = await http.post(uri,
+        body: {'id_komentar': idKomentar, 'isi_komentar': isiKomentar});
+    print("response" + res.body);
+    if (res.statusCode == 200) {
+      // Berhasil menghapus komentar
+      print('Komentar berhasil dihapus.');
+      return true;
+    } else {
+      // Gagal menghapus komentar
+      print('Gagal menghapus komentar.');
+      return false;
+    }
+  }
+
+  static Future<bool> hapusKomentarById(
+      {String? id_berita, id_akun, waktu_berkomentar, id_komentar}) async {
+    String? baseURL = ApiPoint.BASE_URL;
+
+    var url = "http://${baseURL}/api/komentar/hapus_komentar";
+    print(url + "URL");
+    var body = {
+      'id_berita': id_berita.toString(),
+      'id_akun': id_akun.toString(),
+      'waktu_berkomentar': waktu_berkomentar.toString(),
+      'id_komentar': id_komentar.toString(),
+    };
+    print("Body : " + body.toString());
+    var response = await http.post(Uri.parse(url), body: body);
+    print("response" + response.body);
+    if (response.statusCode == 200) {
+      // Berhasil menghapus komentar
+      print('Komentar berhasil dihapus.');
+      return true;
+    } else {
+      // Gagal menghapus komentar
+      print('Gagal menghapus komentar.');
+      return false;
+    }
   }
 }

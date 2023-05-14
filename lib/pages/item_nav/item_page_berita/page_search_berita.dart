@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:bottom_bar_matu/utils/app_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -10,10 +12,11 @@ import 'package:sidokare_mobile_app/const/list_color.dart';
 import 'package:sidokare_mobile_app/const/size.dart';
 import 'package:sidokare_mobile_app/model/response/berita.dart';
 import 'package:sidokare_mobile_app/pages/item_nav/page_detail_berita.dart';
-
 import '../../../provider/provider_account.dart';
 
-class PageSearchBerita extends StatefulWidget {
+
+
+class PageSearchBerita extends StatefulWidget { 
   static String? routeName = "/PageSearchBerita";
 
   @override
@@ -32,6 +35,28 @@ class _PageSearchBeritaState extends State<PageSearchBerita> {
 
   List<Berita> listDicari = [];
   List<Berita> hasilGetData = [];
+  List<Berita> originalData = []; // Data asli dari API
+  List<Berita> filteredData = []; // Data yang sudah difilter
+  void filterData(String query) {
+    if (query.isEmpty) {
+      // Jika inputan kosong, tampilkan semua data asli
+      setState(() {
+        filteredData = originalData;
+      });
+    } else {
+      // Jika inputan tidak kosong, filter data berdasarkan query
+      setState(() {
+        filteredData = originalData
+            .where((item) => item.judulBerita
+                .toString()
+                .toLowerCase()
+                .contains(query.toLowerCase()))
+            .toList();
+        print("query = " + filteredData.length.toString());
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -46,7 +71,7 @@ class _PageSearchBeritaState extends State<PageSearchBerita> {
         return Scaffold(
           appBar: AppBar(
             title: Text(
-              "Cari Berita",
+              "Cari Beritas",
               style: TextStyle(color: Colors.black),
             ),
             centerTitle: true,
@@ -72,35 +97,34 @@ class _PageSearchBeritaState extends State<PageSearchBerita> {
                     } else {
                       List<Berita> data =
                           snapshot.data!; // mengambil data dari snapshot
-                      hasilGetData = data;
+                      originalData =
+                          data; // Ganti apiData dengan data yang didapatkan dari API
                       return AnimationLimiter(
                         child: ListView.builder(
-                          itemCount: listDicari
+                          itemCount: filteredData
                               .length, // menggunakan panjang data dari List<Berita> yang telah diambil dari snapshot
                           scrollDirection: Axis.vertical,
                           shrinkWrap: true,
                           itemBuilder: (context, index) {
+                            final item = filteredData[index];
                             return AnimationConfiguration.staggeredList(
+                                key: Key(index.toString()),
                                 position: index,
-                                duration: const Duration(milliseconds: 1375),
+                                duration: Duration(milliseconds: 1375),
                                 child: SlideAnimation(
                                     horizontalOffset: 550.0,
                                     // delay: Duration(milliseconds: 400),
                                     duration: Duration(milliseconds: 800),
                                     child: FadeInAnimation(
                                         child: cardBeritaTerkini(
-                                            berita: data[index],
-                                            judul: data[index].judulBerita,
-                                            gambar: data[index].unggahFileLain,
-                                            foto: data[index].foto,
-                                            tanggal:
-                                                data[index].tanggalPublikasi,
-                                            namaPengupload:
-                                                data[index].namaUpload,
-                                            fotoPengupload:
-                                                data[index].foto_profile,
-                                            isiBerita:
-                                                data[index].isiBerita))));
+                                            berita: item,
+                                            judul: item.judulBerita,
+                                            gambar: item.unggahFileLain,
+                                            foto: item.foto,
+                                            tanggal: item.tanggalPublikasi,
+                                            namaPengupload: item.namaUpload,
+                                            fotoPengupload: item.foto_profile,
+                                            isiBerita: item.isiBerita))));
                           }, // membangun widget cardBeritaTerkini dengan data yang ada di List<Berita>
                         ),
                       );
@@ -120,16 +144,7 @@ class _PageSearchBeritaState extends State<PageSearchBerita> {
       child: TextField(
         autofocus: true,
         onChanged: (value) {
-          if (value.isNotEmpty) {
-            listDicari = hasilGetData
-                .where((element) => element.judulBerita!.contains(value))
-                .toList();
-          } else if (value.isEmpty) {
-            listDicari = hasilGetData;
-          }
-          setState(() {
-            listDicari;
-          });
+          filterData(value);
         },
         controller: textEditingController,
         decoration: InputDecoration(
