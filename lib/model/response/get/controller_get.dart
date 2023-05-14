@@ -79,6 +79,25 @@ class ControllerAPI {
     return ModelKomentarList.fromJson(jsonDecode(res.body));
   }
 
+  static Future<bool> editKomentar(
+      {String? idKomentar, String? isiKomentar}) async {
+    String? baseURL = ApiPoint.BASE_URL;
+    String url = "http://${baseURL}/api/komentar/editKomentar";
+    Uri uri = Uri.parse(url);
+    var res = await http.post(uri,
+        body: {'id_komentar': idKomentar, 'isi_komentar': isiKomentar});
+    print("response" + res.body);
+    if (res.statusCode == 200) {
+      // Berhasil menghapus komentar
+      print('Komentar berhasil dihapus.');
+      return true;
+    } else {
+      // Gagal menghapus komentar
+      print('Gagal menghapus komentar.');
+      return false;
+    }
+  }
+
   static Future<bool> hapusKomentarById(
       {String? id_berita, id_akun, waktu_berkomentar, id_komentar}) async {
     String? baseURL = ApiPoint.BASE_URL;

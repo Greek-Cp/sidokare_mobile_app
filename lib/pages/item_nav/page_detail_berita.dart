@@ -307,7 +307,25 @@ class _PageDetailBeritaState extends State<PageDetailBerita> {
                                 ],
                               )),
                           PopupMenuItem(
-                              onTap: () {},
+                              onTap: () {
+                                setState(() {
+                                  showDialog(
+                                      context: context,
+                                      builder: (context) => AlertDialog(
+                                            title: Text("Isi Komentar"),
+                                            content: TextField(
+                                              decoration: InputDecoration(
+                                                  hintText:
+                                                      "Komentar Yang Akan Di Edit"),
+                                            ),
+                                            actions: [
+                                              TextButton(
+                                                  onPressed: () => {},
+                                                  child: Text("Simpan"))
+                                            ],
+                                          ));
+                                });
+                              },
                               child: Row(
                                 children: [
                                   Icon(Icons.edit),
