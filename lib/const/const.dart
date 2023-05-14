@@ -1,3 +1,3 @@
 class ApiPoint {
-  static String? BASE_URL = "172.20.10.6:8080";
+  static String? BASE_URL = "127.0.0.1:8000";
 }
