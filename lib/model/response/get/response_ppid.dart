@@ -33,6 +33,8 @@ class Data {
   String? status;
   String? RT;
   String? RW;
+  String? email;
+  String? telpp;
   String? OutputDocPPID;
   String? judulLaporan;
   String? isiLaporan;
@@ -47,6 +49,8 @@ class Data {
       this.OutputDocPPID,
       this.RT,
       this.RW,
+      this.email,
+      this.telpp,
       this.judulLaporan,
       this.isiLaporan,
       this.asalPelapor,
@@ -59,6 +63,8 @@ class Data {
     judulLaporan = json['judul_laporan'];
     isiLaporan = json['isi_laporan'];
     asalPelapor = json['Alamat'];
+    email = json['email'];
+    telpp = json['no_telfon'];
     kategoriPpid = json['kategori_ppid'];
     uploadFilePendukung = json['upload_file_pendukung'];
     OutputDocPPID = json['doc_hasil_ppid'];

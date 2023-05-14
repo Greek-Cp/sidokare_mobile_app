@@ -117,8 +117,8 @@ class _LupaSandiState extends State<LupaSandi> {
                                     {sendMail()}
                                   else
                                     {
-                                      ToastWidget.ToastEror(
-                                          context, "Akun Tidak Ditemukan")
+                                      ToastWidget.ToastEror(context,
+                                          "Akun Tidak Ditemukan", "Selamat")
                                     }
                                 });
                       })

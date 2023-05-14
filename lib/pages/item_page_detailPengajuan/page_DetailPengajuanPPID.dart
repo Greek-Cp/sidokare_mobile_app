@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -39,6 +41,8 @@ class _DetailPengajuanPPIDState extends State<DetailPengajuanPPID> {
     String KategoriPPID = getData?['kategoriPPID'];
     String RT = getData?['RT'];
     String RW = getData?['RW'];
+    String emaill = getData?['email'];
+    String tlpp = getData?['tlp'];
     String status = getData?['status'];
     String DocPPID = getData?['dokumenUp'];
     String? filePendukung = getData?['uploadFile'];
@@ -66,10 +70,16 @@ class _DetailPengajuanPPIDState extends State<DetailPengajuanPPID> {
           ),
           body: SingleChildScrollView(
             child: Padding(
-              padding: EdgeInsets.all(10.0.h),
+              padding: EdgeInsets.symmetric(horizontal: 20.w),
               child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    Text(
+                      "Detail Data Pengaju",
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: size.sizeDescriptionPas.sp),
+                    ),
                     Row(
                       children: [
                         Column(
@@ -78,6 +88,8 @@ class _DetailPengajuanPPIDState extends State<DetailPengajuanPPID> {
                           children: [
                             ComponentTextDescription("Nama Lengkap"),
                             ComponentTextDescription("NIK"),
+                            ComponentTextDescription("Email"),
+                            ComponentTextDescription("No Telephone"),
                           ],
                         ),
                         SizedBox(
@@ -94,6 +106,8 @@ class _DetailPengajuanPPIDState extends State<DetailPengajuanPPID> {
                             ),
                             // ComponentTextDescription(": ${DataDiri.nama}"),
                             ComponentTextDescription(": ${DataDiri.Nik}"),
+                            ComponentTextDescription(": ${emaill}"),
+                            ComponentTextDescription(": ${tlpp}"),
                           ],
                         ),
                       ],
@@ -171,7 +185,12 @@ class _DetailPengajuanPPIDState extends State<DetailPengajuanPPID> {
                     GestureDetector(
                       onTap: () async {
                         print("halooo");
-                        if (DocPPID.toString() != "kosong") {
+                        if (status == "revisi") {
+                          ToastWidget.ToastInfo(
+                              context,
+                              "Harap Sabar Masih Di Revisi",
+                              "Proses Penanganan");
+                        } else if (DocPPID.toString() != "kosong") {
                           String url =
                               'http://${ApiPoint.BASE_URL}/storage/dummyOutput/${DocPPID.toString()}'; // Ganti dengan URL file yang ingin Anda unduh
                           // String savedDir =
@@ -179,18 +198,31 @@ class _DetailPengajuanPPIDState extends State<DetailPengajuanPPID> {
                           DateTime currentTime = DateTime.now();
                           DateFormat formatter = DateFormat('yyyyMMddHHmmss');
                           String timestamp = formatter.format(currentTime);
-                          var getDownload = await getDownloadsDirectory();
-                          String path =
-                              "${getDownload}\\${timestamp}_${DocPPID.toString()}";
-                          String replaceBruh = path.replaceAll("'", "");
-                          replaceBruh =
-                              replaceBruh.replaceAll("Directory: ", "");
-                          print(replaceBruh);
-                          String savedDir =
-                              "C:\\Users\\LENOVO\\Downloads\\Named123_ppid677.pdf";
-                          print("${savedDir}");
-                          ControllerAPI.downloadFile(url, replaceBruh, context,
-                              "Tersimpan folder download \n Nama File : ${timeStamp}-${DocPPID.toString()}");
+                          if (Platform.isWindows) {
+                            var getDownload = await getDownloadsDirectory();
+                            String path =
+                                "${getDownload}\\${timestamp}_${DocPPID.toString()}";
+                            String replaceBruh = path.replaceAll("'", "");
+                            replaceBruh =
+                                replaceBruh.replaceAll("Directory: ", "");
+                            // print(replaceBruh);
+                            // String savedDir =
+                            //     "C:\\Users\\LENOVO\\Downloads\\Named123_ppid677.pdf";
+                            // print("${savedDir}");
+                            ControllerAPI.downloadFile(
+                                url,
+                                replaceBruh,
+                                context,
+                                "Tersimpan folder download \n Nama File : ${timeStamp}-${DocPPID.toString()}");
+                          } else if (Platform.isAndroid) {
+                            String pathYak =
+                                "/storage/emulated/0/Download/${timestamp}_${DocPPID.toString()}";
+                            ControllerAPI.downloadFile(url, pathYak, context,
+                                "Tersimpan folder download \n Nama File : ${timeStamp}-${DocPPID.toString()}");
+                          }
+                        } else {
+                          ToastWidget.ToastInfo(
+                              context, "Belum, Bisa", "Sabar");
                         }
                       },
                       child: Card(
@@ -238,12 +270,15 @@ class _DetailPengajuanPPIDState extends State<DetailPengajuanPPID> {
                             Navigator.pushNamed(context,
                                 PageFormulirKeberatanPPID.routeName.toString(),
                                 arguments: {
-                                  "id_ppid": id_ppid.toString(),
-                                  "id_akun": Akunn
+                                  "id": id_ppid.toString(),
+                                  "id_akun": Akunn,
+                                  "kategori": "ppid"
                                 });
                           } else {
-                            ToastWidget.ToastEror(context,
-                                "Pengajuan PPID tidak dalam status selesai , tidak dapat melakukan Keberatan");
+                            ToastWidget.ToastInfo(
+                                context,
+                                "Pengajuan PPID tidak dalam status selesai , tidak dapat melakukan Keberatan",
+                                "Mohon Maaf");
                           }
                         },
                         child: ComponentTextButton("Keberatan"),

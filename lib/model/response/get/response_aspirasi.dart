@@ -30,13 +30,17 @@ class ResponseModelASPIRASI {
 class Data {
   String? idPengajuanAspirasi;
   int? idAkun;
+  String? status;
   String? judulAspirasi;
   String? isiAspirasi;
+  String? dokumenOutput;
   String? uploadFilePendukung;
 
   Data(
       {this.idPengajuanAspirasi,
       this.idAkun,
+      this.status,
+      this.dokumenOutput,
       this.judulAspirasi,
       this.isiAspirasi,
       this.uploadFilePendukung});
@@ -44,6 +48,8 @@ class Data {
   Data.fromJson(Map<String, dynamic> json) {
     idPengajuanAspirasi = json['id_pengajuan_aspirasi'];
     idAkun = json['id_akun'];
+    status = json['status'];
+    dokumenOutput = json['doc_hasil_ppid'];
     judulAspirasi = json['judul_aspirasi'];
     isiAspirasi = json['isi_aspirasi'];
     uploadFilePendukung = json['upload_file_pendukung'];

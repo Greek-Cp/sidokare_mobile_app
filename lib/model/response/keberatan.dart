@@ -30,4 +30,25 @@ class KeberatanStatus {
     var data = json.decode(hasilResponse.body);
     return KeberatanStatus(code: data['code'], message: data['message']);
   }
+
+  static Future<KeberatanStatus> InsertKeberatanAspirasi(
+      {String? id_akun,
+      String? alamat,
+      String? alasan,
+      String? catatan,
+      String? id_aspirasi}) async {
+    Uri url = Uri.parse(
+        "http://${ApiPoint.BASE_URL}/api/Keberatan/keberatanAspirasi");
+    print(url.toString());
+    var hasilResponse = await http.post(url, body: {
+      "id_akun": id_akun,
+      "alamat": alamat,
+      "alasan": alasan,
+      "catatan_tambahan": catatan,
+      "id_aspirasi": id_aspirasi
+    });
+
+    var data = json.decode(hasilResponse.body);
+    return KeberatanStatus(code: data['code'], message: data['message']);
+  }
 }

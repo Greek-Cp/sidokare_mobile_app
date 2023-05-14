@@ -215,8 +215,10 @@ class _PageUtamaState extends State<PageUtama> {
                                         ? AssetImage("assets/accountBlank.png")
                                             as ImageProvider
                                         : NetworkImage(
-                                                "http://${ApiPoint.BASE_URL}/storage/profile/${DataDiri.urlGambar?.replaceAll("'", "")}")
-                                            as ImageProvider,
+                                            "http://${ApiPoint.BASE_URL}/storage/profile/${DataDiri.urlGambar?.replaceAll("'", "")}",
+                                            headers: {
+                                                "Connection": "Keep-Alive"
+                                              }) as ImageProvider,
                                   ),
                                 ),
                               ),

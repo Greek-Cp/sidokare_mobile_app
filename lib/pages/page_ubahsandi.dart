@@ -112,7 +112,8 @@ class _UbahSandiState extends State<UbahSandi> {
                     else
                       {
                         print("Password Tidak Sama"),
-                        ToastWidget.ToastEror(context, "Password Tidak Sama")
+                        ToastWidget.ToastEror(
+                            context, "Password Tidak Sama", "Periksa Ulang!")
                       }
                   }
               },

@@ -12,6 +12,8 @@ import 'package:sidokare_mobile_app/pages/page_detail_aspirasi.dart';
 
 import 'package:sidokare_mobile_app/provider/provider_account.dart';
 
+import '../../item_page_detailPengajuan/page_DetailAspirasi.dart';
+
 class itemListStatusAspirasi extends StatefulWidget {
   itemListStatusAspirasi(id_akun, jenis_pengajuan);
 
@@ -44,6 +46,10 @@ class _itemListStatusAspirasiState extends State<itemListStatusAspirasi> {
                         judul_pengajuan: snapshot
                             .data!.data![index].judulAspirasi
                             .toString(),
+                        docUp: snapshot.data!.data![index].dokumenOutput,
+                        AspirasiId:
+                            snapshot.data!.data![index].idPengajuanAspirasi,
+                        statusUser: snapshot.data!.data![index].status,
                         isi_pengajuan: snapshot.data!.data![index].isiAspirasi,
                         idAkun: snapshot.data!.data![index].idAkun,
                         laporan: snapshot.data!.data![index].judulAspirasi
@@ -62,11 +68,28 @@ class _itemListStatusAspirasiState extends State<itemListStatusAspirasi> {
     );
   }
 
+  Color? warnaButton({String? samakan}) {
+    if (samakan == "diajukan") {
+      return Colors.amberAccent;
+    } else if (samakan == "diproses") {
+      ListColor.GradientwarnaBiruSidoKare;
+    } else if (samakan == "ditolak") {
+      return Colors.redAccent;
+    } else if (samakan == "revisi") {
+      return Colors.pinkAccent;
+    } else {
+      return Colors.greenAccent;
+    }
+  }
+
   Widget _containerListStatus(
       {String? judul_pengajuan,
       isi_pengajuan,
       idAkun,
       laporan,
+      AspirasiId,
+      docUp,
+      statusUser,
       isiLaporan,
       uploadFile}) {
     return Container(
@@ -80,7 +103,7 @@ class _itemListStatusAspirasiState extends State<itemListStatusAspirasi> {
             Text(
               judul_pengajuan.toString().length > 20
                   ? judul_pengajuan.toString().substring(0, 20) + '...'
-                  : "$isi_pengajuan",
+                  : "$judul_pengajuan",
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
                   fontWeight: FontWeight.bold, fontSize: size.SubHeader.sp),
@@ -97,25 +120,35 @@ class _itemListStatusAspirasiState extends State<itemListStatusAspirasi> {
                     style: TextStyle(fontSize: size.DescTextKecil.sp),
                   ),
                 ),
-                ElevatedButton(
-                    onPressed: () {
-                      Navigator.pushNamed(
-                          context, PageDetailAspirasi.routeName.toString(),
-                          arguments: {
-                            "id_akun": idAkun,
-                            "judulLaporan": laporan,
-                            "isiLaporan": isiLaporan,
-                            "uploadFile": uploadFile != null ? uploadFile : ""
-                          });
-                      print("Tes Kon ${uploadFile}");
-                    },
-                    style: ElevatedButton.styleFrom(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 20.w, vertical: 5.h)),
-                    child: Text(
-                      "Ajukan",
-                      style: TextStyle(fontSize: size.DescTextKecil.sp),
-                    ))
+                Container(
+                  width: 100.w,
+                  child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.pushNamed(
+                            context, PageDetailAspirasiiii.routeName.toString(),
+                            arguments: {
+                              "id_akun": idAkun,
+                              "id_aspirasi": AspirasiId,
+                              "status": statusUser,
+                              "docOutAsp": docUp == null || docUp == ""
+                                  ? "kosong"
+                                  : docUp,
+                              "judulLaporan": laporan,
+                              "isiLaporan": isiLaporan,
+                              "uploadFile": uploadFile != null ? uploadFile : ""
+                            });
+                        print("Tes Kon ${uploadFile}");
+                      },
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor:
+                              warnaButton(samakan: statusUser.toString()),
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 20.w, vertical: 5.h)),
+                      child: Text(
+                        statusUser.toString(),
+                        style: TextStyle(fontSize: size.DescTextKecil.sp),
+                      )),
+                )
               ],
             ),
             Divider(

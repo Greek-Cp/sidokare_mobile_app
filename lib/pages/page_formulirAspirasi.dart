@@ -48,152 +48,132 @@ class _PageFormulirAspirasiState extends State<PageFormulirAspirasi> {
     return ScreenUtilInit(
       builder: (context, child) {
         return Scaffold(
-          body: CustomScrollView(
-            slivers: [
-              SliverAppBar(
-                expandedHeight: 200,
-                leading: IconButton(
-                  icon: Icon(Icons.arrow_back),
-                  onPressed: () => {Navigator.pop(context)},
+          appBar: AppBar(
+            elevation: 0,
+            title: Text(
+              "Formulir Pengajuan Aspirasi",
+              style:
+                  TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+            ),
+            iconTheme: IconThemeData(color: Colors.black),
+            centerTitle: true,
+            backgroundColor: Colors.white,
+          ),
+          body: Form(
+            key: _formKey,
+            child: ListView(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                  child: SizedBox(
+                      child: TextFieldImport.TextForm(
+                          readyOnlyTydack: true,
+                          text_kontrol: textEditingControllerNamaLengkap,
+                          hintText: "Masukkan Nama Anda",
+                          labelName: "Nama Lengkap",
+                          pesanValidasi: "Nama")),
                 ),
-                snap: false,
-                floating: true,
-                stretch: true,
-                elevation: 0,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10)),
-                backgroundColor: ListColor.warnaBiruSidoKare,
-                pinned: true,
-                flexibleSpace: FlexibleSpaceBar(
-                  title: Text(
-                    "Formulir Pengajuan Aspirasi",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: size.HeaderText.sp),
-                  ),
-                  titlePadding:
-                      EdgeInsetsDirectional.only(start: 50.0.h, bottom: 18.0.h),
-                  collapseMode: CollapseMode.parallax,
-                  background: Card(color: ListColor.GradientwarnaBiruSidoKare),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                  child: SizedBox(
+                      child: TextFieldImport.TextForm(
+                          readyOnlyTydack: true,
+                          text_kontrol: textEditingControllerNIK,
+                          hintText: "Masukan NIK Anda",
+                          labelName: "NIK",
+                          pesanValidasi: "NIK")),
                 ),
-              ),
-              Form(
-                key: _formKey,
-                child: SliverList(
-                    delegate: SliverChildListDelegate([
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                    child: SizedBox(
-                        child: TextFieldImport.TextForm(
-                            readyOnlyTydack: true,
-                            text_kontrol: textEditingControllerNamaLengkap,
-                            hintText: "Masukkan Nama Anda",
-                            labelName: "Nama Lengkap",
-                            pesanValidasi: "Nama")),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                    child: SizedBox(
-                        child: TextFieldImport.TextForm(
-                            readyOnlyTydack: true,
-                            text_kontrol: textEditingControllerNIK,
-                            hintText: "Masukan NIK Anda",
-                            labelName: "NIK",
-                            pesanValidasi: "NIK")),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                    child: SizedBox(
-                        child: TextFieldImport.TextForm(
-                            text_kontrol: textEditingControllerJudulAspirasi,
-                            hintText: "Masukkan Judul Aspirasi",
-                            labelName: "Judul Aspirasi",
-                            pesanValidasi: "Judul Aspirasi")),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                    child: SizedBox(
-                        child: TextFieldImport.TextFormMultiLine(
-                            text_kontrol: textEditingControllerIsiAspirasi,
-                            hintText: "Masukkan Isi Aspirasi",
-                            labelName: "Isi Aspirasi",
-                            pesanValidasi: "Isi Aspirasi")),
-                  ),
-                  UpfilePendukung(
-                      labelName: "Upload File Pendukung",
-                      pesanValidasi: "Boleh Kosong",
-                      text_kontrol: fileUp!,
-                      hintText: "Silakan Upload File *opsional"),
-                  SizedBox(
-                    height: 10.h,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                    child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor: ListColor.warnaBiruSidoKare,
-                            minimumSize: Size.fromHeight(55.h)),
-                        onPressed: () {
-                          if (_formKey.currentState!.validate()) {
-                            print("ID AKUN :: ${idAkunnn}");
-                            print(
-                                "JUDUL ASPIRASI :: ${textEditingControllerJudulAspirasi!.text}");
-                            print(
-                                "ISI ASPIRASI :: ${textEditingControllerIsiAspirasi!.text}");
-                            print("FILE UPLOAD :: ${uploadFile!.text}");
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                  child: SizedBox(
+                      child: TextFieldImport.TextForm(
+                          text_kontrol: textEditingControllerJudulAspirasi,
+                          hintText: "Masukkan Judul Aspirasi",
+                          labelName: "Judul Aspirasi",
+                          pesanValidasi: "Judul Aspirasi")),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                  child: SizedBox(
+                      child: TextFieldImport.TextFormMultiLine(
+                          text_kontrol: textEditingControllerIsiAspirasi,
+                          hintText: "Masukkan Isi Aspirasi",
+                          labelName: "Isi Aspirasi",
+                          pesanValidasi: "Isi Aspirasi")),
+                ),
+                UpfilePendukung(
+                    labelName: "Upload File Pendukung",
+                    pesanValidasi: "Boleh Kosong",
+                    text_kontrol: fileUp!,
+                    hintText: "Silakan Upload File *opsional"),
+                SizedBox(
+                  height: 10.h,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                  child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: ListColor.warnaBiruSidoKare,
+                          minimumSize: Size.fromHeight(55.h)),
+                      onPressed: () {
+                        if (_formKey.currentState!.validate()) {
+                          print("ID AKUN :: ${idAkunnn}");
+                          print(
+                              "JUDUL ASPIRASI :: ${textEditingControllerJudulAspirasi!.text}");
+                          print(
+                              "ISI ASPIRASI :: ${textEditingControllerIsiAspirasi!.text}");
+                          print("FILE UPLOAD :: ${fileUp!.text}");
 
-                            PengajuanAspirasi.InsertAspirasi(
-                                    idAkunnn.toString(),
-                                    textEditingControllerJudulAspirasi!.text,
-                                    textEditingControllerIsiAspirasi!.text,
-                                    fileUp!.text)
-                                .then((value) => {
-                                      if (value.code == 200)
-                                        {
-                                          print("Kenek Aspirasi"),
-                                          if (fileUp!.text.toString() != "")
-                                            {
-                                              PengajuanAspirasi
-                                                      .uploadFileAspirasi(
-                                                          _file!)
-                                                  .then((value) => {
-                                                        Navigator.pushNamed(
-                                                            context,
-                                                            BerhasilBuatLaporan
-                                                                .routeName
-                                                                .toString(),
-                                                            arguments: idAkunnn
-                                                                .toString())
-                                                      })
-                                            }
-                                          else
-                                            {
-                                              Navigator.pushNamed(
-                                                  context,
-                                                  BerhasilBuatLaporan.routeName
-                                                      .toString(),
-                                                  arguments:
-                                                      idAkunnn.toString())
-                                            },
-                                        }
-                                      else
-                                        {print("gagal aspirasi")}
-                                    });
-                          }
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.all(10.0),
-                          child: Text(
-                            "Ajukan Aspirasi",
-                            style: TextStyle(fontSize: size.textButton.sp),
-                          ),
-                        )),
-                  ),
-                  SizedBox(
-                    height: 80.h,
-                  )
-                ])),
-              ),
-            ],
+                          PengajuanAspirasi.InsertAspirasi(
+                                  idAkunnn.toString(),
+                                  textEditingControllerJudulAspirasi!.text,
+                                  textEditingControllerIsiAspirasi!.text,
+                                  fileUp!.text)
+                              .then((value) => {
+                                    if (value.code == 200)
+                                      {
+                                        print("Kenek Aspirasi"),
+                                        if (fileUp!.text.toString() != "")
+                                          {
+                                            PengajuanAspirasi
+                                                    .uploadFileAspirasi(_file!)
+                                                .then((value) => {
+                                                      Navigator.pushNamed(
+                                                          context,
+                                                          BerhasilBuatLaporan
+                                                              .routeName
+                                                              .toString(),
+                                                          arguments: idAkunnn
+                                                              .toString())
+                                                    })
+                                          }
+                                        else
+                                          {
+                                            Navigator.pushNamed(
+                                                context,
+                                                BerhasilBuatLaporan.routeName
+                                                    .toString(),
+                                                arguments: idAkunnn.toString())
+                                          },
+                                      }
+                                    else
+                                      {print("gagal aspirasi")}
+                                  });
+                        }
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Text(
+                          "Ajukan Aspirasi",
+                          style: TextStyle(fontSize: size.textButton.sp),
+                        ),
+                      )),
+                ),
+                SizedBox(
+                  height: 80.h,
+                )
+              ],
+            ),
           ),
         );
       },

@@ -188,12 +188,13 @@ form button:hover {
         'otp': this.otp_register.toString(),
         'code_page': "toSuccesRegister"
       });
-      ToastWidget.ToastSucces(context, "Daftar Berhasil");
+      ToastWidget.ToastSucces(context, "Daftar Berhasil", "Selamat!!");
     } on MailerException catch (e) {
       print('Message not sent.' + e.message);
       for (var p in e.problems) {
         print('Problem: ${p.code}: ${p.msg}');
-        ToastWidget.ToastEror(context, ' Format Email Tidak Sesuai');
+        ToastWidget.ToastEror(
+            context, ' Format Email Tidak Sesuai', 'Periksa Kembali!');
       }
     }
   }
@@ -309,7 +310,9 @@ form button:hover {
                                       16)
                                     {
                                       ToastWidget.ToastEror(
-                                          context, "NIK harus 16 karakter")
+                                          context,
+                                          "NIK harus 16 karakter",
+                                          "Teliti Lagi!")
                                     }
                                   else if (textEditingControllerNomorTelepon
                                           .text
@@ -317,8 +320,10 @@ form button:hover {
                                           .length <
                                       11)
                                     {
-                                      ToastWidget.ToastEror(context,
-                                          "Nomer Telp harus 12 karakter")
+                                      ToastWidget.ToastEror(
+                                          context,
+                                          "Nomer Telp harus 12 karakter",
+                                          "Teliti Lagi")
                                     }
                                   else if (textEditingControllerKonfirmasiPassword
                                           .text
@@ -327,7 +332,9 @@ form button:hover {
                                           .toString())
                                     {
                                       ToastWidget.ToastEror(
-                                          context, "Katasandi Tidak Sama")
+                                          context,
+                                          "Katasandi Tidak Sama",
+                                          "Periksa Kembali")
                                     }
                                   else
                                     {
@@ -363,7 +370,8 @@ form button:hover {
                                                   {
                                                     ToastWidget.ToastEror(
                                                         context,
-                                                        "Daftar Gagal Akun Telah Ada")
+                                                        "Daftar Gagal Akun Telah Ada",
+                                                        "Teliti Lagi")
                                                   }
                                               })
                                     }

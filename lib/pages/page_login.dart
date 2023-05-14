@@ -157,14 +157,21 @@ class _PageLoginState extends State<PageLogin> {
                                                     HalamanUtama.routeName
                                                         .toString(),
                                                     arguments: value.id_akun),
-                                                ToastWidget.ToastSucces(context,
-                                                    "Masuk Berhasil , Akun Ditemukan")
+                                                FocusManager
+                                                    .instance.primaryFocus!
+                                                    .unfocus(),
+                                                ToastWidget.ToastSucces(
+                                                    context,
+                                                    "Masuk Berhasil , Akun Ditemukan",
+                                                    "Selamat ")
                                               }
                                             else if (value.code == 400)
                                               {
                                                 print("apakag eror kesini"),
-                                                ToastWidget.ToastEror(context,
-                                                    "Masuk Gagal , Akun Tidak Ditemukan")
+                                                ToastWidget.ToastEror(
+                                                    context,
+                                                    "Masuk Gagal , Akun Tidak Ditemukan",
+                                                    "Mohon Maaf")
                                               }
                                           })
                                 }

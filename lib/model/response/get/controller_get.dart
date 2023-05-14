@@ -25,10 +25,11 @@ class ControllerAPI {
 
   static Future<void> downloadFile(
       String url, String savePath, BuildContext context, String Ucapan) async {
-    var response = await http.get(Uri.parse(url));
+    var response =
+        await http.get(Uri.parse(url), headers: {"Connection": "Keep-Alive"});
     var file = File(savePath);
     await file.writeAsBytes(response.bodyBytes);
-    ToastWidget.ToastSucces(context, "Berhasil Download File");
+    ToastWidget.ToastSucces(context, "Berhasil Download File", "Tersimpan");
   }
 
   static Future<ResponseModelKELUHAN> getStatusKELUHAN(int idAkun) async {

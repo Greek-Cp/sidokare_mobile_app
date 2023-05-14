@@ -77,7 +77,8 @@ class _PageFormulirKeberatanPPIDState extends State<PageFormulirKeberatanPPID> {
     // final idAkunnn = ModalRoute.of(context)?.settings.arguments as int;
     getDataFromDetail = ModalRoute.of(context)?.settings.arguments as Map;
     int akunDek = getDataFromDetail?['id_akun'];
-    String id = getDataFromDetail?['id_ppid'];
+    String id = getDataFromDetail?['id'];
+    String kategori = getDataFromDetail?['kategori'];
     final DataDiri = Provider.of<ProviderAccount>(context)
         .GetDataDiri
         .firstWhere((idData) => idData.id_akun == akunDek.toInt());
@@ -160,26 +161,50 @@ class _PageFormulirKeberatanPPIDState extends State<PageFormulirKeberatanPPID> {
                       onPressed: () {
                         if (_formKey.currentState!.validate()) {
                           print("ID Kategori From Detail == ${id}");
+                          print("jneis layanan ${kategori}");
                           print("ID akun == ${akunDek}");
                           print("Alamat User adalah == ${getAlamat!.text}");
                           print("Catatan Tambahan == ${getCatatan!.text}");
-
-                          KeberatanStatus.InsertKeberatanPPID(
-                                  id_akun: akunDek.toString(),
-                                  alamat: getAlamat!.text,
-                                  catatan: getCatatan!.text,
-                                  alasan:
-                                      randomValueKategoriPenolakan.toString(),
-                                  idppid: id.toString())
-                              .then((value) => {
-                                    if (value.code == "200")
-                                      {
-                                        ToastWidget.ToastSucces(context,
-                                            "Berhasil Mengajukan Keberatan")
-                                      }
-                                    else
-                                      {print("kok sini")}
-                                  });
+                          if (kategori == "ppid") {
+                            KeberatanStatus.InsertKeberatanPPID(
+                                    id_akun: akunDek.toString(),
+                                    alamat: getAlamat!.text,
+                                    catatan: getCatatan!.text,
+                                    alasan:
+                                        randomValueKategoriPenolakan.toString(),
+                                    idppid: id.toString())
+                                .then((value) => {
+                                      if (value.code == "200")
+                                        {
+                                          ToastWidget.ToastSucces(
+                                              context,
+                                              "Berhasil Mengajukan Keberatan PPID",
+                                              "Selamatt")
+                                        }
+                                      else
+                                        {print("kok sini")}
+                                    });
+                          } else if (kategori == "aspirasi") {
+                            print("halo dek");
+                            KeberatanStatus.InsertKeberatanAspirasi(
+                                    id_akun: akunDek.toString(),
+                                    alamat: getAlamat!.text,
+                                    catatan: getCatatan!.text,
+                                    alasan:
+                                        randomValueKategoriPenolakan.toString(),
+                                    id_aspirasi: id.toString())
+                                .then((value) => {
+                                      if (value.code == "200")
+                                        {
+                                          ToastWidget.ToastSucces(
+                                              context,
+                                              "Berhasil Mengajukan Keberatan Aspirasi",
+                                              "Selamatt")
+                                        }
+                                      else
+                                        {print("kok sini")}
+                                    });
+                          }
                         }
 
                         // print(

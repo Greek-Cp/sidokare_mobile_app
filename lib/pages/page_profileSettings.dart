@@ -253,7 +253,7 @@ class _PageProfileUserState extends State<PageProfileUser> {
                                   context, HalamanUtama.routeName.toString(),
                                   arguments: idakun.toInt()),
                               ToastWidget.ToastSucces(
-                                  context, "Berhasil Update Data"),
+                                  context, "Berhasil Update Data", "Selamat"),
                             }
                         });
               } else {
@@ -279,7 +279,7 @@ class _PageProfileUserState extends State<PageProfileUser> {
                               context, HalamanUtama.routeName.toString(),
                               arguments: idakun.toInt()),
                           ToastWidget.ToastSucces(
-                              context, "Berhasil Update Data"),
+                              context, "Berhasil Update Data", "Selamat"),
                         });
               }
             },

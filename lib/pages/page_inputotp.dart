@@ -155,7 +155,8 @@ class _InputOtpState extends State<InputOtp> {
                   arguments: emailTerbawah);
             }
           } else {
-            ToastWidget.ToastEror(context, "Kode Otp Salah");
+            ToastWidget.ToastEror(
+                context, "Kode Otp Salah", "Periksa dan Teliti Kembali Lagi");
           }
         },
         // ignore: sort_child_properties_last

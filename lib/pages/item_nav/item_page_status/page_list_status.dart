@@ -43,6 +43,8 @@ class _itemListStatusState extends State<itemListStatus> {
                   itemBuilder: (context, index) {
                     return _containerListStatus(
                         id_ppid: snapshot.data!.data![index].idPengajuanPpid,
+                        email: snapshot.data!.data![index].email,
+                        NoTelp: snapshot.data!.data![index].telpp,
                         statusUser: snapshot.data!.data![index].status,
                         docUp: snapshot.data!.data![index].OutputDocPPID ==
                                     null ||
@@ -95,6 +97,8 @@ class _itemListStatusState extends State<itemListStatus> {
       laporan,
       RTuser,
       RWuser,
+      email,
+      NoTelp,
       statusUser,
       docUp,
       isiLaporan,
@@ -140,6 +144,8 @@ class _itemListStatusState extends State<itemListStatus> {
                               "AsalPelapor": asalPelapor,
                               "RT": RTuser,
                               "RW": RWuser,
+                              "email": email,
+                              "tlp": NoTelp,
                               "status": statusUser,
                               "dokumenUp": docUp,
                               "kategoriPPID": kategoriPPID,
