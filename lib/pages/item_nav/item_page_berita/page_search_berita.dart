@@ -12,10 +12,11 @@ import 'package:sidokare_mobile_app/const/list_color.dart';
 import 'package:sidokare_mobile_app/const/size.dart';
 import 'package:sidokare_mobile_app/model/response/berita.dart';
 import 'package:sidokare_mobile_app/pages/item_nav/page_detail_berita.dart';
-
 import '../../../provider/provider_account.dart';
 
-class PageSearchBerita extends StatefulWidget {
+
+
+class PageSearchBerita extends StatefulWidget { 
   static String? routeName = "/PageSearchBerita";
 
   @override
@@ -98,7 +99,6 @@ class _PageSearchBeritaState extends State<PageSearchBerita> {
                           snapshot.data!; // mengambil data dari snapshot
                       originalData =
                           data; // Ganti apiData dengan data yang didapatkan dari API
-
                       return AnimationLimiter(
                         child: ListView.builder(
                           itemCount: filteredData
