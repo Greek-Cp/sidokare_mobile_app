@@ -4,6 +4,7 @@ import 'package:flutter_custom_tab_bar/indicator/custom_indicator.dart';
 import 'package:flutter_custom_tab_bar/indicator/linear_indicator.dart';
 import 'package:flutter_custom_tab_bar/transform/color_transform.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:provider/provider.dart';
 import 'package:sidokare_mobile_app/component/text_description.dart';
 import 'package:sidokare_mobile_app/const/list_color.dart';
@@ -63,6 +64,7 @@ class _PageStatusState extends State<PageStatus>
       builder: (context, child) {
         return Scaffold(
             appBar: AppBar(
+              elevation: 0,
               backgroundColor: Colors.white,
               centerTitle: true,
               title: Column(
@@ -70,7 +72,15 @@ class _PageStatusState extends State<PageStatus>
                   SizedBox(
                     height: 50.h,
                   ),
-                  ComponentTextTittle("Status Pengajuan Surat"),
+                  AnimationLimiter(
+                      child: AnimationConfiguration.synchronized(
+                          duration: const Duration(milliseconds: 500),
+                          child: FadeInAnimation(
+                              child: SlideAnimation(
+                            verticalOffset: 50,
+                            child:
+                                ComponentTextTittle("Status Pengajuan Surat"),
+                          )))),
                   SizedBox(
                     height: 25.h,
                   ),
@@ -78,14 +88,20 @@ class _PageStatusState extends State<PageStatus>
               ),
               bottom: PreferredSize(
                 preferredSize: Size.fromHeight(50.h),
-                child: DefaultTabController(
-                  length: myTabs.length,
-                  child: TabBar(
-                      controller: tabController,
-                      labelColor: ListColor.warnaBiruSidoKare,
-                      unselectedLabelColor: Colors.grey,
-                      tabs: myTabs),
-                ),
+                child: AnimationLimiter(
+                    child: AnimationConfiguration.synchronized(
+                        duration: const Duration(milliseconds: 500),
+                        child: FadeInAnimation(
+                            child: ScaleAnimation(
+                          child: DefaultTabController(
+                            length: myTabs.length,
+                            child: TabBar(
+                                controller: tabController,
+                                labelColor: ListColor.warnaBiruSidoKare,
+                                unselectedLabelColor: Colors.grey,
+                                tabs: myTabs),
+                          ),
+                        )))),
               ),
             ),
             body: Padding(

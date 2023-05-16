@@ -105,7 +105,7 @@ class _PageFormulirAspirasiState extends State<PageFormulirAspirasi> {
                     labelName: "Upload File Pendukung",
                     pesanValidasi: "Boleh Kosong",
                     text_kontrol: fileUp!,
-                    hintText: "Silakan Upload File *opsional"),
+                    hintText: "boleh dikosongi"),
                 SizedBox(
                   height: 10.h,
                 ),

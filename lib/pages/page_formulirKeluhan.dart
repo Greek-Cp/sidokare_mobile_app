@@ -141,8 +141,8 @@ class _PageFormulirPengajuanKeluhanState
                   child: SizedBox(
                       child: TextFieldImport.TextForm(
                           text_kontrol: textEditingControllerJudulLaporan,
-                          hintText: "Masukkan Judul Laporan",
-                          labelName: "Judul Laporan",
+                          hintText: "Masukkan Judul Keluhan",
+                          labelName: "Judul Keluhan",
                           pesanValidasi: "Judul Laporan")),
                 ),
                 Padding(
@@ -150,9 +150,9 @@ class _PageFormulirPengajuanKeluhanState
                   child: SizedBox(
                       child: TextFieldImport.TextFormMultiLine(
                           text_kontrol: textEditingControllerIsiLaporan,
-                          hintText: "Masukkan Isi Laporan",
-                          labelName: "Isi Laporan",
-                          pesanValidasi: "Isi Laporan")),
+                          hintText: "Masukkan Isi Keluhan",
+                          labelName: "Isi Keluhan",
+                          pesanValidasi: "Isi Keluhan")),
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20.0),
