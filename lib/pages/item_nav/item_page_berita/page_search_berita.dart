@@ -14,9 +14,7 @@ import 'package:sidokare_mobile_app/model/response/berita.dart';
 import 'package:sidokare_mobile_app/pages/item_nav/page_detail_berita.dart';
 import '../../../provider/provider_account.dart';
 
-
-
-class PageSearchBerita extends StatefulWidget { 
+class PageSearchBerita extends StatefulWidget {
   static String? routeName = "/PageSearchBerita";
 
   @override
@@ -105,6 +103,7 @@ class _PageSearchBeritaState extends State<PageSearchBerita> {
                               .length, // menggunakan panjang data dari List<Berita> yang telah diambil dari snapshot
                           scrollDirection: Axis.vertical,
                           shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
                           itemBuilder: (context, index) {
                             final item = filteredData[index];
                             return AnimationConfiguration.staggeredList(

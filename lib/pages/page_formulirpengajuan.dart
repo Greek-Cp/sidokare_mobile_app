@@ -65,7 +65,7 @@ class _PageFormulirPengajuanState extends State<PageFormulirPengajuanPPID> {
     '007',
     '008'
   ];
-  static String? randomValuePPID = "";
+  static String? randomValuePPID;
   static String? randomValueDusun = "Sidokare";
   static String? randomValueRT = "001";
   static String? randomValueRW = "001";
@@ -77,19 +77,19 @@ class _PageFormulirPengajuanState extends State<PageFormulirPengajuanPPID> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    print("apa awal nyaa :: ${randomValuePPID}");
+    // print("apa awal nyaa :: ${randomValuePPID}");
   }
 
   String textBeritahu({String? cocokne}) {
     if (cocokne == "Perorangan") {
       print("tes 1");
-      return "Harap Upload KTP";
+      return "Wajib Upload KTP";
     } else if (cocokne == "Badan Hukum") {
       print("tes 2");
-      return "Harap Upload Surat Pendirian Badan Hukum";
+      return "Wajib Upload Surat Pendirian Badan Hukum";
     } else {
       print("tes 3");
-      return "Harap Upload Surat Pendirian Badan Usaha";
+      return "Wajib Upload Surat Pendirian Badan Usaha";
     }
   }
 
@@ -107,8 +107,19 @@ class _PageFormulirPengajuanState extends State<PageFormulirPengajuanPPID> {
       textEditingControllerAsalPelapor!.text = "Desa Sidokare";
       // textBeritahu();
       // randomValuePPID;
-      print("random ${randomValuePPID}");
+      // print("random ${randomValuePPID}");
     });
+
+    String sttss({String? stss}) {
+      if (stss == "Perorangan") {
+        return "Upload KTP";
+      } else if (stss == "Badan Hukum") {
+        return "Upload surat Pendirian Badan hukum";
+      } else {
+        return "Upload Surat Pendirian Badan Usaha";
+      }
+    }
+
     // TODO: implement build
     return ScreenUtilInit(
       builder: (context, child) {
@@ -210,19 +221,19 @@ class _PageFormulirPengajuanState extends State<PageFormulirPengajuanPPID> {
                 customDropDownPPID(
                   listItem: listPPID,
                   namaLabel: "Kategori PPID",
-                  hintText: "Pilih Kategori",
+                  hintText: randomValuePPID,
                   errorKosong: "PPID",
                   // randomlabel: randomValuePPID,
                 ),
                 UpfilePendukung("Upload File Pendukung", "gatau", fileUp!,
-                    "boleh dikosongi"),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                  child: Visibility(
-                      visible: true,
-                      child: Text(
-                          " Catatan : ${textBeritahu(cocokne: randomValuePPID)} ")),
-                ),
+                    sttss(stss: randomValuePPID.toString())),
+                // Padding(
+                //   padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                //   child: Visibility(
+                //       visible: true,
+                //       child: Text(
+                //           " Catatan : ${textBeritahu(cocokne: randomValuePPID)} ")),
+                // ),
                 SizedBox(
                   height: 10.h,
                 ),

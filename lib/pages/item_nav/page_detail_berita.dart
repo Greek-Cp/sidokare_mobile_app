@@ -1,4 +1,5 @@
 import 'package:bottom_bar_matu/utils/app_utils.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -307,34 +308,53 @@ class _PageDetailBeritaState extends State<PageDetailBerita> {
                                 ],
                               )),
                           PopupMenuItem(
-                              onTap: () {
-                                setState(() {
-                                  showDialog(
-                                      context: context,
-                                      builder: (context) => AlertDialog(
-                                            title: Text("Isi Komentar"),
-                                            content: TextField(
-                                              decoration: InputDecoration(
-                                                  hintText:
-                                                      "Komentar Yang Akan Di Edit"),
-                                            ),
-                                            actions: [
-                                              TextButton(
-                                                  onPressed: () => {},
-                                                  child: Text("Simpan"))
-                                            ],
-                                          ));
-                                });
-                              },
-                              child: Row(
-                                children: [
-                                  Icon(Icons.edit),
-                                  SizedBox(
-                                    width: 10.w,
-                                  ),
-                                  Text("Edit")
-                                ],
-                              ))
+                            child: Row(
+                              children: [
+                                Icon(Icons.edit_outlined),
+                                SizedBox(
+                                  width: 10.w,
+                                ),
+                                Text("Edit")
+                              ],
+                            ),
+                            onTap: () {
+                              Future.delayed(
+                                const Duration(seconds: 0),
+                                () => showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return AlertDialog(
+                                        title: Text(
+                                          "Ganti Komentar",
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 20),
+                                        ),
+                                        content: TextField(
+                                          keyboardType: TextInputType.multiline,
+                                          onChanged: (value) {
+                                            setState(() {
+                                              //controller.text = value
+                                            });
+                                          },
+                                        ),
+                                        actions: <Widget>[
+                                          ElevatedButton(
+                                              style: ElevatedButton.styleFrom(
+                                                  minimumSize:
+                                                      Size.fromHeight(44)),
+                                              onPressed: () {
+                                                setState(() {
+                                                  Navigator.of(context).pop();
+                                                });
+                                              },
+                                              child: Text("Tetapkan"))
+                                        ],
+                                      );
+                                    }),
+                              );
+                            },
+                          )
                         ])
               ],
             ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import 'package:provider/provider.dart';
@@ -35,6 +36,7 @@ void main() async {
   // await FlutterDownloader.initialize(debug: true, ignoreSsl: true);
   WidgetsFlutterBinding.ensureInitialized();
   await Permission.storage.request();
+
   runApp(const MainApp());
 }
 

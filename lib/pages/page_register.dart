@@ -208,188 +208,201 @@ form button:hover {
     return ScreenUtilInit(
       builder: (context, child) {
         return Scaffold(
-          body: Center(
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20.0.w),
-              child: Form(
-                key: _formKey,
-                child: ListView(
-                  children: [
-                    Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          IconButton(
-                              onPressed: () => {Navigator.pop(context)},
-                              icon: Icon(Icons.arrow_back)),
-                        ]),
-                    SizedBox(
-                      height: 20.h,
-                    ),
-                    Text(
-                      "Daftarkan Akunmu ",
-                      style: GoogleFonts.dmSans(
-                          textStyle: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: size.HeaderText.sp)),
-                      textAlign: TextAlign.center,
-                    ),
-                    Text(
-                      "Silahkan buat akunmu terlebih dahulu",
-                      style: GoogleFonts.dmSans(
-                          textStyle: TextStyle(
-                        fontSize: size.SubHeader.sp,
-                        color: ListColor.warnaDescription,
-                      )),
-                      textAlign: TextAlign.center,
-                    ),
-                    Image.asset(
-                      "assets/img_register.png",
-                      width: 120.w,
-                      height: 300.h,
-                    ),
-                    SizedBox(
-                        child: TextFieldImport.TextFormNama(
-                            text_kontrol: textEditingControllerNama,
-                            hintText: "Masukkan Nama",
-                            labelName: "Nama",
-                            pesanValidasi: "Nama")),
-                    SizedBox(
-                        child: TextFieldImport.TextFormTelp(
-                            text_kontrol: textEditingControllerNik,
-                            hintText: "Harus 16 angka",
-                            length: 16,
-                            labelName: "NIK",
-                            pesanValidasi: "NIK")),
-                    SizedBox(
-                        child: TextFieldImport.TextForm(
-                            labelName: "Nama Pengguna",
-                            text_kontrol: textEditingControllerUsername,
-                            hintText: "Masukkan Nama Pengguna",
-                            pesanValidasi: "Nama Pengguna")),
-                    SizedBox(
-                        child: TextFieldImport.TextFormEmail(
-                            labelName: "Email",
-                            text_kontrol: textEditingControllerEmail,
-                            hintText: "cth : ...@gmail.com",
-                            pesanValidasi: "Email")),
-                    SizedBox(
-                        child: TextFieldImport.TextFormTelp(
-                            labelName: "Nomor Telepon",
-                            length: 12,
-                            text_kontrol: textEditingControllerNomorTelepon,
-                            hintText: "Min 11 angka",
-                            pesanValidasi: "Nomor Telepon")),
-                    SizedBox(
-                        child: TextFieldPassword(
-                            textEditingControllerPassword,
-                            "cth : DsSidokare12",
-                            false,
-                            "Kata Sandi",
-                            "Kata Sandi")),
-                    SizedBox(
-                        child: TextFieldPassword(
-                            textEditingControllerKonfirmasiPassword,
-                            "Masukkan Ulang Sandi",
-                            false,
-                            "Ulangi Kata Sandi",
-                            "Kata Sandi")),
-                    SizedBox(
-                      height: 10.w,
-                    ),
-                    ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor: ListColor.warnaBiruSidoKare,
-                            minimumSize: Size.fromHeight(55.h)),
-                        onPressed: () => {
-                              if (_formKey.currentState!.validate())
-                                {
-                                  if (textEditingControllerNik.text
-                                          .toString()
-                                          .length !=
-                                      16)
-                                    {
-                                      ToastWidget.ToastEror(
-                                          context,
-                                          "NIK harus 16 karakter",
-                                          "Teliti Lagi!")
-                                    }
-                                  else if (textEditingControllerNomorTelepon
-                                          .text
-                                          .toString()
-                                          .length <
-                                      11)
-                                    {
-                                      ToastWidget.ToastEror(
-                                          context,
-                                          "Nomer Telp harus 12 karakter",
-                                          "Teliti Lagi")
-                                    }
-                                  else if (textEditingControllerKonfirmasiPassword
-                                          .text
-                                          .toString() !=
-                                      textEditingControllerPassword.text
-                                          .toString())
-                                    {
-                                      ToastWidget.ToastEror(
-                                          context,
-                                          "Katasandi Tidak Sama",
-                                          "Periksa Kembali")
-                                    }
-                                  else
-                                    {
-                                      HttpStatefull.registerAkun(
-                                              email: textEditingControllerEmail
-                                                  .text,
-                                              password:
-                                                  textEditingControllerPassword
-                                                      .text,
-                                              username:
-                                                  textEditingControllerUsername
-                                                      .text,
-                                              nomor_telepon:
-                                                  textEditingControllerNomorTelepon
-                                                      .text,
-                                              kode_otp: otp_register.toString(),
-                                              nama_lengkap:
-                                                  textEditingControllerNama.text
-                                                      .toString(),
-                                              nik:
-                                                  textEditingControllerNik.text)
-                                          .then((value) => {
-                                                if (value.code == 200)
-                                                  {
-                                                    this.sendMail(
-                                                        otp_register.toString(),
-                                                        textEditingControllerEmail
-                                                            .text
-                                                            .toString(),
-                                                        context),
-                                                  }
-                                                else
-                                                  {
-                                                    ToastWidget.ToastEror(
-                                                        context,
-                                                        "Daftar Gagal Akun Telah Ada",
-                                                        "Teliti Lagi")
-                                                  }
-                                              })
-                                    }
-                                }
-                              else
-                                {print("cuok mbuh")}
-                            },
-                        child: Padding(
-                          padding: const EdgeInsets.all(10.0),
-                          child: Text(
-                            "Daftar",
-                            style: TextStyle(fontSize: size.textButton.sp),
-                          ),
+          body: SingleChildScrollView(
+            reverse: true,
+            // physics: NeverScrollableScrollPhysics(),
+            child: Center(
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20.0.w),
+                child: Form(
+                  key: _formKey,
+                  child: ListView(
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    children: [
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            IconButton(
+                                onPressed: () => {Navigator.pop(context)},
+                                icon: Icon(Icons.arrow_back)),
+                          ]),
+                      SizedBox(
+                        height: 20.h,
+                      ),
+                      Text(
+                        "Daftarkan Akunmu ",
+                        style: GoogleFonts.dmSans(
+                            textStyle: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: size.HeaderText.sp)),
+                        textAlign: TextAlign.center,
+                      ),
+                      Text(
+                        "Silahkan buat akunmu terlebih dahulu",
+                        style: GoogleFonts.dmSans(
+                            textStyle: TextStyle(
+                          fontSize: size.SubHeader.sp,
+                          color: ListColor.warnaDescription,
                         )),
-                    SizedBox(
-                      height: 20.h,
-                    ),
-                  ],
+                        textAlign: TextAlign.center,
+                      ),
+                      Image.asset(
+                        "assets/img_register.png",
+                        width: 120.w,
+                        height: 300.h,
+                      ),
+                      SizedBox(
+                          child: TextFieldImport.TextFormNama(
+                              text_kontrol: textEditingControllerNama,
+                              hintText: "Masukkan Nama",
+                              labelName: "Nama",
+                              pesanValidasi: "Nama")),
+                      SizedBox(
+                          child: TextFieldImport.TextFormTelp(
+                              text_kontrol: textEditingControllerNik,
+                              hintText: "Harus 16 angka",
+                              length: 16,
+                              labelName: "NIK",
+                              pesanValidasi: "NIK")),
+                      SizedBox(
+                          child: TextFieldImport.TextForm(
+                              labelName: "Nama Pengguna",
+                              text_kontrol: textEditingControllerUsername,
+                              hintText: "Masukkan Nama Pengguna",
+                              pesanValidasi: "Nama Pengguna")),
+                      SizedBox(
+                          child: TextFieldImport.TextFormEmail(
+                              labelName: "Email",
+                              text_kontrol: textEditingControllerEmail,
+                              hintText: "cth : ...@gmail.com",
+                              pesanValidasi: "Email")),
+                      SizedBox(
+                          child: TextFieldImport.TextFormTelp(
+                              labelName: "Nomor Telepon",
+                              length: 12,
+                              text_kontrol: textEditingControllerNomorTelepon,
+                              hintText: "Min 11 angka",
+                              pesanValidasi: "Nomor Telepon")),
+                      SizedBox(
+                          child: TextFieldPassword(
+                              textEditingControllerPassword,
+                              "cth : DsSidokare12",
+                              false,
+                              "Kata Sandi",
+                              "Kata Sandi")),
+                      SizedBox(
+                          child: TextFieldPassword(
+                              textEditingControllerKonfirmasiPassword,
+                              "Masukkan Ulang Sandi",
+                              false,
+                              "Ulangi Kata Sandi",
+                              "Kata Sandi")),
+                      SizedBox(
+                        height: 10.w,
+                      ),
+                      ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: ListColor.warnaBiruSidoKare,
+                              minimumSize: Size.fromHeight(55.h)),
+                          onPressed: () => {
+                                if (_formKey.currentState!.validate())
+                                  {
+                                    if (textEditingControllerNik.text
+                                            .toString()
+                                            .length !=
+                                        16)
+                                      {
+                                        ToastWidget.ToastEror(
+                                            context,
+                                            "NIK harus 16 karakter",
+                                            "Teliti Lagi!")
+                                      }
+                                    else if (textEditingControllerNomorTelepon
+                                            .text
+                                            .toString()
+                                            .length <
+                                        11)
+                                      {
+                                        ToastWidget.ToastEror(
+                                            context,
+                                            "Nomer Telp harus 12 karakter",
+                                            "Teliti Lagi")
+                                      }
+                                    else if (textEditingControllerKonfirmasiPassword
+                                            .text
+                                            .toString() !=
+                                        textEditingControllerPassword.text
+                                            .toString())
+                                      {
+                                        ToastWidget.ToastEror(
+                                            context,
+                                            "Katasandi Tidak Sama",
+                                            "Periksa Kembali")
+                                      }
+                                    else
+                                      {
+                                        HttpStatefull.registerAkun(
+                                                email:
+                                                    textEditingControllerEmail
+                                                        .text,
+                                                password:
+                                                    textEditingControllerPassword
+                                                        .text,
+                                                username:
+                                                    textEditingControllerUsername
+                                                        .text,
+                                                nomor_telepon:
+                                                    textEditingControllerNomorTelepon
+                                                        .text,
+                                                kode_otp:
+                                                    otp_register.toString(),
+                                                nama_lengkap:
+                                                    textEditingControllerNama
+                                                        .text
+                                                        .toString(),
+                                                nik: textEditingControllerNik
+                                                    .text)
+                                            .then((value) => {
+                                                  if (value.code == 200)
+                                                    {
+                                                      this.sendMail(
+                                                          otp_register
+                                                              .toString(),
+                                                          textEditingControllerEmail
+                                                              .text
+                                                              .toString(),
+                                                          context),
+                                                    }
+                                                  else
+                                                    {
+                                                      ToastWidget.ToastEror(
+                                                          context,
+                                                          "Daftar Gagal Akun Telah Ada",
+                                                          "Teliti Lagi")
+                                                    }
+                                                })
+                                      }
+                                  }
+                                else
+                                  {print("cuok mbuh")}
+                              },
+                          child: Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: Text(
+                              "Daftar",
+                              style: TextStyle(fontSize: size.textButton.sp),
+                            ),
+                          )),
+                      SizedBox(
+                        height: 20.h,
+                      ),
+                      Padding(
+                          padding: EdgeInsets.only(
+                              bottom: MediaQuery.of(context).viewInsets.bottom))
+                    ],
+                  ),
                 ),
               ),
             ),
