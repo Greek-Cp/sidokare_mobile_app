@@ -34,6 +34,10 @@ class Data {
   String? isiLaporan;
   String? asalPelapor;
   String? lokasiKejadian;
+  String? RT;
+  String? RW;
+  String? statusUser;
+  String? dokumenDown;
   String? kategoriLaporan;
   String? tanggalKejadian;
   String? uploadFilePendukung;
@@ -45,6 +49,10 @@ class Data {
       this.isiLaporan,
       this.asalPelapor,
       this.lokasiKejadian,
+      this.RT,
+      this.RW,
+      this.statusUser,
+      this.dokumenDown,
       this.kategoriLaporan,
       this.tanggalKejadian,
       this.uploadFilePendukung});
@@ -55,6 +63,10 @@ class Data {
     judulLaporan = json['judul_laporan'];
     isiLaporan = json['isi_laporan'];
     asalPelapor = json['asal_pelapor'];
+    RT = json['RT'];
+    RW = json['RW'];
+    statusUser = json['status'];
+    dokumenDown = json['doc_hasil_keluhan'];
     lokasiKejadian = json['lokasi_kejadian'];
     kategoriLaporan = json['kategori_laporan'];
     tanggalKejadian = json['tanggal_kejadian'];

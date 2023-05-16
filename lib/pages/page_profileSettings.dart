@@ -196,7 +196,6 @@ class _PageProfileUserState extends State<PageProfileUser> {
                           nik: getNik?.text,
                           emaill: getEmail?.text,
                           fileBaru: _image),
-                      ButtonForm("Keluar", _formKey, () {}),
                     ],
                   ),
                 ),
@@ -217,34 +216,62 @@ class _PageProfileUserState extends State<PageProfileUser> {
       String? nomor,
       File? fileBaru}) {
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: 20.h),
-      child: Consumer<ProviderAccount>(
-        builder: (context, value, child) {
-          return ElevatedButton(
-            onPressed: () {
-              print("Namanya adalah == ${nama}");
-              print("Namanya2 adalah == ${getNama?.text}");
-              print("telp2 adalah == ${nomor}");
-              print("Telp == adalah ${getTelp?.text}");
-              if (_image == null || _namaFile == "") {
-                print("Kosong");
-                HttpStatefull.UpdateProfileSaja(
-                        idAkun: idakun,
-                        namaProfile: getNama?.text.toString(),
-                        NomorTelp: getTelp?.text.toString())
-                    .then((value) => {
-                          if (value.code == 200)
-                            {
-                              print(
-                                  "Nama File Update data saja adalah ${_namaFile}"),
+      padding: EdgeInsets.symmetric(vertical: 10.h),
+      child: Column(
+        children: [
+          Consumer<ProviderAccount>(
+            builder: (context, value, child) {
+              return ElevatedButton(
+                onPressed: () {
+                  print("Namanya adalah == ${nama}");
+                  print("Namanya2 adalah == ${getNama?.text}");
+                  print("telp2 adalah == ${nomor}");
+                  print("Telp == adalah ${getTelp?.text}");
+                  if (_image == null || _namaFile == "") {
+                    print("Kosong");
+                    HttpStatefull.UpdateProfileSaja(
+                            idAkun: idakun,
+                            namaProfile: getNama?.text.toString(),
+                            NomorTelp: getTelp?.text.toString())
+                        .then((value) => {
+                              if (value.code == 200)
+                                {
+                                  print(
+                                      "Nama File Update data saja adalah ${_namaFile}"),
+                                  providerAccount?.updateData(
+                                      0,
+                                      idakun.toInt(),
+                                      getNama!.text.toString(),
+                                      nik.toString(),
+                                      _namaFile == "" || _namaFile == null
+                                          ? namaGmbrHps.toString()
+                                          : _namaFile!,
+                                      getTelp!.text.toString(),
+                                      emaill.toString()),
+                                  _image == null,
+                                  _namaFile == null,
+                                  Navigator.pushNamed(context,
+                                      HalamanUtama.routeName.toString(),
+                                      arguments: idakun.toInt()),
+                                  ToastWidget.ToastSucces(context,
+                                      "Berhasil Update Data", "Selamat"),
+                                }
+                            });
+                  } else {
+                    HttpStatefull.sendRequestWithFile(
+                            id_akun: idakun,
+                            delPic: namaGmbrHps,
+                            nama: getNama?.text.toString(),
+                            nomorHp: getTelp?.text.toString(),
+                            file: fileBaru)
+                        .then((value) => {
+                              print("Nama File adalah ${_namaFile}"),
                               providerAccount?.updateData(
                                   0,
                                   idakun.toInt(),
                                   getNama!.text.toString(),
                                   nik.toString(),
-                                  _namaFile == "" || _namaFile == null
-                                      ? namaGmbrHps.toString()
-                                      : _namaFile!,
+                                  _namaFile!,
                                   getTelp!.text.toString(),
                                   emaill.toString()),
                               _image == null,
@@ -254,42 +281,65 @@ class _PageProfileUserState extends State<PageProfileUser> {
                                   arguments: idakun.toInt()),
                               ToastWidget.ToastSucces(
                                   context, "Berhasil Update Data", "Selamat"),
-                            }
-                        });
-              } else {
-                HttpStatefull.sendRequestWithFile(
-                        id_akun: idakun,
-                        delPic: namaGmbrHps,
-                        nama: getNama?.text.toString(),
-                        nomorHp: getTelp?.text.toString(),
-                        file: fileBaru)
-                    .then((value) => {
-                          print("Nama File adalah ${_namaFile}"),
-                          providerAccount?.updateData(
-                              0,
-                              idakun.toInt(),
-                              getNama!.text.toString(),
-                              nik.toString(),
-                              _namaFile!,
-                              getTelp!.text.toString(),
-                              emaill.toString()),
-                          _image == null,
-                          _namaFile == null,
-                          Navigator.pushNamed(
-                              context, HalamanUtama.routeName.toString(),
-                              arguments: idakun.toInt()),
-                          ToastWidget.ToastSucces(
-                              context, "Berhasil Update Data", "Selamat"),
-                        });
-              }
+                            });
+                  }
+                },
+                style: ElevatedButton.styleFrom(
+                    minimumSize: Size.fromHeight(55.h)),
+                child: ComponentTextButton("Edit Akun"),
+              );
             },
-            style: ElevatedButton.styleFrom(minimumSize: Size.fromHeight(55.h)),
-            child: Text(
-              "Edit Akun ",
-              style: TextStyle(fontSize: size.textButton.sp),
-            ),
+          ),
+          ButtonSelesai("Keluar"),
+        ],
+      ),
+    );
+  }
+}
+
+class ButtonSelesai extends StatelessWidget {
+  String? buttonName;
+  ButtonSelesai(this.buttonName);
+  @override
+  Widget build(BuildContext context) {
+    return _Button(context, buttonName);
+  }
+
+  Widget _Button(BuildContext context, String? buttonName) {
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 10.h),
+      child: ElevatedButton(
+        onPressed: () {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: Text('Konfirmasi'),
+                content: Text('Kamu Yakin akan Keluar dari Aplikasi?'),
+                actions: [
+                  TextButton(
+                    child: Text('Tidak'),
+                    onPressed: () {
+                      Navigator.of(context).pop(); // Menutup dialog
+                    },
+                  ),
+                  TextButton(
+                    child: Text('Iya'),
+                    onPressed: () {
+                      // Tindakan yang akan dilakukan ketika tombol "OK" ditekan
+                      Navigator.of(context).pop(); // Menutup dialog
+                      // Tambahkan kode logika atau tindakan yang ingin Anda lakukan di sini setelah menekan tombol "OK"
+                    },
+                  ),
+                ],
+              );
+            },
           );
         },
+        child: ComponentTextButton("$buttonName"),
+        style: ElevatedButton.styleFrom(
+            minimumSize: Size.fromHeight(55.h),
+            backgroundColor: Colors.redAccent),
       ),
     );
   }

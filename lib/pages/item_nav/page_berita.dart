@@ -5,6 +5,7 @@ import 'package:flutter_custom_tab_bar/indicator/linear_indicator.dart';
 import 'package:flutter_custom_tab_bar/transform/color_transform.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:provider/provider.dart';
 import 'package:sidokare_mobile_app/component/search_bar.dart';
 import 'package:sidokare_mobile_app/pages/item_nav/item_page_berita/page_bum_desa.dart';
 import 'package:sidokare_mobile_app/pages/item_nav/item_page_berita/page_pelayanan_desa.dart';
@@ -15,6 +16,9 @@ import 'package:sidokare_mobile_app/pages/item_nav/item_page_berita/page_pemerin
 import 'package:sidokare_mobile_app/const/size.dart';
 import 'package:sidokare_mobile_app/pages/item_nav/item_page_berita/page_pkk_desa.dart';
 import 'package:sidokare_mobile_app/pages/item_nav/item_page_berita/page_potensi_desa.dart';
+import 'package:sidokare_mobile_app/pages/item_nav/item_page_berita/page_search_berita.dart';
+
+import '../../provider/provider_account.dart';
 
 class PageBerita extends StatefulWidget {
   @override
@@ -33,6 +37,11 @@ class _PageBeritaState extends State<PageBerita> {
 
   @override
   Widget build(BuildContext context) {
+    final id = ModalRoute.of(context)?.settings.arguments as int;
+
+    final DataDiri = Provider.of<ProviderAccount>(context)
+        .GetDataDiri
+        .firstWhere((idData) => idData.id_akun == id);
     // TODO: implement build
     return ScreenUtilInit(
       builder: (context, child) {
@@ -48,7 +57,9 @@ class _PageBeritaState extends State<PageBerita> {
                     child: AnimationConfiguration.synchronized(
                         duration: const Duration(milliseconds: 500),
                         child: FadeInAnimation(
-                            child: ScaleAnimation(child: searchBar())))),
+                            child: ScaleAnimation(
+                                child: searchBar(
+                                    idakun: DataDiri.id_akun.toString()))))),
                 AnimationLimiter(
                     child: AnimationConfiguration.synchronized(
                         duration: const Duration(milliseconds: 500),
@@ -90,13 +101,18 @@ class _PageBeritaState extends State<PageBerita> {
     );
   }
 
-  Widget searchBar() {
+  Widget searchBar({String? idakun}) {
     return Container(
       height: 64.0.h,
       child: Padding(
         padding: EdgeInsets.all(10.h),
         child: Container(
           child: TextField(
+              onTap: () {
+                Navigator.pushNamed(
+                    context, PageSearchBerita.routeName.toString(),
+                    arguments: idakun);
+              },
               style: TextStyle(fontSize: size.textButton.sp),
               decoration: InputDecoration(
                   contentPadding: EdgeInsets.only(

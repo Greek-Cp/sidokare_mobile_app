@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:bottom_bar_matu/utils/app_utils.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -12,6 +13,7 @@ import 'package:sidokare_mobile_app/component/text_description.dart';
 import 'package:sidokare_mobile_app/const/font_type.dart';
 import 'package:sidokare_mobile_app/const/list_color.dart';
 import 'package:sidokare_mobile_app/const/size.dart';
+import 'package:sidokare_mobile_app/model/response/get/model_jmlkeberatan.dart';
 import 'package:sidokare_mobile_app/pages/page_formulirKeberatan.dart';
 
 import '../../const/const.dart';
@@ -68,228 +70,267 @@ class _DetailPengajuanPPIDState extends State<DetailPengajuanPPID> {
                 )),
             title: ComponentTextTittle("Detail Pengajuan PPID"),
           ),
-          body: SingleChildScrollView(
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20.w),
-              child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Detail Data Pengaju",
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: size.sizeDescriptionPas.sp),
-                    ),
-                    Row(
+          body: FutureBuilder<KeberatanPPID>(
+            future: KeberatanPPID.getJumlahKeberatanPPID(
+                idAKun: Akunn.toString(), idppid: id_ppid),
+            builder:
+                (BuildContext context, AsyncSnapshot<KeberatanPPID> snapshot) {
+              if (snapshot.hasData) {
+                var data = snapshot.data;
+              } else if (snapshot.hasError) {
+                return Text("Error : ${snapshot.error}");
+              } else {
+                return CircularProgressIndicator();
+              }
+              return SingleChildScrollView(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 20.w),
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            ComponentTextDescription("Nama Lengkap"),
-                            ComponentTextDescription("NIK"),
-                            ComponentTextDescription("Email"),
-                            ComponentTextDescription("No Telephone"),
-                          ],
-                        ),
                         SizedBox(
-                          width: 30.w,
+                          height: 20,
                         ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                        Text(
+                          "Detail Data Pengajuan",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: size.sizeDescriptionPas.sp),
+                        ),
+                        Row(
                           children: [
-                            Text(
-                              ": ${DataDiri.nama}",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: size.sizeDescriptionPas.sp),
-                            ),
-                            // ComponentTextDescription(": ${DataDiri.nama}"),
-                            ComponentTextDescription(": ${DataDiri.Nik}"),
-                            ComponentTextDescription(": ${emaill}"),
-                            ComponentTextDescription(": ${tlpp}"),
-                          ],
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 20.h,
-                    ),
-                    ComponentTextDescription("Judul Laporan"),
-                    ComponentTittleCustom(
-                      "${judullaporan}",
-                      textAlign: TextAlign.start,
-                    ),
-                    SizedBox(
-                      height: 20.h,
-                    ),
-                    ComponentTextDescription("Isi Laporan"),
-                    Card(
-                      shape: RoundedRectangleBorder(
-                          side: BorderSide(color: Colors.black),
-                          borderRadius: BorderRadius.circular(10.r)),
-                      child: Padding(
-                        padding: EdgeInsets.all(10.0.w),
-                        child: Container(
-                          width: double.infinity,
-                          child: ComponentTextDescription(
-                            "${isiLaporan}",
-                            teksColor: Colors.grey,
-                            textAlign: TextAlign.start,
-                          ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 20.h,
-                    ),
-                    Row(
-                      children: [
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            ComponentTextDescription("Asal Pelapor"),
-                            ComponentTextDescription("RT / RW"),
-                            ComponentTextDescription("Kategori PPID"),
-                            ComponentTextDescription("Upload File Pendukung"),
-                          ],
-                        ),
-                        SizedBox(
-                          width: 30.w,
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            ComponentTextDescription(": ${asalPelapor} "),
-                            ComponentTextDescription(": ${RT} / ${RW}"),
-                            ComponentTextDescription(": ${KategoriPPID}"),
-                            Text(filePendukung.toString().length > 20
-                                ? ": " +
-                                    filePendukung.toString().substring(0, 20) +
-                                    '...'
-                                : ": ${filePendukung}"),
-                            // ComponentTextDescription(": ${filePendukung}"),
-                          ],
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 30.h,
-                    ),
-                    Divider(
-                      height: 1.h,
-                      color: Colors.grey,
-                    ),
-                    ComponentTextDescription("Hasil PPID: "),
-                    GestureDetector(
-                      onTap: () async {
-                        print("halooo");
-                        if (status == "revisi") {
-                          ToastWidget.ToastInfo(
-                              context,
-                              "Harap Sabar Masih Di Revisi",
-                              "Proses Penanganan");
-                        } else if (DocPPID.toString() != "kosong") {
-                          String url =
-                              'http://${ApiPoint.BASE_URL}/storage/dummyOutput/${DocPPID.toString()}'; // Ganti dengan URL file yang ingin Anda unduh
-                          // String savedDir =
-                          //     '/storage/emulated/0/Download/${timeStamp}-${DocPPID.toString()}';
-                          DateTime currentTime = DateTime.now();
-                          DateFormat formatter = DateFormat('yyyyMMddHHmmss');
-                          String timestamp = formatter.format(currentTime);
-                          if (Platform.isWindows) {
-                            var getDownload = await getDownloadsDirectory();
-                            String path =
-                                "${getDownload}\\${timestamp}_${DocPPID.toString()}";
-                            String replaceBruh = path.replaceAll("'", "");
-                            replaceBruh =
-                                replaceBruh.replaceAll("Directory: ", "");
-                            // print(replaceBruh);
-                            // String savedDir =
-                            //     "C:\\Users\\LENOVO\\Downloads\\Named123_ppid677.pdf";
-                            // print("${savedDir}");
-                            ControllerAPI.downloadFile(
-                                url,
-                                replaceBruh,
-                                context,
-                                "Tersimpan folder download \n Nama File : ${timeStamp}-${DocPPID.toString()}");
-                          } else if (Platform.isAndroid) {
-                            String pathYak =
-                                "/storage/emulated/0/Download/${timestamp}_${DocPPID.toString()}";
-                            ControllerAPI.downloadFile(url, pathYak, context,
-                                "Tersimpan folder download \n Nama File : ${timeStamp}-${DocPPID.toString()}");
-                          }
-                        } else {
-                          ToastWidget.ToastInfo(
-                              context, "Belum, Bisa", "Sabar");
-                        }
-                      },
-                      child: Card(
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10.r)),
-                        color: ButtonDownload(sama: status),
-                        child: Padding(
-                          padding: EdgeInsets.all(20.0.w),
-                          child: Row(children: [
-                            Icon(
-                              Icons.file_copy,
-                              color: Colors.white,
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                ComponentTextDescription("Nama Lengkap"),
+                                ComponentTextDescription("NIK"),
+                                ComponentTextDescription("Email"),
+                                ComponentTextDescription("No Telephone"),
+                              ],
                             ),
                             SizedBox(
-                              width: 10,
+                              width: 30.w,
                             ),
-                            ComponentTextButton(status != "selesai"
-                                ? " ${status}"
-                                : " ${DocPPID.toString()}")
-                          ]),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  ": ${DataDiri.nama}",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: size.sizeDescriptionPas.sp),
+                                ),
+                                // ComponentTextDescription(": ${DataDiri.nama}"),
+                                ComponentTextDescription(": ${DataDiri.Nik}"),
+                                ComponentTextDescription(": ${emaill}"),
+
+                                ComponentTextDescription(": ${tlpp}"),
+                              ],
+                            ),
+                          ],
                         ),
-                      ),
-                    ),
-                    Visibility(
-                      visible: status != "selesai" ? false : true,
-                      child: ComponentTextDescriptionBawah(
-                          "Silakan Download file , file akan tersimpan dalam device pada folder download"),
-                    ),
-                    Divider(
-                      color: Colors.grey,
-                    ),
-                    SizedBox(
-                      height: 30.h,
-                    ),
-                    Divider(
-                      height: 1.h,
-                      color: Colors.grey,
-                    ),
-                    // ButtonKeberatan("Keberatan"),
-                    Padding(
-                      padding: EdgeInsets.symmetric(vertical: 0.h),
-                      child: ElevatedButton(
-                        onPressed: () {
-                          if (status == "selesai") {
-                            Navigator.pushNamed(context,
-                                PageFormulirKeberatanPPID.routeName.toString(),
-                                arguments: {
-                                  "id": id_ppid.toString(),
-                                  "id_akun": Akunn,
-                                  "kategori": "ppid"
-                                });
-                          } else {
-                            ToastWidget.ToastInfo(
-                                context,
-                                "Pengajuan PPID tidak dalam status selesai , tidak dapat melakukan Keberatan",
-                                "Mohon Maaf");
-                          }
-                        },
-                        child: ComponentTextButton("Keberatan"),
-                        style: ElevatedButton.styleFrom(
-                            minimumSize: Size.fromHeight(55.h),
-                            backgroundColor: Colors.red),
-                      ),
-                    ),
-                    ButtonSelesai("Selesai")
-                  ]),
-            ),
+                        SizedBox(
+                          height: 20.h,
+                        ),
+                        ComponentTextDescription("Judul Laporan"),
+                        ComponentTittleCustom(
+                          "${judullaporan}",
+                          textAlign: TextAlign.start,
+                        ),
+                        SizedBox(
+                          height: 20.h,
+                        ),
+                        ComponentTextDescription("Isi Laporan"),
+                        Card(
+                          shape: RoundedRectangleBorder(
+                              side: BorderSide(color: Colors.black),
+                              borderRadius: BorderRadius.circular(10.r)),
+                          child: Padding(
+                            padding: EdgeInsets.all(10.0.w),
+                            child: Container(
+                              width: double.infinity,
+                              child: ComponentTextDescription(
+                                "${isiLaporan}",
+                                teksColor: Colors.grey,
+                                textAlign: TextAlign.start,
+                              ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 20.h,
+                        ),
+                        Row(
+                          children: [
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                ComponentTextDescription("Asal Pelapor"),
+                                ComponentTextDescription("RT / RW"),
+                                ComponentTextDescription("Kategori PPID"),
+                                ComponentTextDescription(
+                                    "Upload File Pendukung"),
+                              ],
+                            ),
+                            SizedBox(
+                              width: 30.w,
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                ComponentTextDescription(": ${asalPelapor} "),
+                                ComponentTextDescription(": ${RT} / ${RW}"),
+                                ComponentTextDescription(": ${KategoriPPID}"),
+                                Text(filePendukung.toString().length > 20
+                                    ? ": " +
+                                        filePendukung
+                                            .toString()
+                                            .substring(0, 20) +
+                                        '...'
+                                    : ": ${filePendukung}"),
+                                // ComponentTextDescription(": ${filePendukung}"),
+                              ],
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 30.h,
+                        ),
+                        Divider(
+                          height: 1.h,
+                          color: Colors.grey,
+                        ),
+                        ComponentTextDescription("Hasil PPID: "),
+                        GestureDetector(
+                          onTap: () async {
+                            print("halooo");
+                            if (status == "revisi") {
+                              ToastWidget.ToastInfo(
+                                  context,
+                                  "Harap Sabar Masih Di Revisi",
+                                  "Proses Penanganan");
+                            } else if (DocPPID.toString() != "kosong") {
+                              String url =
+                                  'http://${ApiPoint.BASE_URL}/storage/dummyOutput/${DocPPID.toString()}'; // Ganti dengan URL file yang ingin Anda unduh
+                              // String savedDir =
+                              //     '/storage/emulated/0/Download/${timeStamp}-${DocPPID.toString()}';
+                              DateTime currentTime = DateTime.now();
+                              DateFormat formatter =
+                                  DateFormat('yyyyMMddHHmmss');
+                              String timestamp = formatter.format(currentTime);
+                              if (Platform.isWindows) {
+                                var getDownload = await getDownloadsDirectory();
+                                String path =
+                                    "${getDownload}\\${timestamp}_${DocPPID.toString()}";
+                                String replaceBruh = path.replaceAll("'", "");
+                                replaceBruh =
+                                    replaceBruh.replaceAll("Directory: ", "");
+                                // print(replaceBruh);
+                                // String savedDir =
+                                //     "C:\\Users\\LENOVO\\Downloads\\Named123_ppid677.pdf";
+                                // print("${savedDir}");
+                                ControllerAPI.downloadFile(
+                                    url,
+                                    replaceBruh,
+                                    context,
+                                    "Tersimpan folder download \n Nama File : ${timeStamp}-${DocPPID.toString()}");
+                              } else if (Platform.isAndroid) {
+                                String pathYak =
+                                    "/storage/emulated/0/Download/${timestamp}_${DocPPID.toString()}";
+                                ControllerAPI.downloadFile(
+                                    url,
+                                    pathYak,
+                                    context,
+                                    "Tersimpan folder download \n Nama File : ${timeStamp}-${DocPPID.toString()}");
+                              }
+                            } else {
+                              ToastWidget.ToastInfo(
+                                  context, "Belum, Bisa", "Sabar");
+                            }
+                          },
+                          child: Card(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10.r)),
+                            color: ButtonDownload(sama: status),
+                            child: Padding(
+                              padding: EdgeInsets.all(20.0.w),
+                              child: Row(children: [
+                                Icon(
+                                  Icons.file_copy,
+                                  color: Colors.white,
+                                ),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                ComponentTextButton(status != "selesai"
+                                    ? " ${status}"
+                                    : " ${DocPPID.toString()}")
+                              ]),
+                            ),
+                          ),
+                        ),
+                        Visibility(
+                          visible: status != "selesai" ? false : true,
+                          child: ComponentTextDescriptionBawah(
+                              "Silakan Download file , file akan tersimpan dalam device pada folder download"),
+                        ),
+                        Divider(
+                          color: Colors.grey,
+                        ),
+                        SizedBox(
+                          height: 30.h,
+                        ),
+                        Divider(
+                          height: 1.h,
+                          color: Colors.grey,
+                        ),
+                        // ButtonKeberatan("Keberatan"),
+                        Padding(
+                          padding: EdgeInsets.symmetric(vertical: 0.h),
+                          child: ElevatedButton(
+                            onPressed: () {
+                              int batasan =
+                                  snapshot.data!.jumlahKeberatanPPID != "Kosong"
+                                      ? snapshot.data!.jumlahKeberatanPPID
+                                          .toInt()
+                                      : 0;
+                              if (batasan == 2) {
+                                ToastWidget.ToastInfo(
+                                    context,
+                                    "Revisi sudah ke - ${batasan} kali , Silakan Datang Ke Kantor",
+                                    "Mohon Maaf ");
+                              } else {
+                                if (status == "selesai") {
+                                  Navigator.pushNamed(
+                                      context,
+                                      PageFormulirKeberatanPPID.routeName
+                                          .toString(),
+                                      arguments: {
+                                        "id": id_ppid.toString(),
+                                        "id_akun": Akunn,
+                                        "kategori": "ppid"
+                                      });
+                                } else {
+                                  ToastWidget.ToastInfo(
+                                      context,
+                                      "Pengajuan PPID tidak dalam status selesai , tidak dapat melakukan Keberatan",
+                                      "Mohon Maaf");
+                                }
+                              }
+                            },
+                            child: ComponentTextButton("Keberatan"),
+                            style: ElevatedButton.styleFrom(
+                                minimumSize: Size.fromHeight(55.h),
+                                backgroundColor: Colors.red),
+                          ),
+                        ),
+                        ButtonSelesai("Selesai")
+                      ]),
+                ),
+              );
+            },
           ),
         );
       },

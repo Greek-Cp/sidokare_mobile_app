@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:sidokare_mobile_app/const/list_color.dart';
 import 'package:sidokare_mobile_app/const/size.dart';
@@ -39,36 +41,139 @@ class _itemListStatusState extends State<itemListStatus> {
           future: listData,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              return ListView.builder(
-                  itemBuilder: (context, index) {
-                    return _containerListStatus(
-                        id_ppid: snapshot.data!.data![index].idPengajuanPpid,
-                        email: snapshot.data!.data![index].email,
-                        NoTelp: snapshot.data!.data![index].telpp,
-                        statusUser: snapshot.data!.data![index].status,
-                        docUp: snapshot.data!.data![index].OutputDocPPID ==
-                                    null ||
-                                snapshot.data!.data![index].OutputDocPPID == ""
-                            ? "kosong"
-                            : snapshot.data!.data![index].OutputDocPPID,
-                        RTuser: snapshot.data!.data![index].RT,
-                        RWuser: snapshot.data!.data![index].RW,
-                        judul_pengajuan:
-                            snapshot.data!.data![index].judulLaporan.toString(),
-                        isi_pengajuan: snapshot.data!.data![index].isiLaporan,
-                        laporan:
-                            snapshot.data!.data![index].judulLaporan.toString(),
-                        isiLaporan: snapshot.data!.data![index].isiLaporan,
-                        asalPelapor: snapshot.data!.data![index].asalPelapor,
-                        kategoriPPID: snapshot.data!.data![index].kategoriPpid,
-                        uploadFile:
-                            snapshot.data!.data![index].uploadFilePendukung,
-                        idAkun: snapshot.data!.data![index].idAkun);
-                  },
-                  itemCount: snapshot.data!.data!.length);
+              print("panjang data == ${snapshot.data!.data!.length}");
+              if (snapshot.data!.data!.length != 0) {
+                return ListView.builder(
+                    itemBuilder: (context, index) {
+                      return AnimationConfiguration.staggeredList(
+                          position: index,
+                          child: FadeInAnimation(
+                              child: index % 2 == 0
+                                  ? FadeInAnimation(
+                                      duration: Duration(milliseconds: 300),
+                                      child: SlideAnimation(
+                                          duration: Duration(milliseconds: 800),
+                                          horizontalOffset: 350.0,
+                                          child: _containerListStatus(
+                                              id_ppid: snapshot.data!
+                                                  .data![index].idPengajuanPpid,
+                                              email: snapshot
+                                                  .data!.data![index].email,
+                                              NoTelp: snapshot
+                                                  .data!.data![index].telpp,
+                                              statusUser: snapshot
+                                                  .data!.data![index].status,
+                                              docUp: snapshot.data!.data![index].OutputDocPPID == null ||
+                                                      snapshot.data!.data![index].OutputDocPPID ==
+                                                          ""
+                                                  ? "kosong"
+                                                  : snapshot.data!.data![index]
+                                                      .OutputDocPPID,
+                                              RTuser: snapshot
+                                                  .data!.data![index].RT,
+                                              RWuser: snapshot
+                                                  .data!.data![index].RW,
+                                              judul_pengajuan: snapshot.data!
+                                                  .data![index].judulLaporan
+                                                  .toString(),
+                                              isi_pengajuan: snapshot.data!
+                                                  .data![index].isiLaporan,
+                                              laporan: snapshot.data!.data![index].judulLaporan.toString(),
+                                              isiLaporan: snapshot.data!.data![index].isiLaporan,
+                                              asalPelapor: snapshot.data!.data![index].asalPelapor,
+                                              kategoriPPID: snapshot.data!.data![index].kategoriPpid,
+                                              uploadFile: snapshot.data!.data![index].uploadFilePendukung,
+                                              idAkun: snapshot.data!.data![index].idAkun)),
+                                    )
+                                  : FadeInAnimation(
+                                      duration: Duration(milliseconds: 300),
+                                      child: SlideAnimation(
+                                          duration: Duration(milliseconds: 800),
+                                          horizontalOffset: -350.0,
+                                          child: _containerListStatus(
+                                              id_ppid: snapshot.data!
+                                                  .data![index].idPengajuanPpid,
+                                              email: snapshot
+                                                  .data!.data![index].email,
+                                              NoTelp: snapshot
+                                                  .data!.data![index].telpp,
+                                              statusUser: snapshot
+                                                  .data!.data![index].status,
+                                              docUp: snapshot.data!.data![index].OutputDocPPID == null ||
+                                                      snapshot.data!.data![index].OutputDocPPID ==
+                                                          ""
+                                                  ? "kosong"
+                                                  : snapshot.data!.data![index]
+                                                      .OutputDocPPID,
+                                              RTuser: snapshot
+                                                  .data!.data![index].RT,
+                                              RWuser: snapshot
+                                                  .data!.data![index].RW,
+                                              judul_pengajuan: snapshot.data!
+                                                  .data![index].judulLaporan
+                                                  .toString(),
+                                              isi_pengajuan: snapshot.data!
+                                                  .data![index].isiLaporan,
+                                              laporan: snapshot.data!.data![index].judulLaporan.toString(),
+                                              isiLaporan: snapshot.data!.data![index].isiLaporan,
+                                              asalPelapor: snapshot.data!.data![index].asalPelapor,
+                                              kategoriPPID: snapshot.data!.data![index].kategoriPpid,
+                                              uploadFile: snapshot.data!.data![index].uploadFilePendukung,
+                                              idAkun: snapshot.data!.data![index].idAkun)),
+                                    )));
+                      // return _containerListStatus(
+                      //     id_ppid: snapshot.data!.data![index].idPengajuanPpid,
+                      //     email: snapshot.data!.data![index].email,
+                      //     NoTelp: snapshot.data!.data![index].telpp,
+                      //     statusUser: snapshot.data!.data![index].status,
+                      //     docUp: snapshot.data!.data![index].OutputDocPPID ==
+                      //                 null ||
+                      //             snapshot.data!.data![index].OutputDocPPID ==
+                      //                 ""
+                      //         ? "kosong"
+                      //         : snapshot.data!.data![index].OutputDocPPID,
+                      //     RTuser: snapshot.data!.data![index].RT,
+                      //     RWuser: snapshot.data!.data![index].RW,
+                      //     judul_pengajuan: snapshot
+                      //         .data!.data![index].judulLaporan
+                      //         .toString(),
+                      //     isi_pengajuan: snapshot.data!.data![index].isiLaporan,
+                      //     laporan: snapshot.data!.data![index].judulLaporan
+                      //         .toString(),
+                      //     isiLaporan: snapshot.data!.data![index].isiLaporan,
+                      //     asalPelapor: snapshot.data!.data![index].asalPelapor,
+                      //     kategoriPPID:
+                      //         snapshot.data!.data![index].kategoriPpid,
+                      //     uploadFile:
+                      //         snapshot.data!.data![index].uploadFilePendukung,
+                      //     idAkun: snapshot.data!.data![index].idAkun);
+                    },
+                    itemCount: snapshot.data!.data!.length);
+              }
             } else {
               return Text(snapshot.error.toString());
             }
+            return Center(
+                child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  width: 100,
+                  height: 100,
+                  child:
+                      Lottie.asset("assets/emptylist.json", fit: BoxFit.cover),
+                ),
+                Text(
+                  "Belum ada list status PPID",
+                  style:
+                      TextStyle(fontSize: 14.0.sp, fontWeight: FontWeight.bold),
+                ),
+                Text(
+                  "silakan baut terlebih dahulu",
+                  style: TextStyle(fontSize: 11.0.sp),
+                ),
+              ],
+            ));
           },
         ),
       ),
@@ -82,8 +187,12 @@ class _itemListStatusState extends State<itemListStatus> {
       ListColor.GradientwarnaBiruSidoKare;
     } else if (samakan == "ditolak") {
       return Colors.redAccent;
-    } else if (samakan == "revisi") {
+    } else if (samakan == "Revisi") {
       return Colors.pinkAccent;
+    } else if (samakan == "direview") {
+      return Colors.orangeAccent;
+    } else if (samakan == "selesai") {
+      return Colors.lightGreen;
     } else {
       return Colors.greenAccent;
     }
@@ -131,7 +240,7 @@ class _itemListStatusState extends State<itemListStatus> {
                   style: TextStyle(fontSize: size.DescTextKecil.sp),
                 ),
                 Container(
-                  width: 100.w,
+                  width: 110.w,
                   child: ElevatedButton(
                       onPressed: () {
                         Navigator.pushNamed(

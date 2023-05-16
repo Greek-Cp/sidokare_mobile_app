@@ -20,6 +20,8 @@ class PengajuhanKeluhan {
       String lokasiKejadian,
       String KategoriLaporan,
       String tanggalKejadian,
+      String userRT,
+      String userRW,
       String UploadFile) async {
     Uri url = Uri.parse("http://${ApiPoint.BASE_URL}/api/pengajuan/keluhan");
     var HasilResponse = await http.post(url, body: {
@@ -30,7 +32,9 @@ class PengajuhanKeluhan {
       "lokasi_kejadian": lokasiKejadian,
       "kategori_laporan": KategoriLaporan,
       "tanggal_kejadian": tanggalKejadian,
-      "upload_file_pendukung": UploadFile
+      "upload_file_pendukung": UploadFile,
+      "RT": userRT,
+      "RW": userRW
     });
 
     var data = json.decode(HasilResponse.body);

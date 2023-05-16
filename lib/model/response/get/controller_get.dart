@@ -10,6 +10,7 @@ import 'package:sidokare_mobile_app/model/response/get/response_keluhan.dart';
 import 'package:sidokare_mobile_app/model/response/modelkomentar.dart';
 import 'package:sidokare_mobile_app/model/response/modelkomentarlist.dart';
 
+import 'model_jmlkeberatan.dart';
 import 'response_ppid.dart';
 import 'package:http/http.dart' as http;
 
@@ -48,6 +49,12 @@ class ControllerAPI {
     Uri uri = Uri.parse(url);
     var res = await http.post(uri, body: {'id_akun': idAkun.toString()});
     return ResponseModelASPIRASI.fromJson(jsonDecode(res.body));
+  }
+
+  static Future<KeberatanPPID> getData() async {
+    var response = await http.get(Uri.parse('https://example.com/api/data'));
+    var json = jsonDecode(response.body);
+    return KeberatanPPID.fromJson(json);
   }
 
   static Future<ModelKomentar> buatKomentar(String idAkun, String idBerita,

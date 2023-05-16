@@ -5,6 +5,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_native_timezone/flutter_native_timezone.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:sidokare_mobile_app/component/text_description.dart';
 import 'package:sidokare_mobile_app/const/list_color.dart';
@@ -356,18 +357,18 @@ class _PageUtamaState extends State<PageUtama> {
                                 child: ComponentTextTittle("Berita Terkini")),
                           ),
                         )),
-                        AnimationLimiter(
-                            child: AnimationConfiguration.synchronized(
-                          duration: Duration(milliseconds: 375),
-                          child: SlideAnimation(
-                            horizontalOffset: 50.0,
-                            child: FadeInAnimation(
-                                child: ComponentTextDescription(
-                              "Lihat lainnya",
-                              teksColor: ListColor.warnaDescriptionItem,
-                            )),
-                          ),
-                        )),
+                        // AnimationLimiter(
+                        //     child: AnimationConfiguration.synchronized(
+                        //   duration: Duration(milliseconds: 375),
+                        //   child: SlideAnimation(
+                        //     horizontalOffset: 50.0,
+                        //     child: FadeInAnimation(
+                        //         child: ComponentTextDescription(
+                        //       "Lihat lainnya",
+                        //       teksColor: ListColor.warnaDescriptionItem,
+                        //     )),
+                        //   ),
+                        // )),
                       ],
                     )),
                 SizedBox(
@@ -384,40 +385,66 @@ class _PageUtamaState extends State<PageUtama> {
                           } else {
                             List<Berita> data =
                                 snapshot.data!; // mengambil data dari snapshot
-                            return AnimationLimiter(
-                              child: ListView.builder(
-                                itemCount: data
-                                    .length, // menggunakan panjang data dari List<Berita> yang telah diambil dari snapshot
-                                scrollDirection: Axis.horizontal,
-                                shrinkWrap: true,
-                                itemBuilder: (context, index) {
-                                  return AnimationConfiguration.staggeredList(
-                                      position: index,
-                                      duration:
-                                          const Duration(milliseconds: 1375),
-                                      child: SlideAnimation(
-                                          horizontalOffset: 550.0,
-                                          // delay: Duration(milliseconds: 400),
-                                          duration: Duration(milliseconds: 800),
-                                          child: FadeInAnimation(
-                                              child: cardBeritaTerkini(
-                                                  berita: data[index],
-                                                  judul:
-                                                      data[index].judulBerita,
-                                                  gambar: data[index]
-                                                      .unggahFileLain,
-                                                  foto: data[index].foto,
-                                                  tanggal: data[index]
-                                                      .tanggalPublikasi,
-                                                  namaPengupload:
-                                                      data[index].namaUpload,
-                                                  fotoPengupload:
-                                                      data[index].foto_profile,
-                                                  isiBerita:
-                                                      data[index].isiBerita))));
-                                }, // membangun widget cardBeritaTerkini dengan data yang ada di List<Berita>
-                              ),
-                            );
+                            print("tess ${data.length}");
+                            if (data.length != 0) {
+                              return AnimationLimiter(
+                                child: ListView.builder(
+                                  itemCount: data
+                                      .length, // menggunakan panjang data dari List<Berita> yang telah diambil dari snapshot
+                                  scrollDirection: Axis.horizontal,
+                                  shrinkWrap: true,
+                                  itemBuilder: (context, index) {
+                                    return AnimationConfiguration.staggeredList(
+                                        position: index,
+                                        duration:
+                                            const Duration(milliseconds: 1375),
+                                        child: SlideAnimation(
+                                            horizontalOffset: 550.0,
+                                            // delay: Duration(milliseconds: 400),
+                                            duration:
+                                                Duration(milliseconds: 800),
+                                            child: FadeInAnimation(
+                                                child: cardBeritaTerkini(
+                                                    berita: data[index],
+                                                    judul:
+                                                        data[index].judulBerita,
+                                                    gambar: data[index]
+                                                        .unggahFileLain,
+                                                    foto: data[index].foto,
+                                                    tanggal: data[index]
+                                                        .tanggalPublikasi,
+                                                    namaPengupload:
+                                                        data[index].namaUpload,
+                                                    fotoPengupload: data[index]
+                                                        .foto_profile,
+                                                    isiBerita: data[index]
+                                                        .isiBerita))));
+                                  }, // membangun widget cardBeritaTerkini dengan data yang ada di List<Berita>
+                                ),
+                              );
+                            }
+                            return Center(
+                                child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Container(
+                                  width: 100,
+                                  height: 100,
+                                  child: Lottie.asset("assets/newspaper.json",
+                                      fit: BoxFit.cover),
+                                ),
+                                Text(
+                                  "Belum ada berita baru / terkini",
+                                  style: TextStyle(
+                                      fontSize: 14.0.sp,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                Text(
+                                  "Tunggu berita baru akan dibuat admin",
+                                  style: TextStyle(fontSize: 11.0.sp),
+                                ),
+                              ],
+                            ));
                           }
                         })),
                 SizedBox(

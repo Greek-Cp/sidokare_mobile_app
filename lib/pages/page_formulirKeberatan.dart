@@ -4,6 +4,8 @@ import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:sidokare_mobile_app/component/Toast.dart';
@@ -94,7 +96,7 @@ class _PageFormulirKeberatanPPIDState extends State<PageFormulirKeberatanPPID> {
           appBar: AppBar(
             elevation: 0,
             title: Text(
-              "Keberatan PPID",
+              "HalamaN keberatan",
               style:
                   TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
             ),
@@ -204,6 +206,26 @@ class _PageFormulirKeberatanPPIDState extends State<PageFormulirKeberatanPPID> {
                                       else
                                         {print("kok sini")}
                                     });
+                          } else {
+                            print("Keluhan Disini");
+                            KeberatanStatus.InsertKeberatanKeluhan(
+                                    id_akun: akunDek.toString(),
+                                    alamat: getAlamat!.text,
+                                    catatan: getCatatan!.text,
+                                    alasan:
+                                        randomValueKategoriPenolakan.toString(),
+                                    id_keluhan: id.toString())
+                                .then((value) => {
+                                      if (value.code == "200")
+                                        {
+                                          ToastWidget.ToastSucces(
+                                              context,
+                                              "Berhasil Mengajukan Keberatan Keluhan",
+                                              "Selamatt")
+                                        }
+                                      else
+                                        {print("kok sini")}
+                                    });
                           }
                         }
 
@@ -231,6 +253,38 @@ class _PageFormulirKeberatanPPIDState extends State<PageFormulirKeberatanPPID> {
         );
       },
     );
+  }
+
+  void getCurrentLocation() async {
+    Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
+    print('Latitude: ${position.latitude}');
+    print('Longitude: ${position.longitude}');
+    String ppp =
+        await getAddressFromCoordinates(position.latitude, position.longitude);
+    getAlamat!.text = ppp;
+  }
+
+  Future<String> getAddressFromCoordinates(
+      double latitude, double longitude) async {
+    try {
+      List<Placemark> placemarks =
+          await placemarkFromCoordinates(latitude, longitude);
+      if (placemarks != null && placemarks.isNotEmpty) {
+        Placemark place = placemarks[0];
+        String address = place.street ?? '';
+        String locality = place.locality ?? '';
+        String country = place.country ?? '';
+        return "${address}, ${locality}, ${country}";
+        // print('Address: $address, $locality, $country');
+      } else {
+        print('No address found');
+        return "eror";
+      }
+    } catch (e) {
+      print('Error: $e');
+      return "Eror : ${e}";
+    }
   }
 
   Widget GetLokasiNow(
@@ -270,6 +324,12 @@ class _PageFormulirKeberatanPPIDState extends State<PageFormulirKeberatanPPID> {
                   onTap: () async {
                     // _pickFile();
                     print("halooo cantikk");
+                    if (Platform.isAndroid) {
+                      getCurrentLocation();
+                    } else {
+                      ToastWidget.ToastInfo(
+                          context, "Hanya bisa pada Android", "Mohon Maaf");
+                    }
                   },
                   child: Icon(Icons.map_sharp),
                 ),

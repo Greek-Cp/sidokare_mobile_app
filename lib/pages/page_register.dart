@@ -257,7 +257,7 @@ form button:hover {
                     SizedBox(
                         child: TextFieldImport.TextFormTelp(
                             text_kontrol: textEditingControllerNik,
-                            hintText: "Masukkan NIK",
+                            hintText: "Harus 16 angka",
                             length: 16,
                             labelName: "NIK",
                             pesanValidasi: "NIK")),
@@ -271,19 +271,19 @@ form button:hover {
                         child: TextFieldImport.TextFormEmail(
                             labelName: "Email",
                             text_kontrol: textEditingControllerEmail,
-                            hintText: "Masukkan Email",
+                            hintText: "cth : ...@gmail.com",
                             pesanValidasi: "Email")),
                     SizedBox(
                         child: TextFieldImport.TextFormTelp(
                             labelName: "Nomor Telepon",
                             length: 12,
                             text_kontrol: textEditingControllerNomorTelepon,
-                            hintText: "Masukkan Nomor Telepon",
+                            hintText: "Min 11 angka",
                             pesanValidasi: "Nomor Telepon")),
                     SizedBox(
                         child: TextFieldPassword(
                             textEditingControllerPassword,
-                            "Masukkan Sandi",
+                            "cth : DsSidokare12",
                             false,
                             "Kata Sandi",
                             "Kata Sandi")),

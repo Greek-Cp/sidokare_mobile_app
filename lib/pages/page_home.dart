@@ -41,58 +41,143 @@ class _HalamanUtamaState extends State<HalamanUtama> {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
-    return Scaffold(
-      body: Center(
-        child: listPage.elementAt(_selectedIndex),
-      ),
-      // bottomNavigationBar: BottomNavigationBar(
-      //     currentIndex: _selectedIndex,
-      //     onTap: _onItemTapped,
-      //     items: [
-      //       BottomNavigationBarItem(
-      //         label: " ",
-      //         icon: Icon(Icons.home_filled),
-      //       ),
-      //       BottomNavigationBarItem(
-      //           label: " ", icon: Icon(Icons.person_pin_circle))
-      //     ]),
-      bottomNavigationBar: CurvedNavigationBar(
-        backgroundColor: Colors.white,
-        height: 50.h,
-        animationCurve: Curves.easeInOut,
-        buttonBackgroundColor: Colors.blueAccent,
-        color: Colors.grey.shade100,
-        items: <Widget>[
-          Icon(
-            Icons.home,
-            size: 25,
-            color: _selectedIndex == 0 ? Colors.white : Colors.blueAccent,
-            semanticLabel: "ngengek",
-          ),
-          Icon(
-            Icons.newspaper,
-            size: 25,
-            color: _selectedIndex == 1 ? Colors.white : Colors.blueAccent,
-          ),
-          Icon(
-            Icons.description,
-            size: 25,
-            color: _selectedIndex == 2 ? Colors.white : Colors.blueAccent,
-            semanticLabel: "Inpokan",
-          ),
-          Icon(
-            Icons.notifications,
-            size: 25,
-            color: _selectedIndex == 3 ? Colors.white : Colors.blueAccent,
-            semanticLabel: "Inpokan",
-          ),
-        ],
-        onTap: (index) {
-          _onItemTapped(index);
-          //Handle button tap
-        },
+    return WillPopScope(
+      onWillPop: () async {
+        // Tindakan yang ingin Anda lakukan ketika tombol kembali ditekan
+        // Misalnya, menampilkan dialog konfirmasi sebelum keluar dari aplikasi
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Confirmation'),
+              content: Text('Are you sure you want to exit?'),
+              actions: [
+                TextButton(
+                  child: Text('Cancel'),
+                  onPressed: () {
+                    Navigator.of(context).pop(); // Menutup dialog
+                  },
+                ),
+                TextButton(
+                  child: Text('OK'),
+                  onPressed: () {
+                    Navigator.of(context).pop(); // Menutup dialog
+                    Navigator.of(context).pop(true); // Keluar dari aplikasi
+                  },
+                ),
+              ],
+            );
+          },
+        );
+
+        // Menunda pop hingga dialog selesai
+        return false;
+      },
+      child: Scaffold(
+        body: Center(
+          child: listPage.elementAt(_selectedIndex),
+        ),
+        // bottomNavigationBar: BottomNavigationBar(
+        //     currentIndex: _selectedIndex,
+        //     onTap: _onItemTapped,
+        //     items: [
+        //       BottomNavigationBarItem(
+        //         label: " ",
+        //         icon: Icon(Icons.home_filled),
+        //       ),
+        //       BottomNavigationBarItem(
+        //           label: " ", icon: Icon(Icons.person_pin_circle))
+        //     ]),
+        bottomNavigationBar: CurvedNavigationBar(
+          backgroundColor: Colors.white,
+          height: 50.h,
+          animationCurve: Curves.easeInOut,
+          buttonBackgroundColor: Colors.blueAccent,
+          color: Colors.grey.shade100,
+          items: <Widget>[
+            Icon(
+              Icons.home,
+              size: 25,
+              color: _selectedIndex == 0 ? Colors.white : Colors.blueAccent,
+              semanticLabel: "ngengek",
+            ),
+            Icon(
+              Icons.newspaper,
+              size: 25,
+              color: _selectedIndex == 1 ? Colors.white : Colors.blueAccent,
+            ),
+            Icon(
+              Icons.description,
+              size: 25,
+              color: _selectedIndex == 2 ? Colors.white : Colors.blueAccent,
+              semanticLabel: "Inpokan",
+            ),
+            Icon(
+              Icons.notifications,
+              size: 25,
+              color: _selectedIndex == 3 ? Colors.white : Colors.blueAccent,
+              semanticLabel: "Inpokan",
+            ),
+          ],
+          onTap: (index) {
+            _onItemTapped(index);
+            //Handle button tap
+          },
+        ),
       ),
     );
+    // TODO: implement build
+    // return Scaffold(
+    //   body: Center(
+    //     child: listPage.elementAt(_selectedIndex),
+    //   ),
+    //   // bottomNavigationBar: BottomNavigationBar(
+    //   //     currentIndex: _selectedIndex,
+    //   //     onTap: _onItemTapped,
+    //   //     items: [
+    //   //       BottomNavigationBarItem(
+    //   //         label: " ",
+    //   //         icon: Icon(Icons.home_filled),
+    //   //       ),
+    //   //       BottomNavigationBarItem(
+    //   //           label: " ", icon: Icon(Icons.person_pin_circle))
+    //   //     ]),
+    //   bottomNavigationBar: CurvedNavigationBar(
+    //     backgroundColor: Colors.white,
+    //     height: 50.h,
+    //     animationCurve: Curves.easeInOut,
+    //     buttonBackgroundColor: Colors.blueAccent,
+    //     color: Colors.grey.shade100,
+    //     items: <Widget>[
+    //       Icon(
+    //         Icons.home,
+    //         size: 25,
+    //         color: _selectedIndex == 0 ? Colors.white : Colors.blueAccent,
+    //         semanticLabel: "ngengek",
+    //       ),
+    //       Icon(
+    //         Icons.newspaper,
+    //         size: 25,
+    //         color: _selectedIndex == 1 ? Colors.white : Colors.blueAccent,
+    //       ),
+    //       Icon(
+    //         Icons.description,
+    //         size: 25,
+    //         color: _selectedIndex == 2 ? Colors.white : Colors.blueAccent,
+    //         semanticLabel: "Inpokan",
+    //       ),
+    //       Icon(
+    //         Icons.notifications,
+    //         size: 25,
+    //         color: _selectedIndex == 3 ? Colors.white : Colors.blueAccent,
+    //         semanticLabel: "Inpokan",
+    //       ),
+    //     ],
+    //     onTap: (index) {
+    //       _onItemTapped(index);
+    //       //Handle button tap
+    //     },
+    //   ),
+    // );
   }
 }
