@@ -41,7 +41,7 @@ class _PageLoginState extends State<PageLogin> {
     return ScreenUtilInit(
       builder: (context, child) {
         return Scaffold(
-          resizeToAvoidBottomInset: false,
+          // resizeToAvoidBottomInset: false,
           body: Center(
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 20.0.h),
