@@ -33,8 +33,8 @@ class _itemListStatusKeluhanState extends State<itemListStatusKeluhan> {
   Widget build(BuildContext context) {
     // TODO: implement build
     final provider = Provider.of<ProviderAccount>(context);
-    listData = ControllerAPI.getStatusKELUHAN(provider.getIdAkun);
-    print("Pada keluhannn ${provider.getIdAkun}");
+    listData = ControllerAPI.getStatusKELUHAN(provider.getIdAkun());
+    print("Pada keluhannn ${provider.getIdAkun()}");
 
     return Scaffold(
       body: Center(

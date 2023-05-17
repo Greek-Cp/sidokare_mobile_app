@@ -33,7 +33,7 @@ class _itemListStatusState extends State<itemListStatus> {
   Widget build(BuildContext context) {
     // TODO: implement build
     final provider = Provider.of<ProviderAccount>(context);
-    listData = ControllerAPI.getStatusPPID(provider.getIdAkun);
+    listData = ControllerAPI.getStatusPPID(provider.getIdAkun());
 
     return Scaffold(
       body: Center(

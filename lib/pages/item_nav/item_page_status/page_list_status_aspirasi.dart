@@ -33,7 +33,8 @@ class _itemListStatusAspirasiState extends State<itemListStatusAspirasi> {
   Widget build(BuildContext context) {
     // TODO: implement build
     final provider = Provider.of<ProviderAccount>(context);
-    listData = ControllerAPI.getStatusASPIRASI(provider.getIdAkun);
+    print("id akun =" + provider.getIdAkun().toString());
+    listData = ControllerAPI.getStatusASPIRASI(provider.getIdAkun());
 
     return Scaffold(
       body: Center(

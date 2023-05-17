@@ -59,7 +59,7 @@ class _PageStatusState extends State<PageStatus>
   Widget build(BuildContext context) {
     // TODO: implement build
     final providerAccount = Provider.of<ProviderAccount>(context);
-    print("Id akunnya adalah berapa ? = ${providerAccount.getIdAkun}");
+    print("Id akunnya adalah berapa ? = ${providerAccount.getIdAkun()}");
     return ScreenUtilInit(
       builder: (context, child) {
         return Scaffold(
@@ -107,9 +107,9 @@ class _PageStatusState extends State<PageStatus>
             body: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
               child: TabBarView(controller: tabController, children: [
-                itemListStatus(providerAccount.getIdAkun, "PPID"),
-                itemListStatusKeluhan(providerAccount.getIdAkun, "KELUHAN"),
-                itemListStatusAspirasi(providerAccount.getIdAkun, "ASPIRASI"),
+                itemListStatus(providerAccount.getIdAkun(), "PPID"),
+                itemListStatusKeluhan(providerAccount.getIdAkun(), "KELUHAN"),
+                itemListStatusAspirasi(providerAccount.getIdAkun(), "ASPIRASI"),
               ]),
             ));
       },

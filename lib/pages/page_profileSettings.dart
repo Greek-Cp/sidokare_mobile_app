@@ -92,7 +92,7 @@ class _PageProfileUserState extends State<PageProfileUser> {
     super.initState();
     setState(() {
       final wokwok = Provider.of<ProviderAccount>(context, listen: false);
-      int akunn = wokwok.getIdAkun;
+      int akunn = wokwok.getIdAkun();
       print("Akun Masuk ${akunn}");
       final DataDiriInit = Provider.of<ProviderAccount>(context, listen: false)
           .GetDataDiri

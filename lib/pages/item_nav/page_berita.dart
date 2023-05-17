@@ -7,6 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:provider/provider.dart';
 import 'package:sidokare_mobile_app/component/search_bar.dart';
+import 'package:sidokare_mobile_app/model/model_account.dart';
 import 'package:sidokare_mobile_app/pages/item_nav/item_page_berita/page_bum_desa.dart';
 import 'package:sidokare_mobile_app/pages/item_nav/item_page_berita/page_pelayanan_desa.dart';
 import 'package:sidokare_mobile_app/pages/item_nav/item_page_berita/page_pembangunan_desa.dart';
@@ -37,12 +38,10 @@ class _PageBeritaState extends State<PageBerita> {
 
   @override
   Widget build(BuildContext context) {
-    final id = ModalRoute.of(context)?.settings.arguments as int;
+    final id = Provider.of<ProviderAccount>(context).getIdAkun();
 
-    final DataDiri = Provider.of<ProviderAccount>(context)
-        .GetDataDiri
-        .firstWhere((idData) => idData.id_akun == id);
-    // TODO: implement build
+    ModelAccount? DataDiri = Provider.of<ProviderAccount>(context)
+        .getSingleAccount(); // TODO: implement build
     return ScreenUtilInit(
       builder: (context, child) {
         return Scaffold(
@@ -59,7 +58,7 @@ class _PageBeritaState extends State<PageBerita> {
                         child: FadeInAnimation(
                             child: ScaleAnimation(
                                 child: searchBar(
-                                    idakun: DataDiri.id_akun.toString()))))),
+                                    idakun: DataDiri!.id_akun.toString()))))),
                 AnimationLimiter(
                     child: AnimationConfiguration.synchronized(
                         duration: const Duration(milliseconds: 500),

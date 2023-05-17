@@ -10,9 +10,17 @@ class ProviderAccount extends ChangeNotifier {
   void setIdAkun(int id_akun) {
     this.id_akun = id_akun;
     print("Id Akun Berhasil Di Set");
+    notifyListeners();
   }
 
-  get getIdAkun => id_akun;
+  int getIdAkun() {
+    return id_akun!;
+  }
+
+  int idAkun() {
+    return id_akun!;
+  }
+
   Berita? beritaSelected;
   void setBerita(Berita? berita) {
     this.beritaSelected = berita;
@@ -23,6 +31,18 @@ class ProviderAccount extends ChangeNotifier {
 
   List<ModelAccount> listAccount = [];
 
+  void setDataDiri(List<ModelAccount> listAccount) {
+    print("Data Tersave");
+    this.listAccount = listAccount;
+    notifyListeners();
+  }
+
+  ModelAccount? getSingleAccount() {
+    if (!listAccount.isEmpty && listAccount.length > 0) {
+      return listAccount[0];
+    }
+  }
+
   //add Data
   List<ModelAccount> get GetDataDiri {
     return [...listAccount];
@@ -30,13 +50,16 @@ class ProviderAccount extends ChangeNotifier {
 
   void AddData(int id_akun, String nama, String nik, String urlGambar,
       String NoTelponn, String emaill) {
-    listAccount.add(ModelAccount(
+    ModelAccount modelAccount = ModelAccount(
         id_akun: id_akun,
         nama: nama,
         Nik: nik,
         urlGambar: urlGambar,
         noTelepon: NoTelponn,
-        email: emaill));
+        email: emaill);
+    id_akun = id_akun;
+    setIdAkun(id_akun);
+    listAccount.add(modelAccount);
     notifyListeners();
   }
 

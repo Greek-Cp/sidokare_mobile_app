@@ -4,6 +4,9 @@ import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sidokare_mobile_app/const/list_color.dart';
 import 'package:sidokare_mobile_app/const/size.dart';
+import 'package:sidokare_mobile_app/const/util_pref.dart';
+import 'package:sidokare_mobile_app/model/model_account.dart';
+import 'package:sidokare_mobile_app/pages/page_home.dart';
 import 'package:wave_transition/wave_transition.dart';
 import './page_introawal.dart';
 
@@ -13,12 +16,35 @@ class SplashScreen extends StatefulWidget {
   State<SplashScreen> createState() => _SplashScreenState();
 }
 
+late Future<ModelAccount> futureMdl;
+
 class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    _nextbro();
+
+    UtilPref().getLoginStatus().then((value) => {
+          if (value) {_nextUtama()} else {_nextbro()}
+        });
+    /*
+
+    UtilPref().getSingleAccount().then((value) => {
+          if (value == null) {_nextbro()} else {}
+        });
+    */
+  }
+
+  _nextUtama() async {
+    await Future.delayed(Duration(milliseconds: 2000), () {
+      Navigator.push(
+          context,
+          WaveTransition(
+              child: HalamanUtama(),
+              center: FractionalOffset(0.90, 0.90),
+              duration: Duration(milliseconds: 1000) // optional
+              ));
+    });
   }
 
   _nextbro() async {

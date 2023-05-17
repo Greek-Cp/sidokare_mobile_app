@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:sidokare_mobile_app/const/fontfix.dart';
 import 'package:sidokare_mobile_app/pages/item_nav/item_page_berita/page_search_berita.dart';
 import 'package:sidokare_mobile_app/pages/item_nav/page_detail_berita.dart';
+import 'package:sidokare_mobile_app/pages/item_nav/page_utama.dart';
 import 'package:sidokare_mobile_app/pages/item_page_detailPengajuan/page_DetailAspirasi.dart';
 import 'package:sidokare_mobile_app/pages/item_page_detailPengajuan/page_DetailKeluhan.dart';
 import 'package:sidokare_mobile_app/pages/page_BerhasilBuatLaporan.dart';
@@ -50,7 +51,7 @@ class MainApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: ThemeData(fontFamily: fontfix.DmSansBruh),
-        initialRoute: SplashScreen.routeName.toString(),
+        initialRoute: SplashScreen.routeName,
         routes: {
           UbahSandi.routeName.toString(): (context) => UbahSandi(),
           berhasilOtp.routeName.toString(): (context) => berhasilOtp(),
@@ -88,7 +89,7 @@ class MainApp extends StatelessWidget {
           PageDetailAspirasiiii.routeName.toString(): (context) =>
               PageDetailAspirasiiii(),
           PageDetailKeluhann.routeName.toString(): (context) =>
-              PageDetailKeluhann()
+              PageDetailKeluhann(),
         },
       ),
     );

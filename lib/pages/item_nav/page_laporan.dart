@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:provider/provider.dart';
 import 'package:sidokare_mobile_app/const/list_color.dart';
+import 'package:sidokare_mobile_app/model/model_account.dart';
 import 'package:sidokare_mobile_app/pages/page_formulirAspirasi.dart';
 import 'package:sidokare_mobile_app/pages/page_formulirKeberatan.dart';
 import 'package:sidokare_mobile_app/pages/page_formulirKeluhan.dart';
@@ -56,13 +57,11 @@ class _PageLaporanState extends State<PageLaporan> {
   Widget build(BuildContext context) {
     screenHeight = MediaQuery.of(context).size.height;
     screenWidth = MediaQuery.of(context).size.width;
-    final id = ModalRoute.of(context)?.settings.arguments as int;
 
-    final DataDiri = Provider.of<ProviderAccount>(context)
-        .GetDataDiri
-        .firstWhere((idData) => idData.id_akun == id);
-
-    print("Idnya adalah = ${id} dengan nama == ${DataDiri.nama}");
+    ModelAccount? DataDiri =
+        Provider.of<ProviderAccount>(context).getSingleAccount();
+    int? id = DataDiri!.id_akun;
+    print("Idnya adalah = ${id} dengan nama == ${DataDiri!.nama}");
     // TODO: implement build
     return Scaffold(
       body: Center(
@@ -82,14 +81,14 @@ class _PageLaporanState extends State<PageLaporan> {
                           child: SlideAnimation(
                               duration: Duration(milliseconds: 800),
                               horizontalOffset: 350.0,
-                              child: _MenuPpid(index, id)),
+                              child: _MenuPpid(index, id!)),
                         )
                       : FadeInAnimation(
                           duration: Duration(milliseconds: 300),
                           child: SlideAnimation(
                               duration: Duration(milliseconds: 800),
                               horizontalOffset: -350.0,
-                              child: _MenuPpid(index, id)),
+                              child: _MenuPpid(index, id!)),
                         ));
             },
           ),

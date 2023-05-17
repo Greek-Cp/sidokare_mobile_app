@@ -22,6 +22,8 @@ import 'package:flutter_custom_tab_bar/models.dart';
 import 'package:flutter_custom_tab_bar/transform/color_transform.dart';
 import 'package:flutter_custom_tab_bar/transform/scale_transform.dart';
 import 'package:flutter_custom_tab_bar/transform/tab_bar_transform.dart';
+import 'package:sidokare_mobile_app/const/util_pref.dart';
+import 'package:sidokare_mobile_app/model/model_account.dart';
 import 'package:sidokare_mobile_app/model/response/berita.dart';
 import 'package:http/http.dart' as http;
 import 'package:sidokare_mobile_app/model/response/get/response_jumlahLaporan.dart';
@@ -50,18 +52,19 @@ class _PageUtamaState extends State<PageUtama> {
 
   late Future<List<Berita>> listBerita;
   late Future<List<Berita>> listBerita2;
+  late ModelAccount modelFroumPRef;
+  late Future<ModelAccount> futureModel;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-
     JumlahLaporan.getDataLaporan().then((value) {
       setState(() {
         dataLaporan = value;
       });
     });
-
+    UtilPref().getSingleAccount().then((value) => modelFroumPRef = value);
     listBerita = fetchBeritaKustom("ktg_berita01");
     listBerita2 = fetchBeritaKustom2();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
@@ -69,6 +72,7 @@ class _PageUtamaState extends State<PageUtama> {
         startAnimation = true;
       });
     });
+    futureModel = UtilPref().getSingleAccount();
   }
 
   static String greeting() {
@@ -137,321 +141,345 @@ class _PageUtamaState extends State<PageUtama> {
     );
   }
 
+  String namaFormat(String nameFull) {
+    String NamaFull = nameFull;
+    print("Nama Full ${NamaFull}");
+    String convertBruh = NamaFull.split(" ")[0];
+    print("hasil Convert : ${convertBruh}");
+    return convertBruh;
+  }
+
   List<String> listPengajuan = ["PPID", "Keluhan", "Aspirasi", "Status"];
   late ProviderAccount providerDiri;
   @override
   Widget build(BuildContext context) {
     screenHeight = MediaQuery.of(context).size.height;
     screenWidth = MediaQuery.of(context).size.width;
-    final id = ModalRoute.of(context)?.settings.arguments as int;
     providerDiri = Provider.of<ProviderAccount>(context);
 
-    final DataDiri = Provider.of<ProviderAccount>(context)
-        .GetDataDiri
-        .firstWhere((idData) => idData.id_akun == id);
-
-    String namaFormat(String nameFull) {
-      String NamaFull = nameFull;
-      print("Nama Full ${NamaFull}");
-      String convertBruh = NamaFull.split(" ")[0];
-      print("hasil Convert : ${convertBruh}");
-      return convertBruh;
-    }
-
-    // TODO: implement build
+    // Gunakan objek singleAccount dalam UI
     return ScreenUtilInit(
       builder: (context, child) {
         return Scaffold(
             body: SafeArea(
           maintainBottomViewPadding: true,
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                SizedBox(
-                  height: 40.h,
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 20.h),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          child: FutureBuilder<ModelAccount>(
+            future: futureModel,
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                ModelAccount DataDiri = modelFroumPRef;
+                print("data diri = " + DataDiri.id_akun.toString());
+                List<ModelAccount> listAcc = [DataDiri];
+                providerDiri.setDataDiri(listAcc);
+                int id = DataDiri.id_akun!.toInt();
+                providerDiri.setIdAkun(id);
+                return SingleChildScrollView(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      AnimationLimiter(
-                          child: AnimationConfiguration.synchronized(
-                        duration: Duration(milliseconds: 375),
-                        child: SlideAnimation(
-                          horizontalOffset: -50.0,
-                          child: FadeInAnimation(
-                            child: ComponentTextTittle(
-                                "Selamat ${greeting()} ${namaFormat(DataDiri.nama.toString())}"),
-                          ),
-                        ),
-                      )),
-                      AnimationLimiter(
-                          child: AnimationConfiguration.synchronized(
-                        duration: Duration(milliseconds: 375),
-                        child: SlideAnimation(
-                          horizontalOffset: 50.0,
-                          child: FadeInAnimation(
-                            child: Container(
-                              width: 41.w,
-                              height: 41.h,
-                              child: GestureDetector(
-                                onTap: () {
-                                  providerDiri
-                                      .setIdAkun(DataDiri.id_akun!.toInt());
-                                  Navigator.pushNamed(context,
-                                      PageProfileUser.routeName.toString(),
-                                      arguments: id);
-                                },
-                                child: Container(
-                                  width: 40.w,
-                                  child: CircleAvatar(
-                                    backgroundImage: DataDiri.urlGambar
-                                                    .toString() ==
-                                                "" ||
-                                            DataDiri.urlGambar.toString() ==
-                                                null
-                                        ? AssetImage("assets/accountBlank.png")
-                                            as ImageProvider
-                                        : NetworkImage(
-                                            "http://${ApiPoint.BASE_URL}/storage/profile/${DataDiri.urlGambar?.replaceAll("'", "")}",
-                                            headers: {
-                                                "Connection": "Keep-Alive"
-                                              }) as ImageProvider,
+                      SizedBox(
+                        height: 40.h,
+                      ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 20.h),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            AnimationLimiter(
+                                child: AnimationConfiguration.synchronized(
+                              duration: Duration(milliseconds: 375),
+                              child: SlideAnimation(
+                                horizontalOffset: -50.0,
+                                child: FadeInAnimation(
+                                  child: ComponentTextTittle(
+                                      "Selamat ${greeting()} ${namaFormat(DataDiri!.nama.toString())}"),
+                                ),
+                              ),
+                            )),
+                            AnimationLimiter(
+                                child: AnimationConfiguration.synchronized(
+                              duration: Duration(milliseconds: 375),
+                              child: SlideAnimation(
+                                horizontalOffset: 50.0,
+                                child: FadeInAnimation(
+                                  child: Container(
+                                    width: 41.w,
+                                    height: 41.h,
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        providerDiri.setIdAkun(
+                                            DataDiri.id_akun!.toInt());
+                                        Navigator.pushNamed(
+                                            context,
+                                            PageProfileUser.routeName
+                                                .toString(),
+                                            arguments: id);
+                                      },
+                                      child: Container(
+                                        width: 40.w,
+                                        child: CircleAvatar(
+                                          backgroundImage: DataDiri.urlGambar
+                                                          .toString() ==
+                                                      "" ||
+                                                  DataDiri.urlGambar
+                                                          .toString() ==
+                                                      null
+                                              ? AssetImage(
+                                                      "assets/accountBlank.png")
+                                                  as ImageProvider
+                                              : NetworkImage(
+                                                  "http://${ApiPoint.BASE_URL}/storage/profile/${DataDiri.urlGambar?.replaceAll("'", "")}",
+                                                  headers: {
+                                                      "Connection": "Keep-Alive"
+                                                    }) as ImageProvider,
+                                        ),
+                                      ),
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                          ),
+                            )),
+                          ],
                         ),
-                      )),
-                    ],
-                  ),
-                ),
-                AnimationLimiter(
-                    child: AnimationConfiguration.synchronized(
-                  duration: Duration(milliseconds: 375),
-                  child: SlideAnimation(
-                    verticalOffset: 50.0,
-                    child: FadeInAnimation(
-                        child: GestureDetector(
-                            child: searchBar(
-                                idakun: DataDiri.id_akun.toString()))),
-                  ),
-                )),
-                // searchBar(),
-                SizedBox(
-                  height: 10.h,
-                ),
-
-                // searchBar(),
-
-                AnimationLimiter(
-                    child: AnimationConfiguration.synchronized(
-                  duration: Duration(milliseconds: 500 * 2),
-                  child: ScaleAnimation(
-                    child: FadeInAnimation(child: CardJumlahLaporan()),
-                  ),
-                )),
-                // CardJumlahLaporan(),
-                Padding(
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 20.h, vertical: 10.h),
-                  child: Container(
-                      child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
+                      ),
                       AnimationLimiter(
                           child: AnimationConfiguration.synchronized(
                         duration: Duration(milliseconds: 375),
                         child: SlideAnimation(
-                          horizontalOffset: -50.0,
+                          verticalOffset: 50.0,
                           child: FadeInAnimation(
-                              child: ComponentTextTittle("Pengajuan")),
+                              child: GestureDetector(
+                                  child: searchBar(
+                                      idakun: DataDiri.id_akun.toString()))),
                         ),
                       )),
-                    ],
-                  )),
-                ),
-                Padding(
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
-                  child: SizedBox(
-                      height: 80.h,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        // scrollDirection: Axis.horizontal,
-                        children: [
-                          AnimationLimiter(
-                              child: AnimationConfiguration.synchronized(
-                            duration: Duration(milliseconds: 375),
-                            child: SlideAnimation(
-                              horizontalOffset: -50.0,
-                              child: FadeInAnimation(
-                                  child: buttonPengajuan(
-                                      "PPID",
-                                      Icons.assignment,
-                                      id,
-                                      PageFormulirPengajuanPPID.routeName
-                                          .toString())),
-                            ),
-                          )),
-                          AnimationLimiter(
-                              child: AnimationConfiguration.synchronized(
-                            duration: Duration(milliseconds: 375 * 2),
-                            child: SlideAnimation(
-                              horizontalOffset: -50.0,
-                              child: FadeInAnimation(
-                                  child: buttonPengajuan(
-                                      "Keluhan",
-                                      Icons.analytics,
-                                      id,
-                                      PageFormulirPengajuanKeluhan.routeName
-                                          .toString())),
-                            ),
-                          )),
-                          AnimationLimiter(
-                              child: AnimationConfiguration.synchronized(
-                            duration: Duration(milliseconds: 375 * 3),
-                            child: SlideAnimation(
-                              horizontalOffset: -50.0,
-                              child: FadeInAnimation(
-                                  child: buttonPengajuan(
-                                      "Aspirasi",
-                                      Icons.library_books_rounded,
-                                      id,
-                                      PageFormulirAspirasi.routeName
-                                          .toString())),
-                            ),
-                          )),
+                      // searchBar(),
+                      SizedBox(
+                        height: 10.h,
+                      ),
 
-                          // AnimationLimiter(
-                          //     child: AnimationConfiguration.synchronized(
-                          //   duration: Duration(milliseconds: 375 * 4),
-                          //   child: SlideAnimation(
-                          //     horizontalOffset: -50.0,
-                          //     child: FadeInAnimation(
-                          //         child: buttonPengajuan("Status", "a")),
-                          //   ),
-                          // )),
-                        ],
+                      // searchBar(),
+
+                      AnimationLimiter(
+                          child: AnimationConfiguration.synchronized(
+                        duration: Duration(milliseconds: 500 * 2),
+                        child: ScaleAnimation(
+                          child: FadeInAnimation(child: CardJumlahLaporan()),
+                        ),
                       )),
-                ),
-                SizedBox(
-                  height: 10.h,
-                ),
-                Container(
-                    margin:
-                        EdgeInsets.symmetric(horizontal: 20.h, vertical: 10.h),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        AnimationLimiter(
-                            child: AnimationConfiguration.synchronized(
-                          duration: Duration(milliseconds: 375),
-                          child: SlideAnimation(
-                            horizontalOffset: -50.0,
-                            child: FadeInAnimation(
-                                child: ComponentTextTittle("Berita Terkini")),
-                          ),
+                      // CardJumlahLaporan(),
+                      Padding(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 20.h, vertical: 10.h),
+                        child: Container(
+                            child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            AnimationLimiter(
+                                child: AnimationConfiguration.synchronized(
+                              duration: Duration(milliseconds: 375),
+                              child: SlideAnimation(
+                                horizontalOffset: -50.0,
+                                child: FadeInAnimation(
+                                    child: ComponentTextTittle("Pengajuan")),
+                              ),
+                            )),
+                          ],
                         )),
-                        // AnimationLimiter(
-                        //     child: AnimationConfiguration.synchronized(
-                        //   duration: Duration(milliseconds: 375),
-                        //   child: SlideAnimation(
-                        //     horizontalOffset: 50.0,
-                        //     child: FadeInAnimation(
-                        //         child: ComponentTextDescription(
-                        //       "Lihat lainnya",
-                        //       teksColor: ListColor.warnaDescriptionItem,
-                        //     )),
-                        //   ),
-                        // )),
-                      ],
-                    )),
-                SizedBox(
-                    height: 300.h,
-                    child: FutureBuilder<List<Berita>>(
-                        future: listBerita2,
-                        builder: (context, snapshot) {
-                          if (snapshot.connectionState ==
-                              ConnectionState.waiting) {
-                            return Container(); // menampilkan loading spinner
-                          } else if (snapshot.hasError) {
-                            return Text(
-                                'Terjadi error: ${snapshot.error}'); // menampilkan pesan error
-                          } else {
-                            List<Berita> data =
-                                snapshot.data!; // mengambil data dari snapshot
-                            print("tess ${data.length}");
-                            if (data.length != 0) {
-                              return AnimationLimiter(
-                                child: ListView.builder(
-                                  itemCount: data
-                                      .length, // menggunakan panjang data dari List<Berita> yang telah diambil dari snapshot
-                                  scrollDirection: Axis.horizontal,
-                                  shrinkWrap: true,
-                                  itemBuilder: (context, index) {
-                                    return AnimationConfiguration.staggeredList(
-                                        position: index,
-                                        duration:
-                                            const Duration(milliseconds: 1375),
-                                        child: SlideAnimation(
-                                            horizontalOffset: 550.0,
-                                            // delay: Duration(milliseconds: 400),
-                                            duration:
-                                                Duration(milliseconds: 800),
-                                            child: FadeInAnimation(
-                                                child: cardBeritaTerkini(
-                                                    berita: data[index],
-                                                    judul:
-                                                        data[index].judulBerita,
-                                                    gambar: data[index]
-                                                        .unggahFileLain,
-                                                    foto: data[index].foto,
-                                                    tanggal: data[index]
-                                                        .tanggalPublikasi,
-                                                    namaPengupload:
-                                                        data[index].namaUpload,
-                                                    fotoPengupload: data[index]
-                                                        .foto_profile,
-                                                    isiBerita: data[index]
-                                                        .isiBerita))));
-                                  }, // membangun widget cardBeritaTerkini dengan data yang ada di List<Berita>
-                                ),
-                              );
-                            }
-                            return Center(
-                                child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
+                      ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 10.w, vertical: 10.h),
+                        child: SizedBox(
+                            height: 80.h,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              // scrollDirection: Axis.horizontal,
                               children: [
-                                Container(
-                                  width: 100,
-                                  height: 100,
-                                  child: Lottie.asset("assets/newspaper.json",
-                                      fit: BoxFit.cover),
-                                ),
-                                Text(
-                                  "Belum ada berita baru / terkini",
-                                  style: TextStyle(
-                                      fontSize: 14.0.sp,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                Text(
-                                  "Tunggu berita baru akan dibuat admin",
-                                  style: TextStyle(fontSize: 11.0.sp),
-                                ),
+                                AnimationLimiter(
+                                    child: AnimationConfiguration.synchronized(
+                                  duration: Duration(milliseconds: 375),
+                                  child: SlideAnimation(
+                                    horizontalOffset: -50.0,
+                                    child: FadeInAnimation(
+                                        child: buttonPengajuan(
+                                            "PPID",
+                                            Icons.assignment,
+                                            id,
+                                            PageFormulirPengajuanPPID.routeName
+                                                .toString())),
+                                  ),
+                                )),
+                                AnimationLimiter(
+                                    child: AnimationConfiguration.synchronized(
+                                  duration: Duration(milliseconds: 375 * 2),
+                                  child: SlideAnimation(
+                                    horizontalOffset: -50.0,
+                                    child: FadeInAnimation(
+                                        child: buttonPengajuan(
+                                            "Keluhan",
+                                            Icons.analytics,
+                                            id,
+                                            PageFormulirPengajuanKeluhan
+                                                .routeName
+                                                .toString())),
+                                  ),
+                                )),
+                                AnimationLimiter(
+                                    child: AnimationConfiguration.synchronized(
+                                  duration: Duration(milliseconds: 375 * 3),
+                                  child: SlideAnimation(
+                                    horizontalOffset: -50.0,
+                                    child: FadeInAnimation(
+                                        child: buttonPengajuan(
+                                            "Aspirasi",
+                                            Icons.library_books_rounded,
+                                            id,
+                                            PageFormulirAspirasi.routeName
+                                                .toString())),
+                                  ),
+                                )),
+
+                                // AnimationLimiter(
+                                //     child: AnimationConfiguration.synchronized(
+                                //   duration: Duration(milliseconds: 375 * 4),
+                                //   child: SlideAnimation(
+                                //     horizontalOffset: -50.0,
+                                //     child: FadeInAnimation(
+                                //         child: buttonPengajuan("Status", "a")),
+                                //   ),
+                                // )),
                               ],
-                            ));
-                          }
-                        })),
-                SizedBox(
-                  height: 40.h,
-                ),
-              ],
-            ),
+                            )),
+                      ),
+                      SizedBox(
+                        height: 10.h,
+                      ),
+                      Container(
+                          margin: EdgeInsets.symmetric(
+                              horizontal: 20.h, vertical: 10.h),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              AnimationLimiter(
+                                  child: AnimationConfiguration.synchronized(
+                                duration: Duration(milliseconds: 375),
+                                child: SlideAnimation(
+                                  horizontalOffset: -50.0,
+                                  child: FadeInAnimation(
+                                      child: ComponentTextTittle(
+                                          "Berita Terkini")),
+                                ),
+                              )),
+                              // AnimationLimiter(
+                              //     child: AnimationConfiguration.synchronized(
+                              //   duration: Duration(milliseconds: 375),
+                              //   child: SlideAnimation(
+                              //     horizontalOffset: 50.0,
+                              //     child: FadeInAnimation(
+                              //         child: ComponentTextDescription(
+                              //       "Lihat lainnya",
+                              //       teksColor: ListColor.warnaDescriptionItem,
+                              //     )),
+                              //   ),
+                              // )),
+                            ],
+                          )),
+                      SizedBox(
+                          height: 300.h,
+                          child: FutureBuilder<List<Berita>>(
+                              future: listBerita2,
+                              builder: (context, snapshot) {
+                                if (snapshot.connectionState ==
+                                    ConnectionState.waiting) {
+                                  return Container(); // menampilkan loading spinner
+                                } else if (snapshot.hasError) {
+                                  return Text(
+                                      'Terjadi error: ${snapshot.error}'); // menampilkan pesan error
+                                } else {
+                                  List<Berita> data = snapshot
+                                      .data!; // mengambil data dari snapshot
+                                  print("tess ${data.length}");
+                                  if (data.length != 0) {
+                                    return AnimationLimiter(
+                                      child: ListView.builder(
+                                        itemCount: data
+                                            .length, // menggunakan panjang data dari List<Berita> yang telah diambil dari snapshot
+                                        scrollDirection: Axis.horizontal,
+                                        shrinkWrap: true,
+                                        itemBuilder: (context, index) {
+                                          return AnimationConfiguration
+                                              .staggeredList(
+                                                  position: index,
+                                                  duration: const Duration(
+                                                      milliseconds: 1375),
+                                                  child: SlideAnimation(
+                                                      horizontalOffset: 550.0,
+                                                      // delay: Duration(milliseconds: 400),
+                                                      duration: Duration(
+                                                          milliseconds: 800),
+                                                      child: FadeInAnimation(
+                                                          child: cardBeritaTerkini(
+                                                              berita:
+                                                                  data[index],
+                                                              judul: data[index]
+                                                                  .judulBerita,
+                                                              gambar: data[index]
+                                                                  .unggahFileLain,
+                                                              foto: data[index]
+                                                                  .foto,
+                                                              tanggal: data[
+                                                                      index]
+                                                                  .tanggalPublikasi,
+                                                              namaPengupload:
+                                                                  data[index]
+                                                                      .namaUpload,
+                                                              fotoPengupload:
+                                                                  data[index]
+                                                                      .foto_profile,
+                                                              isiBerita: data[
+                                                                      index]
+                                                                  .isiBerita))));
+                                        }, // membangun widget cardBeritaTerkini dengan data yang ada di List<Berita>
+                                      ),
+                                    );
+                                  }
+                                  return Center(
+                                      child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Container(
+                                        width: 100,
+                                        height: 100,
+                                        child: Lottie.asset(
+                                            "assets/newspaper.json",
+                                            fit: BoxFit.cover),
+                                      ),
+                                      Text(
+                                        "Belum ada berita baru / terkini",
+                                        style: TextStyle(
+                                            fontSize: 14.0.sp,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      Text(
+                                        "Tunggu berita baru akan dibuat admin",
+                                        style: TextStyle(fontSize: 11.0.sp),
+                                      ),
+                                    ],
+                                  ));
+                                }
+                              })),
+                      SizedBox(
+                        height: 40.h,
+                      ),
+                    ],
+                  ),
+                );
+              } else {
+                return CircularProgressIndicator();
+              }
+            },
           ),
         ));
       },

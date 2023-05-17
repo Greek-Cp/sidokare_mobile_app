@@ -46,6 +46,7 @@ class _DetailPengajuanPPIDState extends State<DetailPengajuanPPID> {
     String emaill = getData?['email'];
     String tlpp = getData?['tlp'];
     String status = getData?['status'];
+    print("Status = " + status + " kntl");
     String DocPPID = getData?['dokumenUp'];
     String? filePendukung = getData?['uploadFile'];
     DateTime currentTime = DateTime.now();

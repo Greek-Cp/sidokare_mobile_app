@@ -11,7 +11,9 @@ import 'package:sidokare_mobile_app/component/text_field.dart';
 import 'package:sidokare_mobile_app/const/fontfix.dart';
 import 'package:sidokare_mobile_app/const/list_color.dart';
 import 'package:sidokare_mobile_app/const/size.dart';
+import 'package:sidokare_mobile_app/const/util_pref.dart';
 import 'package:sidokare_mobile_app/model/api/http_statefull.dart';
+import 'package:sidokare_mobile_app/model/model_account.dart';
 import 'package:sidokare_mobile_app/pages/item_nav/page_utama.dart';
 import 'package:sidokare_mobile_app/pages/page_home.dart';
 import 'package:sidokare_mobile_app/pages/page_lupasandi.dart';
@@ -137,7 +139,7 @@ class _PageLoginState extends State<PageLogin> {
                                     HttpStatefull.loginAkun(
                                             textEditingControllerEmail.text,
                                             textEditingControllerPassword.text)
-                                        .then((value) => {
+                                        .then((value) async => {
                                               if (value.code == 200)
                                                 {
                                                   print(
@@ -168,7 +170,20 @@ class _PageLoginState extends State<PageLogin> {
                                                   ToastWidget.ToastSucces(
                                                       context,
                                                       "Masuk Berhasil , Akun Ditemukan",
-                                                      "Selamat ")
+                                                      "Selamat "),
+                                                  UtilPref().saveSingleAccount(
+                                                      ModelAccount(
+                                                          id_akun:
+                                                              value.id_akun,
+                                                          nama: value
+                                                              .nama_lengkap,
+                                                          Nik: value.nik,
+                                                          urlGambar: "",
+                                                          noTelepon: value
+                                                              .nomor_telepon,
+                                                          email: value.email)),
+                                                  UtilPref()
+                                                      .saveLoginStatus(true)
                                                 }
                                               else if (value.code == 400)
                                                 {

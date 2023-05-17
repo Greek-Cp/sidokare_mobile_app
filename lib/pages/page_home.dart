@@ -6,6 +6,7 @@ import 'package:flutter_custom_tab_bar/custom_tab_bar.dart';
 import 'package:flutter_custom_tab_bar/transform/color_transform.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sidokare_mobile_app/const/list_color.dart';
+import 'package:sidokare_mobile_app/const/util_pref.dart';
 
 import 'package:sidokare_mobile_app/pages/item_nav/page_laporan.dart';
 import 'package:sidokare_mobile_app/pages/item_nav/page_status.dart';
@@ -61,6 +62,11 @@ class _HalamanUtamaState extends State<HalamanUtama> {
                 TextButton(
                   child: Text('OK'),
                   onPressed: () {
+                    UtilPref()
+                        .removeSingleAccount()
+                        .then((value) => {print("Remove Success")});
+                    UtilPref().saveLoginStatus(false);
+                    UtilPref().saveSingleAccount(null);
                     Navigator.of(context).pop(); // Menutup dialog
                     Navigator.of(context).pop(true); // Keluar dari aplikasi
                   },
