@@ -178,7 +178,8 @@ class _PageLoginState extends State<PageLogin> {
                                                           nama: value
                                                               .nama_lengkap,
                                                           Nik: value.nik,
-                                                          urlGambar: "",
+                                                          urlGambar:
+                                                              value.namaProfile,
                                                           noTelepon: value
                                                               .nomor_telepon,
                                                           email: value.email)),

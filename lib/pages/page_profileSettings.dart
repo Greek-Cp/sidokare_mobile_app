@@ -17,11 +17,13 @@ import 'package:sidokare_mobile_app/const/size.dart';
 import 'package:sidokare_mobile_app/model/api/http_statefull.dart';
 import 'package:path/path.dart' as Path;
 import 'package:path_provider/path_provider.dart';
+import 'package:sidokare_mobile_app/model/model_account.dart';
 import 'package:sidokare_mobile_app/pages/page_home.dart';
 
 import '../component/jenis_button.dart';
 import '../const/const.dart';
 import '../const/list_color.dart';
+import '../const/util_pref.dart';
 import '../provider/provider_account.dart';
 
 class PageProfileUser extends StatefulWidget {
@@ -44,6 +46,7 @@ class _PageProfileUserState extends State<PageProfileUser> {
 
   File? _image;
   String? _namaFile;
+  ModelAccount? model;
   Future _pickImage(ImageSource source) async {
     try {
       final image = await ImagePicker().pickImage(source: source);
@@ -207,6 +210,7 @@ class _PageProfileUserState extends State<PageProfileUser> {
     );
   }
 
+  late List<ModelAccount> listAcc;
   Widget _Button(
       {String? idakun,
       String? namaGmbrHps,
@@ -238,6 +242,30 @@ class _PageProfileUserState extends State<PageProfileUser> {
                                 {
                                   print(
                                       "Nama File Update data saja adalah ${_namaFile}"),
+                                  model = ModelAccount(
+                                      id_akun: idakun.toIntOrNull(),
+                                      nama: getNama!.text.toString(),
+                                      username: "",
+                                      email: emaill.toString(),
+                                      noTelepon: getTelp!.text.toString(),
+                                      password: "",
+                                      Nik: nik.toString(),
+                                      urlGambar: namaGmbrHps.toString()),
+                                  UtilPref().saveSingleAccount(null),
+                                  UtilPref().removeSingleAccount(),
+                                  UtilPref().saveSingleAccount(model),
+                                  listAcc = [
+                                    ModelAccount(
+                                        id_akun: idakun.toIntOrNull(),
+                                        nama: getNama!.text.toString(),
+                                        username: "",
+                                        email: emaill.toString(),
+                                        noTelepon: getTelp!.text.toString(),
+                                        password: "",
+                                        Nik: nik.toString(),
+                                        urlGambar: namaGmbrHps.toString())
+                                  ],
+                                  providerAccount!.setDataDiri(listAcc),
                                   providerAccount?.updateData(
                                       0,
                                       idakun.toInt(),
@@ -266,6 +294,30 @@ class _PageProfileUserState extends State<PageProfileUser> {
                             file: fileBaru)
                         .then((value) => {
                               print("Nama File adalah ${_namaFile}"),
+                              model = ModelAccount(
+                                  id_akun: idakun.toIntOrNull(),
+                                  nama: getNama!.text.toString(),
+                                  username: "",
+                                  email: emaill.toString(),
+                                  noTelepon: getTelp!.text.toString(),
+                                  password: "",
+                                  Nik: nik.toString(),
+                                  urlGambar: _namaFile.toString()),
+                              UtilPref().saveSingleAccount(null),
+                              UtilPref().removeSingleAccount(),
+                              UtilPref().saveSingleAccount(model),
+                              listAcc = [
+                                ModelAccount(
+                                    id_akun: idakun.toIntOrNull(),
+                                    nama: getNama!.text.toString(),
+                                    username: "",
+                                    email: emaill.toString(),
+                                    noTelepon: getTelp!.text.toString(),
+                                    password: "",
+                                    Nik: nik.toString(),
+                                    urlGambar: _namaFile.toString())
+                              ],
+                              providerAccount!.setDataDiri(listAcc),
                               providerAccount?.updateData(
                                   0,
                                   idakun.toInt(),
@@ -326,6 +378,11 @@ class ButtonSelesai extends StatelessWidget {
                   TextButton(
                     child: Text('Iya'),
                     onPressed: () {
+                      UtilPref()
+                          .removeSingleAccount()
+                          .then((value) => {print("Remove Success")});
+                      UtilPref().saveLoginStatus(false);
+                      UtilPref().saveSingleAccount(null);
                       // Tindakan yang akan dilakukan ketika tombol "OK" ditekan
                       Navigator.of(context).pop(); // Menutup dialog
                       // Tambahkan kode logika atau tindakan yang ingin Anda lakukan di sini setelah menekan tombol "OK"
