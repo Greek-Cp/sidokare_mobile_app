@@ -62,7 +62,7 @@ class _UbahSandiState extends State<UbahSandi> {
                       _DescHeaderText(),
                       _ImageLupaKataSandi(),
                       TextFieldPassword(inputSandi2, "Masukkan Kata Sandimu",
-                          _passwordvisible2, "kata Sandi", "Harap disi"),
+                          _passwordvisible2, "kata Sandi", "Harap diisi"),
                       SizedBox(
                         height: 10.h,
                       ),
