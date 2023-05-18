@@ -32,7 +32,7 @@ Color? warnaButton({String? samakan}) {
     ListColor.GradientwarnaBiruSidoKare;
   } else if (samakan == "ditolak") {
     return Colors.redAccent;
-  } else if (samakan == "Revisi") {
+  } else if (samakan == "revisi") {
     return Colors.pinkAccent;
   } else if (samakan == "direview") {
     return Colors.orangeAccent;
@@ -292,9 +292,14 @@ class _PageDetailKeluhannState extends State<PageDetailKeluhann> {
                               SizedBox(
                                 width: 10,
                               ),
-                              ComponentTextButton(stsss != "selesai"
-                                  ? " ${stsss}"
-                                  : " ${DokumenUser}")
+                              ComponentTextButton(namaButton(
+                                  stss: stsss,
+                                  jml: snapshot.data!.jumlahKeberatanKeluhan !=
+                                          "Kosong"
+                                      ? snapshot.data!.jumlahKeberatanKeluhan
+                                          .toString()
+                                      : "",
+                                  doc: DokumenUser.toString()))
                             ]),
                           ),
                         ),
@@ -328,7 +333,7 @@ class _PageDetailKeluhannState extends State<PageDetailKeluhann> {
                             if (batasan == 2) {
                               ToastWidget.ToastInfo(
                                   context,
-                                  "Revisi sudah ke - ${batasan} kali , Silakan Datang Ke Kantor",
+                                  "Revisi sudah kedua kali, silahkan datang ke kantor Desa untuk mendapatkan informasi lebih lanjut",
                                   "Mohon Maaf ");
                             } else {
                               if (stsss == "selesai") {
@@ -366,6 +371,17 @@ class _PageDetailKeluhannState extends State<PageDetailKeluhann> {
         );
       },
     );
+  }
+
+  String namaButton({String? stss, String? jml, String? doc}) {
+    if (stss == "revisi") {
+      print("${jml} adalahh berapa");
+      return "Revisi ${jml}";
+    } else if (stss != "selesai") {
+      return " ${stss}";
+    } else {
+      return " ${doc.toString()}";
+    }
   }
 
   String namaFile({String? tess}) {

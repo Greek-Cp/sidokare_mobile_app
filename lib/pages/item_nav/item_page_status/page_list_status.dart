@@ -169,7 +169,7 @@ class _itemListStatusState extends State<itemListStatus> {
                       TextStyle(fontSize: 14.0.sp, fontWeight: FontWeight.bold),
                 ),
                 Text(
-                  "silakan baut terlebih dahulu",
+                  "silakan buat terlebih dahulu",
                   style: TextStyle(fontSize: 11.0.sp),
                 ),
               ],
@@ -187,7 +187,7 @@ class _itemListStatusState extends State<itemListStatus> {
       ListColor.GradientwarnaBiruSidoKare;
     } else if (samakan == "ditolak") {
       return Colors.redAccent;
-    } else if (samakan == "Revisi") {
+    } else if (samakan == "revisi") {
       return Colors.pinkAccent;
     } else if (samakan == "direview") {
       return Colors.orangeAccent;

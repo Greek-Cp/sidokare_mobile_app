@@ -35,8 +35,21 @@ Color ButtonDownloadAspirasi({String? sama}) {
     return Colors.redAccent;
   } else if (sama == "revisi") {
     return Colors.pinkAccent;
+  } else if (sama == "selesai") {
+    return Colors.lightGreen;
   } else {
     return Colors.greenAccent;
+  }
+}
+
+String namaButton({String? stss, String? jml, String? doc}) {
+  if (stss == "revisi") {
+    print("${jml} adalahh berapa");
+    return "Revisi ${jml}";
+  } else if (stss != "selesai") {
+    return " ${stss}";
+  } else {
+    return " ${doc.toString()}";
   }
 }
 
@@ -268,9 +281,14 @@ class _PageDetailAspirasiState extends State<PageDetailAspirasiiii> {
                                 SizedBox(
                                   width: 10,
                                 ),
-                                ComponentTextButton(stts != "selesai"
-                                    ? " ${stts}"
-                                    : " ${DocAspirasi}")
+                                ComponentTextButton(namaButton(
+                                    stss: stts,
+                                    jml: snapshot.data!
+                                                .JumlahKeberatanAspirasi !=
+                                            "Kosong"
+                                        ? snapshot.data!.JumlahKeberatanAspirasi
+                                        : "",
+                                    doc: DocAspirasi.toString()))
                               ]),
                             ),
                           ),
@@ -305,7 +323,7 @@ class _PageDetailAspirasiState extends State<PageDetailAspirasiiii> {
                               if (batasan == 2) {
                                 ToastWidget.ToastInfo(
                                     context,
-                                    "Revisi sudah ke - ${batasan} kali , Silakan Datang Ke Kantor",
+                                    "Revisi sudah kedua kali, silahkan datang ke kantor Desa untuk mendapatkan informasi lebih lanjut",
                                     "Mohon Maaf ");
                               } else {
                                 if (stts == "selesai") {

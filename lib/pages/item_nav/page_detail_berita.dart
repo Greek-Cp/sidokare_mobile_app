@@ -85,6 +85,7 @@ class _PageDetailBeritaState extends State<PageDetailBerita> {
       builder: (context, child) {
         return Scaffold(
           body: CustomScrollView(
+            // reverse: true,
             slivers: <Widget>[
               SliverAppBar(
                 leading: IconButton(
@@ -229,7 +230,10 @@ class _PageDetailBeritaState extends State<PageDetailBerita> {
                         "2023-04-11 11:28:12",
                         namaProfile.toString(),
                         fotoProfile.toString()),
-                  ))
+                  )),
+                  Padding(
+                      padding: EdgeInsets.only(
+                          bottom: MediaQuery.of(context).viewInsets.bottom))
                 ]),
               )
             ],

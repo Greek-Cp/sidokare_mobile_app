@@ -54,6 +54,7 @@ class _TextFieldPasswordState extends State<TextFieldPassword> {
           },
           obscureText: !widget.passwordType!,
           controller: widget.text_kontrol,
+          textInputAction: TextInputAction.done,
           style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.normal),
           decoration: InputDecoration(
               suffixIcon: IconButton(

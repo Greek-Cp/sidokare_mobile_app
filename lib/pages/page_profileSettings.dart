@@ -70,7 +70,7 @@ class _PageProfileUserState extends State<PageProfileUser> {
 
   ImageProvider ChangeProfile({String? urlGambar, File? gambar}) {
     if (gambar == null) {
-      if (urlGambar == "" || urlGambar == null) {
+      if (urlGambar == "" || urlGambar == null || urlGambar == "kosong") {
         return AssetImage("assets/accountBlank.png") as ImageProvider;
       } else {
         return NetworkImage(
@@ -108,13 +108,20 @@ class _PageProfileUserState extends State<PageProfileUser> {
     });
   }
 
+  Map? getData;
   @override
   Widget build(BuildContext context) {
-    final idAkunnn = ModalRoute.of(context)?.settings.arguments as int;
+    // final idAkunnn = ModalRoute.of(context)?.settings.arguments as int;
+
+    getData = ModalRoute.of(context)?.settings.arguments as Map;
+    int idAkunnn = getData?['id'];
+    String urlGambar = getData?['url_gbr'];
     providerAccount = Provider.of<ProviderAccount>(context);
     final DataDiri = Provider.of<ProviderAccount>(context)
         .GetDataDiri
         .firstWhere((idData) => idData.id_akun == idAkunnn);
+
+    print("awal awal apa gambar ${urlGambar}");
     // TODO: implement build
     return ScreenUtilInit(
       builder: (context, child) {
@@ -123,6 +130,12 @@ class _PageProfileUserState extends State<PageProfileUser> {
             elevation: 0,
             iconTheme: IconThemeData(color: Colors.black),
             backgroundColor: Colors.white,
+            leading: IconButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  FocusManager.instance.primaryFocus!.unfocus();
+                },
+                icon: Icon(Icons.arrow_back_ios)),
           ),
           body: SafeArea(
             maintainBottomViewPadding: true,
@@ -149,8 +162,7 @@ class _PageProfileUserState extends State<PageProfileUser> {
                                 height: 130.h,
                                 child: CircleAvatar(
                                   backgroundImage: ChangeProfile(
-                                      urlGambar: DataDiri.urlGambar.toString(),
-                                      gambar: _image),
+                                      urlGambar: urlGambar, gambar: _image),
                                   backgroundColor: Colors.amberAccent,
                                   // maxRadius: 70,
                                 ),
@@ -192,8 +204,7 @@ class _PageProfileUserState extends State<PageProfileUser> {
                           pesanValidasi: "Telepon"),
                       _Button(
                           idakun: DataDiri.id_akun.toString(),
-                          namaGmbrHps:
-                              DataDiri.urlGambar.toString().replaceAll("'", ""),
+                          namaGmbrHps: urlGambar.toString().replaceAll("'", ""),
                           nama: getNama?.text,
                           nomor: getTelp?.text,
                           nik: getNik?.text,
@@ -230,6 +241,7 @@ class _PageProfileUserState extends State<PageProfileUser> {
                   print("Namanya adalah == ${nama}");
                   print("Namanya2 adalah == ${getNama?.text}");
                   print("telp2 adalah == ${nomor}");
+                  print("nama gambar hapus ${namaGmbrHps}");
                   print("Telp == adalah ${getTelp?.text}");
                   if (_image == null || _namaFile == "") {
                     print("Kosong");
@@ -273,7 +285,7 @@ class _PageProfileUserState extends State<PageProfileUser> {
                                       nik.toString(),
                                       _namaFile == "" || _namaFile == null
                                           ? namaGmbrHps.toString()
-                                          : _namaFile!,
+                                          : _namaFile!.replaceAll("'", ""),
                                       getTelp!.text.toString(),
                                       emaill.toString()),
                                   _image == null,
@@ -294,6 +306,14 @@ class _PageProfileUserState extends State<PageProfileUser> {
                             file: fileBaru)
                         .then((value) => {
                               print("Nama File adalah ${_namaFile}"),
+                              providerAccount?.updateData(
+                                  0,
+                                  idakun.toInt(),
+                                  getNama!.text.toString(),
+                                  nik.toString(),
+                                  _namaFile!.replaceAll("'", ""),
+                                  getTelp!.text.toString(),
+                                  emaill.toString()),
                               model = ModelAccount(
                                   id_akun: idakun.toIntOrNull(),
                                   nama: getNama!.text.toString(),
@@ -302,7 +322,8 @@ class _PageProfileUserState extends State<PageProfileUser> {
                                   noTelepon: getTelp!.text.toString(),
                                   password: "",
                                   Nik: nik.toString(),
-                                  urlGambar: _namaFile.toString()),
+                                  urlGambar:
+                                      _namaFile.toString().replaceAll("'", "")),
                               UtilPref().saveSingleAccount(null),
                               UtilPref().removeSingleAccount(),
                               UtilPref().saveSingleAccount(model),
@@ -315,19 +336,14 @@ class _PageProfileUserState extends State<PageProfileUser> {
                                     noTelepon: getTelp!.text.toString(),
                                     password: "",
                                     Nik: nik.toString(),
-                                    urlGambar: _namaFile.toString())
+                                    urlGambar: _namaFile
+                                        .toString()
+                                        .replaceAll("'", ""))
                               ],
                               providerAccount!.setDataDiri(listAcc),
-                              providerAccount?.updateData(
-                                  0,
-                                  idakun.toInt(),
-                                  getNama!.text.toString(),
-                                  nik.toString(),
-                                  _namaFile!,
-                                  getTelp!.text.toString(),
-                                  emaill.toString()),
+
                               _image == null,
-                              _namaFile == null,
+                              // _namaFile == null,
                               Navigator.pushNamed(
                                   context, HalamanUtama.routeName.toString(),
                                   arguments: idakun.toInt()),

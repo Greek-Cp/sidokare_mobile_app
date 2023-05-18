@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:sidokare_mobile_app/const/list_color.dart';
 import 'package:sidokare_mobile_app/const/size.dart';
@@ -42,94 +43,118 @@ class _itemListStatusAspirasiState extends State<itemListStatusAspirasi> {
           future: listData,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              return ListView.builder(
-                  itemBuilder: (context, index) {
-                    return AnimationConfiguration.staggeredList(
-                        position: index,
-                        child: FadeInAnimation(
-                            child: index % 2 == 0
-                                ? FadeInAnimation(
-                                    duration: Duration(milliseconds: 300),
-                                    child: SlideAnimation(
-                                        duration: Duration(milliseconds: 800),
-                                        horizontalOffset: 350.0,
-                                        child: _containerListStatus(
-                                            judul_pengajuan: snapshot.data!
-                                                .data![index].judulAspirasi
-                                                .toString(),
-                                            docUp: snapshot.data!.data![index]
-                                                .dokumenOutput,
-                                            AspirasiId: snapshot
-                                                .data!
-                                                .data![index]
-                                                .idPengajuanAspirasi,
-                                            statusUser: snapshot
-                                                .data!.data![index].status,
-                                            isi_pengajuan: snapshot
-                                                .data!.data![index].isiAspirasi,
-                                            idAkun: snapshot
-                                                .data!.data![index].idAkun,
-                                            laporan: snapshot.data!.data![index]
-                                                .judulAspirasi
-                                                .toString(),
-                                            isiLaporan: snapshot
-                                                .data!.data![index].isiAspirasi,
-                                            uploadFile: snapshot
-                                                .data!
-                                                .data![index]
-                                                .uploadFilePendukung)),
-                                  )
-                                : FadeInAnimation(
-                                    duration: Duration(milliseconds: 300),
-                                    child: SlideAnimation(
-                                        duration: Duration(milliseconds: 800),
-                                        horizontalOffset: -350.0,
-                                        child: _containerListStatus(
-                                            judul_pengajuan: snapshot.data!
-                                                .data![index].judulAspirasi
-                                                .toString(),
-                                            docUp: snapshot.data!.data![index]
-                                                .dokumenOutput,
-                                            AspirasiId: snapshot
-                                                .data!
-                                                .data![index]
-                                                .idPengajuanAspirasi,
-                                            statusUser: snapshot
-                                                .data!.data![index].status,
-                                            isi_pengajuan: snapshot
-                                                .data!.data![index].isiAspirasi,
-                                            idAkun: snapshot
-                                                .data!.data![index].idAkun,
-                                            laporan: snapshot.data!.data![index]
-                                                .judulAspirasi
-                                                .toString(),
-                                            isiLaporan: snapshot
-                                                .data!.data![index].isiAspirasi,
-                                            uploadFile: snapshot
-                                                .data!
-                                                .data![index]
-                                                .uploadFilePendukung)),
-                                  )));
-                    // return _containerListStatus(
-                    //     judul_pengajuan: snapshot
-                    //         .data!.data![index].judulAspirasi
-                    //         .toString(),
-                    //     docUp: snapshot.data!.data![index].dokumenOutput,
-                    //     AspirasiId:
-                    //         snapshot.data!.data![index].idPengajuanAspirasi,
-                    //     statusUser: snapshot.data!.data![index].status,
-                    //     isi_pengajuan: snapshot.data!.data![index].isiAspirasi,
-                    //     idAkun: snapshot.data!.data![index].idAkun,
-                    //     laporan: snapshot.data!.data![index].judulAspirasi
-                    //         .toString(),
-                    //     isiLaporan: snapshot.data!.data![index].isiAspirasi,
-                    //     uploadFile:
-                    //         snapshot.data!.data![index].uploadFilePendukung);
-                  },
-                  itemCount: snapshot.data!.data!.length);
+              if (snapshot.data!.data!.length != 0) {
+                return ListView.builder(
+                    itemBuilder: (context, index) {
+                      return AnimationConfiguration.staggeredList(
+                          position: index,
+                          child: FadeInAnimation(
+                              child: index % 2 == 0
+                                  ? FadeInAnimation(
+                                      duration: Duration(milliseconds: 300),
+                                      child: SlideAnimation(
+                                          duration: Duration(milliseconds: 800),
+                                          horizontalOffset: 350.0,
+                                          child: _containerListStatus(
+                                              judul_pengajuan: snapshot.data!
+                                                  .data![index].judulAspirasi
+                                                  .toString(),
+                                              docUp: snapshot.data!.data![index]
+                                                  .dokumenOutput,
+                                              AspirasiId: snapshot
+                                                  .data!
+                                                  .data![index]
+                                                  .idPengajuanAspirasi,
+                                              statusUser: snapshot
+                                                  .data!.data![index].status,
+                                              isi_pengajuan: snapshot.data!
+                                                  .data![index].isiAspirasi,
+                                              idAkun: snapshot
+                                                  .data!.data![index].idAkun,
+                                              laporan: snapshot.data!
+                                                  .data![index].judulAspirasi
+                                                  .toString(),
+                                              isiLaporan: snapshot.data!
+                                                  .data![index].isiAspirasi,
+                                              uploadFile: snapshot
+                                                  .data!
+                                                  .data![index]
+                                                  .uploadFilePendukung)),
+                                    )
+                                  : FadeInAnimation(
+                                      duration: Duration(milliseconds: 300),
+                                      child: SlideAnimation(
+                                          duration: Duration(milliseconds: 800),
+                                          horizontalOffset: -350.0,
+                                          child: _containerListStatus(
+                                              judul_pengajuan: snapshot.data!
+                                                  .data![index].judulAspirasi
+                                                  .toString(),
+                                              docUp: snapshot.data!.data![index]
+                                                  .dokumenOutput,
+                                              AspirasiId: snapshot
+                                                  .data!
+                                                  .data![index]
+                                                  .idPengajuanAspirasi,
+                                              statusUser: snapshot
+                                                  .data!.data![index].status,
+                                              isi_pengajuan: snapshot.data!
+                                                  .data![index].isiAspirasi,
+                                              idAkun: snapshot
+                                                  .data!.data![index].idAkun,
+                                              laporan: snapshot.data!
+                                                  .data![index].judulAspirasi
+                                                  .toString(),
+                                              isiLaporan: snapshot.data!
+                                                  .data![index].isiAspirasi,
+                                              uploadFile: snapshot
+                                                  .data!
+                                                  .data![index]
+                                                  .uploadFilePendukung)),
+                                    )));
+                      // return _containerListStatus(
+                      //     judul_pengajuan: snapshot
+                      //         .data!.data![index].judulAspirasi
+                      //         .toString(),
+                      //     docUp: snapshot.data!.data![index].dokumenOutput,
+                      //     AspirasiId:
+                      //         snapshot.data!.data![index].idPengajuanAspirasi,
+                      //     statusUser: snapshot.data!.data![index].status,
+                      //     isi_pengajuan: snapshot.data!.data![index].isiAspirasi,
+                      //     idAkun: snapshot.data!.data![index].idAkun,
+                      //     laporan: snapshot.data!.data![index].judulAspirasi
+                      //         .toString(),
+                      //     isiLaporan: snapshot.data!.data![index].isiAspirasi,
+                      //     uploadFile:
+                      //         snapshot.data!.data![index].uploadFilePendukung);
+                    },
+                    itemCount: snapshot.data!.data!.length);
+              }
             } else {
               return Text(snapshot.error.toString());
             }
+            //sini
+            return Center(
+                child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  width: 100,
+                  height: 100,
+                  child:
+                      Lottie.asset("assets/emptylist.json", fit: BoxFit.cover),
+                ),
+                Text(
+                  "Belum ada list status Aspirasi",
+                  style:
+                      TextStyle(fontSize: 14.0.sp, fontWeight: FontWeight.bold),
+                ),
+                Text(
+                  "silakan buat terlebih dahulu",
+                  style: TextStyle(fontSize: 11.0.sp),
+                ),
+              ],
+            ));
           },
         ),
       ),
@@ -145,6 +170,10 @@ class _itemListStatusAspirasiState extends State<itemListStatusAspirasi> {
       return Colors.redAccent;
     } else if (samakan == "revisi") {
       return Colors.pinkAccent;
+    } else if (samakan == "direview") {
+      return Colors.orangeAccent;
+    } else if (samakan == "selesai") {
+      return Colors.lightGreen;
     } else {
       return Colors.greenAccent;
     }

@@ -157,6 +157,7 @@ class _InputOtpState extends State<InputOtp> {
           } else {
             ToastWidget.ToastEror(
                 context, "Kode Otp Salah", "Periksa dan Teliti Kembali Lagi");
+            // codeVerif == "";
           }
         },
         // ignore: sort_child_properties_last

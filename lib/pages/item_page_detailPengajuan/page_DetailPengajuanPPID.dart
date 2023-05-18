@@ -265,9 +265,14 @@ class _DetailPengajuanPPIDState extends State<DetailPengajuanPPID> {
                                 SizedBox(
                                   width: 10,
                                 ),
-                                ComponentTextButton(status != "selesai"
-                                    ? " ${status}"
-                                    : " ${DocPPID.toString()}")
+                                ComponentTextButton(namaButton(
+                                    stss: status,
+                                    jml: snapshot.data!.jumlahKeberatanPPID !=
+                                            "Kosong"
+                                        ? snapshot.data!.jumlahKeberatanPPID
+                                            .toString()
+                                        : "",
+                                    doc: DocPPID.toString()))
                               ]),
                             ),
                           ),
@@ -300,7 +305,7 @@ class _DetailPengajuanPPIDState extends State<DetailPengajuanPPID> {
                               if (batasan == 2) {
                                 ToastWidget.ToastInfo(
                                     context,
-                                    "Revisi sudah ke - ${batasan} kali , Silakan Datang Ke Kantor",
+                                    "Revisi sudah kedua kali, silahkan datang ke kantor Desa untuk mendapatkan informasi lebih lanjut",
                                     "Mohon Maaf ");
                               } else {
                                 if (status == "selesai") {
@@ -339,6 +344,17 @@ class _DetailPengajuanPPIDState extends State<DetailPengajuanPPID> {
   }
 }
 
+String namaButton({String? stss, String? jml, String? doc}) {
+  if (stss == "revisi") {
+    print("${jml} adalahh berapa");
+    return "Revisi ${jml}";
+  } else if (stss != "selesai") {
+    return " ${stss}";
+  } else {
+    return " ${doc.toString()}";
+  }
+}
+
 Color ButtonDownload({String? sama}) {
   if (sama == "diajukan") {
     return Colors.amberAccent;
@@ -348,8 +364,10 @@ Color ButtonDownload({String? sama}) {
     return Colors.redAccent;
   } else if (sama == "revisi") {
     return Colors.pinkAccent;
+  } else if (sama == "selesai") {
+    return Colors.lightGreen;
   } else {
-    return Colors.greenAccent;
+    return Colors.orangeAccent;
   }
 }
 

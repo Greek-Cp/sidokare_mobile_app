@@ -214,7 +214,11 @@ class _PageUtamaState extends State<PageUtama> {
                                             context,
                                             PageProfileUser.routeName
                                                 .toString(),
-                                            arguments: id);
+                                            arguments: {
+                                              "id": id,
+                                              "url_gbr":
+                                                  DataDiri.urlGambar.toString()
+                                            });
                                       },
                                       child: Container(
                                         width: 40.w,
@@ -224,7 +228,8 @@ class _PageUtamaState extends State<PageUtama> {
                                                       "" ||
                                                   DataDiri.urlGambar
                                                           .toString() ==
-                                                      null
+                                                      null ||
+                                                  DataDiri.urlGambar == "kosong"
                                               ? AssetImage(
                                                       "assets/accountBlank.png")
                                                   as ImageProvider

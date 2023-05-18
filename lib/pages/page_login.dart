@@ -34,10 +34,10 @@ class _PageLoginState extends State<PageLogin> {
   // not a GlobalKey<MyCustomFormState>.
   final _formKey = GlobalKey<FormState>();
   bool _isHovering = false;
-
+  ProviderAccount? providerAccount;
   @override
   Widget build(BuildContext context) {
-    final providerAccount = Provider.of<ProviderAccount>(context);
+    providerAccount = Provider.of<ProviderAccount>(context);
 
     // TODO: implement build
     return ScreenUtilInit(
@@ -87,13 +87,19 @@ class _PageLoginState extends State<PageLogin> {
                               text_kontrol: textEditingControllerEmail,
                               hintText: "Masukkan Emailmu",
                               pesanValidasi: "Email")),
-                      SizedBox(
-                          child: TextFieldPassword(
-                              textEditingControllerPassword,
-                              "Masukkan Sandi",
-                              false,
-                              "Kata Sandi",
-                              "Kata Sandi")),
+                      // SizedBox(
+                      //     child: TextFieldPassword(
+                      //         textEditingControllerPassword,
+                      //         "Masukkan Sandi",
+                      //         false,
+                      //         "Kata Sandi",
+                      //         "Kata Sandi")),
+                      PasswordDone(
+                          hintText: "Masukkan Sandi",
+                          text_kontrol: textEditingControllerPassword,
+                          passwordType: false,
+                          labelName: "Kata Sandi",
+                          pesanValidasi: "Kata Sandi"),
                       SizedBox(
                         height: 10.sp,
                       ),
@@ -150,14 +156,14 @@ class _PageLoginState extends State<PageLogin> {
                                                       "Nik Akun adalah ${value.nik}"),
                                                   print(
                                                       "mamagambar Akun adalah ${value.namaProfile}"),
-                                                  providerAccount.AddData(
+                                                  providerAccount!.AddData(
                                                       value.id_akun!,
                                                       value.nama_lengkap!,
                                                       value.nik!,
                                                       value.namaProfile!,
                                                       value.nomor_telepon!,
                                                       value.email!),
-                                                  providerAccount.setIdAkun(
+                                                  providerAccount!.setIdAkun(
                                                       value.id_akun!.toInt()),
                                                   Navigator.pushNamed(
                                                       context,
@@ -223,7 +229,8 @@ class _PageLoginState extends State<PageLogin> {
                           GestureDetector(
                             onTap: () => {
                               Navigator.pushNamed(
-                                  context, PageRegister.routeName.toString())
+                                  context, PageRegister.routeName.toString()),
+                              FocusManager.instance.primaryFocus!.unfocus(),
                             },
                             child: Text(
                               "Daftar Disini",
@@ -250,6 +257,132 @@ class _PageLoginState extends State<PageLogin> {
           ),
         );
       },
+    );
+  }
+
+  bool _obsecureText = true;
+
+  void _getVisibility() {
+    setState(() {
+      _obsecureText = !_obsecureText;
+    });
+  }
+
+  Widget PasswordDone(
+      {TextEditingController? text_kontrol,
+      String? hintText,
+      bool? passwordType,
+      String? labelName,
+      String? pesanValidasi}) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SizedBox(
+          height: 10.h,
+        ),
+        Text(
+          "${labelName}",
+          style: GoogleFonts.dmSans(
+              textStyle:
+                  TextStyle(fontWeight: FontWeight.normal, fontSize: 13.sp)),
+          textAlign: TextAlign.start,
+        ),
+        SizedBox(
+          height: 5.h,
+        ),
+        TextFormField(
+          validator: (value) {
+            if (value!.isEmpty || value == null) {
+              return "${pesanValidasi} Tidak Boleh Kosong";
+            }
+            if (value.length < 7) {
+              return 'Password minimal terdiri dari 7 karakter';
+            }
+            final regex = RegExp(r'^(?=.*?[A-Z])(?=.*?[0-9]).{7,}$');
+            if (!regex.hasMatch(value)) {
+              return 'Password harus mengandung huruf besar dan angka';
+            }
+            return null;
+          },
+          obscureText: passwordType!,
+          controller: text_kontrol,
+          onFieldSubmitted: (value) async {
+            if (_formKey.currentState!.validate()) {
+              HttpStatefull.loginAkun(textEditingControllerEmail.text,
+                      textEditingControllerPassword.text)
+                  .then((value) async => {
+                        if (value.code == 200)
+                          {
+                            print("Nama anda adalah ${value.nama_lengkap}"),
+                            print("ID Akun adalah ${value.id_akun}"),
+                            print("Nik Akun adalah ${value.nik}"),
+                            print(
+                                "mamagambar Akun adalah ${value.namaProfile}"),
+                            providerAccount!.AddData(
+                                value.id_akun!,
+                                value.nama_lengkap!,
+                                value.nik!,
+                                value.namaProfile!,
+                                value.nomor_telepon!,
+                                value.email!),
+                            providerAccount!.setIdAkun(value.id_akun!.toInt()),
+                            Navigator.pushNamed(
+                                context, HalamanUtama.routeName.toString(),
+                                arguments: value.id_akun),
+                            FocusManager.instance.primaryFocus!.unfocus(),
+                            ToastWidget.ToastSucces(context,
+                                "Masuk Berhasil , Akun Ditemukan", "Selamat "),
+                            UtilPref().saveSingleAccount(ModelAccount(
+                                id_akun: value.id_akun,
+                                nama: value.nama_lengkap,
+                                Nik: value.nik,
+                                urlGambar: value.namaProfile,
+                                noTelepon: value.nomor_telepon,
+                                email: value.email)),
+                            UtilPref().saveLoginStatus(true)
+                          }
+                        else if (value.code == 400)
+                          {
+                            print("apakag eror kesini"),
+                            ToastWidget.ToastEror(
+                                context,
+                                "Masuk Gagal , Akun Tidak Ditemukan",
+                                "Mohon Maaf")
+                          }
+                      });
+            }
+          },
+          textInputAction: TextInputAction.done,
+          style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.normal),
+          decoration: InputDecoration(
+              suffixIcon: IconButton(
+                  onPressed: () {
+                    // setState(() {
+                    //   passwordType = !passwordType!;
+                    // });
+                    _getVisibility();
+                  },
+                  icon: Icon(
+                    passwordType! ? Icons.visibility : Icons.visibility_off,
+                    color: ListColor.warnaBiruSidoKare,
+                  )),
+              hintText: hintText,
+              contentPadding: EdgeInsets.all(15),
+              enabledBorder: OutlineInputBorder(
+                  borderSide:
+                      BorderSide(width: 1, color: ListColor.warnaBiruSidoKare),
+                  borderRadius: BorderRadius.all(Radius.circular(10))),
+              focusedBorder: OutlineInputBorder(
+                  borderSide:
+                      BorderSide(width: 2, color: ListColor.warnaBiruSidoKare),
+                  borderRadius: BorderRadius.all(Radius.circular(10))),
+              border: OutlineInputBorder(
+                  borderSide:
+                      BorderSide(width: 1, color: ListColor.warnaBiruSidoKare),
+                  borderRadius: BorderRadius.all(Radius.circular(10)))),
+        ),
+      ],
     );
   }
 
