@@ -68,7 +68,7 @@ class ControllerAPI {
     Uri uri = Uri.parse(url);
     var res = await http.post(uri, body: {
       'id_akun': idAkun.toString(),
-      'id_berita': idBerita,
+      'id': idBerita,
       'isi_komentar': isiKomentar,
       'waktu_berkomentar': waktuBerkomentar
     });
@@ -82,7 +82,7 @@ class ControllerAPI {
     String url = "http://${baseURL}/api/komentar/getkomentar";
     Uri uri = Uri.parse(url);
     var res = await http.post(uri, body: {
-      'id_berita': idBerita,
+      'id': idBerita,
     });
     return ModelKomentarList.fromJson(jsonDecode(res.body));
   }
@@ -113,7 +113,7 @@ class ControllerAPI {
     var url = "http://${baseURL}/api/komentar/hapus_komentar";
     print(url + "URL");
     var body = {
-      'id_berita': id_berita.toString(),
+      'id': id_berita.toString(),
       'id_akun': id_akun.toString(),
       'waktu_berkomentar': waktu_berkomentar.toString(),
       'id_komentar': id_komentar.toString(),

@@ -19,7 +19,7 @@ class KeberatanPPID {
       {String? idAKun, String? idppid}) async {
     var response = await http.post(
         Uri.parse('http://${ApiPoint.BASE_URL}/api/Keberatan/jumlahKeberatan'),
-        body: {'id_akun': idAKun, 'id_ppid': idppid});
+        body: {'id_akun': idAKun, 'id': idppid});
     var jsonResponse = json.decode(response.body);
     print("Data Jumlah : ${jsonResponse}");
     return KeberatanPPID.fromJson(jsonResponse);

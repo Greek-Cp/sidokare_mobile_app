@@ -30,7 +30,8 @@ class Berita {
 
   factory Berita.fromJson(Map<String, dynamic> json) {
     return Berita(
-        idBerita: json['id_berita'],
+        //rubah id_berita to id
+        idBerita: json['id'],
         idAkun: json['id_akun'],
         tanggalPublikasi: json['tanggal_publikasi'],
         idKategori: json['id_kategori'],

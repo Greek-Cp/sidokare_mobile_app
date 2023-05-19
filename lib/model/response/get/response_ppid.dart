@@ -35,6 +35,7 @@ class Data {
   String? RW;
   String? email;
   String? telpp;
+  String? tujuan;
   String? OutputDocPPID;
   String? judulLaporan;
   String? isiLaporan;
@@ -49,6 +50,7 @@ class Data {
       this.OutputDocPPID,
       this.RT,
       this.RW,
+      this.tujuan,
       this.email,
       this.telpp,
       this.judulLaporan,
@@ -62,6 +64,7 @@ class Data {
     idAkun = json['id_akun'];
     judulLaporan = json['judul_laporan'];
     isiLaporan = json['isi_laporan'];
+    tujuan = json['tujuan'];
     asalPelapor = json['Alamat'];
     email = json['email'];
     telpp = json['no_telfon'];

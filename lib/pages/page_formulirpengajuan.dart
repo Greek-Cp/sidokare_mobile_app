@@ -277,6 +277,7 @@ class _PageFormulirPengajuanState extends State<PageFormulirPengajuanPPID> {
                                             textEditingControllerIsiLaporan!
                                                 .text,
                                         asalLaporan: "Sidokare",
+                                        tujuan: "pokok kenek ndisek lah masbro",
                                         RT: randomValueRT.toString(),
                                         RW: randomValueRW.toString(),
                                         kategoriPPID:

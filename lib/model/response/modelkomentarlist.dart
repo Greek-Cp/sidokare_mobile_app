@@ -44,11 +44,12 @@ class DataBerita {
       this.waktuBerkomentar,
       this.namaPengkomen,
       this.profilePicKomen});
+  //rubah id_berita => id
 
   DataBerita.fromJson(Map<String, dynamic> json) {
     idKomentar = json['id_komentar'];
     idAkun = json['id_akun'];
-    idBerita = json['id_berita'];
+    idBerita = json['id'];
     isiKomentar = json['isi_komentar'];
     waktuBerkomentar = json['waktu_berkomentar'];
     namaPengkomen = json['nama'];
@@ -59,7 +60,7 @@ class DataBerita {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id_komentar'] = this.idKomentar;
     data['id_akun'] = this.idAkun;
-    data['id_berita'] = this.idBerita;
+    data['id'] = this.idBerita;
     data['isi_komentar'] = this.isiKomentar;
     data['waktu_berkomentar'] = this.waktuBerkomentar;
     return data;

@@ -31,6 +31,7 @@ class _PageDetailBeritaState extends State<PageDetailBerita> {
   final _formKey = GlobalKey<FormState>();
   TextEditingController getNama = TextEditingController();
   TextEditingController? getKomen = TextEditingController();
+  TextEditingController? komenBaru = TextEditingController();
 
   Map? receiveData;
   bool startAnimation = false;
@@ -193,7 +194,9 @@ class _PageDetailBeritaState extends State<PageDetailBerita> {
                                 child: ScaleAnimation(
                                   duration: Duration(milliseconds: 700),
                                   child: _CommentItemUser(
-                                      snapshot.data!.data![index], index),
+                                      snapshot.data!.data![index],
+                                      index,
+                                      komenBaru!),
                                 ),
                               ),
                             );
@@ -243,7 +246,8 @@ class _PageDetailBeritaState extends State<PageDetailBerita> {
     );
   }
 
-  Widget _CommentItemUser(DataBerita data, int index) {
+  Widget _CommentItemUser(
+      DataBerita data, int index, TextEditingController Kontroller) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 20.h, vertical: 10.h),
       child: Column(
@@ -335,11 +339,10 @@ class _PageDetailBeritaState extends State<PageDetailBerita> {
                                               fontSize: 20),
                                         ),
                                         content: TextField(
+                                          controller: Kontroller,
                                           keyboardType: TextInputType.multiline,
                                           onChanged: (value) {
-                                            setState(() {
-                                              //controller.text = value
-                                            });
+                                            // Kontroller.text = value;
                                           },
                                         ),
                                         actions: <Widget>[
@@ -348,6 +351,10 @@ class _PageDetailBeritaState extends State<PageDetailBerita> {
                                                   minimumSize:
                                                       Size.fromHeight(44)),
                                               onPressed: () {
+                                                ControllerAPI.editKomentar(
+                                                    idKomentar: data.idKomentar,
+                                                    isiKomentar:
+                                                        Kontroller.text);
                                                 setState(() {
                                                   Navigator.of(context).pop();
                                                 });

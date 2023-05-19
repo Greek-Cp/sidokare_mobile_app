@@ -35,10 +35,10 @@ class Data {
       this.isiKomentar,
       this.waktuBerkomentar,
       this.id});
-
+//rubah id_berita to id
   Data.fromJson(Map<String, dynamic> json) {
     idAkun = json['id_akun'];
-    idBerita = json['id_berita'];
+    idBerita = json['id'].toString();
     isiKomentar = json['isi_komentar'];
     waktuBerkomentar = json['waktu_berkomentar'];
     id = json['id'];
@@ -47,7 +47,7 @@ class Data {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id_akun'] = this.idAkun;
-    data['id_berita'] = this.idBerita;
+    data['id'] = this.idBerita;
     data['isi_komentar'] = this.isiKomentar;
     data['waktu_berkomentar'] = this.waktuBerkomentar;
     data['id'] = this.id;

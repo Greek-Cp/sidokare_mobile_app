@@ -9,7 +9,7 @@ class KeberatanStatus {
   String? code;
   String? message;
   KeberatanStatus({this.code, this.message});
-
+  //rubah id_ppid menjadi id
   static Future<KeberatanStatus> InsertKeberatanPPID(
       {String? id_akun,
       String? alamat,
@@ -24,7 +24,7 @@ class KeberatanStatus {
       "alamat": alamat,
       "alasan": alasan,
       "catatan_tambahan": catatan,
-      "id_ppid": idppid
+      "id": idppid
     });
 
     var data = json.decode(hasilResponse.body);
