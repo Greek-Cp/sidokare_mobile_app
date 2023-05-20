@@ -41,6 +41,14 @@ class PengajuhanKeluhan {
     return PengajuhanKeluhan(code: data['code'], message: data['message']);
   }
 
+  static Future<PengajuhanKeluhan> AccKeluhan(String? idkeluhan) async {
+    Uri url = Uri.parse("http://${ApiPoint.BASE_URL}/api/pengajuan/accKeluhan");
+    var HasilResponse =
+        await http.post(url, body: {'id_pengajuan_keluhan': idkeluhan});
+    var data = json.decode(HasilResponse.body);
+    return PengajuhanKeluhan(code: data['code'], message: data['message']);
+  }
+
   static Future<void> uploadFileKeluhan(File file) async {
     var uri = Uri.parse(
         'http://${ApiPoint.BASE_URL}/api/pengajuan/uploadfilekeluhan');

@@ -14,6 +14,7 @@ import 'package:sidokare_mobile_app/const/font_type.dart';
 import 'package:sidokare_mobile_app/const/list_color.dart';
 import 'package:sidokare_mobile_app/const/size.dart';
 import 'package:sidokare_mobile_app/model/response/get/model_jmlkeberatan.dart';
+import 'package:sidokare_mobile_app/model/response/pengajuan.dart';
 import 'package:sidokare_mobile_app/pages/page_formulirKeberatan.dart';
 
 import '../../const/const.dart';
@@ -278,7 +279,9 @@ class _DetailPengajuanPPIDState extends State<DetailPengajuanPPID> {
                           ),
                         ),
                         Visibility(
-                          visible: status != "selesai" ? false : true,
+                          visible: status == "selesai" || status == "diterima"
+                              ? true
+                              : false,
                           child: ComponentTextDescriptionBawah(
                               "Silakan Download file , file akan tersimpan dalam device pada folder download"),
                         ),
@@ -307,6 +310,11 @@ class _DetailPengajuanPPIDState extends State<DetailPengajuanPPID> {
                                     context,
                                     "Revisi sudah kedua kali, silahkan datang ke kantor Desa untuk mendapatkan informasi lebih lanjut",
                                     "Mohon Maaf ");
+                              } else if (status == "diterima") {
+                                ToastWidget.ToastInfo(
+                                    context,
+                                    "Tidak dapat lagi mengajukan keberatan",
+                                    "Mohon Maaf");
                               } else {
                                 if (status == "selesai") {
                                   Navigator.pushNamed(
@@ -332,7 +340,7 @@ class _DetailPengajuanPPIDState extends State<DetailPengajuanPPID> {
                                 backgroundColor: Colors.red),
                           ),
                         ),
-                        ButtonSelesai("Selesai")
+                        ButtonSelesai("Selesai", id_ppid.toString(), status)
                       ]),
                 ),
               );
@@ -348,6 +356,8 @@ String namaButton({String? stss, String? jml, String? doc}) {
   if (stss == "revisi") {
     print("${jml} adalahh berapa");
     return "Revisi ${jml}";
+  } else if (stss == "diterima") {
+    return " ${doc.toString()}";
   } else if (stss != "selesai") {
     return " ${stss}";
   } else {
@@ -367,7 +377,7 @@ Color ButtonDownload({String? sama}) {
   } else if (sama == "selesai") {
     return Colors.lightGreen;
   } else {
-    return Colors.orangeAccent;
+    return Colors.greenAccent;
   }
 }
 
@@ -394,17 +404,65 @@ class ButtonKeberatan extends StatelessWidget {
 
 class ButtonSelesai extends StatelessWidget {
   String? buttonName;
-  ButtonSelesai(this.buttonName);
+  String? idppid;
+  String? stss;
+  ButtonSelesai(this.buttonName, this.idppid, this.stss);
   @override
   Widget build(BuildContext context) {
-    return _Button(context, buttonName);
+    return _Button(context, buttonName, idppid, stss);
   }
 
-  Widget _Button(BuildContext context, String? buttonName) {
+  Widget _Button(
+      BuildContext context, String? buttonName, String? idppid, String? stss) {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 5.h),
       child: ElevatedButton(
-        onPressed: () {},
+        onPressed: () {
+          if (stss == "selesai") {
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  title: Text('Konfirmasi'),
+                  content: Text('Yakin Menerima Informasi PPID?'),
+                  actions: [
+                    TextButton(
+                      child: Text('batal'),
+                      onPressed: () {
+                        Navigator.of(context).pop(); // Menutup dialog
+                      },
+                    ),
+                    TextButton(
+                      child: Text('OK'),
+                      onPressed: () {
+                        print("ID PPID == ${idppid}");
+                        PengajuanPPID.AccPPID(idppid).then((value) => {
+                              if (value.code == 200)
+                                {
+                                  ToastWidget.ToastInfo(
+                                      context,
+                                      "Terima Kasih telah menerima PPID",
+                                      "Terima Kasih"),
+
+                                  Navigator.of(context).pop(), // Menutup dialog
+                                  Navigator.of(context).pop(true),
+                                }
+                              else
+                                {print('gagal')}
+                            });
+                      },
+                    ),
+                  ],
+                );
+              },
+            );
+          } else if (stss == "deterima") {
+            ToastWidget.ToastInfo(context, "PPID telah disetujui", "Informasi");
+          } else {
+            ToastWidget.ToastInfo(context,
+                "Mohon tunngu pembuatan dokumen ppid", "Mohon Tungggu");
+          }
+        },
         child: ComponentTextButton("$buttonName"),
         style: ElevatedButton.styleFrom(minimumSize: Size.fromHeight(55.h)),
       ),

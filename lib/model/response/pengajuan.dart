@@ -54,6 +54,13 @@ class PengajuanPPID {
     return PengajuanPPID(code: dataa['code'], message: dataa['message']);
   }
 
+  static Future<PengajuanPPID> AccPPID(String? idppid) async {
+    Uri url = Uri.parse("http://${ApiPoint.BASE_URL}/api/pengajuan/accppid");
+    var HasilResponse = await http.post(url, body: {'id': idppid});
+    var data = json.decode(HasilResponse.body);
+    return PengajuanPPID(code: data['code'], message: data['message']);
+  }
+
   static Future<void> uploadFilePPID(File file) async {
     var uri =
         Uri.parse('http://${ApiPoint.BASE_URL}/api/pengajuan/uploadfileppid');

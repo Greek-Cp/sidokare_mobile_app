@@ -223,8 +223,14 @@ class _PageFormulirAspirasiState extends State<PageFormulirAspirasi> {
                 suffixIcon: GestureDetector(
                   onTap: () async {
                     // _pickFile();
-                    final FilePickerResult? result =
-                        await FilePicker.platform.pickFiles();
+                    final FilePickerResult? result = await FilePicker.platform
+                        .pickFiles(type: FileType.custom, allowedExtensions: [
+                      'pdf',
+                      'docx',
+                      'jpg',
+                      'jpeg',
+                      'png'
+                    ]);
 
                     if (result != null) {
                       _file = File(result.files.single.path!);

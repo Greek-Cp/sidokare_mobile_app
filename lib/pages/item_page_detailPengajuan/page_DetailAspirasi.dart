@@ -9,6 +9,7 @@ import 'package:provider/provider.dart';
 import 'package:sidokare_mobile_app/const/size.dart';
 import 'package:sidokare_mobile_app/model/response/get/model_jmlaspirasi.dart';
 import 'package:sidokare_mobile_app/model/response/get/model_jmlkeberatan.dart';
+import 'package:sidokare_mobile_app/model/response/pengajuan_aspirasi.dart';
 import 'package:sidokare_mobile_app/pages/item_page_detailPengajuan/page_DetailPengajuanPPID.dart';
 import 'package:sidokare_mobile_app/provider/provider_account.dart';
 
@@ -46,6 +47,8 @@ String namaButton({String? stss, String? jml, String? doc}) {
   if (stss == "revisi") {
     print("${jml} adalahh berapa");
     return "Revisi ${jml}";
+  } else if (stss == "diterima") {
+    return " ${doc.toString()}";
   } else if (stss != "selesai") {
     return " ${stss}";
   } else {
@@ -294,7 +297,9 @@ class _PageDetailAspirasiState extends State<PageDetailAspirasiiii> {
                           ),
                         ),
                         Visibility(
-                          visible: stts != "selesai" ? false : true,
+                          visible: stts == "selesai" || stts == "diterima"
+                              ? true
+                              : false,
                           child: ComponentTextDescriptionBawah(
                               "Silakan Download file , file akan tersimpan dalam device pada folder download"),
                         ),
@@ -325,6 +330,11 @@ class _PageDetailAspirasiState extends State<PageDetailAspirasiiii> {
                                     context,
                                     "Revisi sudah kedua kali, silahkan datang ke kantor Desa untuk mendapatkan informasi lebih lanjut",
                                     "Mohon Maaf ");
+                              } else if (stts == "diterima") {
+                                ToastWidget.ToastInfo(
+                                    context,
+                                    "Tidak dapat lagi mengajukan keberatan",
+                                    "Mohon Maaf");
                               } else {
                                 if (stts == "selesai") {
                                   print("ID ASPIRASI == ${idAspirasi}");
@@ -351,7 +361,7 @@ class _PageDetailAspirasiState extends State<PageDetailAspirasiiii> {
                                 backgroundColor: Colors.red),
                           ),
                         ),
-                        ButtonSelesai("Selesai")
+                        ButtonSelesai("Selesai", idAspirasi, stts)
                       ],
                     ),
                   ),
@@ -359,6 +369,78 @@ class _PageDetailAspirasiState extends State<PageDetailAspirasiiii> {
               },
             ));
       },
+    );
+  }
+}
+
+class ButtonSelesai extends StatelessWidget {
+  String? buttonName;
+  String? idaspirasi;
+  String? stss;
+
+  ButtonSelesai(this.buttonName, this.idaspirasi, this.stss);
+  @override
+  Widget build(BuildContext context) {
+    return _Button(context, buttonName, idaspirasi, stss);
+  }
+
+  Widget _Button(BuildContext context, String? buttonName, String? idaspirasi,
+      String? stss) {
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 5.h),
+      child: ElevatedButton(
+        onPressed: () {
+          if (stss == "selesai") {
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  title: Text('Konfirmasi'),
+                  content: Text('Yakin Menerima Informasi Tentang Keluhan?'),
+                  actions: [
+                    TextButton(
+                      child: Text('batal'),
+                      onPressed: () {
+                        Navigator.of(context).pop(); // Menutup dialog
+                      },
+                    ),
+                    TextButton(
+                      child: Text('OK'),
+                      onPressed: () {
+                        print("ID PPID == ${idaspirasi}");
+                        PengajuanAspirasi.AccAspirasi(idaspirasi)
+                            .then((value) => {
+                                  if (value.code == 200)
+                                    {
+                                      // ToastWidget.ToastInfo(
+                                      //     context,
+                                      //     "Terima Kasih telah menerima Keluhan",
+                                      //     "Terima Kasih"),
+
+                                      Navigator.of(context)
+                                          .pop(), // Menutup dialog
+                                      Navigator.of(context).pop(true),
+                                    }
+                                  else
+                                    {print('gagal')}
+                                });
+                      },
+                    ),
+                  ],
+                );
+              },
+            );
+          } else if (stss == "diterima") {
+            ToastWidget.ToastInfo(
+                context, "Aspirasi telah disetujui", "Informasi");
+          } else {
+            ToastWidget.ToastInfo(context,
+                "Mohon tunngu pembuatan dokumen ppid", "Mohon Tungggu");
+          }
+        },
+        child: ComponentTextButton("$buttonName"),
+        style: ElevatedButton.styleFrom(minimumSize: Size.fromHeight(55.h)),
+      ),
     );
   }
 }

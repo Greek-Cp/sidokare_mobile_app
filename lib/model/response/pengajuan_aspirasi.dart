@@ -25,6 +25,15 @@ class PengajuanAspirasi {
     return PengajuanAspirasi(code: dataa['code'], message: dataa['message']);
   }
 
+  static Future<PengajuanAspirasi> AccAspirasi(String? idkeluhan) async {
+    Uri url =
+        Uri.parse("http://${ApiPoint.BASE_URL}/api/pengajuan/accaspirasi");
+    var HasilResponse =
+        await http.post(url, body: {'id_pengajuan_aspirasi': idkeluhan});
+    var data = json.decode(HasilResponse.body);
+    return PengajuanAspirasi(code: data['code'], message: data['message']);
+  }
+
   static Future<void> uploadFileAspirasi(File file) async {
     var uri = Uri.parse(
         'http://${ApiPoint.BASE_URL}/api/pengajuan/uploadfileaspirasi');
