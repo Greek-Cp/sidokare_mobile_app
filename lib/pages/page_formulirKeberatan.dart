@@ -8,6 +8,7 @@ import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:sidokare_mobile_app/component/LoadingComponent.dart';
 import 'package:sidokare_mobile_app/component/Toast.dart';
 import 'package:sidokare_mobile_app/const/size.dart';
 import 'package:sidokare_mobile_app/model/response/keberatan.dart';
@@ -43,6 +44,8 @@ class _PageFormulirKeberatanPPIDState extends State<PageFormulirKeberatanPPID> {
     super.initState();
     // selectedDate = DateTime.now();
   }
+
+  bool statusPengajuan = false;
 
   final List<String> listDusun = ['Sidokare', 'SidoMaju', 'SidoSido'];
   final List<String> listKategoriPenolakan = [
@@ -92,165 +95,201 @@ class _PageFormulirKeberatanPPIDState extends State<PageFormulirKeberatanPPID> {
     // TODO: implement build
     return ScreenUtilInit(
       builder: (context, child) {
-        return Scaffold(
-          appBar: AppBar(
-            elevation: 0,
-            title: Text(
-              "HalamaN keberatan",
-              style:
-                  TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
-            ),
-            iconTheme: IconThemeData(color: Colors.black),
-            centerTitle: true,
-            backgroundColor: Colors.white,
-          ),
-          body: Form(
-            key: _formKey,
-            child: ListView(
-              children: [
-                SizedBox(
-                  height: 20,
+        return statusPengajuan == true
+            ? LoadingComponent(
+                prosesName: "Keberatan",
+              )
+            : Scaffold(
+                appBar: AppBar(
+                  elevation: 0,
+                  title: Text(
+                    "HalamaN keberatan",
+                    style: TextStyle(
+                        color: Colors.black, fontWeight: FontWeight.bold),
+                  ),
+                  iconTheme: IconThemeData(color: Colors.black),
+                  centerTitle: true,
+                  backgroundColor: Colors.white,
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                  child: SizedBox(
-                      child: TextFieldImport.TextForm(
-                          readyOnlyTydack: true,
-                          text_kontrol: textEditingControllerNamaLengkap,
-                          hintText: "Masukkan Nama Anda",
-                          labelName: "Nama Lengkap",
-                          pesanValidasi: "Nama")),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                  child: SizedBox(
-                      child: TextFieldImport.TextForm(
-                          readyOnlyTydack: true,
-                          text_kontrol: textEditingControllerNIK,
-                          hintText: "Masukan NIK Anda",
-                          labelName: "NIK",
-                          pesanValidasi: "NIK")),
-                ),
-                GetLokasiNow(
-                    labelName: "Alamat",
-                    pesanValidasi: "Alamat",
-                    text_kontrol: getAlamat,
-                    hintText: "Masukkan Alamat"),
-                customDropDownLokasiAsalPelapor(
-                    listItem: listKategoriPenolakan,
-                    namaLabel: "Asal Keberatan",
-                    hintText: "pilih kategori",
-                    errorKosong: "keberatan",
-                    randomlabel: randomValueKategoriPenolakan),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                  child: SizedBox(
-                      child: TextFieldImport.TextFormMultiLine(
-                          text_kontrol: getCatatan,
-                          hintText: "Catatan Tambahan",
-                          labelName: "Catatan Tambahan",
-                          pesanValidasi: "Isi Laporan")),
-                ),
-                SizedBox(
-                  height: 10.h,
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                  child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.redAccent,
-                          minimumSize: Size.fromHeight(55.h)),
-                      onPressed: () {
-                        if (_formKey.currentState!.validate()) {
-                          print("ID Kategori From Detail == ${id}");
-                          print("jneis layanan ${kategori}");
-                          print("ID akun == ${akunDek}");
-                          print("Alamat User adalah == ${getAlamat!.text}");
-                          print("Catatan Tambahan == ${getCatatan!.text}");
-                          if (kategori == "ppid") {
-                            KeberatanStatus.InsertKeberatanPPID(
-                                    id_akun: akunDek.toString(),
-                                    alamat: getAlamat!.text,
-                                    catatan: getCatatan!.text,
-                                    alasan:
-                                        randomValueKategoriPenolakan.toString(),
-                                    idppid: id.toString())
-                                .then((value) => {
-                                      if (value.code == "200")
-                                        {
-                                          ToastWidget.ToastSucces(
-                                              context,
-                                              "Berhasil Mengajukan Keberatan PPID",
-                                              "Selamatt")
-                                        }
-                                      else
-                                        {print("kok sini")}
-                                    });
-                          } else if (kategori == "aspirasi") {
-                            print("halo dek");
-                            KeberatanStatus.InsertKeberatanAspirasi(
-                                    id_akun: akunDek.toString(),
-                                    alamat: getAlamat!.text,
-                                    catatan: getCatatan!.text,
-                                    alasan:
-                                        randomValueKategoriPenolakan.toString(),
-                                    id_aspirasi: id.toString())
-                                .then((value) => {
-                                      if (value.code == "200")
-                                        {
-                                          ToastWidget.ToastSucces(
-                                              context,
-                                              "Berhasil Mengajukan Keberatan Aspirasi",
-                                              "Selamatt")
-                                        }
-                                      else
-                                        {print("kok sini")}
-                                    });
-                          } else {
-                            print("Keluhan Disini");
-                            KeberatanStatus.InsertKeberatanKeluhan(
-                                    id_akun: akunDek.toString(),
-                                    alamat: getAlamat!.text,
-                                    catatan: getCatatan!.text,
-                                    alasan:
-                                        randomValueKategoriPenolakan.toString(),
-                                    id_keluhan: id.toString())
-                                .then((value) => {
-                                      if (value.code == "200")
-                                        {
-                                          ToastWidget.ToastSucces(
-                                              context,
-                                              "Berhasil Mengajukan Keberatan Keluhan",
-                                              "Selamatt")
-                                        }
-                                      else
-                                        {print("kok sini")}
-                                    });
-                          }
-                        }
+                body: Form(
+                  key: _formKey,
+                  child: ListView(
+                    children: [
+                      SizedBox(
+                        height: 20,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                        child: SizedBox(
+                            child: TextFieldImport.TextForm(
+                                readyOnlyTydack: true,
+                                text_kontrol: textEditingControllerNamaLengkap,
+                                hintText: "Masukkan Nama Anda",
+                                labelName: "Nama Lengkap",
+                                pesanValidasi: "Nama")),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                        child: SizedBox(
+                            child: TextFieldImport.TextForm(
+                                readyOnlyTydack: true,
+                                text_kontrol: textEditingControllerNIK,
+                                hintText: "Masukan NIK Anda",
+                                labelName: "NIK",
+                                pesanValidasi: "NIK")),
+                      ),
+                      GetLokasiNow(
+                          labelName: "Alamat",
+                          pesanValidasi: "Alamat",
+                          text_kontrol: getAlamat,
+                          hintText: "Masukkan Alamat"),
+                      customDropDownLokasiAsalPelapor(
+                          listItem: listKategoriPenolakan,
+                          namaLabel: "Asal Keberatan",
+                          hintText: "pilih kategori",
+                          errorKosong: "keberatan",
+                          randomlabel: randomValueKategoriPenolakan),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                        child: SizedBox(
+                            child: TextFieldImport.TextFormMultiLine(
+                                text_kontrol: getCatatan,
+                                hintText: "Catatan Tambahan",
+                                labelName: "Catatan Tambahan",
+                                pesanValidasi: "Isi Laporan")),
+                      ),
+                      SizedBox(
+                        height: 10.h,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                        child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.redAccent,
+                                minimumSize: Size.fromHeight(55.h)),
+                            onPressed: () {
+                              if (_formKey.currentState!.validate()) {
+                                print("ID Kategori From Detail == ${id}");
+                                print("jneis layanan ${kategori}");
+                                print("ID akun == ${akunDek}");
+                                print(
+                                    "Alamat User adalah == ${getAlamat!.text}");
+                                print(
+                                    "Catatan Tambahan == ${getCatatan!.text}");
+                                if (kategori == "ppid") {
+                                  KeberatanStatus.InsertKeberatanPPID(
+                                          id_akun: akunDek.toString(),
+                                          alamat: getAlamat!.text,
+                                          catatan: getCatatan!.text,
+                                          alasan: randomValueKategoriPenolakan
+                                              .toString(),
+                                          idppid: id.toString())
+                                      .then((value) => {
+                                            setState(() {
+                                              statusPengajuan = true;
+                                            }),
+                                            if (value.code == "200")
+                                              {
+                                                Navigator.popAndPushNamed(
+                                                    context,
+                                                    BerhasilBuatLaporan
+                                                        .routeName
+                                                        .toString(),
+                                                    arguments:
+                                                        akunDek.toString()),
+                                                ToastWidget.ToastSucces(
+                                                    context,
+                                                    "Berhasil Mengajukan Keberatan PPID",
+                                                    "Selamatt")
+                                              }
+                                            else
+                                              {print("kok sini")}
+                                          });
+                                } else if (kategori == "aspirasi") {
+                                  print("halo dek");
+                                  KeberatanStatus.InsertKeberatanAspirasi(
+                                          id_akun: akunDek.toString(),
+                                          alamat: getAlamat!.text,
+                                          catatan: getCatatan!.text,
+                                          alasan: randomValueKategoriPenolakan
+                                              .toString(),
+                                          id_aspirasi: id.toString())
+                                      .then((value) => {
+                                            setState(() {
+                                              statusPengajuan = true;
+                                            }),
+                                            if (value.code == "200")
+                                              {
+                                                Navigator.popAndPushNamed(
+                                                    context,
+                                                    BerhasilBuatLaporan
+                                                        .routeName
+                                                        .toString(),
+                                                    arguments:
+                                                        akunDek.toString()),
+                                                ToastWidget.ToastSucces(
+                                                    context,
+                                                    "Berhasil Mengajukan Keberatan Aspirasi",
+                                                    "Selamatt")
+                                              }
+                                            else
+                                              {print("kok sini")}
+                                          });
+                                } else {
+                                  print("Keluhan Disini");
+                                  KeberatanStatus.InsertKeberatanKeluhan(
+                                          id_akun: akunDek.toString(),
+                                          alamat: getAlamat!.text,
+                                          catatan: getCatatan!.text,
+                                          alasan: randomValueKategoriPenolakan
+                                              .toString(),
+                                          id_keluhan: id.toString())
+                                      .then((value) => {
+                                            setState(() {
+                                              statusPengajuan = true;
+                                            }),
+                                            if (value.code == "200")
+                                              {
+                                                Navigator.popAndPushNamed(
+                                                    context,
+                                                    BerhasilBuatLaporan
+                                                        .routeName
+                                                        .toString(),
+                                                    arguments:
+                                                        akunDek.toString()),
+                                                ToastWidget.ToastSucces(
+                                                    context,
+                                                    "Berhasil Mengajukan Keberatan Keluhan",
+                                                    "Selamatt")
+                                              }
+                                            else
+                                              {print("kok sini")}
+                                          });
+                                }
+                              }
 
-                        // print(
-                        //     "Asal Laporan : ${randomValueAsalPelapor.toString()}");
-                        // print("Dusun : ${randomValueKejadianDusun.toString()}");
-                        // print(
-                        //     "Kategori Laporan : ${randomValueKategoriLaporan.toString()}");
-                        // print("ID AKUN :: ${54}");
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: Text(
-                          "Ajukan Keberatan",
-                          style: TextStyle(fontSize: size.textButton.sp),
-                        ),
-                      )),
+                              // print(
+                              //     "Asal Laporan : ${randomValueAsalPelapor.toString()}");
+                              // print("Dusun : ${randomValueKejadianDusun.toString()}");
+                              // print(
+                              //     "Kategori Laporan : ${randomValueKategoriLaporan.toString()}");
+                              // print("ID AKUN :: ${54}");
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: Text(
+                                "Ajukan Keberatan",
+                                style: TextStyle(fontSize: size.textButton.sp),
+                              ),
+                            )),
+                      ),
+                      SizedBox(
+                        height: 80.h,
+                      )
+                    ],
+                  ),
                 ),
-                SizedBox(
-                  height: 80.h,
-                )
-              ],
-            ),
-          ),
-        );
+              );
       },
     );
   }

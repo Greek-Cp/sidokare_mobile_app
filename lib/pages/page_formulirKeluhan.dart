@@ -8,6 +8,7 @@ import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:sidokare_mobile_app/component/LoadingComponent.dart';
 import 'package:sidokare_mobile_app/component/Toast.dart';
 import 'package:sidokare_mobile_app/const/size.dart';
 import 'package:sidokare_mobile_app/model/response/pengajuan_keluhan.dart';
@@ -57,6 +58,9 @@ class _PageFormulirPengajuanKeluhanState
     'Kewarganegaraan',
     'Topik lainnya'
   ];
+
+  bool statusPengajuan = false;
+
   final List<String> RT = [
     '001',
     '002',
@@ -100,186 +104,197 @@ class _PageFormulirPengajuanKeluhanState
     // TODO: implement build
     return ScreenUtilInit(
       builder: (context, child) {
-        return Scaffold(
-          appBar: AppBar(
-            elevation: 0,
-            title: Text(
-              "Formulir Pengajuan Keluhan",
-              style:
-                  TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
-            ),
-            iconTheme: IconThemeData(color: Colors.black),
-            centerTitle: true,
-            backgroundColor: Colors.white,
-          ),
-          body: Form(
-            key: _formKey,
-            child: ListView(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                  child: SizedBox(
-                      child: TextFieldImport.TextForm(
-                          readyOnlyTydack: true,
-                          text_kontrol: textEditingControllerNamaLengkap,
-                          hintText: "Masukkan Nama Anda",
-                          labelName: "Nama Lengkap",
-                          pesanValidasi: "Nama")),
+        return statusPengajuan == true
+            ? LoadingComponent(
+                prosesName: "Keluhan",
+              )
+            : Scaffold(
+                appBar: AppBar(
+                  elevation: 0,
+                  title: Text(
+                    "Formulir Pengajuan Keluhan",
+                    style: TextStyle(
+                        color: Colors.black, fontWeight: FontWeight.bold),
+                  ),
+                  iconTheme: IconThemeData(color: Colors.black),
+                  centerTitle: true,
+                  backgroundColor: Colors.white,
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                  child: SizedBox(
-                      child: TextFieldImport.TextForm(
-                          readyOnlyTydack: true,
-                          text_kontrol: textEditingControllerNIK,
-                          hintText: "Masukan NIK Anda",
-                          labelName: "NIK",
-                          pesanValidasi: "NIK")),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                  child: SizedBox(
-                      child: TextFieldImport.TextForm(
-                          text_kontrol: textEditingControllerJudulLaporan,
-                          hintText: "Masukkan Judul Keluhan",
-                          labelName: "Judul Keluhan",
-                          pesanValidasi: "Judul Laporan")),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                  child: SizedBox(
-                      child: TextFieldImport.TextFormMultiLine(
-                          text_kontrol: textEditingControllerIsiLaporan,
-                          hintText: "Masukkan Isi Keluhan",
-                          labelName: "Isi Keluhan",
-                          pesanValidasi: "Isi Keluhan")),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                  child: SizedBox(
-                      child: TextFieldImport.TextForm(
-                          readyOnlyTydack: true,
-                          text_kontrol: textEditingControllerAsalPelapor,
+                body: Form(
+                  key: _formKey,
+                  child: ListView(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                        child: SizedBox(
+                            child: TextFieldImport.TextForm(
+                                readyOnlyTydack: true,
+                                text_kontrol: textEditingControllerNamaLengkap,
+                                hintText: "Masukkan Nama Anda",
+                                labelName: "Nama Lengkap",
+                                pesanValidasi: "Nama")),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                        child: SizedBox(
+                            child: TextFieldImport.TextForm(
+                                readyOnlyTydack: true,
+                                text_kontrol: textEditingControllerNIK,
+                                hintText: "Masukan NIK Anda",
+                                labelName: "NIK",
+                                pesanValidasi: "NIK")),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                        child: SizedBox(
+                            child: TextFieldImport.TextForm(
+                                text_kontrol: textEditingControllerJudulLaporan,
+                                hintText: "Masukkan Judul Keluhan",
+                                labelName: "Judul Keluhan",
+                                pesanValidasi: "Judul Laporan")),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                        child: SizedBox(
+                            child: TextFieldImport.TextFormMultiLine(
+                                text_kontrol: textEditingControllerIsiLaporan,
+                                hintText: "Masukkan Isi Keluhan",
+                                labelName: "Isi Keluhan",
+                                pesanValidasi: "Isi Keluhan")),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                        child: SizedBox(
+                            child: TextFieldImport.TextForm(
+                                readyOnlyTydack: true,
+                                text_kontrol: textEditingControllerAsalPelapor,
+                                hintText: "Masukkan Alamat",
+                                labelName: "Asal Pelapor",
+                                pesanValidasi: "Asal Pelapor")),
+                      ),
+                      DropdownRTRW(
+                          listItemRT: RT,
+                          listItemRW: RW,
+                          namaLabelRT: "RT",
+                          namaLabelRW: "RW",
+                          hintTextRT: "Pilih RT",
+                          hintTextRW: "Pilih RW",
+                          randomlabelRT: randomValueRT,
+                          randomlabelRW: randomValueRT,
+                          errorKosong: "harap pilih"),
+                      GetLokasiNow(
+                          labelName: "Lokasi Kejadian",
                           hintText: "Masukkan Alamat",
-                          labelName: "Asal Pelapor",
-                          pesanValidasi: "Asal Pelapor")),
+                          pesanValidasi: "Harap Isi",
+                          text_kontrol: getMap),
+                      // customDropDownLokasiKejadian(
+                      //     listItem: listDusun,
+                      //     namaLabel: "Lokasi Kejadian",
+                      //     hintText: "Pilih Dusun",
+                      //     errorKosong: "Kejadian",
+                      //     randomlabel: randomValueKejadianDusun),
+                      customDropDownKategoriLaporan(
+                        listItem: listKategoriLaporan,
+                        namaLabel: "Kategori Laporan",
+                        hintText: "Pilih Kategori",
+                        errorKosong: "Laporan",
+                        randomlabel: randomValueKategoriLaporan,
+                      ),
+                      PilihTanggal("Tanggal Kejadian", "Kejadian",
+                          controllerDate!, "Masukkan Tanggal"),
+                      UpfilePendukung("Upload File Pendukung", "gatau", fileUp!,
+                          "Silakan Upload File"),
+                      SizedBox(
+                        height: 10.h,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                        child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor: ListColor.warnaBiruSidoKare,
+                                minimumSize: Size.fromHeight(55.h)),
+                            onPressed: () {
+                              String pp =
+                                  DateFormat('yyyy-MM-dd').format(selectedDate);
+                              print("tanggal nya adalah ${pp}");
+                              print(
+                                  "RT/RW == ${randomValueRT} / ${randomValueRW}");
+                              print(
+                                  "judul Laporan : ${textEditingControllerJudulLaporan!.text}");
+                              print(
+                                  "isi Laporan : ${textEditingControllerIsiLaporan!.text}");
+                              print(
+                                  "Kategori Laporan : ${randomValueKategoriLaporan.toString()}");
+                              print("ID AKUN :: ${idAkunnn}");
+                              print("Lokasi kejadian == ${getMap!.text}");
+                              print(
+                                  "Asal Pelapor == ${textEditingControllerAsalPelapor!.text}");
+                              if (_formKey.currentState!.validate()) {
+                                PengajuhanKeluhan.InsertDataKeluhan(
+                                        idAkunnn.toString(),
+                                        textEditingControllerJudulLaporan!.text,
+                                        textEditingControllerIsiLaporan!.text,
+                                        textEditingControllerAsalPelapor!
+                                            .text, //Asal
+                                        getMap!.text, // Lokasi Kejadian
+                                        randomValueKategoriLaporan.toString(),
+                                        pp.toString(),
+                                        randomValueRT.toString(),
+                                        randomValueRW.toString(),
+                                        fileUp!.text.toString())
+                                    .then((value) => {
+                                          setState(() {
+                                            statusPengajuan = true;
+                                          }),
+                                          if (value.code == 200)
+                                            {
+                                              print("jelase kenek"),
+                                              if (fileUp!.text.toString() != "")
+                                                {
+                                                  PengajuhanKeluhan
+                                                          .uploadFileKeluhan(
+                                                              _file!)
+                                                      .then((value) => {
+                                                            Navigator.popAndPushNamed(
+                                                                context,
+                                                                BerhasilBuatLaporan
+                                                                    .routeName
+                                                                    .toString(),
+                                                                arguments: idAkunnn
+                                                                    .toString())
+                                                          })
+                                                }
+                                              else
+                                                {
+                                                  Navigator.popAndPushNamed(
+                                                      context,
+                                                      BerhasilBuatLaporan
+                                                          .routeName
+                                                          .toString(),
+                                                      arguments:
+                                                          idAkunnn.toString())
+                                                }
+                                            }
+                                          else
+                                            {print("gagal banh")}
+                                        });
+                              }
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: Text(
+                                "Ajukan Keluhan",
+                                style: TextStyle(fontSize: size.textButton.sp),
+                              ),
+                            )),
+                      ),
+                      SizedBox(
+                        height: 80.h,
+                      )
+                    ],
+                  ),
                 ),
-                DropdownRTRW(
-                    listItemRT: RT,
-                    listItemRW: RW,
-                    namaLabelRT: "RT",
-                    namaLabelRW: "RW",
-                    hintTextRT: "Pilih RT",
-                    hintTextRW: "Pilih RW",
-                    randomlabelRT: randomValueRT,
-                    randomlabelRW: randomValueRT,
-                    errorKosong: "harap pilih"),
-                GetLokasiNow(
-                    labelName: "Lokasi Kejadian",
-                    hintText: "Masukkan Alamat",
-                    pesanValidasi: "Harap Isi",
-                    text_kontrol: getMap),
-                // customDropDownLokasiKejadian(
-                //     listItem: listDusun,
-                //     namaLabel: "Lokasi Kejadian",
-                //     hintText: "Pilih Dusun",
-                //     errorKosong: "Kejadian",
-                //     randomlabel: randomValueKejadianDusun),
-                customDropDownKategoriLaporan(
-                  listItem: listKategoriLaporan,
-                  namaLabel: "Kategori Laporan",
-                  hintText: "Pilih Kategori",
-                  errorKosong: "Laporan",
-                  randomlabel: randomValueKategoriLaporan,
-                ),
-                PilihTanggal("Tanggal Kejadian", "Kejadian", controllerDate!,
-                    "Masukkan Tanggal"),
-                UpfilePendukung("Upload File Pendukung", "gatau", fileUp!,
-                    "Silakan Upload File"),
-                SizedBox(
-                  height: 10.h,
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                  child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                          backgroundColor: ListColor.warnaBiruSidoKare,
-                          minimumSize: Size.fromHeight(55.h)),
-                      onPressed: () {
-                        String pp =
-                            DateFormat('yyyy-MM-dd').format(selectedDate);
-                        print("tanggal nya adalah ${pp}");
-                        print("RT/RW == ${randomValueRT} / ${randomValueRW}");
-                        print(
-                            "judul Laporan : ${textEditingControllerJudulLaporan!.text}");
-                        print(
-                            "isi Laporan : ${textEditingControllerIsiLaporan!.text}");
-                        print(
-                            "Kategori Laporan : ${randomValueKategoriLaporan.toString()}");
-                        print("ID AKUN :: ${idAkunnn}");
-                        print("Lokasi kejadian == ${getMap!.text}");
-                        print(
-                            "Asal Pelapor == ${textEditingControllerAsalPelapor!.text}");
-
-                        if (_formKey.currentState!.validate()) {
-                          PengajuhanKeluhan.InsertDataKeluhan(
-                                  idAkunnn.toString(),
-                                  textEditingControllerJudulLaporan!.text,
-                                  textEditingControllerIsiLaporan!.text,
-                                  textEditingControllerAsalPelapor!.text, //Asal
-                                  getMap!.text, // Lokasi Kejadian
-                                  randomValueKategoriLaporan.toString(),
-                                  pp.toString(),
-                                  randomValueRT.toString(),
-                                  randomValueRW.toString(),
-                                  fileUp!.text.toString())
-                              .then((value) => {
-                                    if (value.code == 200)
-                                      {
-                                        print("jelase kenek"),
-                                        if (fileUp!.text.toString() != "")
-                                          {
-                                            PengajuhanKeluhan.uploadFileKeluhan(
-                                                    _file!)
-                                                .then((value) => {
-                                                      Navigator.pushNamed(
-                                                          context,
-                                                          BerhasilBuatLaporan
-                                                              .routeName
-                                                              .toString(),
-                                                          arguments: idAkunnn
-                                                              .toString())
-                                                    })
-                                          }
-                                        else
-                                          {
-                                            Navigator.pushNamed(
-                                                context,
-                                                BerhasilBuatLaporan.routeName
-                                                    .toString(),
-                                                arguments: idAkunnn.toString())
-                                          }
-                                      }
-                                    else
-                                      {print("gagal banh")}
-                                  });
-                        }
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: Text(
-                          "Ajukan Keluhan",
-                          style: TextStyle(fontSize: size.textButton.sp),
-                        ),
-                      )),
-                ),
-                SizedBox(
-                  height: 80.h,
-                )
-              ],
-            ),
-          ),
-        );
+              );
       },
     );
   }

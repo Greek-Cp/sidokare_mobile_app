@@ -8,6 +8,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
+import 'package:sidokare_mobile_app/component/LoadingComponent.dart';
 
 import 'package:sidokare_mobile_app/component/Toast.dart';
 import 'package:sidokare_mobile_app/component/text_description.dart';
@@ -71,6 +72,8 @@ class _PageFormulirPengajuanState extends State<PageFormulirPengajuanPPID> {
   static String? randomValueRW = "001";
 
   bool isVisibleText = false;
+  bool statusPengajuan = false;
+
   static String boolq = "";
 
   @override
@@ -123,217 +126,235 @@ class _PageFormulirPengajuanState extends State<PageFormulirPengajuanPPID> {
     // TODO: implement build
     return ScreenUtilInit(
       builder: (context, child) {
-        return Scaffold(
-          appBar: AppBar(
-            elevation: 0,
-            title: Text(
-              "Formulir Pengajuan PPID",
-              style:
-                  TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
-            ),
-            iconTheme: IconThemeData(color: Colors.black),
-            centerTitle: true,
-            backgroundColor: Colors.white,
-          ),
-          body: Form(
-            key: _formKey,
-            child: ListView(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                  child: SizedBox(
-                      child: TextFieldImport.TextForm(
-                          readyOnlyTydack: true,
-                          text_kontrol: textEditingControllerNamaLengkap,
-                          hintText: "Masukkan Nama Anda",
-                          labelName: "Nama",
-                          pesanValidasi: "Nama")),
+        return statusPengajuan == true
+            ? LoadingComponent(
+                prosesName: "PPID",
+              )
+            : Scaffold(
+                appBar: AppBar(
+                  elevation: 0,
+                  title: Text(
+                    "Formulir Pengajuan PPID",
+                    style: TextStyle(
+                        color: Colors.black, fontWeight: FontWeight.bold),
+                  ),
+                  iconTheme: IconThemeData(color: Colors.black),
+                  centerTitle: true,
+                  backgroundColor: Colors.white,
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                  child: SizedBox(
-                      child: TextFieldImport.TextForm(
-                          readyOnlyTydack: true,
-                          text_kontrol: textEditingControllerNIK,
-                          hintText: "Masukan Nik Anda",
-                          labelName: "NIK",
-                          pesanValidasi: "NIK")),
+                body: Form(
+                  key: _formKey,
+                  child: ListView(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                        child: SizedBox(
+                            child: TextFieldImport.TextForm(
+                                readyOnlyTydack: true,
+                                text_kontrol: textEditingControllerNamaLengkap,
+                                hintText: "Masukkan Nama Anda",
+                                labelName: "Nama",
+                                pesanValidasi: "Nama")),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                        child: SizedBox(
+                            child: TextFieldImport.TextForm(
+                                readyOnlyTydack: true,
+                                text_kontrol: textEditingControllerNIK,
+                                hintText: "Masukan Nik Anda",
+                                labelName: "NIK",
+                                pesanValidasi: "NIK")),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: TextFieldImport.TextFormTelp(
+                            labelName: "Nomor Telepon",
+                            length: 12,
+                            text_kontrol: textEditingControllerNomorTelepon,
+                            hintText: "Masukkan Nomor Telepon",
+                            pesanValidasi: "Nomor Telepon"),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 20),
+                        child: TextFieldImport.TextFormEmail(
+                            labelName: "Email",
+                            text_kontrol: textEditingControllerEmail,
+                            hintText: "Masukkan Email",
+                            pesanValidasi: "Email"),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                        child: SizedBox(
+                            child: TextFieldImport.TextForm(
+                                text_kontrol: textEditingControllerJudulLaporan,
+                                hintText: "Masukkan Judul Laporan",
+                                labelName: "Judul Laporan",
+                                pesanValidasi: "Judul Laporan")),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                        child: SizedBox(
+                            child: TextFieldImport.TextFormMultiLine(
+                                text_kontrol: textEditingControllerIsiLaporan,
+                                hintText: "Masukkan Isi Laporan",
+                                labelName: "Isi Laporan",
+                                pesanValidasi: "Isi Laporan")),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 20.0),
+                        child: TextFieldImport.TextForm(
+                            readyOnlyTydack: true,
+                            text_kontrol: textEditingControllerAsalPelapor,
+                            labelName: "Alamat",
+                            pesanValidasi: "Alamat"),
+                      ),
+                      // customDropDownDusun(
+                      //     listItem: listDusun,
+                      //     namaLabel: "Asal Pelapor",
+                      //     hintText: "Pilih Dusun",
+                      //     randomlabel: randomValueDusun,
+                      //     errorKosong: "Dusun"),
+                      DropdownRTRW(
+                          listItemRT: RT,
+                          listItemRW: RW,
+                          namaLabelRT: "RT",
+                          namaLabelRW: "RW",
+                          hintTextRT: "Pilih RT",
+                          hintTextRW: "Pilih RW",
+                          errorKosong: "RT / RW",
+                          randomlabelRT: randomValueRT,
+                          randomlabelRW: randomValueRW),
+                      customDropDownPPID(
+                        listItem: listPPID,
+                        namaLabel: "Kategori PPID",
+                        hintText: randomValuePPID,
+                        errorKosong: "PPID",
+                        // randomlabel: randomValuePPID,
+                      ),
+                      UpfilePendukung("Upload File Pendukung", "gatau", fileUp!,
+                          sttss(stss: randomValuePPID.toString())),
+                      // Padding(
+                      //   padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                      //   child: Visibility(
+                      //       visible: true,
+                      //       child: Text(
+                      //           " Catatan : ${textBeritahu(cocokne: randomValuePPID)} ")),
+                      // ),
+                      SizedBox(
+                        height: 10.h,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                        child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor: ListColor.warnaBiruSidoKare,
+                                minimumSize: Size.fromHeight(55.h)),
+                            onPressed: () => {
+                                  print("Jenis PPID == ${randomValuePPID}"),
+                                  print(
+                                      "Dusun Terpilih == ${randomValueDusun}"),
+                                  print("IdAkunnyaa == ${idAkunnn.toString()}"),
+                                  print(
+                                      "nama == ${textEditingControllerNamaLengkap!.text}"),
+                                  print(
+                                      "Telp ${textEditingControllerNomorTelepon!.text}"),
+                                  print(
+                                      "email == ${textEditingControllerEmail!.text}"),
+                                  print("RT == ${randomValueRT}"),
+                                  print("RW == ${randomValueRW}"),
+                                  setState(() {
+                                    statusPengajuan = true;
+                                  }),
+                                  if (_formKey.currentState!.validate())
+                                    {
+                                      print("Tes file :: " +
+                                          fileUp!.text.toString()),
+                                      PengajuanPPID.InsertDataPPID(
+                                              idAkun: idAkunnn.toString(),
+                                              nama_pelapor:
+                                                  textEditingControllerNamaLengkap!
+                                                      .text,
+                                              noTelp:
+                                                  textEditingControllerNomorTelepon!
+                                                      .text
+                                                      .toString(),
+                                              emailUser:
+                                                  textEditingControllerEmail!
+                                                      .text
+                                                      .toString(),
+                                              JudulLaporan:
+                                                  textEditingControllerJudulLaporan!
+                                                      .text,
+                                              isiLaporan:
+                                                  textEditingControllerIsiLaporan!
+                                                      .text,
+                                              asalLaporan: "Sidokare",
+                                              tujuan:
+                                                  "pokok kenek ndisek lah masbro",
+                                              RT: randomValueRT.toString(),
+                                              RW: randomValueRW.toString(),
+                                              kategoriPPID:
+                                                  randomValuePPID.toString(),
+                                              File: fileUp!.text.toString())
+                                          .then((value) => {
+                                                setState(() {
+                                                  statusPengajuan = true;
+                                                }),
+                                                if (value.code == 200)
+                                                  {
+                                                    print("Kenek paleng"),
+                                                    if (fileUp!.text
+                                                            .toString() !=
+                                                        "")
+                                                      {
+                                                        PengajuanPPID
+                                                                .uploadFilePPID(
+                                                                    _file!)
+                                                            .then((value) => {
+                                                                  Navigator.popAndPushNamed(
+                                                                      context,
+                                                                      BerhasilBuatLaporan
+                                                                          .routeName
+                                                                          .toString(),
+                                                                      arguments:
+                                                                          idAkunnn
+                                                                              .toString())
+                                                                }),
+                                                      }
+                                                    else
+                                                      {
+                                                        Navigator.pushNamed(
+                                                            context,
+                                                            BerhasilBuatLaporan
+                                                                .routeName
+                                                                .toString(),
+                                                            arguments: idAkunnn
+                                                                .toString())
+                                                      },
+                                                  }
+                                                else
+                                                  {print("yahaha gagal")}
+                                              })
+                                    }
+                                  else
+                                    {}
+                                },
+                            child: Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: Text(
+                                "Ajukan PPID",
+                                style: TextStyle(fontSize: size.textButton.sp),
+                              ),
+                            )),
+                      ),
+                      SizedBox(
+                        height: 80.h,
+                      )
+                    ],
+                  ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: TextFieldImport.TextFormTelp(
-                      labelName: "Nomor Telepon",
-                      length: 12,
-                      text_kontrol: textEditingControllerNomorTelepon,
-                      hintText: "Masukkan Nomor Telepon",
-                      pesanValidasi: "Nomor Telepon"),
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 20),
-                  child: TextFieldImport.TextFormEmail(
-                      labelName: "Email",
-                      text_kontrol: textEditingControllerEmail,
-                      hintText: "Masukkan Email",
-                      pesanValidasi: "Email"),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                  child: SizedBox(
-                      child: TextFieldImport.TextForm(
-                          text_kontrol: textEditingControllerJudulLaporan,
-                          hintText: "Masukkan Judul Laporan",
-                          labelName: "Judul Laporan",
-                          pesanValidasi: "Judul Laporan")),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                  child: SizedBox(
-                      child: TextFieldImport.TextFormMultiLine(
-                          text_kontrol: textEditingControllerIsiLaporan,
-                          hintText: "Masukkan Isi Laporan",
-                          labelName: "Isi Laporan",
-                          pesanValidasi: "Isi Laporan")),
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 20.0),
-                  child: TextFieldImport.TextForm(
-                      readyOnlyTydack: true,
-                      text_kontrol: textEditingControllerAsalPelapor,
-                      labelName: "Alamat",
-                      pesanValidasi: "Alamat"),
-                ),
-                // customDropDownDusun(
-                //     listItem: listDusun,
-                //     namaLabel: "Asal Pelapor",
-                //     hintText: "Pilih Dusun",
-                //     randomlabel: randomValueDusun,
-                //     errorKosong: "Dusun"),
-                DropdownRTRW(
-                    listItemRT: RT,
-                    listItemRW: RW,
-                    namaLabelRT: "RT",
-                    namaLabelRW: "RW",
-                    hintTextRT: "Pilih RT",
-                    hintTextRW: "Pilih RW",
-                    errorKosong: "RT / RW",
-                    randomlabelRT: randomValueRT,
-                    randomlabelRW: randomValueRW),
-                customDropDownPPID(
-                  listItem: listPPID,
-                  namaLabel: "Kategori PPID",
-                  hintText: randomValuePPID,
-                  errorKosong: "PPID",
-                  // randomlabel: randomValuePPID,
-                ),
-                UpfilePendukung("Upload File Pendukung", "gatau", fileUp!,
-                    sttss(stss: randomValuePPID.toString())),
-                // Padding(
-                //   padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                //   child: Visibility(
-                //       visible: true,
-                //       child: Text(
-                //           " Catatan : ${textBeritahu(cocokne: randomValuePPID)} ")),
-                // ),
-                SizedBox(
-                  height: 10.h,
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                  child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                          backgroundColor: ListColor.warnaBiruSidoKare,
-                          minimumSize: Size.fromHeight(55.h)),
-                      onPressed: () => {
-                            print("Jenis PPID == ${randomValuePPID}"),
-                            print("Dusun Terpilih == ${randomValueDusun}"),
-                            print("IdAkunnyaa == ${idAkunnn.toString()}"),
-                            print(
-                                "nama == ${textEditingControllerNamaLengkap!.text}"),
-                            print(
-                                "Telp ${textEditingControllerNomorTelepon!.text}"),
-                            print(
-                                "email == ${textEditingControllerEmail!.text}"),
-                            print("RT == ${randomValueRT}"),
-                            print("RW == ${randomValueRW}"),
-                            if (_formKey.currentState!.validate())
-                              {
-                                print("Tes file :: " + fileUp!.text.toString()),
-                                PengajuanPPID.InsertDataPPID(
-                                        idAkun: idAkunnn.toString(),
-                                        nama_pelapor:
-                                            textEditingControllerNamaLengkap!
-                                                .text,
-                                        noTelp:
-                                            textEditingControllerNomorTelepon!
-                                                .text
-                                                .toString(),
-                                        emailUser: textEditingControllerEmail!
-                                            .text
-                                            .toString(),
-                                        JudulLaporan:
-                                            textEditingControllerJudulLaporan!
-                                                .text,
-                                        isiLaporan:
-                                            textEditingControllerIsiLaporan!
-                                                .text,
-                                        asalLaporan: "Sidokare",
-                                        tujuan: "pokok kenek ndisek lah masbro",
-                                        RT: randomValueRT.toString(),
-                                        RW: randomValueRW.toString(),
-                                        kategoriPPID:
-                                            randomValuePPID.toString(),
-                                        File: fileUp!.text.toString())
-                                    .then((value) => {
-                                          if (value.code == 200)
-                                            {
-                                              print("Kenek paleng"),
-                                              if (fileUp!.text.toString() != "")
-                                                {
-                                                  PengajuanPPID.uploadFilePPID(
-                                                          _file!)
-                                                      .then((value) => {
-                                                            Navigator.pushNamed(
-                                                                context,
-                                                                BerhasilBuatLaporan
-                                                                    .routeName
-                                                                    .toString(),
-                                                                arguments: idAkunnn
-                                                                    .toString())
-                                                          }),
-                                                }
-                                              else
-                                                {
-                                                  Navigator.pushNamed(
-                                                      context,
-                                                      BerhasilBuatLaporan
-                                                          .routeName
-                                                          .toString(),
-                                                      arguments:
-                                                          idAkunnn.toString())
-                                                },
-                                            }
-                                          else
-                                            {print("yahaha gagal")}
-                                        })
-                              }
-                            else
-                              {}
-                          },
-                      child: Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: Text(
-                          "Ajukan PPID",
-                          style: TextStyle(fontSize: size.textButton.sp),
-                        ),
-                      )),
-                ),
-                SizedBox(
-                  height: 80.h,
-                )
-              ],
-            ),
-          ),
-        );
+              );
       },
     );
   }

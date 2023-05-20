@@ -400,7 +400,8 @@ class ButtonSelesai extends StatelessWidget {
                       UtilPref().saveLoginStatus(false);
                       UtilPref().saveSingleAccount(null);
                       // Tindakan yang akan dilakukan ketika tombol "OK" ditekan
-                      Navigator.of(context).pop(); // Menutup dialog
+                      SystemNavigator.pop();
+                      // Menutup dialog
                       // Tambahkan kode logika atau tindakan yang ingin Anda lakukan di sini setelah menekan tombol "OK"
                     },
                   ),

@@ -52,6 +52,8 @@ class _PageDetailBeritaState extends State<PageDetailBerita> {
     });
   }
 
+  late String idAkun;
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -71,7 +73,7 @@ class _PageDetailBeritaState extends State<PageDetailBerita> {
     print("Nama Kategori == ${namaKategori}");
     print(idBerita.toString());
     future = ControllerAPI.getKomentar(idBerita);
-    String idAkun = provider.id_akun.toString();
+    idAkun = provider.id_akun.toString();
 
     String tanggal_publikasi = berita.tanggalPublikasi.toString();
     DateTime tempDate =
@@ -279,94 +281,101 @@ class _PageDetailBeritaState extends State<PageDetailBerita> {
                         fontWeight: FontWeight.bold),
                   ),
                 ),
-                PopupMenuButton(
-                    itemBuilder: (context) => <PopupMenuEntry<itemEdit>>[
-                          PopupMenuItem(
-                              onTap: () {
-                                removeKomentar =
-                                    ControllerAPI.hapusKomentarById(
-                                        id_akun: data.idAkun,
-                                        id_berita: data.idBerita.toString(),
-                                        id_komentar: data.idKomentar,
-                                        waktu_berkomentar:
-                                            data.waktuBerkomentar);
-                                setState(() {
-                                  BeritaList!.remove(index);
-                                });
-                                FutureBuilder<bool>(
-                                  future: removeKomentar,
-                                  builder: (context, snapshot) {
-                                    print("Snapshot = " +
-                                        snapshot.data.toString());
-                                    if (snapshot.data == true) {
-                                      return Text("Hapus Berhasil");
-                                    } else {
-                                      return Text("c");
-                                    }
+                int.parse(idAkun) == data.idAkun
+                    ? PopupMenuButton(
+                        itemBuilder: (context) => <PopupMenuEntry<itemEdit>>[
+                              PopupMenuItem(
+                                  onTap: () {
+                                    removeKomentar =
+                                        ControllerAPI.hapusKomentarById(
+                                            id_akun: data.idAkun,
+                                            id_berita: data.idBerita.toString(),
+                                            id_komentar: data.idKomentar,
+                                            waktu_berkomentar:
+                                                data.waktuBerkomentar);
+                                    setState(() {
+                                      BeritaList!.remove(index);
+                                    });
+                                    FutureBuilder<bool>(
+                                      future: removeKomentar,
+                                      builder: (context, snapshot) {
+                                        print("Snapshot = " +
+                                            snapshot.data.toString());
+                                        if (snapshot.data == true) {
+                                          return Text("Hapus Berhasil");
+                                        } else {
+                                          return Text("c");
+                                        }
+                                      },
+                                    );
                                   },
-                                );
-                              },
-                              child: Row(
-                                children: [
-                                  Icon(Icons.delete_outline),
-                                  SizedBox(
-                                    width: 10.w,
-                                  ),
-                                  Text("Hapus")
-                                ],
-                              )),
-                          PopupMenuItem(
-                            child: Row(
-                              children: [
-                                Icon(Icons.edit_outlined),
-                                SizedBox(
-                                  width: 10.w,
+                                  child: Row(
+                                    children: [
+                                      Icon(Icons.delete_outline),
+                                      SizedBox(
+                                        width: 10.w,
+                                      ),
+                                      Text("Hapus")
+                                    ],
+                                  )),
+                              PopupMenuItem(
+                                child: Row(
+                                  children: [
+                                    Icon(Icons.edit_outlined),
+                                    SizedBox(
+                                      width: 10.w,
+                                    ),
+                                    Text("Edit")
+                                  ],
                                 ),
-                                Text("Edit")
-                              ],
-                            ),
-                            onTap: () {
-                              Future.delayed(
-                                const Duration(seconds: 0),
-                                () => showDialog(
-                                    context: context,
-                                    builder: (context) {
-                                      return AlertDialog(
-                                        title: Text(
-                                          "Ganti Komentar",
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 20),
-                                        ),
-                                        content: TextField(
-                                          controller: Kontroller,
-                                          keyboardType: TextInputType.multiline,
-                                          onChanged: (value) {
-                                            // Kontroller.text = value;
-                                          },
-                                        ),
-                                        actions: <Widget>[
-                                          ElevatedButton(
-                                              style: ElevatedButton.styleFrom(
-                                                  minimumSize:
-                                                      Size.fromHeight(44)),
-                                              onPressed: () {
-                                                ControllerAPI.editKomentar(
-                                                    idKomentar: data.idKomentar,
-                                                    isiKomentar:
-                                                        Kontroller.text);
-                                                setState(() {
-                                                  Navigator.of(context).pop();
-                                                });
+                                onTap: () {
+                                  Future.delayed(
+                                    const Duration(seconds: 0),
+                                    () => showDialog(
+                                        context: context,
+                                        builder: (context) {
+                                          return AlertDialog(
+                                            title: Text(
+                                              "Ganti Komentar",
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 20),
+                                            ),
+                                            content: TextField(
+                                              controller: Kontroller,
+                                              keyboardType:
+                                                  TextInputType.multiline,
+                                              onChanged: (value) {
+                                                // Kontroller.text = value;
                                               },
-                                              child: Text("Tetapkan"))
-                                        ],
-                                      );
-                                    }),
-                              );
-                            },
-                          )
-                        ])
+                                            ),
+                                            actions: <Widget>[
+                                              ElevatedButton(
+                                                  style:
+                                                      ElevatedButton.styleFrom(
+                                                          minimumSize:
+                                                              Size.fromHeight(
+                                                                  44)),
+                                                  onPressed: () {
+                                                    ControllerAPI.editKomentar(
+                                                        idKomentar:
+                                                            data.idKomentar,
+                                                        isiKomentar:
+                                                            Kontroller.text);
+                                                    setState(() {
+                                                      Navigator.of(context)
+                                                          .pop();
+                                                    });
+                                                  },
+                                                  child: Text("Tetapkan"))
+                                            ],
+                                          );
+                                        }),
+                                  );
+                                },
+                              )
+                            ])
+                    : Container()
               ],
             ),
             SizedBox(

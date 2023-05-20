@@ -64,8 +64,7 @@ class _BerhasilBuatLaporanState extends State<BerhasilBuatLaporan> {
       padding: EdgeInsets.symmetric(vertical: 20.h),
       child: ElevatedButton(
         onPressed: () {
-          Navigator.pushNamed(context, routeName.toString(),
-              arguments: idAkunn);
+          Navigator.pop(context);
         },
         child: ComponentTextButton("$buttonName"),
         style: ElevatedButton.styleFrom(minimumSize: Size.fromHeight(55.h)),
