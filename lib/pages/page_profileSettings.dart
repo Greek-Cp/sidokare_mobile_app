@@ -10,6 +10,7 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:sidokare_mobile_app/component/LoadingComponent.dart';
 import 'package:sidokare_mobile_app/component/Toast.dart';
 import 'package:sidokare_mobile_app/component/text_description.dart';
 import 'package:sidokare_mobile_app/component/text_field.dart';
@@ -108,6 +109,8 @@ class _PageProfileUserState extends State<PageProfileUser> {
     });
   }
 
+  bool statusLoadGambar = false;
+
   Map? getData;
   @override
   Widget build(BuildContext context) {
@@ -120,103 +123,109 @@ class _PageProfileUserState extends State<PageProfileUser> {
     final DataDiri = Provider.of<ProviderAccount>(context)
         .GetDataDiri
         .firstWhere((idData) => idData.id_akun == idAkunnn);
-
     print("awal awal apa gambar ${urlGambar}");
     // TODO: implement build
     return ScreenUtilInit(
       builder: (context, child) {
-        return Scaffold(
-          appBar: AppBar(
-            elevation: 0,
-            iconTheme: IconThemeData(color: Colors.black),
-            backgroundColor: Colors.white,
-            leading: IconButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                  FocusManager.instance.primaryFocus!.unfocus();
-                },
-                icon: Icon(Icons.arrow_back_ios)),
-          ),
-          body: SafeArea(
-            maintainBottomViewPadding: true,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0),
-              child: Center(
-                child: Form(
-                  key: _formKey,
-                  child: ListView(
-                    children: [
-                      SizedBox(
-                        height: 20.h,
-                      ),
-                      ComponentTextTittle("Akun Saya"),
-                      SizedBox(
-                        height: 20.h,
-                      ),
-                      Center(
-                        child: Container(
-                          child: Stack(
-                            children: [
-                              Container(
-                                width: 130.w,
-                                height: 130.h,
-                                child: CircleAvatar(
-                                  backgroundImage: ChangeProfile(
-                                      urlGambar: urlGambar, gambar: _image),
-                                  backgroundColor: Colors.amberAccent,
-                                  // maxRadius: 70,
+        return statusLoadGambar
+            ? LoadingComponent(prosesName: "Upload Gambar")
+            : Scaffold(
+                appBar: AppBar(
+                  elevation: 0,
+                  iconTheme: IconThemeData(color: Colors.black),
+                  backgroundColor: Colors.white,
+                  leading: IconButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                        FocusManager.instance.primaryFocus!.unfocus();
+                      },
+                      icon: Icon(Icons.arrow_back_ios)),
+                ),
+                body: SafeArea(
+                  maintainBottomViewPadding: true,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                    child: Center(
+                      child: Form(
+                        key: _formKey,
+                        child: ListView(
+                          children: [
+                            SizedBox(
+                              height: 20.h,
+                            ),
+                            ComponentTextTittle("Akun Saya"),
+                            SizedBox(
+                              height: 20.h,
+                            ),
+                            Center(
+                              child: Container(
+                                child: Stack(
+                                  children: [
+                                    Container(
+                                      width: 130.w,
+                                      height: 130.h,
+                                      child: CircleAvatar(
+                                        backgroundImage: ChangeProfile(
+                                            urlGambar: urlGambar,
+                                            gambar: _image),
+                                        backgroundColor: Colors.amberAccent,
+                                        // maxRadius: 70,
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.only(
+                                          left: 90.w, top: 80.h),
+                                      child: CircleAvatar(
+                                        backgroundColor:
+                                            ListColor.warnaBiruSidoKare,
+                                        child: IconButton(
+                                            color: Colors.white,
+                                            onPressed: () {
+                                              _pickImage(ImageSource.gallery);
+                                            },
+                                            icon:
+                                                Icon(Icons.mode_edit_outline)),
+                                      ),
+                                    )
+                                  ],
                                 ),
                               ),
-                              Padding(
-                                padding: EdgeInsets.only(left: 90.w, top: 80.h),
-                                child: CircleAvatar(
-                                  backgroundColor: ListColor.warnaBiruSidoKare,
-                                  child: IconButton(
-                                      color: Colors.white,
-                                      onPressed: () {
-                                        _pickImage(ImageSource.gallery);
-                                      },
-                                      icon: Icon(Icons.mode_edit_outline)),
-                                ),
-                              )
-                            ],
-                          ),
+                            ),
+                            TextFieldImport.TextFormNama(
+                                labelName: "Nama",
+                                text_kontrol: getNama,
+                                pesanValidasi: "Nama"),
+                            TextFieldImport.TextForm(
+                                labelName: "NIK",
+                                readyOnlyTydack: true,
+                                text_kontrol: getNik,
+                                pesanValidasi: "NIk"),
+                            TextFieldImport.TextForm(
+                                labelName: "Email",
+                                readyOnlyTydack: true,
+                                text_kontrol: getEmail,
+                                pesanValidasi: "Telepon"),
+                            TextFieldImport.TextFormTelp(
+                                labelName: "Nomor Telepon",
+                                text_kontrol: getTelp,
+                                length: 12,
+                                pesanValidasi: "Telepon"),
+                            _Button(
+                                idakun: DataDiri.id_akun.toString(),
+                                namaGmbrHps:
+                                    urlGambar.toString().replaceAll("'", ""),
+                                nama: getNama?.text,
+                                nomor: getTelp?.text,
+                                nik: getNik?.text,
+                                emaill: getEmail?.text,
+                                fileBaru: _image),
+                          ],
                         ),
                       ),
-                      TextFieldImport.TextFormNama(
-                          labelName: "Nama",
-                          text_kontrol: getNama,
-                          pesanValidasi: "Nama"),
-                      TextFieldImport.TextForm(
-                          labelName: "NIK",
-                          readyOnlyTydack: true,
-                          text_kontrol: getNik,
-                          pesanValidasi: "NIk"),
-                      TextFieldImport.TextForm(
-                          labelName: "Email",
-                          readyOnlyTydack: true,
-                          text_kontrol: getEmail,
-                          pesanValidasi: "Telepon"),
-                      TextFieldImport.TextFormTelp(
-                          labelName: "Nomor Telepon",
-                          text_kontrol: getTelp,
-                          length: 12,
-                          pesanValidasi: "Telepon"),
-                      _Button(
-                          idakun: DataDiri.id_akun.toString(),
-                          namaGmbrHps: urlGambar.toString().replaceAll("'", ""),
-                          nama: getNama?.text,
-                          nomor: getTelp?.text,
-                          nik: getNik?.text,
-                          emaill: getEmail?.text,
-                          fileBaru: _image),
-                    ],
+                    ),
                   ),
                 ),
-              ),
-            ),
-          ),
-        );
+              );
       },
     );
   }
@@ -252,6 +261,9 @@ class _PageProfileUserState extends State<PageProfileUser> {
                         .then((value) => {
                               if (value.code == 200)
                                 {
+                                  setState(() {
+                                    statusLoadGambar = true;
+                                  }),
                                   print(
                                       "Nama File Update data saja adalah ${_namaFile}"),
                                   model = ModelAccount(
@@ -305,6 +317,12 @@ class _PageProfileUserState extends State<PageProfileUser> {
                             nomorHp: getTelp?.text.toString(),
                             file: fileBaru)
                         .then((value) => {
+                              if (value == 200)
+                                {
+                                  setState(() {
+                                    statusLoadGambar = true;
+                                  })
+                                },
                               print("Nama File adalah ${_namaFile}"),
                               providerAccount?.updateData(
                                   0,

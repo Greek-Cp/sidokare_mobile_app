@@ -101,7 +101,7 @@ class HttpStatefull {
   }
 
   // fungsi untuk mengirim request text dan upload file
-  static Future<void> sendRequestWithFile(
+  static Future<int> sendRequestWithFile(
       {String? id_akun,
       String? delPic,
       String? nama,
@@ -131,6 +131,6 @@ class HttpStatefull {
 
     // kirim request dan tunggu responsenya
     var response = await http.Response.fromStream(await request.send());
-    print("Tes Image Bruh" + response.body);
+    return response.statusCode;
   }
 }
