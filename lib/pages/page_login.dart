@@ -97,8 +97,8 @@ class _PageLoginState extends State<PageLogin> {
                       PasswordDone(
                           hintText: "Masukkan Sandi",
                           text_kontrol: textEditingControllerPassword,
-                          passwordType: false,
                           labelName: "Kata Sandi",
+                          passwordType: _obsecureText,
                           pesanValidasi: "Kata Sandi"),
                       SizedBox(
                         height: 10.sp,
@@ -260,7 +260,7 @@ class _PageLoginState extends State<PageLogin> {
     );
   }
 
-  bool _obsecureText = true;
+  bool _obsecureText = false;
 
   void _getVisibility() {
     setState(() {
@@ -305,7 +305,7 @@ class _PageLoginState extends State<PageLogin> {
             }
             return null;
           },
-          obscureText: passwordType!,
+          obscureText: !_obsecureText!,
           controller: text_kontrol,
           onFieldSubmitted: (value) async {
             if (_formKey.currentState!.validate()) {

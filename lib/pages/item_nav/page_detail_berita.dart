@@ -53,6 +53,11 @@ class _PageDetailBeritaState extends State<PageDetailBerita> {
   }
 
   late String idAkun;
+  String getCurrentDateTime() {
+    DateTime now = DateTime.now();
+    String formattedDate = DateFormat('yyyy-MM-dd HH:mm:ss').format(now);
+    return formattedDate;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -232,7 +237,7 @@ class _PageDetailBeritaState extends State<PageDetailBerita> {
                         idAkun,
                         idBerita,
                         getKomen?.text.toString(),
-                        "2023-04-11 11:28:12",
+                        getCurrentDateTime().toString(),
                         namaProfile.toString(),
                         fotoProfile.toString()),
                   )),
@@ -266,8 +271,15 @@ class _PageDetailBeritaState extends State<PageDetailBerita> {
                   width: 20.w,
                   child: CircleAvatar(
                     backgroundColor: Colors.red,
-                    backgroundImage: NetworkImage(
-                        "http://${ApiPoint.BASE_URL}/storage/profile/${data.profilePicKomen.toString()}"),
+
+                    backgroundImage: data.profilePicKomen.toString() == "" ||
+                            data.profilePicKomen.toString() == null ||
+                            data.profilePicKomen.toString() == 'kosong'
+                        ? AssetImage("assets/accountBlank.png") as ImageProvider
+                        : NetworkImage(
+                                "http://${ApiPoint.BASE_URL}/storage/profile/${data.profilePicKomen.toString().replaceAll("'", "")}")
+                            as ImageProvider,
+                    // "http://${ApiPoint.BASE_URL}/storage/profile/${data.profilePicKomen.toString()}"
                   ),
                 ),
                 SizedBox(
@@ -343,6 +355,9 @@ class _PageDetailBeritaState extends State<PageDetailBerita> {
                                             ),
                                             content: TextField(
                                               controller: Kontroller,
+                                              decoration: InputDecoration(
+                                                  hintText:
+                                                      "Masukkan Komentar"),
                                               keyboardType:
                                                   TextInputType.multiline,
                                               onChanged: (value) {
@@ -425,7 +440,8 @@ class _PageDetailBeritaState extends State<PageDetailBerita> {
                   leading: CircleAvatar(
                     radius: 20,
                     backgroundImage: profilePic.toString() == "" ||
-                            profilePic.toString() == null
+                            profilePic.toString() == null ||
+                            profilePic.toString() == 'kosong'
                         ? AssetImage("assets/accountBlank.png") as ImageProvider
                         : NetworkImage(
                                 "http://${ApiPoint.BASE_URL}/storage/profile/${profilePic.toString().replaceAll("'", "")}")

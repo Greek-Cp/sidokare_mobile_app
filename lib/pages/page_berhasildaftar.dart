@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:sidokare_mobile_app/const/size.dart';
+import 'package:sidokare_mobile_app/pages/page_login.dart';
 
 class berhasildaftar extends StatelessWidget {
   static String? routeName = "/SuccesDaftar";
@@ -14,16 +15,18 @@ class berhasildaftar extends StatelessWidget {
           padding: size.paddingHorizontalAwalFrame,
           child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 _gambarSukses(),
                 SizedBox(
                   height: 20,
                 ),
+                _headerForm(),
                 _descSukses(),
                 SizedBox(
                   height: 20,
                 ),
-                _buttonLanjut()
+                _buttonLanjut(context)
               ]),
         ),
       ),
@@ -40,23 +43,25 @@ class berhasildaftar extends StatelessWidget {
 
   Widget _headerForm() {
     return const Text(
-      "Berhasil Daftar",
-      style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+      "Berhasil mengubah sandi",
+      style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
     );
   }
 
   Widget _descSukses() {
     return const Text(
-      "Akun yang telah dimasukkan berhasil silahkan login ke akunmu",
+      "Akun telah berhasil diatur kata sandi , anda dapat menggunakan sandi baru",
       textAlign: TextAlign.center,
     );
   }
 
-  Widget _buttonLanjut() {
+  Widget _buttonLanjut(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 40),
       child: ElevatedButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.pushNamed(context, PageLogin.routeName.toString());
+        },
         child: Text("Lanjut"),
         style: ElevatedButton.styleFrom(
             minimumSize: Size.fromHeight(30),

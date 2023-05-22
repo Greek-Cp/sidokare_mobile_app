@@ -5,6 +5,8 @@ import 'package:sidokare_mobile_app/component/text_field.dart';
 import 'package:sidokare_mobile_app/const/fontfix.dart';
 import 'package:sidokare_mobile_app/const/size.dart';
 import 'package:sidokare_mobile_app/model/api/http_statefull.dart';
+import 'package:sidokare_mobile_app/pages/page_berhasildaftar.dart';
+import 'package:sidokare_mobile_app/pages/page_berhasilotp.dart';
 import 'package:sidokare_mobile_app/pages/page_login.dart';
 
 import '../component/Toast.dart';
@@ -38,47 +40,56 @@ class _UbahSandiState extends State<UbahSandi> {
     return ScreenUtilInit(
       builder: (context, child) {
         return Scaffold(
-          body: Container(
-              child: SafeArea(
-            child: Center(
-              child: Padding(
-                padding: size.paddingHorizontalAwalFrame,
-                child: Form(
-                  key: _formKey,
-                  child: ListView(
-                    children: <Widget>[
-                      Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            IconButton(
-                                onPressed: () => {Navigator.pop(context)},
-                                icon: Icon(Icons.arrow_back)),
-                          ]),
-                      SizedBox(
-                        height: 20.h,
-                      ),
-                      _HeaderText(),
-                      _DescHeaderText(),
-                      _ImageLupaKataSandi(),
-                      TextFieldPassword(inputSandi2, "Masukkan Kata Sandimu",
-                          _passwordvisible2, "kata Sandi", "Harap diisi"),
-                      SizedBox(
-                        height: 10.h,
-                      ),
-                      TextFieldPassword(
-                          inputSandi,
-                          "Masukkan Ulang Kata Sandimu",
-                          _passwordvisible,
-                          "Konfirmasi kata Sandi",
-                          "Harap disi"),
-                      getBruh(getEmail)
-                    ],
+          body: SingleChildScrollView(
+            reverse: true,
+            child: Container(
+                child: SafeArea(
+              child: Center(
+                child: Padding(
+                  padding: size.paddingHorizontalAwalFrame,
+                  child: Form(
+                    key: _formKey,
+                    child: ListView(
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      children: <Widget>[
+                        Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              IconButton(
+                                  onPressed: () => {Navigator.pop(context)},
+                                  icon: Icon(Icons.arrow_back)),
+                            ]),
+                        SizedBox(
+                          height: 20.h,
+                        ),
+                        _HeaderText(),
+                        _DescHeaderText(),
+                        _ImageLupaKataSandi(),
+                        TextFieldPassword(inputSandi2, "Masukkan Kata Sandimu",
+                            _passwordvisible2, "kata Sandi", "Harap diisi"),
+                        SizedBox(
+                          height: 10.h,
+                        ),
+                        TextFieldPassword(
+                            inputSandi,
+                            "Masukkan Ulang Kata Sandimu",
+                            _passwordvisible,
+                            "Konfirmasi kata Sandi",
+                            "Harap disi"),
+                        getBruh(getEmail),
+                        Padding(
+                            padding: EdgeInsets.only(
+                                bottom:
+                                    MediaQuery.of(context).viewInsets.bottom))
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
-          )),
+            )),
+          ),
         );
       },
     );
@@ -105,7 +116,7 @@ class _UbahSandiState extends State<UbahSandi> {
                                     {
                                       print("berhasil bruh"),
                                       Navigator.pushNamed(context,
-                                          PageLogin.routeName.toString()),
+                                          berhasildaftar.routeName.toString()),
                                     }
                                 })
                       }

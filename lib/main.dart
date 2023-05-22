@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -52,6 +53,7 @@ class MainApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         theme: ThemeData(fontFamily: fontfix.DmSansBruh),
         initialRoute: SplashScreen.routeName,
+        builder: EasyLoading.init(),
         routes: {
           UbahSandi.routeName.toString(): (context) => UbahSandi(),
           berhasilOtp.routeName.toString(): (context) => berhasilOtp(),

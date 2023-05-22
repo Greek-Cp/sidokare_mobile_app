@@ -2,6 +2,7 @@ import 'package:bottom_bar_matu/bottom_bar_item.dart';
 import 'package:bottom_bar_matu/bottom_bar_label_slide/bottom_bar_label_slide.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_custom_tab_bar/custom_tab_bar.dart';
 import 'package:flutter_custom_tab_bar/transform/color_transform.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -44,56 +45,40 @@ class _HalamanUtamaState extends State<HalamanUtama> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        // Tindakan yang ingin Anda lakukan ketika tombol kembali ditekan
-        // Misalnya, menampilkan dialog konfirmasi sebelum keluar dari aplikasi
         showDialog(
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              title: Text('Confirmation'),
-              content: Text('Are you sure you want to exit?'),
+              title: Text('Konfirmasi'),
+              content: Text('Yakin ingin keluar dari aplikasi?'),
               actions: [
                 TextButton(
-                  child: Text('Cancel'),
+                  child: Text('tidak'),
                   onPressed: () {
                     Navigator.of(context).pop(); // Menutup dialog
                   },
                 ),
                 TextButton(
-                  child: Text('OK'),
+                  child: Text('Iya'),
                   onPressed: () {
                     UtilPref()
                         .removeSingleAccount()
                         .then((value) => {print("Remove Success")});
                     UtilPref().saveLoginStatus(false);
                     UtilPref().saveSingleAccount(null);
-                    Navigator.of(context).pop(); // Menutup dialog
-                    Navigator.of(context).pop(true); // Keluar dari aplikasi
+                    SystemNavigator.pop(); // Keluar dari aplikasi
                   },
                 ),
               ],
             );
           },
         );
-
-        // Menunda pop hingga dialog selesai
         return false;
       },
       child: Scaffold(
         body: Center(
           child: listPage.elementAt(_selectedIndex),
         ),
-        // bottomNavigationBar: BottomNavigationBar(
-        //     currentIndex: _selectedIndex,
-        //     onTap: _onItemTapped,
-        //     items: [
-        //       BottomNavigationBarItem(
-        //         label: " ",
-        //         icon: Icon(Icons.home_filled),
-        //       ),
-        //       BottomNavigationBarItem(
-        //           label: " ", icon: Icon(Icons.person_pin_circle))
-        //     ]),
         bottomNavigationBar: CurvedNavigationBar(
           backgroundColor: Colors.white,
           height: 50.h,
@@ -132,58 +117,5 @@ class _HalamanUtamaState extends State<HalamanUtama> {
         ),
       ),
     );
-    // TODO: implement build
-    // return Scaffold(
-    //   body: Center(
-    //     child: listPage.elementAt(_selectedIndex),
-    //   ),
-    //   // bottomNavigationBar: BottomNavigationBar(
-    //   //     currentIndex: _selectedIndex,
-    //   //     onTap: _onItemTapped,
-    //   //     items: [
-    //   //       BottomNavigationBarItem(
-    //   //         label: " ",
-    //   //         icon: Icon(Icons.home_filled),
-    //   //       ),
-    //   //       BottomNavigationBarItem(
-    //   //           label: " ", icon: Icon(Icons.person_pin_circle))
-    //   //     ]),
-    //   bottomNavigationBar: CurvedNavigationBar(
-    //     backgroundColor: Colors.white,
-    //     height: 50.h,
-    //     animationCurve: Curves.easeInOut,
-    //     buttonBackgroundColor: Colors.blueAccent,
-    //     color: Colors.grey.shade100,
-    //     items: <Widget>[
-    //       Icon(
-    //         Icons.home,
-    //         size: 25,
-    //         color: _selectedIndex == 0 ? Colors.white : Colors.blueAccent,
-    //         semanticLabel: "ngengek",
-    //       ),
-    //       Icon(
-    //         Icons.newspaper,
-    //         size: 25,
-    //         color: _selectedIndex == 1 ? Colors.white : Colors.blueAccent,
-    //       ),
-    //       Icon(
-    //         Icons.description,
-    //         size: 25,
-    //         color: _selectedIndex == 2 ? Colors.white : Colors.blueAccent,
-    //         semanticLabel: "Inpokan",
-    //       ),
-    //       Icon(
-    //         Icons.notifications,
-    //         size: 25,
-    //         color: _selectedIndex == 3 ? Colors.white : Colors.blueAccent,
-    //         semanticLabel: "Inpokan",
-    //       ),
-    //     ],
-    //     onTap: (index) {
-    //       _onItemTapped(index);
-    //       //Handle button tap
-    //     },
-    //   ),
-    // );
   }
 }

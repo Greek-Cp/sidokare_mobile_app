@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
@@ -305,8 +306,13 @@ class _PageFormulirPengajuanKeluhanState
   //   Placemark place = placemarks[0];
   //   print('Address: ${place.street}, ${place.locality}, ${place.country}');
   // }
-
+  bool lokasi = false;
   void getCurrentLocation() async {
+    setState(() {
+      lokasi = true;
+      EasyLoading.show(
+          status: "Mencari Lokasi....", maskType: EasyLoadingMaskType.black);
+    });
     Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
     print('Latitude: ${position.latitude}');
@@ -314,6 +320,10 @@ class _PageFormulirPengajuanKeluhanState
     String ppp =
         await getAddressFromCoordinates(position.latitude, position.longitude);
     getMap!.text = ppp;
+    setState(() {
+      lokasi = false;
+      EasyLoading.dismiss();
+    });
   }
 
   Future<String> getAddressFromCoordinates(
@@ -635,29 +645,6 @@ class _PageFormulirPengajuanKeluhanState
                       ),
                     ),
                   ),
-                  // TextFormField(
-                  //   validator: (value) {
-                  //     if (value.toString().isEmpty) {
-                  //       return "Harap isi Jumlah Posyandu";
-                  //     }
-                  //   },
-                  //   // controller: getJmlPosyandu,
-                  //   keyboardType: TextInputType.number,
-                  //   inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                  //   decoration: InputDecoration(
-                  //       hintText: "Masukkan Jumlah",
-                  //       enabledBorder: OutlineInputBorder(
-                  //           borderSide: BorderSide(
-                  //               width: 1, color: ListColor.warnaBiruSidoKare),
-                  //           borderRadius:
-                  //               BorderRadius.all(Radius.circular(10))),
-                  //       focusedBorder: OutlineInputBorder(
-                  //           borderSide: BorderSide(
-                  //               width: 1, color: ListColor.warnaBiruSidoKare),
-                  //           borderRadius:
-                  //               BorderRadius.all(Radius.circular(10)))),
-                  //   // controller: nameController,
-                  // ),
                 ],
               ),
             ),
@@ -739,29 +726,6 @@ class _PageFormulirPengajuanKeluhanState
                       ),
                     ),
                   ),
-                  // TextFormField(
-                  //   validator: (value) {
-                  //     if (value.toString().isEmpty) {
-                  //       return "Harap isi Jumlah Posyandu";
-                  //     }
-                  //   },
-                  //   // controller: getJmlPosyandu,
-                  //   keyboardType: TextInputType.number,
-                  //   inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                  //   decoration: InputDecoration(
-                  //       hintText: "Masukkan Jumlah",
-                  //       enabledBorder: OutlineInputBorder(
-                  //           borderSide: BorderSide(
-                  //               width: 1, color: ListColor.warnaBiruSidoKare),
-                  //           borderRadius:
-                  //               BorderRadius.all(Radius.circular(10))),
-                  //       focusedBorder: OutlineInputBorder(
-                  //           borderSide: BorderSide(
-                  //               width: 1, color: ListColor.warnaBiruSidoKare),
-                  //           borderRadius:
-                  //               BorderRadius.all(Radius.circular(10)))),
-                  //   // controller: nameController,
-                  // ),
                 ],
               ),
             ),

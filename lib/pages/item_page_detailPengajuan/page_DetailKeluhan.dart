@@ -465,8 +465,10 @@ class ButtonSelesai extends StatelessWidget {
             ToastWidget.ToastInfo(
                 context, "Formulir Keluhan telah disetujui", "Informasi");
           } else {
-            ToastWidget.ToastInfo(context,
-                "Mohon tunngu pembuatan dokumen ppid", "Mohon Tungggu");
+            ToastWidget.ToastInfo(
+                context,
+                "Mohon tunngu pembuatan dokumen Pengajuan Keluhan",
+                "Mohon Tungggu");
           }
         },
         child: ComponentTextButton("$buttonName"),

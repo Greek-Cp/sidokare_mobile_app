@@ -209,12 +209,6 @@ class _PageFormulirPengajuanState extends State<PageFormulirPengajuanPPID> {
                             labelName: "Alamat",
                             pesanValidasi: "Alamat"),
                       ),
-                      // customDropDownDusun(
-                      //     listItem: listDusun,
-                      //     namaLabel: "Asal Pelapor",
-                      //     hintText: "Pilih Dusun",
-                      //     randomlabel: randomValueDusun,
-                      //     errorKosong: "Dusun"),
                       DropdownRTRW(
                           listItemRT: RT,
                           listItemRW: RW,
@@ -230,17 +224,9 @@ class _PageFormulirPengajuanState extends State<PageFormulirPengajuanPPID> {
                         namaLabel: "Kategori PPID",
                         hintText: randomValuePPID,
                         errorKosong: "PPID",
-                        // randomlabel: randomValuePPID,
                       ),
-                      UpfilePendukung("Upload File Pendukung", "gatau", fileUp!,
+                      UpfilePendukung("Upload File Pendukung", "file", fileUp!,
                           sttss(stss: randomValuePPID.toString())),
-                      // Padding(
-                      //   padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                      //   child: Visibility(
-                      //       visible: true,
-                      //       child: Text(
-                      //           " Catatan : ${textBeritahu(cocokne: randomValuePPID)} ")),
-                      // ),
                       SizedBox(
                         height: 10.h,
                       ),
@@ -338,7 +324,11 @@ class _PageFormulirPengajuanState extends State<PageFormulirPengajuanPPID> {
                                               })
                                     }
                                   else
-                                    {}
+                                    {
+                                      setState(() {
+                                        statusPengajuan = false;
+                                      }),
+                                    }
                                 },
                             child: Padding(
                               padding: const EdgeInsets.all(10.0),
@@ -450,29 +440,6 @@ class _PageFormulirPengajuanState extends State<PageFormulirPengajuanPPID> {
                       ),
                     ),
                   ),
-                  // TextFormField(
-                  //   validator: (value) {
-                  //     if (value.toString().isEmpty) {
-                  //       return "Harap isi Jumlah Posyandu";
-                  //     }
-                  //   },
-                  //   // controller: getJmlPosyandu,
-                  //   keyboardType: TextInputType.number,
-                  //   inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                  //   decoration: InputDecoration(
-                  //       hintText: "Masukkan Jumlah",
-                  //       enabledBorder: OutlineInputBorder(
-                  //           borderSide: BorderSide(
-                  //               width: 1, color: ListColor.warnaBiruSidoKare),
-                  //           borderRadius:
-                  //               BorderRadius.all(Radius.circular(10))),
-                  //       focusedBorder: OutlineInputBorder(
-                  //           borderSide: BorderSide(
-                  //               width: 1, color: ListColor.warnaBiruSidoKare),
-                  //           borderRadius:
-                  //               BorderRadius.all(Radius.circular(10)))),
-                  //   // controller: nameController,
-                  // ),
                 ],
               ),
             ),
@@ -554,29 +521,6 @@ class _PageFormulirPengajuanState extends State<PageFormulirPengajuanPPID> {
                       ),
                     ),
                   ),
-                  // TextFormField(
-                  //   validator: (value) {
-                  //     if (value.toString().isEmpty) {
-                  //       return "Harap isi Jumlah Posyandu";
-                  //     }
-                  //   },
-                  //   // controller: getJmlPosyandu,
-                  //   keyboardType: TextInputType.number,
-                  //   inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                  //   decoration: InputDecoration(
-                  //       hintText: "Masukkan Jumlah",
-                  //       enabledBorder: OutlineInputBorder(
-                  //           borderSide: BorderSide(
-                  //               width: 1, color: ListColor.warnaBiruSidoKare),
-                  //           borderRadius:
-                  //               BorderRadius.all(Radius.circular(10))),
-                  //       focusedBorder: OutlineInputBorder(
-                  //           borderSide: BorderSide(
-                  //               width: 1, color: ListColor.warnaBiruSidoKare),
-                  //           borderRadius:
-                  //               BorderRadius.all(Radius.circular(10)))),
-                  //   // controller: nameController,
-                  // ),
                 ],
               ),
             ),
@@ -584,19 +528,6 @@ class _PageFormulirPengajuanState extends State<PageFormulirPengajuanPPID> {
         ],
       ),
     );
-  }
-
-  Future<void> _pickFile() async {
-    // final picker = ImagePicker();
-    // final pickedFile = await picker.pickImage(source: ImageSource.gallery);
-
-    // if (pickedFile != null) {
-    //   setState(() {
-    //     _file = File(pickedFile.path);
-
-    //     fileUp?.text = pickedFile.path;
-    //   });
-    // }
   }
 
   Widget UpfilePendukung(String labelName, String pesanValidasi,
@@ -621,11 +552,11 @@ class _PageFormulirPengajuanState extends State<PageFormulirPengajuanPPID> {
             height: 5.h,
           ),
           TextFormField(
-            // validator: (value) {
-            //   if (value!.isEmpty || value == null) {
-            //     return "${pesanValidasi} Tidak Boleh Kosong";
-            //   }
-            // },
+            validator: (value) {
+              if (value!.isEmpty || value == null) {
+                return "${pesanValidasi} Tidak Boleh Kosong";
+              }
+            },
             controller: text_kontrol,
             readOnly: true,
             style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.normal),

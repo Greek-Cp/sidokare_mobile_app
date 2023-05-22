@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
@@ -294,7 +295,13 @@ class _PageFormulirKeberatanPPIDState extends State<PageFormulirKeberatanPPID> {
     );
   }
 
+  bool lokasi = false;
   void getCurrentLocation() async {
+    setState(() {
+      lokasi = true;
+      EasyLoading.show(
+          status: "Mencari Lokasi....", maskType: EasyLoadingMaskType.black);
+    });
     Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
     print('Latitude: ${position.latitude}');
@@ -302,6 +309,10 @@ class _PageFormulirKeberatanPPIDState extends State<PageFormulirKeberatanPPID> {
     String ppp =
         await getAddressFromCoordinates(position.latitude, position.longitude);
     getAlamat!.text = ppp;
+    setState(() {
+      lokasi = false;
+      EasyLoading.dismiss();
+    });
   }
 
   Future<String> getAddressFromCoordinates(

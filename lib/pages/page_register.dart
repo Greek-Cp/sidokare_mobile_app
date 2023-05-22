@@ -467,7 +467,7 @@ form button:hover {
     );
   }
 
-  bool _obsecureText = true;
+  bool _obsecureText = false;
 
   void _getVisibility() {
     setState(() {
@@ -512,7 +512,7 @@ form button:hover {
             }
             return null;
           },
-          obscureText: passwordType!,
+          obscureText: !passwordType!,
           controller: text_kontrol,
           onFieldSubmitted: (value) async {
             if (_formKey.currentState!.validate()) {
