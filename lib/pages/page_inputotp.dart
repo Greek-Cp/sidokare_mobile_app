@@ -1,10 +1,16 @@
+import 'dart:async';
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:mailer/mailer.dart';
+import 'package:mailer/smtp_server/gmail.dart';
 import 'package:otp_text_field/otp_field.dart';
 import 'package:otp_text_field/style.dart';
 import 'package:sidokare_mobile_app/component/Toast.dart';
+import 'package:sidokare_mobile_app/component/text_description.dart';
 import 'package:sidokare_mobile_app/const/list_color.dart';
 import 'package:sidokare_mobile_app/const/util.dart';
 import 'package:sidokare_mobile_app/model/api/http_statefull.dart';
@@ -26,6 +32,59 @@ class _InputOtpState extends State<InputOtp> {
   static String? pilihPage;
   static String? emailTerbawah;
   Map? receiveData;
+  int _countdown = 30;
+  Timer? _timer;
+  bool statusHitungMundur = false;
+
+  @override
+  void initState() {
+    super.initState();
+    startCountdown();
+  }
+
+  void startCountdown() {
+    const oneSec = Duration(seconds: 1);
+    _timer = Timer.periodic(oneSec, (timer) {
+      setState(() {
+        if (_countdown < 1) {
+          statusHitungMundur = false;
+          _timer?.cancel();
+        } else {
+          _countdown = _countdown - 1;
+        }
+      });
+    });
+  }
+
+  void resendOTP(String email) {
+    if (_countdown == 0) {
+      setState(() {
+        _countdown = 30;
+        statusHitungMundur = true;
+
+        sendMail(email);
+      });
+
+      startCountdown();
+    }
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
+  }
+
+  String formatTime(int seconds) {
+    int minutes = (seconds / 60).floor();
+    int remainingSeconds = seconds % 60;
+
+    String minutesStr = (minutes % 60).toString().padLeft(2, '0');
+    String secondsStr = remainingSeconds.toString().padLeft(2, '0');
+
+    return "$minutesStr:$secondsStr";
+  }
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -52,11 +111,50 @@ class _InputOtpState extends State<InputOtp> {
                   _HeaderText(),
                   _DescHeaderText(),
                   _ImageLupaKataSandi(),
-                  const SizedBox(
-                    height: 20,
+                  SizedBox(
+                    height: 20.h,
                   ),
                   _inputOtp(),
-                  _ButtonVerif()
+                  _ButtonVerif(),
+                  SizedBox(height: 5.h),
+                  statusHitungMundur == true
+                      ? Center(
+                          child: RichText(
+                              textAlign: TextAlign.center,
+                              text: TextSpan(children: [
+                                TextSpan(
+                                  text: "Kirim Ulang OTP Dalam Waktu ",
+                                  style: TextStyle(
+                                    fontFamily: fontfix.DmSansBruh,
+                                    fontSize: 14.sp,
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                                TextSpan(
+                                  text: "${formatTime(_countdown)}",
+                                  style: TextStyle(
+                                    fontFamily: fontfix.DmSansBruh,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 14.sp,
+                                    color: Colors.blue,
+                                  ),
+                                )
+                              ])))
+                      : Center(
+                          child: GestureDetector(
+                            onTap: () {
+                              resendOTP(emailTerbawah.toString());
+                            },
+                            child: Text(
+                              'Kirim Ulang Kode Verifikasi',
+                              style: TextStyle(
+                                fontFamily: fontfix.DmSansBruh,
+                                fontSize: 14.sp,
+                                color: Colors.grey,
+                              ),
+                            ),
+                          ),
+                        ),
                 ],
               ),
             ),
@@ -98,6 +196,35 @@ class _InputOtpState extends State<InputOtp> {
         ),
       ),
     );
+  }
+
+  sendMail(String input_email) {
+    String username = 'e41211358@student.polije.ac.id';
+    String password = 'ojmqzqkblieamunx';
+
+    var rng = new Random();
+    var code = rng.nextInt(90000) + 10000;
+    print("kode nya adalah = ${code}");
+    final smtpServer = gmail(username, password);
+    String emailPenerima = input_email;
+    print(emailPenerima + " Get");
+    final message = Message()
+      ..from = Address(username, 'Reuni321 TEAM')
+      ..recipients.add(emailPenerima)
+      ..subject = 'Verifikasi Kode Lupa Sandi'
+      ..html = "<h1>Kode Verifikasi</h1>\n<h3>Kode Verifikasi == ${code} </h3>";
+
+    // print('Message sent: ' + sendReport.toString());
+    try {
+      final sendReport = send(message, smtpServer);
+      print('Message sent: ' + sendReport.toString());
+    } on MailerException catch (e) {
+      print('Message not sent.');
+      for (var p in e.problems) {
+        print('Problem: ${p.code}: ${p.msg}');
+        // ToastWidget.ToastEror(context, ' Format Email Tidak Sesuai');
+      }
+    }
   }
 
   Widget _inputOtp() {
