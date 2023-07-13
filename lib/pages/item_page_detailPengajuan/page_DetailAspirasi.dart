@@ -233,7 +233,7 @@ class _PageDetailAspirasiState extends State<PageDetailAspirasiiii> {
                                   "Proses Penanganan");
                             } else if (DocAspirasi.toString() != "kosong") {
                               String url =
-                                  'http://${ApiPoint.BASE_URL}/storage/dummyOutput/${DocAspirasi.toString()}'; // Ganti dengan URL file yang ingin Anda unduh
+                                  'http://${ApiPoint.BASE_URL}/storage/HasilAspirasi/${DocAspirasi.toString()}'; // Ganti dengan URL file yang ingin Anda unduh
                               // String savedDir =
                               //     '/storage/emulated/0/Download/${timeStamp}-${DocPPID.toString()}';
                               DateTime currentTime = DateTime.now();
@@ -265,6 +265,11 @@ class _PageDetailAspirasiState extends State<PageDetailAspirasiiii> {
                                     context,
                                     "Tersimpan folder download \n Nama File : ${timestamp}-${DocAspirasi.toString()}");
                               }
+                            } else if (stts == 'ditolak') {
+                              ToastWidget.ToastInfo(
+                                  context,
+                                  "harap ajukan kembali dan Pastikan data yang dimasukkan benar",
+                                  "Pengajuan Ditolak");
                             } else {
                               ToastWidget.ToastInfo(
                                   context, "Belum, Bisa", "Sabar");
@@ -330,6 +335,11 @@ class _PageDetailAspirasiState extends State<PageDetailAspirasiiii> {
                                     context,
                                     "Revisi sudah kedua kali, silahkan datang ke kantor Desa untuk mendapatkan informasi lebih lanjut",
                                     "Mohon Maaf ");
+                              } else if (stts == "ditolak") {
+                                ToastWidget.ToastInfo(
+                                    context,
+                                    "Pengajuan Ditolak silakan membuat pengajuan kembali",
+                                    "Pengajuan Ditolak");
                               } else if (stts == "diterima") {
                                 ToastWidget.ToastInfo(
                                     context,
@@ -350,7 +360,7 @@ class _PageDetailAspirasiState extends State<PageDetailAspirasiiii> {
                                 } else {
                                   ToastWidget.ToastInfo(
                                       context,
-                                      "Pengajuan PPID tidak dalam status selesai , tidak dapat melakukan Keberatan",
+                                      "Pengajuan Aspirasi tidak dalam status selesai , tidak dapat melakukan Keberatan",
                                       "Mohon Maaf");
                                 }
                               }
@@ -396,7 +406,7 @@ class ButtonSelesai extends StatelessWidget {
               builder: (BuildContext context) {
                 return AlertDialog(
                   title: Text('Konfirmasi'),
-                  content: Text('Yakin Menerima Informasi Tentang Keluhan?'),
+                  content: Text('Yakin Menerima Informasi Tentang Aspirasi?'),
                   actions: [
                     TextButton(
                       child: Text('batal'),
@@ -433,6 +443,11 @@ class ButtonSelesai extends StatelessWidget {
           } else if (stss == "diterima") {
             ToastWidget.ToastInfo(
                 context, "Aspirasi telah disetujui", "Informasi");
+          } else if (stss == "ditolak") {
+            ToastWidget.ToastInfo(
+                context,
+                "Pengajuan Ditolak silakan membuat pengajuan kembali",
+                "Pengajuan Ditolak");
           } else {
             ToastWidget.ToastInfo(context,
                 "Mohon tunggu pembuatan dokumen Aspirasi", "Mohon Tungggu");

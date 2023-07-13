@@ -104,7 +104,7 @@ class _PageFormulirKeberatanPPIDState extends State<PageFormulirKeberatanPPID> {
                 appBar: AppBar(
                   elevation: 0,
                   title: Text(
-                    "HalamaN keberatan",
+                    "Halaman Keberatan",
                     style: TextStyle(
                         color: Colors.black, fontWeight: FontWeight.bold),
                   ),

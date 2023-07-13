@@ -47,144 +47,183 @@ class _PageRegisterState extends State<PageRegister> {
 
   sendMail(String? kodeOtp, String? email, BuildContext context) async {
     String username = 'e41211358@student.polije.ac.id';
-    String password = 'ojmqzqkblieamunx';
+    String password = 'ltddukvjccanwukp';
     var otpArray = kodeOtp.toString().split('');
 
     String templateMessage = """ 
     <!DOCTYPE html>
-<html lang="en">
-<head>
+      <html>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
     <style>
-        @import url("https://fonts.googleapis.com/css2?family=Poppins");
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: 'Poppins', sans-serif;
-}
-body {
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #4FAAF4;
-}
-:where(.container, form, .input-field, header) {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-.container {
-  background: #fff;
-  padding: 35px 65px 50px 65px;
-  border-radius: 20px;
-  row-gap: 20px;
-  box-shadow: 0 5px 10px rgba(0, 0, 0, .1);
-}
-.container header{
-  height: 150px;
-  width: 150px;
-  background-image: url('images/image.gif');
-  background-size: cover;
-  background-position: center;
-}
-.container h4 {
-  font-size: 1.25rem;
-  color: #333;
-  font-weight: 500;
-}
-.container p {
-  max-width: 250px;
-  text-align: center;
-  font-size: 13px;
-}
-.container p a {
-  color: #4FAAF4;
-  text-decoration: none;
-}
-.container p a:hover {
-  text-decoration: underline;
-}
-form .input-field {
-  flex-direction: row;
-  column-gap: 10px;
-}
-form .input-field input {
-  height: 50px;
-  width: 43px;
-  border-radius: 13px;
-  outline: none;
-  font-size: 1.125rem;
-  text-align: center;
-  border: 1px solid #ddd;
-}
-form .input-field input:focus {
-  box-shadow: 0 1px 0 rgba(0, 0, 0, .1);
-}
-form .input-field input::-webkit-inner-spin-button,
-form .input-field input::-webkit-outer-spin-button {
-  display: none;
-}
-form button{
-  margin-top: 25px;
-  margin-bottom: 15px;
-  width: 100%;
-  color: #fff;
-  font-size: 1rem;
-  border: none;
-  padding: 9px 0;
-  cursor: pointer;
-  border-radius: 15px;
-  pointer-events: none;
-  background: #1877F2;
-  transition: all 0.2s ease;
-}
-form button.active {
-  opacity: 1;
-  pointer-events: auto;
-}
-form button:hover {
-  background: #287ED4;
-}
-.icons{
+
+      body{
+        background: #E5E5E5 !important ; 
+        font-family: 'Work Sans', sans-serif;
+      }
+      .button{
+        background: #1877F2; 
+        color: #fff !important ; 
+        border-radius: 3px; 
+        display: block;
+        text-decoration: none;
+        padding: 15px;
+        font-size: 16px; 
+        text-align: center;
+        margin-top: 60px;
+      }
+      .main-container{
+        max-width: 29.375em;  
+        width: 100%; 
+        border-radius: 10px; 
+        background: #ffffff;
+        margin: 0 auto;
+        border: #fff; 
+      }
+
+      .content{
+        width: 80%;
+        min-width: 23.9375em; 
+        margin: 2em auto;
+        font-size: 12px;
+      }
+
+      .link{
+        color: #000; text-decoration: none;text-align: center;margin-bottom: 10px;
+      }
+
+      .title-text{
+        font-weight: 600;
+      }
+
+      .header{
+        font-size: 12px;
+        font-weight: 700; 
+        padding-bottom: .5em; 
+        letter-spacing: 0.08em;
+      }
+
+      .welcome-message{
+        text-align: center;
+        font-weight: bold;
+        font-size: 1em;
+        padding-bottom: 1rem;
+        letter-spacing: .5rem;
+      }
+
+      .img-container{
+        padding: 0 3em;
+        width: 100%;
+        min-width: 23.9375em;
+        height: 108px;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px; 
+        background-color: #1877F2
+      }
+
+      .footer-link{
+        text-align: center; 
+        padding-top: 2em; 
+        padding-bottom: .8em;
+      }
+
+      .icons{
         width: 60%; 
         margin: 0 auto
       }
+  table{
+  border-collapse: collapse !important;
+  border: none;
+
+}
+      .table-width{
+        width: 100%;
+      }
+
+      .text{
+        font-weight: 500; 
+        padding-top:1em ; 
+        padding-bottom: .5em;
+      }
+
     </style>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
+  </head>
     <body>
-        <div class="container">
-          <header><img src="https://i.imgur.com/6GdbHPj.png" alt=""></header>
-          <h4>Kode OTP</h4>
-          <p>Masukkan Kode OTP pada Aplikasi Mobilemu</p>
-          <form action="#">
-            <div class="input-field">
-             <input type="number" value="${otpArray[0]}" disabled/>
-              <input type="number" value="${otpArray[1]}" disabled/>
-              <input type="number" value="${otpArray[2]}" disabled/>
-              <input type="number" value="${otpArray[3]}" disabled/>
-              <input type="number" value="${otpArray[4]}" disabled/>
-            </div>
-           
-          </form>
-          <p>Desa Sidokare Kecamatan Rejoso<br> <a href="#"></a></p>
-          <a href="#" class="icons">
-            <img src="https://res.cloudinary.com/marykaystuff/image/upload/v1660814472/media/user_profile/grikcgydpd48hjyrkebs.png">
-            <img src="https://res.cloudinary.com/marykaystuff/image/upload/v1660814556/media/user_profile/bnbzay57s71dtfa3nx6k.png">
-            <img src="https://res.cloudinary.com/marykaystuff/image/upload/v1660814490/media/user_profile/ohcadm3gcmpelhl5qaid.png">
-            </a>
-            
-        </div>
-      
-        <script src="script.js"></script>
-      
+  
+        <table class="main-container">
+         <tr colspan="5">
+          <td>
+            <table class="table-width">
+              <tr>
+                <td colspan="5" class="img-container ">
+                    <img src="https://i.imgur.com/6GdbHPj.png"> 
+                </td>
+              </tr>
     
-</body>
+            </table>
+          </td>
+         </tr>
+        <tr><td>
+          <table class="content">
+            <tr><td colspan="5" class="welcome-message">VERIFIKASI KODE</td></tr>
+            <tr><td colspan="5" class="header"> Email Penerima : ${email}</td></tr>
+            <tr>
+                
+                <td colspan="2">Isi Pesan : Berikut Code Verifikasi yang harus anda masukkan ${otpArray[0]}${otpArray[1]}${otpArray[2]}${otpArray[3]}${otpArray[4]}</td>
+            </tr>
+              <tr>
+                <td colspan="5">
+                  <table class="table-width">
+                    <tr>
+                  </tr>
+                
+                    <tr><td class="footer-link">
+                      <a href="#" class="link">Desa Sidokare</a>
+      
+                    </td></tr>
+                 
+      
+                <tr>
+                  <td>
+                    <table class="icons">
+                      <tr colspan ="5">
+                        <td>
+                          <a href="#">
+                          <img src="https://res.cloudinary.com/marykaystuff/image/upload/v1660814472/media/user_profile/grikcgydpd48hjyrkebs.png">
+                          </a>
+                        </td>
+                        <td>
+                          <a href="#">
+                          <img src="https://res.cloudinary.com/marykaystuff/image/upload/v1660814556/media/user_profile/bnbzay57s71dtfa3nx6k.png" >
+                          </a>
+                        </td>
+                        <td>
+                          <a href="#">
+                          <img src="https://res.cloudinary.com/marykaystuff/image/upload/v1660814490/media/user_profile/ohcadm3gcmpelhl5qaid.png" >
+                          </a>
+                        </td>
+                        <td>
+                          <a href="#">
+                          <img src="https://res.cloudinary.com/marykaystuff/image/upload/v1660814490/media/user_profile/ftusawk21cfahxyy0ji5.png" >
+                        </a>
+                        </td>
+          
+                            
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+      
+                  </table>
+                </td>
+              </tr>
+
+          </table>
+        </td></tr>
+
+          </table>
+      
+   </body>
 </html>
     """;
     final smtpServer = gmail(username, password);

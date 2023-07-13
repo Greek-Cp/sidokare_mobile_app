@@ -215,7 +215,7 @@ class _DetailPengajuanPPIDState extends State<DetailPengajuanPPID> {
                                   "Proses Penanganan");
                             } else if (DocPPID.toString() != "kosong") {
                               String url =
-                                  'http://${ApiPoint.BASE_URL}/storage/dummyOutput/${DocPPID.toString()}'; // Ganti dengan URL file yang ingin Anda unduh
+                                  'http://${ApiPoint.BASE_URL}/storage/Hasilppids/${DocPPID.toString()}'; // Ganti dengan URL file yang ingin Anda unduh
                               // String savedDir =
                               //     '/storage/emulated/0/Download/${timeStamp}-${DocPPID.toString()}';
                               DateTime currentTime = DateTime.now();
@@ -247,6 +247,11 @@ class _DetailPengajuanPPIDState extends State<DetailPengajuanPPID> {
                                     context,
                                     "Tersimpan folder download \n Nama File : ${timeStamp}-${DocPPID.toString()}");
                               }
+                            } else if (status == 'ditolak') {
+                              ToastWidget.ToastInfo(
+                                  context,
+                                  "harap ajukan kembali dan Pastikan data yang dimasukkan benar",
+                                  "Pengajuan Ditolak");
                             } else {
                               ToastWidget.ToastInfo(
                                   context, "Belum, Bisa", "Sabar");
@@ -315,6 +320,11 @@ class _DetailPengajuanPPIDState extends State<DetailPengajuanPPID> {
                                     context,
                                     "Tidak dapat lagi mengajukan keberatan",
                                     "Mohon Maaf");
+                              } else if (status == "ditolak") {
+                                ToastWidget.ToastInfo(
+                                    context,
+                                    "Pengajuan Ditolak silakan membuat pengajuan kembali",
+                                    "Pengajuan Ditolak");
                               } else {
                                 if (status == "selesai") {
                                   Navigator.pushNamed(
@@ -456,8 +466,13 @@ class ButtonSelesai extends StatelessWidget {
                 );
               },
             );
-          } else if (stss == "deterima") {
+          } else if (stss == "diterima") {
             ToastWidget.ToastInfo(context, "PPID telah disetujui", "Informasi");
+          } else if (stss == "ditolak") {
+            ToastWidget.ToastInfo(
+                context,
+                "Pengajuan Ditolak silakan membuat pengajuan kembali",
+                "Pengajuan Ditolak");
           } else {
             ToastWidget.ToastInfo(context,
                 "Mohon tunngu pembuatan dokumen ppid", "Mohon Tungggu");

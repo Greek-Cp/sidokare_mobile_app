@@ -246,7 +246,7 @@ class _PageDetailKeluhannState extends State<PageDetailKeluhann> {
                                 "Proses Penanganan");
                           } else if (DokumenUser.toString() != "kosong") {
                             String url =
-                                'http://${ApiPoint.BASE_URL}/storage/dummyOutput/${DokumenUser.toString()}'; // Ganti dengan URL file yang ingin Anda unduh
+                                'http://${ApiPoint.BASE_URL}/storage/HasilKeluhan/${DokumenUser.toString()}'; // Ganti dengan URL file yang ingin Anda unduh
                             // String savedDir =
                             //     '/storage/emulated/0/Download/${timeStamp}-${DocPPID.toString()}';
                             DateTime currentTime = DateTime.now();
@@ -274,6 +274,11 @@ class _PageDetailKeluhannState extends State<PageDetailKeluhann> {
                               ControllerAPI.downloadFile(url, pathYak, context,
                                   "Tersimpan folder download \n Nama File : ${timestamp}-${DokumenUser.toString()}");
                             }
+                          } else if (stsss == 'ditolak') {
+                            ToastWidget.ToastInfo(
+                                context,
+                                "harap ajukan kembali dan Pastikan data yang dimasukkan benar",
+                                "Pengajuan Ditolak");
                           } else {
                             ToastWidget.ToastInfo(
                                 context, "Belum, Bisa", "Sabar");
@@ -355,6 +360,11 @@ class _PageDetailKeluhannState extends State<PageDetailKeluhann> {
                                       "id_akun": Akunn,
                                       "kategori": "keluhan"
                                     });
+                              } else if (stsss == "ditolak") {
+                                ToastWidget.ToastInfo(
+                                    context,
+                                    "Pengajuan Ditolak silakan membuat pengajuan kembali",
+                                    "Pengajuan Ditolak");
                               } else {
                                 ToastWidget.ToastInfo(
                                     context,
@@ -464,6 +474,11 @@ class ButtonSelesai extends StatelessWidget {
           } else if (stss == "diterima") {
             ToastWidget.ToastInfo(
                 context, "Formulir Keluhan telah disetujui", "Informasi");
+          } else if (stss == "ditolak") {
+            ToastWidget.ToastInfo(
+                context,
+                "Pengajuan Ditolak silakan membuat pengajuan kembali",
+                "Pengajuan Ditolak");
           } else {
             ToastWidget.ToastInfo(
                 context,
