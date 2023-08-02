@@ -29,7 +29,7 @@ class ResponseModelPPID {
 
 class Data {
   String? idPengajuanPpid;
-  int? idAkun;
+  String? idAkun;
   String? status;
   String? RT;
   String? RW;

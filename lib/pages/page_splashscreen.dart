@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:sidokare_mobile_app/component/Toast.dart';
 import 'package:sidokare_mobile_app/const/list_color.dart';
 import 'package:sidokare_mobile_app/const/size.dart';
 import 'package:sidokare_mobile_app/const/util_pref.dart';
@@ -48,15 +50,50 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   _nextbro() async {
-    await Future.delayed(Duration(milliseconds: 2000), () {
-      Navigator.push(
+    final status = await Permission.location.request();
+    if (status.isGranted) {
+      await Future.delayed(Duration(milliseconds: 2000), () {
+        Navigator.push(
+            context,
+            WaveTransition(
+                child: IntroAwal(),
+                center: FractionalOffset(0.90, 0.90),
+                duration: Duration(milliseconds: 1000) // optional
+                ));
+      });
+    } else if (status.isPermanentlyDenied) {
+      // Pengguna telah secara permanen menolak akses lokasi, Anda bisa memberikan pesan untuk meminta pengguna mengaktifkan izin di pengaturan perangkat
+
+      await Future.delayed(Duration(milliseconds: 2000), () {
+        Navigator.push(
+            context,
+            WaveTransition(
+                child: IntroAwal(),
+                center: FractionalOffset(0.90, 0.90),
+                duration: Duration(milliseconds: 1000) // optional
+                ));
+        ToastWidget.ToastWarning(
+            context,
+            "Mohon Izinkan agar aplikasi berjalan lancar , Dapat melalui Pengaturan pada Aplikasi ",
+            "Perizinan");
+      });
+    } else {
+      // Pengguna menolak izin akses lokasi
+
+      await Future.delayed(Duration(milliseconds: 2000), () {
+        Navigator.push(
+            context,
+            WaveTransition(
+                child: IntroAwal(),
+                center: FractionalOffset(0.90, 0.90),
+                duration: Duration(milliseconds: 1000) // optional
+                ));
+      });
+      ToastWidget.ToastWarning(
           context,
-          WaveTransition(
-              child: IntroAwal(),
-              center: FractionalOffset(0.90, 0.90),
-              duration: Duration(milliseconds: 1000) // optional
-              ));
-    });
+          "Mohon Izinkan agar aplikasi berjalan lancar , Dapat melalui Pengaturan pada Aplikasi ",
+          "Perizinan");
+    }
   }
 
   @override

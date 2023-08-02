@@ -17,7 +17,7 @@
         android:resource="@xml/provider_paths"/>
 </provider> -->
     <application
-        android:label="sidokare_mobile_app"
+        android:label="E-Sidokare"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher"
         android:usesCleartextTraffic="true"

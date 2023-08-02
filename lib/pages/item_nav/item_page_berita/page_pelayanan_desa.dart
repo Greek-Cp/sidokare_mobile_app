@@ -6,6 +6,7 @@ import 'package:sidokare_mobile_app/const/size.dart';
 import 'package:rotated_corner_decoration/rotated_corner_decoration.dart';
 import 'package:sidokare_mobile_app/model/response/berita.dart';
 import 'package:sidokare_mobile_app/provider/provider_account.dart';
+import '../../../const/const.dart';
 import '../../../const/list_color.dart';
 
 class pagePelayananDesa extends StatefulWidget {
@@ -97,7 +98,7 @@ class _pagePelayananDesaState extends State<pagePelayananDesa> {
                   mainAxisSize: MainAxisSize.max,
                   children: [
                     _ImagesBruh(berita.foto.toString()),
-                    _TextDesc(berita.judulBerita, berita.isiBerita),
+                    _TextDesc(berita.isiBerita, berita.judulBerita),
                     _KetBawah(berita.tanggalPublikasi.toString())
                   ],
                 ),
@@ -114,8 +115,10 @@ class _pagePelayananDesaState extends State<pagePelayananDesa> {
 
   Widget _ImagesBruh(String? urlGambar) {
     return Image.network(
-      "${urlGambar.toString()}",
-      fit: BoxFit.contain,
+      "http://${ApiPoint.BASE_URL}/storage/app/public/berita/${urlGambar.toString()}",
+      fit: BoxFit.cover,
+      width: double.infinity,
+      height: 200,
     );
   }
 
@@ -172,6 +175,7 @@ class _pagePelayananDesaState extends State<pagePelayananDesa> {
 
   Widget _TextDesc(String? textDesc, String? textHeader) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SizedBox(
           height: 10,

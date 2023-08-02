@@ -27,17 +27,17 @@ class PageDetailKeluhann extends StatefulWidget {
 }
 
 Color? warnaButton({String? samakan}) {
-  if (samakan == "diajukan") {
+  if (samakan == "Diajukan") {
     return Colors.amberAccent;
-  } else if (samakan == "diproses") {
+  } else if (samakan == "Diproses") {
     ListColor.GradientwarnaBiruSidoKare;
-  } else if (samakan == "ditolak") {
+  } else if (samakan == "Ditolak") {
     return Colors.redAccent;
-  } else if (samakan == "revisi") {
+  } else if (samakan == "Revisi") {
     return Colors.pinkAccent;
-  } else if (samakan == "direview") {
+  } else if (samakan == "Direview") {
     return Colors.orangeAccent;
-  } else if (samakan == "selesai") {
+  } else if (samakan == "Selesai") {
     return Colors.lightGreen;
   } else {
     return Colors.greenAccent;
@@ -49,10 +49,10 @@ class _PageDetailKeluhannState extends State<PageDetailKeluhann> {
   @override
   Widget build(BuildContext context) {
     getDataKeluhan = ModalRoute.of(context)?.settings.arguments as Map;
-    int Akunn = getDataKeluhan?['id_akun'];
+    String Akunn = getDataKeluhan?['id_akun'];
     final DataDiri = Provider.of<ProviderAccount>(context)
         .GetDataDiri
-        .firstWhere((idData) => idData.id_akun == Akunn);
+        .firstWhere((idData) => idData.id_akun == Akunn.toInt());
 
     String JudulLaporan = getDataKeluhan?['judulLaporan'];
     String isiLaporan = getDataKeluhan?['isiLaporan'];
@@ -239,14 +239,14 @@ class _PageDetailKeluhannState extends State<PageDetailKeluhann> {
                       GestureDetector(
                         onTap: () async {
                           print("halooo");
-                          if (stsss == "revisi") {
+                          if (stsss == "Revisi") {
                             ToastWidget.ToastInfo(
                                 context,
                                 "Harap Sabar Masih Di Revisi",
                                 "Proses Penanganan");
                           } else if (DokumenUser.toString() != "kosong") {
                             String url =
-                                'http://${ApiPoint.BASE_URL}/storage/HasilKeluhan/${DokumenUser.toString()}'; // Ganti dengan URL file yang ingin Anda unduh
+                                'http://${ApiPoint.BASE_URL}/storage/app/public/HasilKeluhan/${DokumenUser.toString()}'; // Ganti dengan URL file yang ingin Anda unduh
                             // String savedDir =
                             //     '/storage/emulated/0/Download/${timeStamp}-${DocPPID.toString()}';
                             DateTime currentTime = DateTime.now();
@@ -274,7 +274,7 @@ class _PageDetailKeluhannState extends State<PageDetailKeluhann> {
                               ControllerAPI.downloadFile(url, pathYak, context,
                                   "Tersimpan folder download \n Nama File : ${timestamp}-${DokumenUser.toString()}");
                             }
-                          } else if (stsss == 'ditolak') {
+                          } else if (stsss == 'Ditolak') {
                             ToastWidget.ToastInfo(
                                 context,
                                 "harap ajukan kembali dan Pastikan data yang dimasukkan benar",
@@ -311,7 +311,7 @@ class _PageDetailKeluhannState extends State<PageDetailKeluhann> {
                         ),
                       ),
                       Visibility(
-                        visible: stsss == "selesai" || stsss == "diterima"
+                        visible: stsss == "Selesai" || stsss == "Diterima"
                             ? true
                             : false,
                         child: ComponentTextDescriptionBawah(
@@ -343,13 +343,13 @@ class _PageDetailKeluhannState extends State<PageDetailKeluhann> {
                                   context,
                                   "Revisi sudah kedua kali, silahkan datang ke kantor Desa untuk mendapatkan informasi lebih lanjut",
                                   "Mohon Maaf ");
-                            } else if (stsss == "diterima") {
+                            } else if (stsss == "Diterima") {
                               ToastWidget.ToastInfo(
                                   context,
                                   "Tidak dapat lagi mengajukan keberatan",
                                   "Mohon Maaf");
                             } else {
-                              if (stsss == "selesai") {
+                              if (stsss == "Selesai") {
                                 // print("ID ASPIRASI == ${idAspirasi}");
                                 Navigator.pushNamed(
                                     context,
@@ -360,7 +360,7 @@ class _PageDetailKeluhannState extends State<PageDetailKeluhann> {
                                       "id_akun": Akunn,
                                       "kategori": "keluhan"
                                     });
-                              } else if (stsss == "ditolak") {
+                              } else if (stsss == "Ditolak") {
                                 ToastWidget.ToastInfo(
                                     context,
                                     "Pengajuan Ditolak silakan membuat pengajuan kembali",
@@ -392,12 +392,12 @@ class _PageDetailKeluhannState extends State<PageDetailKeluhann> {
   }
 
   String namaButton({String? stss, String? jml, String? doc}) {
-    if (stss == "revisi") {
+    if (stss == "Revisi") {
       print("${jml} adalahh berapa");
       return "Revisi ${jml}";
-    } else if (stss == "diterima") {
+    } else if (stss == "Diterima") {
       return " ${doc.toString()}";
-    } else if (stss != "selesai") {
+    } else if (stss != "Selesai") {
       return " ${stss}";
     } else {
       return " ${doc.toString()}";
@@ -431,7 +431,7 @@ class ButtonSelesai extends StatelessWidget {
       padding: EdgeInsets.symmetric(vertical: 5.h),
       child: ElevatedButton(
         onPressed: () {
-          if (stss == "selesai") {
+          if (stss == "Selesai") {
             showDialog(
               context: context,
               builder: (BuildContext context) {
@@ -471,10 +471,10 @@ class ButtonSelesai extends StatelessWidget {
                 );
               },
             );
-          } else if (stss == "diterima") {
+          } else if (stss == "Diterima") {
             ToastWidget.ToastInfo(
                 context, "Formulir Keluhan telah disetujui", "Informasi");
-          } else if (stss == "ditolak") {
+          } else if (stss == "Ditolak") {
             ToastWidget.ToastInfo(
                 context,
                 "Pengajuan Ditolak silakan membuat pengajuan kembali",

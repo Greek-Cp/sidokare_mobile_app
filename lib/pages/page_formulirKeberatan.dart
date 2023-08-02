@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:bottom_bar_matu/utils/app_utils.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
@@ -82,7 +83,7 @@ class _PageFormulirKeberatanPPIDState extends State<PageFormulirKeberatanPPID> {
   Widget build(BuildContext context) {
     // final idAkunnn = ModalRoute.of(context)?.settings.arguments as int;
     getDataFromDetail = ModalRoute.of(context)?.settings.arguments as Map;
-    int akunDek = getDataFromDetail?['id_akun'];
+    String akunDek = getDataFromDetail?['id_akun'];
     String id = getDataFromDetail?['id'];
     String kategori = getDataFromDetail?['kategori'];
     final DataDiri = Provider.of<ProviderAccount>(context)

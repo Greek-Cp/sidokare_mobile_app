@@ -71,7 +71,7 @@ class _PageDetailBeritaState extends State<PageDetailBerita> {
     String judul_berita = berita.judulBerita.toString();
     String isi_berita = berita.isiBerita.toString();
     String gambar_utama = berita.foto.toString();
-    String fotoProfile = berita.foto_profile.toString();
+    // String fotoProfile = berita.foto_profile.toString();
     String namaProfile = berita.namaUpload.toString();
     String idBerita = berita.idBerita.toString();
     String namaKategori = berita.namaKategoriBerita.toString();
@@ -146,7 +146,6 @@ class _PageDetailBeritaState extends State<PageDetailBerita> {
                           child: _HeaderJudul(judul_berita))),
                   _ListBerita(
                       tanggalBerita: HasilFormatTgl.toString(),
-                      profilePic: fotoProfile.toString(),
                       namaKategori: namaKategori,
                       authBerita: "${namaProfile.toString()}"),
                   _isiBerita(isiBerita: isi_berita),
@@ -210,7 +209,7 @@ class _PageDetailBeritaState extends State<PageDetailBerita> {
                           },
                         );
                       } else {
-                        return CircularProgressIndicator();
+                        return Container();
                       }
                     },
                   ),
@@ -238,8 +237,7 @@ class _PageDetailBeritaState extends State<PageDetailBerita> {
                         idBerita,
                         getKomen?.text.toString(),
                         getCurrentDateTime().toString(),
-                        namaProfile.toString(),
-                        fotoProfile.toString()),
+                        namaProfile.toString()),
                   )),
                   Padding(
                       padding: EdgeInsets.only(
@@ -277,7 +275,7 @@ class _PageDetailBeritaState extends State<PageDetailBerita> {
                             data.profilePicKomen.toString() == 'kosong'
                         ? AssetImage("assets/accountBlank.png") as ImageProvider
                         : NetworkImage(
-                                "http://${ApiPoint.BASE_URL}/storage/profile/${data.profilePicKomen.toString().replaceAll("'", "")}")
+                                "http://${ApiPoint.BASE_URL}/storage/app/public/profile/${data.profilePicKomen.toString().replaceAll("'", "")}")
                             as ImageProvider,
                     // "http://${ApiPoint.BASE_URL}/storage/profile/${data.profilePicKomen.toString()}"
                   ),
@@ -293,7 +291,7 @@ class _PageDetailBeritaState extends State<PageDetailBerita> {
                         fontWeight: FontWeight.bold),
                   ),
                 ),
-                int.parse(idAkun) == data.idAkun
+                int.parse(idAkun) == data.idAkun.toInt()
                     ? PopupMenuButton(
                         itemBuilder: (context) => <PopupMenuEntry<itemEdit>>[
                               PopupMenuItem(
@@ -406,7 +404,7 @@ class _PageDetailBeritaState extends State<PageDetailBerita> {
 
   Widget _Image(String urlImage) {
     return Image.network(
-      urlImage,
+      "http://${ApiPoint.BASE_URL}/storage/app/public/berita/${urlImage}",
       fit: BoxFit.cover,
       width: double.infinity,
       height: 200.h,
@@ -425,10 +423,7 @@ class _PageDetailBeritaState extends State<PageDetailBerita> {
   }
 
   Widget _ListBerita(
-      {String? tanggalBerita,
-      String? authBerita,
-      String? profilePic,
-      String? namaKategori}) {
+      {String? tanggalBerita, String? authBerita, String? namaKategori}) {
     return Padding(
         padding: EdgeInsets.symmetric(horizontal: 0.h),
         child: AnimationConfiguration.synchronized(
@@ -439,13 +434,8 @@ class _PageDetailBeritaState extends State<PageDetailBerita> {
                 ListTile(
                   leading: CircleAvatar(
                     radius: 20,
-                    backgroundImage: profilePic.toString() == "" ||
-                            profilePic.toString() == null ||
-                            profilePic.toString() == 'kosong'
-                        ? AssetImage("assets/accountBlank.png") as ImageProvider
-                        : NetworkImage(
-                                "http://${ApiPoint.BASE_URL}/storage/profile/${profilePic.toString().replaceAll("'", "")}")
-                            as ImageProvider,
+                    backgroundImage:
+                        AssetImage("assets/accountBlank.png") as ImageProvider,
                   ),
                   title: Text("${authBerita}"),
                   subtitle: Text("${tanggalBerita}"),
@@ -519,7 +509,7 @@ class _PageDetailBeritaState extends State<PageDetailBerita> {
   }
 
   Widget _isiKomen(
-      String id_akun, id_berita, isi_komentar, waktuBerkomentar, nama, profil) {
+      String id_akun, id_berita, isi_komentar, waktuBerkomentar, nama) {
     print("Isi Komentar");
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
@@ -543,12 +533,12 @@ class _PageDetailBeritaState extends State<PageDetailBerita> {
                   onPressed: () {
                     setState(() {
                       BeritaList!.add(DataBerita(
-                          idAkun: id_akun.toInt(),
-                          idBerita: id_berita.toString().toInt(),
-                          isiKomentar: getKomen!.text,
-                          waktuBerkomentar: waktuBerkomentar,
-                          namaPengkomen: nama,
-                          profilePicKomen: profil));
+                        idAkun: id_akun,
+                        idBerita: id_berita.toString(),
+                        isiKomentar: getKomen!.text,
+                        waktuBerkomentar: waktuBerkomentar,
+                        namaPengkomen: nama,
+                      ));
                     });
 
                     Future<ModelKomentar> d = ControllerAPI.buatKomentar(

@@ -127,7 +127,7 @@ class _PageBeritaState extends State<PageBerita> {
 
   var listKategoriBerita = [
     "Pemerintahan Desa",
-    "Pembagunan Desa",
+    "Pembangunan Desa",
     "Pemberdayaan Masyarakat",
     "Pembinaan Masyarakat",
     "BUM Desa",

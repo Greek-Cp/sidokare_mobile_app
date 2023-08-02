@@ -29,7 +29,7 @@ class ResponseModelKELUHAN {
 
 class Data {
   String? idPengajuanKeluhan;
-  int? idAkun;
+  String? idAkun;
   String? judulLaporan;
   String? isiLaporan;
   String? asalPelapor;

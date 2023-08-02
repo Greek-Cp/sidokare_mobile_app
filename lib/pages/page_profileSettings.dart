@@ -75,7 +75,7 @@ class _PageProfileUserState extends State<PageProfileUser> {
         return AssetImage("assets/accountBlank.png") as ImageProvider;
       } else {
         return NetworkImage(
-                "http://${ApiPoint.BASE_URL}/storage/profile/${urlGambar.replaceAll("'", "")}")
+                "http://${ApiPoint.BASE_URL}/storage/app/public/profile/${urlGambar.replaceAll("'", "")}")
             as ImageProvider;
       }
     } else {

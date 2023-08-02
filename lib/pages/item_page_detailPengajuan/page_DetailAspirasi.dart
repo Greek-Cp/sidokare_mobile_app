@@ -28,15 +28,15 @@ class PageDetailAspirasiiii extends StatefulWidget {
 }
 
 Color ButtonDownloadAspirasi({String? sama}) {
-  if (sama == "diajukan") {
+  if (sama == "Diajukan") {
     return Colors.amberAccent;
-  } else if (sama == "diproses") {
+  } else if (sama == "Diproses") {
     return ListColor.warnaBiruSidoKare;
-  } else if (sama == "ditolak") {
+  } else if (sama == "Ditolak") {
     return Colors.redAccent;
-  } else if (sama == "revisi") {
+  } else if (sama == "Revisi") {
     return Colors.pinkAccent;
-  } else if (sama == "selesai") {
+  } else if (sama == "Selesai") {
     return Colors.lightGreen;
   } else {
     return Colors.greenAccent;
@@ -44,12 +44,12 @@ Color ButtonDownloadAspirasi({String? sama}) {
 }
 
 String namaButton({String? stss, String? jml, String? doc}) {
-  if (stss == "revisi") {
+  if (stss == "Revisi") {
     print("${jml} adalahh berapa");
     return "Revisi ${jml}";
-  } else if (stss == "diterima") {
+  } else if (stss == "Diterima") {
     return " ${doc.toString()}";
-  } else if (stss != "selesai") {
+  } else if (stss != "Selesai") {
     return " ${stss}";
   } else {
     return " ${doc.toString()}";
@@ -61,10 +61,10 @@ class _PageDetailAspirasiState extends State<PageDetailAspirasiiii> {
   @override
   Widget build(BuildContext context) {
     getDataAspirasi = ModalRoute.of(context)?.settings.arguments as Map;
-    int Akunn = getDataAspirasi?['id_akun'];
+    String Akunn = getDataAspirasi?['id_akun'];
     final DataDiri = Provider.of<ProviderAccount>(context)
         .GetDataDiri
-        .firstWhere((idData) => idData.id_akun == Akunn);
+        .firstWhere((idData) => idData.id_akun == Akunn.toInt());
     String stts = getDataAspirasi?['status'];
     String JudulLaporan = getDataAspirasi?['judulLaporan'];
     String isiLaporan = getDataAspirasi?['isiLaporan'];
@@ -226,14 +226,14 @@ class _PageDetailAspirasiState extends State<PageDetailAspirasiiii> {
                         GestureDetector(
                           onTap: () async {
                             print("halooo");
-                            if (stts == "revisi") {
+                            if (stts == "Revisi") {
                               ToastWidget.ToastInfo(
                                   context,
                                   "Harap Sabar Masih Di Revisi",
                                   "Proses Penanganan");
                             } else if (DocAspirasi.toString() != "kosong") {
                               String url =
-                                  'http://${ApiPoint.BASE_URL}/storage/HasilAspirasi/${DocAspirasi.toString()}'; // Ganti dengan URL file yang ingin Anda unduh
+                                  'http://${ApiPoint.BASE_URL}/storage/app/public/HasilAspirasi/${DocAspirasi.toString()}'; // Ganti dengan URL file yang ingin Anda unduh
                               // String savedDir =
                               //     '/storage/emulated/0/Download/${timeStamp}-${DocPPID.toString()}';
                               DateTime currentTime = DateTime.now();
@@ -265,7 +265,7 @@ class _PageDetailAspirasiState extends State<PageDetailAspirasiiii> {
                                     context,
                                     "Tersimpan folder download \n Nama File : ${timestamp}-${DocAspirasi.toString()}");
                               }
-                            } else if (stts == 'ditolak') {
+                            } else if (stts == 'Ditolak') {
                               ToastWidget.ToastInfo(
                                   context,
                                   "harap ajukan kembali dan Pastikan data yang dimasukkan benar",
@@ -302,7 +302,7 @@ class _PageDetailAspirasiState extends State<PageDetailAspirasiiii> {
                           ),
                         ),
                         Visibility(
-                          visible: stts == "selesai" || stts == "diterima"
+                          visible: stts == "Selesai" || stts == "Diterima"
                               ? true
                               : false,
                           child: ComponentTextDescriptionBawah(
@@ -335,18 +335,18 @@ class _PageDetailAspirasiState extends State<PageDetailAspirasiiii> {
                                     context,
                                     "Revisi sudah kedua kali, silahkan datang ke kantor Desa untuk mendapatkan informasi lebih lanjut",
                                     "Mohon Maaf ");
-                              } else if (stts == "ditolak") {
+                              } else if (stts == "Ditolak") {
                                 ToastWidget.ToastInfo(
                                     context,
                                     "Pengajuan Ditolak silakan membuat pengajuan kembali",
                                     "Pengajuan Ditolak");
-                              } else if (stts == "diterima") {
+                              } else if (stts == "Diterima") {
                                 ToastWidget.ToastInfo(
                                     context,
                                     "Tidak dapat lagi mengajukan keberatan",
                                     "Mohon Maaf");
                               } else {
-                                if (stts == "selesai") {
+                                if (stts == "Selesai") {
                                   print("ID ASPIRASI == ${idAspirasi}");
                                   Navigator.pushNamed(
                                       context,
@@ -400,7 +400,7 @@ class ButtonSelesai extends StatelessWidget {
       padding: EdgeInsets.symmetric(vertical: 5.h),
       child: ElevatedButton(
         onPressed: () {
-          if (stss == "selesai") {
+          if (stss == "Selesai") {
             showDialog(
               context: context,
               builder: (BuildContext context) {
@@ -440,10 +440,10 @@ class ButtonSelesai extends StatelessWidget {
                 );
               },
             );
-          } else if (stss == "diterima") {
+          } else if (stss == "Diterima") {
             ToastWidget.ToastInfo(
                 context, "Aspirasi telah disetujui", "Informasi");
-          } else if (stss == "ditolak") {
+          } else if (stss == "Ditolak") {
             ToastWidget.ToastInfo(
                 context,
                 "Pengajuan Ditolak silakan membuat pengajuan kembali",

@@ -181,17 +181,17 @@ class _itemListStatusState extends State<itemListStatus> {
   }
 
   Color? warnaButton({String? samakan}) {
-    if (samakan == "diajukan") {
+    if (samakan == "Diajukan") {
       return Colors.amberAccent;
-    } else if (samakan == "diproses") {
+    } else if (samakan == "Diproses") {
       ListColor.GradientwarnaBiruSidoKare;
-    } else if (samakan == "ditolak") {
+    } else if (samakan == "Ditolak") {
       return Colors.redAccent;
-    } else if (samakan == "revisi") {
+    } else if (samakan == "Revisi") {
       return Colors.pinkAccent;
-    } else if (samakan == "direview") {
+    } else if (samakan == "Direview") {
       return Colors.orangeAccent;
-    } else if (samakan == "selesai") {
+    } else if (samakan == "Selesai") {
       return Colors.lightGreen;
     } else {
       return Colors.greenAccent;

@@ -29,8 +29,8 @@ class ModelKomentarList {
 
 class DataBerita {
   String? idKomentar;
-  int? idAkun;
-  int? idBerita;
+  String? idAkun;
+  String? idBerita;
   String? isiKomentar;
   String? waktuBerkomentar;
   String? namaPengkomen;

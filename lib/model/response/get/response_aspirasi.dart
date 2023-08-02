@@ -29,7 +29,7 @@ class ResponseModelASPIRASI {
 
 class Data {
   String? idPengajuanAspirasi;
-  int? idAkun;
+  String? idAkun;
   String? status;
   String? judulAspirasi;
   String? isiAspirasi;

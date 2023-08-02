@@ -69,7 +69,7 @@ class _PageSearchBeritaState extends State<PageSearchBerita> {
         return Scaffold(
           appBar: AppBar(
             title: Text(
-              "Cari Beritas",
+              "Cari Berita",
               style: TextStyle(color: Colors.black),
             ),
             centerTitle: true,
@@ -122,7 +122,6 @@ class _PageSearchBeritaState extends State<PageSearchBerita> {
                                             foto: item.foto,
                                             tanggal: item.tanggalPublikasi,
                                             namaPengupload: item.namaUpload,
-                                            fotoPengupload: item.foto_profile,
                                             isiBerita: item.isiBerita))));
                           }, // membangun widget cardBeritaTerkini dengan data yang ada di List<Berita>
                         ),
@@ -201,7 +200,7 @@ class _PageSearchBeritaState extends State<PageSearchBerita> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Image.network(
-                      "${berita?.foto}",
+                      "http://${ApiPoint.BASE_URL}/storage/app/public/berita/${berita?.foto}",
                       fit: BoxFit.cover,
                       height: 140.h,
                       width: double.infinity.w,
@@ -241,14 +240,8 @@ class _PageSearchBeritaState extends State<PageSearchBerita> {
                           Container(
                             width: 30.w,
                             child: CircleAvatar(
-                              backgroundImage: berita?.foto_profile == "" ||
-                                      berita?.foto_profile == null
-                                  ? AssetImage("assets/accountBlank.png")
-                                      as ImageProvider
-                                  : NetworkImage(
-                                          "http://${ApiPoint.BASE_URL}/storage/profile/${berita?.foto_profile!.replaceAll("'", "")}")
-                                      as ImageProvider,
-                              backgroundColor: Colors.red,
+                              backgroundImage:
+                                  AssetImage("assets/accountBlank.png"),
                             ),
                           ),
                           SizedBox(

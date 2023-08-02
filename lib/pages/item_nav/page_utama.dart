@@ -234,7 +234,7 @@ class _PageUtamaState extends State<PageUtama> {
                                                       "assets/accountBlank.png")
                                                   as ImageProvider
                                               : NetworkImage(
-                                                  "http://${ApiPoint.BASE_URL}/storage/profile/${DataDiri.urlGambar?.replaceAll("'", "")}",
+                                                  "http://${ApiPoint.BASE_URL}/storage/app/public/profile/${DataDiri.urlGambar?.replaceAll("'", "")}",
                                                   headers: {
                                                       "Connection": "Keep-Alive"
                                                     }) as ImageProvider,
@@ -430,7 +430,8 @@ class _PageUtamaState extends State<PageUtama> {
                                                                   data[index],
                                                               judul: data[index]
                                                                   .judulBerita,
-                                                              gambar: data[index]
+                                                              gambar: data[
+                                                                      index]
                                                                   .unggahFileLain,
                                                               foto: data[index]
                                                                   .foto,
@@ -440,9 +441,6 @@ class _PageUtamaState extends State<PageUtama> {
                                                               namaPengupload:
                                                                   data[index]
                                                                       .namaUpload,
-                                                              fotoPengupload:
-                                                                  data[index]
-                                                                      .foto_profile,
                                                               isiBerita: data[
                                                                       index]
                                                                   .isiBerita))));
@@ -626,15 +624,15 @@ class _PageUtamaState extends State<PageUtama> {
     );
   }
 
-  Widget cardBeritaTerkini(
-      {Berita? berita,
-      String? judul,
-      String? isiBerita,
-      String? foto,
-      String? tanggal,
-      String? gambar,
-      String? namaPengupload,
-      String? fotoPengupload}) {
+  Widget cardBeritaTerkini({
+    Berita? berita,
+    String? judul,
+    String? isiBerita,
+    String? foto,
+    String? tanggal,
+    String? gambar,
+    String? namaPengupload,
+  }) {
     DateTime tempDate = new DateFormat("yyyy-MM-dd hh:mm:ss")
         .parse("${berita?.tanggalPublikasi}");
     String HasilFormatTgl = DateFormat('EEEE, dd-MM-yyyy').format(tempDate);
@@ -658,7 +656,6 @@ class _PageUtamaState extends State<PageUtama> {
                   "tanggal_publikasi": tanggal,
                   "gambar_lain": gambar,
                   "nama_pengupload": namaPengupload,
-                  "profile_pengupload": fotoPengupload
                 })
               },
               highlightColor: Colors.blue.withOpacity(0.4),
@@ -669,7 +666,7 @@ class _PageUtamaState extends State<PageUtama> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Image.network(
-                      "${berita?.foto}",
+                      "http://${ApiPoint.BASE_URL}/storage/app/public/berita/${berita?.foto}",
                       fit: BoxFit.cover,
                       height: 140.h,
                       width: double.infinity.w,
@@ -709,13 +706,8 @@ class _PageUtamaState extends State<PageUtama> {
                           Container(
                             width: 30.w,
                             child: CircleAvatar(
-                              backgroundImage: berita?.foto_profile == "" ||
-                                      berita?.foto_profile == null
-                                  ? AssetImage("assets/accountBlank.png")
-                                      as ImageProvider
-                                  : NetworkImage(
-                                          "http://${ApiPoint.BASE_URL}/storage/profile/${berita?.foto_profile!.replaceAll("'", "")}")
-                                      as ImageProvider,
+                              backgroundImage:
+                                  AssetImage("assets/accountBlank.png"),
                               backgroundColor: Colors.red,
                             ),
                           ),

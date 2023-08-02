@@ -3,13 +3,13 @@ import 'package:http/http.dart' as http;
 import 'package:sidokare_mobile_app/const/const.dart';
 
 class Berita {
-  final int? idBerita;
-  final int? idAkun;
+  final String? idBerita;
+  final String? idAkun;
   final String? tanggalPublikasi;
   final String? idKategori;
   final String? isiBerita;
   final String? foto;
-  final String? foto_profile;
+  // final String? foto_profile;
   final String? namaUpload;
   final String? unggahFileLain;
   final String? judulBerita;
@@ -24,14 +24,14 @@ class Berita {
       required this.foto,
       required this.unggahFileLain,
       required this.judulBerita,
-      required this.foto_profile,
+      // required this.foto_profile,
       required this.namaUpload,
       required this.namaKategoriBerita});
 
   factory Berita.fromJson(Map<String, dynamic> json) {
     return Berita(
         //rubah id_berita to id
-        idBerita: json['id'],
+        idBerita: json['id_berita'],
         idAkun: json['id_akun'],
         tanggalPublikasi: json['tanggal_publikasi'],
         idKategori: json['id_kategori'],
@@ -39,8 +39,8 @@ class Berita {
         foto: json['foto'],
         unggahFileLain: json['unggah_file_lain'],
         judulBerita: json['judul_berita'],
-        foto_profile: json['profile_img'],
-        namaUpload: json['nama'],
+        // foto_profile: json['profile_img'],
+        namaUpload: json['name'],
         namaKategoriBerita: json['nama_kategori']);
   }
 }

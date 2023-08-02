@@ -33,7 +33,7 @@ class _DetailPengajuanPPIDState extends State<DetailPengajuanPPID> {
   @override
   Widget build(BuildContext context) {
     getData = ModalRoute.of(context)?.settings.arguments as Map;
-    int Akunn = getData?['id_akun'];
+    String Akunn = getData?['id_akun'];
     final DataDiri = Provider.of<ProviderAccount>(context)
         .GetDataDiri
         .firstWhere((idData) => idData.id_akun == Akunn.toInt());
@@ -208,14 +208,14 @@ class _DetailPengajuanPPIDState extends State<DetailPengajuanPPID> {
                         GestureDetector(
                           onTap: () async {
                             print("halooo");
-                            if (status == "revisi") {
+                            if (status == "Revisi") {
                               ToastWidget.ToastInfo(
                                   context,
                                   "Harap Sabar Masih Di Revisi",
                                   "Proses Penanganan");
                             } else if (DocPPID.toString() != "kosong") {
                               String url =
-                                  'http://${ApiPoint.BASE_URL}/storage/Hasilppids/${DocPPID.toString()}'; // Ganti dengan URL file yang ingin Anda unduh
+                                  'http://${ApiPoint.BASE_URL}/storage/app/public/Hasilppids/${DocPPID.toString()}'; // Ganti dengan URL file yang ingin Anda unduh
                               // String savedDir =
                               //     '/storage/emulated/0/Download/${timeStamp}-${DocPPID.toString()}';
                               DateTime currentTime = DateTime.now();
@@ -247,7 +247,7 @@ class _DetailPengajuanPPIDState extends State<DetailPengajuanPPID> {
                                     context,
                                     "Tersimpan folder download \n Nama File : ${timeStamp}-${DocPPID.toString()}");
                               }
-                            } else if (status == 'ditolak') {
+                            } else if (status == 'Ditolak') {
                               ToastWidget.ToastInfo(
                                   context,
                                   "harap ajukan kembali dan Pastikan data yang dimasukkan benar",
@@ -284,7 +284,7 @@ class _DetailPengajuanPPIDState extends State<DetailPengajuanPPID> {
                           ),
                         ),
                         Visibility(
-                          visible: status == "selesai" || status == "diterima"
+                          visible: status == "Selesai" || status == "Diterima"
                               ? true
                               : false,
                           child: ComponentTextDescriptionBawah(
@@ -315,18 +315,18 @@ class _DetailPengajuanPPIDState extends State<DetailPengajuanPPID> {
                                     context,
                                     "Revisi sudah kedua kali, silahkan datang ke kantor Desa untuk mendapatkan informasi lebih lanjut",
                                     "Mohon Maaf ");
-                              } else if (status == "diterima") {
+                              } else if (status == "Diterima") {
                                 ToastWidget.ToastInfo(
                                     context,
                                     "Tidak dapat lagi mengajukan keberatan",
                                     "Mohon Maaf");
-                              } else if (status == "ditolak") {
+                              } else if (status == "Ditolak") {
                                 ToastWidget.ToastInfo(
                                     context,
                                     "Pengajuan Ditolak silakan membuat pengajuan kembali",
                                     "Pengajuan Ditolak");
                               } else {
-                                if (status == "selesai") {
+                                if (status == "Selesai") {
                                   Navigator.pushNamed(
                                       context,
                                       PageFormulirKeberatanPPID.routeName
@@ -363,12 +363,12 @@ class _DetailPengajuanPPIDState extends State<DetailPengajuanPPID> {
 }
 
 String namaButton({String? stss, String? jml, String? doc}) {
-  if (stss == "revisi") {
+  if (stss == "Revisi") {
     print("${jml} adalahh berapa");
     return "Revisi ${jml}";
-  } else if (stss == "diterima") {
+  } else if (stss == "Diterima") {
     return " ${doc.toString()}";
-  } else if (stss != "selesai") {
+  } else if (stss != "Selesai") {
     return " ${stss}";
   } else {
     return " ${doc.toString()}";
@@ -376,15 +376,15 @@ String namaButton({String? stss, String? jml, String? doc}) {
 }
 
 Color ButtonDownload({String? sama}) {
-  if (sama == "diajukan") {
+  if (sama == "Diajukan") {
     return Colors.amberAccent;
-  } else if (sama == "diproses") {
+  } else if (sama == "Diproses") {
     return ListColor.warnaBiruSidoKare;
-  } else if (sama == "ditolak") {
+  } else if (sama == "Ditolak") {
     return Colors.redAccent;
-  } else if (sama == "revisi") {
+  } else if (sama == "Revisi") {
     return Colors.pinkAccent;
-  } else if (sama == "selesai") {
+  } else if (sama == "Selesai") {
     return Colors.lightGreen;
   } else {
     return Colors.greenAccent;
@@ -466,9 +466,9 @@ class ButtonSelesai extends StatelessWidget {
                 );
               },
             );
-          } else if (stss == "diterima") {
+          } else if (stss == "Diterima") {
             ToastWidget.ToastInfo(context, "PPID telah disetujui", "Informasi");
-          } else if (stss == "ditolak") {
+          } else if (stss == "Ditolak") {
             ToastWidget.ToastInfo(
                 context,
                 "Pengajuan Ditolak silakan membuat pengajuan kembali",

@@ -6,6 +6,7 @@ import 'package:sidokare_mobile_app/const/size.dart';
 import 'package:rotated_corner_decoration/rotated_corner_decoration.dart';
 import 'package:sidokare_mobile_app/model/response/berita.dart';
 import 'package:sidokare_mobile_app/provider/provider_account.dart';
+import '../../../const/const.dart';
 import '../../../const/list_color.dart';
 import '../page_detail_berita.dart';
 import 'package:intl/intl.dart' as intl;
@@ -66,7 +67,6 @@ class _PagePotensiDesaState extends State<PagePotensiDesa> {
                                       data[index].tanggalPublikasi,
                                   "gambar_lain": data[index].unggahFileLain,
                                   "nama_pengupload": data[index].namaUpload,
-                                  "profile_pengupload": data[index].foto_profile
                                 });
                           },
                           child: AnimationConfiguration.staggeredList(
@@ -126,7 +126,7 @@ class _PagePotensiDesaState extends State<PagePotensiDesa> {
                   mainAxisSize: MainAxisSize.max,
                   children: [
                     _ImagesBruh(berita.foto.toString()),
-                    _TextDesc(berita.judulBerita, berita.isiBerita),
+                    _TextDesc(berita.isiBerita, berita.judulBerita),
                     _KetBawah(berita.tanggalPublikasi.toString())
                   ],
                 ),
@@ -143,8 +143,10 @@ class _PagePotensiDesaState extends State<PagePotensiDesa> {
 
   Widget _ImagesBruh(String? urlGambar) {
     return Image.network(
-      "${urlGambar.toString()}",
-      fit: BoxFit.contain,
+      "http://${ApiPoint.BASE_URL}/storage/app/public/berita/${urlGambar.toString()}",
+      fit: BoxFit.cover,
+      width: double.infinity,
+      height: 200,
     );
   }
 
@@ -186,6 +188,7 @@ class _PagePotensiDesaState extends State<PagePotensiDesa> {
 
   Widget _TextDesc(String? textDesc, String? textHeader) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SizedBox(
           height: 10,
