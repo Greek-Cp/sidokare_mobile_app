@@ -225,7 +225,10 @@ class _PageFormulirPengajuanState extends State<PageFormulirPengajuanPPID> {
                         hintText: randomValuePPID,
                         errorKosong: "PPID",
                       ),
-                      UpfilePendukung("Upload File Pendukung", "file", fileUp!,
+                      UpfilePendukung(
+                          "Upload File Pendukung (max: 2Mb)",
+                          "file",
+                          fileUp!,
                           sttss(stss: randomValuePPID.toString())),
                       SizedBox(
                         height: 10.h,
@@ -236,100 +239,103 @@ class _PageFormulirPengajuanState extends State<PageFormulirPengajuanPPID> {
                             style: ElevatedButton.styleFrom(
                                 backgroundColor: ListColor.warnaBiruSidoKare,
                                 minimumSize: Size.fromHeight(55.h)),
-                            onPressed: () => {
-                                  print("Jenis PPID == ${randomValuePPID}"),
-                                  print(
-                                      "Dusun Terpilih == ${randomValueDusun}"),
-                                  print("IdAkunnyaa == ${idAkunnn.toString()}"),
-                                  print(
-                                      "nama == ${textEditingControllerNamaLengkap!.text}"),
-                                  print(
-                                      "Telp ${textEditingControllerNomorTelepon!.text}"),
-                                  print(
-                                      "email == ${textEditingControllerEmail!.text}"),
-                                  print("RT == ${randomValueRT}"),
-                                  print("RW == ${randomValueRW}"),
+                            onPressed: () {
+                              print("Jenis PPID == ${randomValuePPID}");
+                              print("Dusun Terpilih == ${randomValueDusun}");
+                              print("IdAkunnyaa == ${idAkunnn.toString()}");
+                              print(
+                                  "nama == ${textEditingControllerNamaLengkap!.text}");
+                              print(
+                                  "Telp ${textEditingControllerNomorTelepon!.text}");
+                              print(
+                                  "email == ${textEditingControllerEmail!.text}");
+                              print("RT == ${randomValueRT}");
+                              print("RW == ${randomValueRW}");
+
+                              if (_formKey.currentState!.validate()) {
+                                print("Tes file :: " + fileUp!.text.toString());
+                                int sizeInBytes = _file!.lengthSync();
+                                double sizeInMb = sizeInBytes / (1024 * 1024);
+                                if (sizeInMb > 2) {
+                                  ToastWidget.ToastInfo(
+                                      context,
+                                      "Maksimal file yang dapat upload 2MB",
+                                      "File Terlalu Besar");
+                                } else {
                                   setState(() {
                                     statusPengajuan = true;
-                                  }),
-                                  if (_formKey.currentState!.validate())
-                                    {
-                                      print("Tes file :: " +
-                                          fileUp!.text.toString()),
-                                      PengajuanPPID.InsertDataPPID(
-                                              idAkun: idAkunnn.toString(),
-                                              nama_pelapor:
-                                                  textEditingControllerNamaLengkap!
-                                                      .text,
-                                              noTelp:
-                                                  textEditingControllerNomorTelepon!
-                                                      .text
-                                                      .toString(),
-                                              emailUser:
-                                                  textEditingControllerEmail!
-                                                      .text
-                                                      .toString(),
-                                              JudulLaporan:
-                                                  textEditingControllerJudulLaporan!
-                                                      .text,
-                                              isiLaporan:
-                                                  textEditingControllerIsiLaporan!
-                                                      .text,
-                                              asalLaporan: "Sidokare",
-                                              tujuan:
-                                                  "pokok kenek ndisek lah masbro",
-                                              RT: randomValueRT.toString(),
-                                              RW: randomValueRW.toString(),
-                                              kategoriPPID:
-                                                  randomValuePPID.toString(),
-                                              File: fileUp!.text.toString())
-                                          .then((value) => {
-                                                setState(() {
-                                                  statusPengajuan = true;
-                                                }),
-                                                if (value.code == 200)
+                                  });
+                                  PengajuanPPID.InsertDataPPID(
+                                          idAkun: idAkunnn.toString(),
+                                          nama_pelapor:
+                                              textEditingControllerNamaLengkap!
+                                                  .text,
+                                          noTelp:
+                                              textEditingControllerNomorTelepon!
+                                                  .text
+                                                  .toString(),
+                                          emailUser: textEditingControllerEmail!
+                                              .text
+                                              .toString(),
+                                          JudulLaporan:
+                                              textEditingControllerJudulLaporan!
+                                                  .text,
+                                          isiLaporan:
+                                              textEditingControllerIsiLaporan!
+                                                  .text,
+                                          asalLaporan: "Sidokare",
+                                          tujuan:
+                                              "pokok kenek ndisek lah masbro",
+                                          RT: randomValueRT.toString(),
+                                          RW: randomValueRW.toString(),
+                                          kategoriPPID:
+                                              randomValuePPID.toString(),
+                                          File: fileUp!.text.toString())
+                                      .then((value) => {
+                                            setState(() {
+                                              statusPengajuan = true;
+                                            }),
+                                            if (value.code == 200)
+                                              {
+                                                print("Kenek paleng"),
+                                                if (fileUp!.text.toString() !=
+                                                    "")
                                                   {
-                                                    print("Kenek paleng"),
-                                                    if (fileUp!.text
-                                                            .toString() !=
-                                                        "")
-                                                      {
-                                                        PengajuanPPID
-                                                                .uploadFilePPID(
-                                                                    _file!)
-                                                            .then((value) => {
-                                                                  Navigator.popAndPushNamed(
-                                                                      context,
-                                                                      BerhasilBuatLaporan
-                                                                          .routeName
-                                                                          .toString(),
-                                                                      arguments:
-                                                                          idAkunnn
-                                                                              .toString())
-                                                                }),
-                                                      }
-                                                    else
-                                                      {
-                                                        Navigator.pushNamed(
-                                                            context,
-                                                            BerhasilBuatLaporan
-                                                                .routeName
-                                                                .toString(),
-                                                            arguments: idAkunnn
-                                                                .toString())
-                                                      },
+                                                    PengajuanPPID
+                                                            .uploadFilePPID(
+                                                                _file!)
+                                                        .then((value) => {
+                                                              Navigator.popAndPushNamed(
+                                                                  context,
+                                                                  BerhasilBuatLaporan
+                                                                      .routeName
+                                                                      .toString(),
+                                                                  arguments:
+                                                                      idAkunnn
+                                                                          .toString())
+                                                            }),
                                                   }
                                                 else
-                                                  {print("yahaha gagal")}
-                                              })
-                                    }
-                                  else
-                                    {
-                                      setState(() {
-                                        statusPengajuan = false;
-                                      }),
-                                    }
-                                },
+                                                  {
+                                                    Navigator.popAndPushNamed(
+                                                        context,
+                                                        BerhasilBuatLaporan
+                                                            .routeName
+                                                            .toString(),
+                                                        arguments:
+                                                            idAkunnn.toString())
+                                                  },
+                                              }
+                                            else
+                                              {print("yahaha gagal")}
+                                          });
+                                }
+                              } else {
+                                setState(() {
+                                  statusPengajuan = false;
+                                });
+                              }
+                            },
                             child: Padding(
                               padding: const EdgeInsets.all(10.0),
                               child: Text(

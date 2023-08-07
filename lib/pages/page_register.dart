@@ -1,10 +1,6 @@
-// import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
-// import 'package:motion_toast/motion_toast.dart';
-// import 'package:provider/provider.dart';
 import 'package:sidokare_mobile_app/component/Toast.dart';
 import 'package:sidokare_mobile_app/component/text_field.dart';
 import 'package:sidokare_mobile_app/const/list_color.dart';
@@ -12,8 +8,6 @@ import 'package:sidokare_mobile_app/const/size.dart';
 import 'package:sidokare_mobile_app/const/util.dart';
 import 'package:sidokare_mobile_app/model/api/http_statefull.dart';
 import 'package:sidokare_mobile_app/pages/page_inputotp.dart';
-// import 'package:sidokare_mobile_app/pages/page_login.dart';
-// import 'package:sidokare_mobile_app/provider/provider_account.dart';
 import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server/gmail.dart';
 
@@ -26,30 +20,34 @@ class PageRegister extends StatefulWidget {
 
 class _PageRegisterState extends State<PageRegister> {
   TextEditingController textEditingControllerNama = TextEditingController();
-
   TextEditingController textEditingControllerNik = TextEditingController();
-
   TextEditingController textEditingControllerUsername = TextEditingController();
-
   TextEditingController textEditingControllerNomorTelepon =
       TextEditingController();
-
   TextEditingController textEditingControllerKonfirmasiPassword =
       TextEditingController();
-
   TextEditingController textEditingControllerEmail = TextEditingController();
-
   TextEditingController textEditingControllerPassword = TextEditingController();
 
-  String? otp_register = UtilFunction.generateOTP().toString();
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
 
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+  }
+
+  String? otp_register = UtilFunction.generateOTP().toString();
   final _formKey = GlobalKey<FormState>();
 
   sendMail(String? kodeOtp, String? email, BuildContext context) async {
     String username = 'e41211358@student.polije.ac.id';
     String password = 'ltddukvjccanwukp';
     var otpArray = kodeOtp.toString().split('');
-
     String templateMessage = """ 
     <!DOCTYPE html>
       <html>

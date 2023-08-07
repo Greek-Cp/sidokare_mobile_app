@@ -229,23 +229,21 @@ class _DetailPengajuanPPIDState extends State<DetailPengajuanPPID> {
                                 String replaceBruh = path.replaceAll("'", "");
                                 replaceBruh =
                                     replaceBruh.replaceAll("Directory: ", "");
-                                // print(replaceBruh);
-                                // String savedDir =
-                                //     "C:\\Users\\LENOVO\\Downloads\\Named123_ppid677.pdf";
-                                // print("${savedDir}");
-                                ControllerAPI.downloadFile(
-                                    url,
-                                    replaceBruh,
-                                    context,
-                                    "Tersimpan folder download \n Nama File : ${timeStamp}-${DocPPID.toString()}");
+
+                                ControllerAPI.normalProgress(
+                                  Uri: url,
+                                  savePath: replaceBruh,
+                                  context: context,
+                                );
                               } else if (Platform.isAndroid) {
                                 String pathYak =
                                     "/storage/emulated/0/Download/${timestamp}_${DocPPID.toString()}";
-                                ControllerAPI.downloadFile(
-                                    url,
-                                    pathYak,
-                                    context,
-                                    "Tersimpan folder download \n Nama File : ${timeStamp}-${DocPPID.toString()}");
+                                ControllerAPI.normalProgress(
+                                  Uri: url,
+                                  savePath: pathYak,
+                                  context: context,
+                                );
+                                ;
                               }
                             } else if (status == 'Ditolak') {
                               ToastWidget.ToastInfo(

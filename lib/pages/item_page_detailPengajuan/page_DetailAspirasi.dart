@@ -1,7 +1,9 @@
 import 'dart:io';
 
 import 'package:bottom_bar_matu/utils/app_utils.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
@@ -12,6 +14,7 @@ import 'package:sidokare_mobile_app/model/response/get/model_jmlkeberatan.dart';
 import 'package:sidokare_mobile_app/model/response/pengajuan_aspirasi.dart';
 import 'package:sidokare_mobile_app/pages/item_page_detailPengajuan/page_DetailPengajuanPPID.dart';
 import 'package:sidokare_mobile_app/provider/provider_account.dart';
+import 'package:sn_progress_dialog/sn_progress_dialog.dart';
 
 import '../../component/Toast.dart';
 import '../../component/text_description.dart';
@@ -81,6 +84,30 @@ class _PageDetailAspirasiState extends State<PageDetailAspirasiiii> {
         return " : " + tess.toString();
       }
     }
+
+    // _normalProgress(
+    //     {BuildContext? context, String? Uri, String? savePath}) async {
+    //   /// Create progress dialog
+    //   ProgressDialog pd = ProgressDialog(context: context);
+    //   var dio = new Dio();
+    //   CancelToken cancelToken = CancelToken();
+    //   pd.show(
+    //     max: 100,
+    //     completed: Completed(
+    //         completedMsg: "Unduh File Selesai", completionDelay: 2000),
+    //     msg: 'Mengunduh File...',
+    //     progressBgColor: Colors.transparent,
+    //     cancel: Cancel(
+    //       cancelClicked: () {
+    //         cancelToken.cancel();
+    //       },
+    //     ),
+    //   );
+    //   await dio.download(Uri!, savePath!, onReceiveProgress: (count, total) {
+    //     int progress = (((count / total) * 100).toInt());
+    //     pd.update(value: progress);
+    //   }, cancelToken: cancelToken);
+    // }
 
     // TODO: implement build
     return ScreenUtilInit(
@@ -240,6 +267,7 @@ class _PageDetailAspirasiState extends State<PageDetailAspirasiiii> {
                               DateFormat formatter =
                                   DateFormat('yyyyMMddHHmmss');
                               String timestamp = formatter.format(currentTime);
+
                               if (Platform.isWindows) {
                                 var getDownload = await getDownloadsDirectory();
                                 String path =
@@ -248,22 +276,17 @@ class _PageDetailAspirasiState extends State<PageDetailAspirasiiii> {
                                 replaceBruh =
                                     replaceBruh.replaceAll("Directory: ", "");
                                 print(replaceBruh);
-                                // String savedDir =
-                                //     "C:\\Users\\LENOVO\\Downloads\\Named123_ppid677.pdf";
-                                // print("${savedDir}");
-                                ControllerAPI.downloadFile(
-                                    url,
-                                    replaceBruh,
-                                    context,
-                                    "Tersimpan folder download \n Nama File : ${timestamp}-${DocAspirasi.toString()}");
+                                ControllerAPI.normalProgress(
+                                    Uri: url,
+                                    savePath: replaceBruh,
+                                    context: context);
                               } else if (Platform.isAndroid) {
                                 String pathYak =
                                     "/storage/emulated/0/Download/${timestamp}_${DocAspirasi.toString()}";
-                                ControllerAPI.downloadFile(
-                                    url,
-                                    pathYak,
-                                    context,
-                                    "Tersimpan folder download \n Nama File : ${timestamp}-${DocAspirasi.toString()}");
+                                ControllerAPI.normalProgress(
+                                    Uri: url,
+                                    savePath: pathYak,
+                                    context: context);
                               }
                             } else if (stts == 'Ditolak') {
                               ToastWidget.ToastInfo(

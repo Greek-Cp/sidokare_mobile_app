@@ -3,12 +3,14 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sidokare_mobile_app/component/Toast.dart';
 import 'package:sidokare_mobile_app/const/list_color.dart';
 import 'package:sidokare_mobile_app/const/size.dart';
 import 'package:sidokare_mobile_app/const/util_pref.dart';
 import 'package:sidokare_mobile_app/model/model_account.dart';
 import 'package:sidokare_mobile_app/pages/page_home.dart';
+import 'package:sidokare_mobile_app/pages/page_login.dart';
 import 'package:wave_transition/wave_transition.dart';
 import './page_introawal.dart';
 
@@ -25,9 +27,15 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-
     UtilPref().getLoginStatus().then((value) => {
-          if (value) {_nextUtama()} else {_nextbro()}
+          if (value)
+            {_nextUtama()}
+          else
+            {
+              UtilPref().getSaveFirstTime().then((value) => {
+                    if (value) {_getLogin()} else {_nextbro()}
+                  })
+            }
         });
     /*
 
@@ -43,6 +51,18 @@ class _SplashScreenState extends State<SplashScreen> {
           context,
           WaveTransition(
               child: HalamanUtama(),
+              center: FractionalOffset(0.90, 0.90),
+              duration: Duration(milliseconds: 1000) // optional
+              ));
+    });
+  }
+
+  _getLogin() async {
+    await Future.delayed(Duration(milliseconds: 2000), () {
+      Navigator.push(
+          context,
+          WaveTransition(
+              child: PageLogin(),
               center: FractionalOffset(0.90, 0.90),
               duration: Duration(milliseconds: 1000) // optional
               ));

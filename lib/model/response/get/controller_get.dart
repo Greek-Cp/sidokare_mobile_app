@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sidokare_mobile_app/component/Toast.dart';
@@ -9,6 +10,7 @@ import 'package:sidokare_mobile_app/model/response/get/response_aspirasi.dart';
 import 'package:sidokare_mobile_app/model/response/get/response_keluhan.dart';
 import 'package:sidokare_mobile_app/model/response/modelkomentar.dart';
 import 'package:sidokare_mobile_app/model/response/modelkomentarlist.dart';
+import 'package:sn_progress_dialog/sn_progress_dialog.dart';
 
 import 'model_jmlkeberatan.dart';
 import 'response_ppid.dart';
@@ -24,13 +26,41 @@ class ControllerAPI {
     return ResponseModelPPID.fromJson(jsonDecode(res.body));
   }
 
-  static Future<void> downloadFile(
-      String url, String savePath, BuildContext context, String Ucapan) async {
-    var response =
-        await http.get(Uri.parse(url), headers: {"Connection": "Keep-Alive"});
-    var file = File(savePath);
-    await file.writeAsBytes(response.bodyBytes);
-    ToastWidget.ToastSucces(context, "Berhasil Download File", "Tersimpan");
+  // static Future<void> downloadFile(
+  //     String url, String savePath, BuildContext context, String Ucapan) async {
+  //   var response =
+  //       await http.get(Uri.parse(url), headers: {"Connection": "Keep-Alive"});
+  //   var file = File(savePath);
+  //   await file.writeAsBytes(response.bodyBytes);
+  //   ToastWidget.ToastSucces(context, "Berhasil Download File", "Tersimpan");
+  // }
+
+  static normalProgress(
+      {BuildContext? context, String? Uri, String? savePath}) async {
+    ProgressDialog pd = ProgressDialog(context: context);
+    var dio = new Dio();
+    CancelToken cancelToken = CancelToken();
+    pd.show(
+      max: 100,
+      completed:
+          Completed(completedMsg: "Unduh File Selesai", completionDelay: 2000),
+      msg: 'Perisiapan Mengunduh File...',
+      msgFontSize: 16.0,
+      valueFontSize: 12,
+      progressType: ProgressType.valuable,
+      progressBgColor: Colors.transparent,
+      cancel: Cancel(
+        cancelClicked: () {
+          cancelToken.cancel();
+        },
+      ),
+    );
+    await dio.download(Uri!, savePath!, onReceiveProgress: (count, total) {
+      int progress = (((count / total) * 100).toInt());
+      double sizeInMb = total / (1024 * 1024);
+      String megabytesFormatted = sizeInMb.toStringAsFixed(3);
+      pd.update(value: progress, msg: "Mengunduh: ${megabytesFormatted}Mb ");
+    }, cancelToken: cancelToken);
   }
 
   static Future<ResponseModelKELUHAN> getStatusKELUHAN(int idAkun) async {

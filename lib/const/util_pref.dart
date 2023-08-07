@@ -9,6 +9,17 @@ class UtilPref {
     prefs.setBool('isLoggedIn', isLoggedIn);
   }
 
+  Future<void> saveFirstTime(bool isLoggedIn) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setBool('isFirstTime', isLoggedIn);
+  }
+
+  Future<bool> getSaveFirstTime() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool isLoggedIn = prefs.getBool('isFirstTime') ?? false;
+    return isLoggedIn;
+  }
+
   Future<bool> getLoginStatus() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     bool isLoggedIn = prefs.getBool('isLoggedIn') ?? false;

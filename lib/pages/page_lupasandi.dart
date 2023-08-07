@@ -14,6 +14,7 @@ import 'package:sidokare_mobile_app/model/api/http_statefull.dart';
 import 'package:sidokare_mobile_app/pages/page_inputotp.dart';
 import 'package:sidokare_mobile_app/pages/page_ubahsandi.dart';
 
+import '../component/Helper.dart';
 import '../component/text_field.dart';
 import '../const/list_color.dart';
 import 'package:http/http.dart' as http;
@@ -248,6 +249,12 @@ class _LupaSandiState extends State<LupaSandi> {
     // TODO: implement initState
     super.initState();
     _passwordVisible = false;
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
   }
 
   @override

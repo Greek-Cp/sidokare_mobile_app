@@ -203,8 +203,8 @@ class _PageFormulirPengajuanKeluhanState
                       ),
                       PilihTanggal("Tanggal Kejadian", "Kejadian",
                           controllerDate!, "Masukkan Tanggal"),
-                      UpfilePendukung("Upload File Pendukung", "gatau", fileUp!,
-                          "Silakan Upload File"),
+                      UpfilePendukung("Upload File Pendukung (max: 2Mb)",
+                          "gatau", fileUp!, "Silakan Upload File"),
                       SizedBox(
                         height: 10.h,
                       ),
@@ -231,54 +231,66 @@ class _PageFormulirPengajuanKeluhanState
                               print(
                                   "Asal Pelapor == ${textEditingControllerAsalPelapor!.text}");
                               if (_formKey.currentState!.validate()) {
-                                PengajuhanKeluhan.InsertDataKeluhan(
-                                        idAkunnn.toString(),
-                                        textEditingControllerJudulLaporan!.text,
-                                        textEditingControllerIsiLaporan!.text,
-                                        textEditingControllerAsalPelapor!
-                                            .text, //Asal
-                                        getMap!.text, // Lokasi Kejadian
-                                        randomValueKategoriLaporan.toString(),
-                                        pp.toString(),
-                                        randomValueRT.toString(),
-                                        randomValueRW.toString(),
-                                        fileUp!.text.toString())
-                                    .then((value) => {
-                                          setState(() {
-                                            statusPengajuan = true;
-                                          }),
-                                          if (value.code == 200)
-                                            {
-                                              print("jelase kenek"),
-                                              if (fileUp!.text.toString() != "")
-                                                {
-                                                  PengajuhanKeluhan
-                                                          .uploadFileKeluhan(
-                                                              _file!)
-                                                      .then((value) => {
-                                                            Navigator.popAndPushNamed(
-                                                                context,
-                                                                BerhasilBuatLaporan
-                                                                    .routeName
-                                                                    .toString(),
-                                                                arguments: idAkunnn
-                                                                    .toString())
-                                                          })
-                                                }
-                                              else
-                                                {
-                                                  Navigator.popAndPushNamed(
-                                                      context,
-                                                      BerhasilBuatLaporan
-                                                          .routeName
-                                                          .toString(),
-                                                      arguments:
-                                                          idAkunnn.toString())
-                                                }
-                                            }
-                                          else
-                                            {print("gagal banh")}
-                                        });
+                                int sizeInBytes = _file!.lengthSync();
+                                double sizeInMb = sizeInBytes / (1024 * 1024);
+                                if (sizeInMb > 2) {
+                                  ToastWidget.ToastInfo(
+                                      context,
+                                      "Maksimal file yang dapat upload 2MB",
+                                      "File Terlalu Besar");
+                                } else {
+                                  setState(() {
+                                    statusPengajuan = true;
+                                  });
+                                  PengajuhanKeluhan.InsertDataKeluhan(
+                                          idAkunnn.toString(),
+                                          textEditingControllerJudulLaporan!
+                                              .text,
+                                          textEditingControllerIsiLaporan!.text,
+                                          textEditingControllerAsalPelapor!
+                                              .text, //Asal
+                                          getMap!.text, // Lokasi Kejadian
+                                          randomValueKategoriLaporan.toString(),
+                                          pp.toString(),
+                                          randomValueRT.toString(),
+                                          randomValueRW.toString(),
+                                          fileUp!.text.toString())
+                                      .then((value) => {
+                                            if (value.code == 200)
+                                              {
+                                                print("jelase kenek"),
+                                                if (fileUp!.text.toString() !=
+                                                    "")
+                                                  {
+                                                    PengajuhanKeluhan
+                                                            .uploadFileKeluhan(
+                                                                _file!)
+                                                        .then((value) => {
+                                                              Navigator.popAndPushNamed(
+                                                                  context,
+                                                                  BerhasilBuatLaporan
+                                                                      .routeName
+                                                                      .toString(),
+                                                                  arguments:
+                                                                      idAkunnn
+                                                                          .toString())
+                                                            })
+                                                  }
+                                                else
+                                                  {
+                                                    Navigator.popAndPushNamed(
+                                                        context,
+                                                        BerhasilBuatLaporan
+                                                            .routeName
+                                                            .toString(),
+                                                        arguments:
+                                                            idAkunnn.toString())
+                                                  }
+                                              }
+                                            else
+                                              {print("gagal banh")}
+                                          });
+                                }
                               }
                             },
                             child: Padding(

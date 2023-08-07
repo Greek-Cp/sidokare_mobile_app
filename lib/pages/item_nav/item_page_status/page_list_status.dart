@@ -151,7 +151,7 @@ class _itemListStatusState extends State<itemListStatus> {
                     itemCount: snapshot.data!.data!.length);
               }
             } else {
-              return Text(snapshot.error.toString());
+              return CircularProgressIndicator();
             }
             return Center(
                 child: Column(

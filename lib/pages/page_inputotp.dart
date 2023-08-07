@@ -9,6 +9,7 @@ import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server/gmail.dart';
 import 'package:otp_text_field/otp_field.dart';
 import 'package:otp_text_field/style.dart';
+import 'package:sidokare_mobile_app/component/Helper.dart';
 import 'package:sidokare_mobile_app/component/Toast.dart';
 import 'package:sidokare_mobile_app/component/text_description.dart';
 import 'package:sidokare_mobile_app/const/list_color.dart';
@@ -38,6 +39,7 @@ class _InputOtpState extends State<InputOtp> {
 
   @override
   void initState() {
+    ConnectivityHelper().startListening(context, false);
     super.initState();
     startCountdown();
   }
@@ -71,6 +73,7 @@ class _InputOtpState extends State<InputOtp> {
 
   @override
   void dispose() {
+    ConnectivityHelper().startListening(context, true);
     _timer?.cancel();
     super.dispose();
   }

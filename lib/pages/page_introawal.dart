@@ -1,14 +1,30 @@
+import 'package:bottom_bar_matu/utils/app_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sidokare_mobile_app/const/list_color.dart';
 import 'package:sidokare_mobile_app/const/size.dart';
 import 'package:sidokare_mobile_app/component/jenis_button.dart';
 import 'package:sidokare_mobile_app/component/text_description.dart';
+import 'package:sidokare_mobile_app/const/util_pref.dart';
 import './page_login.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class IntroAwal extends StatelessWidget {
+class IntroAwal extends StatefulWidget {
   static String? routeName = "/introawal";
+
+  @override
+  State<IntroAwal> createState() => _IntroAwalState();
+}
+
+class _IntroAwalState extends State<IntroAwal> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    UtilPref().saveFirstTime(true);
+  }
+
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(

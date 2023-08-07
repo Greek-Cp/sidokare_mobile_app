@@ -131,7 +131,7 @@ class _itemListStatusAspirasiState extends State<itemListStatusAspirasi> {
                     itemCount: snapshot.data!.data!.length);
               }
             } else {
-              return Text(snapshot.error.toString());
+              return CircularProgressIndicator();
             }
             //sini
             return Center(

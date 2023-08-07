@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:sidokare_mobile_app/component/LoadingComponent.dart';
+import 'package:sidokare_mobile_app/component/Toast.dart';
 import 'package:sidokare_mobile_app/const/size.dart';
 import 'package:sidokare_mobile_app/model/response/pengajuan_aspirasi.dart';
 import 'package:sidokare_mobile_app/pages/page_BerhasilBuatLaporan.dart';
@@ -47,13 +48,13 @@ class _PageFormulirAspirasiState extends State<PageFormulirAspirasi> {
       textEditingControllerNamaLengkap!.text = DataDiri.nama.toString();
     });
     // TODO: implement build
-    return statusPengajuan == true
-        ? LoadingComponent(
-            prosesName: "Aspirasi",
-          )
-        : ScreenUtilInit(
-            builder: (context, child) {
-              return Scaffold(
+    return ScreenUtilInit(
+      builder: (context, child) {
+        return statusPengajuan == true
+            ? LoadingComponent(
+                prosesName: "aspirasi",
+              )
+            : Scaffold(
                 appBar: AppBar(
                   elevation: 0,
                   title: Text(
@@ -109,7 +110,7 @@ class _PageFormulirAspirasiState extends State<PageFormulirAspirasi> {
                                 pesanValidasi: "Isi Aspirasi")),
                       ),
                       UpfilePendukung(
-                          labelName: "Upload File Pendukung",
+                          labelName: "Upload File Pendukung (Max: 2Mb)",
                           pesanValidasi: "Boleh Kosong",
                           text_kontrol: fileUp!,
                           hintText: "boleh dikosongi"),
@@ -131,45 +132,64 @@ class _PageFormulirAspirasiState extends State<PageFormulirAspirasi> {
                                     "ISI ASPIRASI :: ${textEditingControllerIsiAspirasi!.text}");
                                 print("FILE UPLOAD :: ${fileUp!.text}");
 
-                                PengajuanAspirasi.InsertAspirasi(
-                                        idAkunnn.toString(),
-                                        textEditingControllerJudulAspirasi!
-                                            .text,
-                                        textEditingControllerIsiAspirasi!.text,
-                                        fileUp!.text)
-                                    .then((value) => {
-                                          if (value.code == 200)
-                                            {
-                                              print("Kenek Aspirasi"),
-                                              if (fileUp!.text.toString() != "")
-                                                {
-                                                  PengajuanAspirasi
-                                                          .uploadFileAspirasi(
-                                                              _file!)
-                                                      .then((value) => {
-                                                            Navigator.popAndPushNamed(
-                                                                context,
-                                                                BerhasilBuatLaporan
-                                                                    .routeName
-                                                                    .toString(),
-                                                                arguments: idAkunnn
-                                                                    .toString())
-                                                          })
-                                                }
-                                              else
-                                                {
-                                                  Navigator.popAndPushNamed(
-                                                      context,
-                                                      BerhasilBuatLaporan
-                                                          .routeName
-                                                          .toString(),
-                                                      arguments:
-                                                          idAkunnn.toString())
-                                                },
-                                            }
-                                          else
-                                            {print("gagal aspirasi")}
-                                        });
+                                int sizeInBytes = _file!.lengthSync();
+                                double sizeInMb = sizeInBytes / (1024 * 1024);
+                                if (sizeInMb > 2) {
+                                  ToastWidget.ToastInfo(
+                                      context,
+                                      "Maksimal file yang dapat upload 2MB",
+                                      "File Terlalu Besar");
+                                } else {
+                                  setState(() {
+                                    statusPengajuan = true;
+                                  });
+                                  PengajuanAspirasi.InsertAspirasi(
+                                          idAkunnn.toString(),
+                                          textEditingControllerJudulAspirasi!
+                                              .text,
+                                          textEditingControllerIsiAspirasi!
+                                              .text,
+                                          fileUp!.text)
+                                      .then((value) => {
+                                            if (value.code == 200)
+                                              {
+                                                print("Kenek Aspirasi"),
+                                                if (fileUp!.text.toString() !=
+                                                    "")
+                                                  {
+                                                    PengajuanAspirasi
+                                                            .uploadFileAspirasi(
+                                                                _file!)
+                                                        .then((value) => {
+                                                              Navigator.popAndPushNamed(
+                                                                  context,
+                                                                  BerhasilBuatLaporan
+                                                                      .routeName
+                                                                      .toString(),
+                                                                  arguments:
+                                                                      idAkunnn
+                                                                          .toString())
+                                                            })
+                                                  }
+                                                else
+                                                  {
+                                                    Navigator.popAndPushNamed(
+                                                        context,
+                                                        BerhasilBuatLaporan
+                                                            .routeName
+                                                            .toString(),
+                                                        arguments:
+                                                            idAkunnn.toString())
+                                                  },
+                                              }
+                                            else
+                                              {print("gagal aspirasi")}
+                                          });
+                                }
+                              } else {
+                                setState(() {
+                                  statusPengajuan = false;
+                                });
                               }
                             },
                             child: Padding(
@@ -187,8 +207,8 @@ class _PageFormulirAspirasiState extends State<PageFormulirAspirasi> {
                   ),
                 ),
               );
-            },
-          );
+      },
+    );
   }
 
   Widget UpfilePendukung(

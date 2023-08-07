@@ -259,20 +259,17 @@ class _PageDetailKeluhannState extends State<PageDetailKeluhann> {
                               String replaceBruh = path.replaceAll("'", "");
                               replaceBruh =
                                   replaceBruh.replaceAll("Directory: ", "");
-                              // print(replaceBruh);
-                              // String savedDir =
-                              //     "C:\\Users\\LENOVO\\Downloads\\Named123_ppid677.pdf";
-                              // print("${savedDir}");
-                              ControllerAPI.downloadFile(
-                                  url,
-                                  replaceBruh,
-                                  context,
-                                  "Tersimpan folder download \n Nama File : ${timestamp}-${DokumenUser.toString()}");
+                              ControllerAPI.normalProgress(
+                                  Uri: url,
+                                  savePath: replaceBruh,
+                                  context: context);
                             } else if (Platform.isAndroid) {
                               String pathYak =
                                   "/storage/emulated/0/Download/${timestamp}_${DokumenUser.toString()}";
-                              ControllerAPI.downloadFile(url, pathYak, context,
-                                  "Tersimpan folder download \n Nama File : ${timestamp}-${DokumenUser.toString()}");
+                              ControllerAPI.normalProgress(
+                                  Uri: url,
+                                  savePath: pathYak,
+                                  context: context);
                             }
                           } else if (stsss == 'Ditolak') {
                             ToastWidget.ToastInfo(
