@@ -14,6 +14,7 @@ import 'package:sidokare_mobile_app/pages/page_detail_aspirasi.dart';
 
 import 'package:sidokare_mobile_app/provider/provider_account.dart';
 
+import '../../../component/shimmer_loading.dart';
 import '../../item_page_detailPengajuan/page_DetailAspirasi.dart';
 
 class itemListStatusAspirasi extends StatefulWidget {
@@ -130,6 +131,11 @@ class _itemListStatusAspirasiState extends State<itemListStatusAspirasi> {
                     },
                     itemCount: snapshot.data!.data!.length);
               }
+            } else if (snapshot.hasError) {
+              return ShimmerListStatus();
+            } else if (snapshot.connectionState == ConnectionState.waiting) {
+              return CircularProgressIndicator();
+              // return ShimmerListStatus();
             } else {
               return CircularProgressIndicator();
             }

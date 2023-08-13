@@ -124,220 +124,255 @@ class _PageLoginState extends State<PageLogin> {
     // TODO: implement build
     return ScreenUtilInit(
       builder: (context, child) {
-        return Scaffold(
-          resizeToAvoidBottomInset: false,
-          // resizeToAvoidBottomInset: false,
-          body: SingleChildScrollView(
-            reverse: true,
-            child: Center(
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20.0.h),
-                child: Form(
-                  key: _formKey,
-                  child: ListView(
-                    shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
-                    children: [
-                      SizedBox(
-                        height: 50.h,
-                      ),
-                      Text(
-                        "Selamat Datang",
-                        style: GoogleFonts.dmSans(
-                            textStyle: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: size.HeaderText.sp)),
-                        textAlign: TextAlign.center,
-                      ),
-                      Text(
-                        "Silahkan masuk dan lakukan aktivitas",
-                        style: GoogleFonts.dmSans(
-                            textStyle: TextStyle(
-                          fontSize: size.SubHeader.sp,
-                          color: ListColor.warnaDescription,
-                        )),
-                        textAlign: TextAlign.center,
-                      ),
-                      Lottie.asset(
-                        "assets/login_animasi.json",
-                        width: 120.w,
-                        height: 300.h,
-                      ),
-                      SizedBox(
-                          child: TextFieldImport.TextForm(
-                              labelName: "Email",
-                              text_kontrol: textEditingControllerEmail,
-                              hintText: "Masukkan Emailmu",
-                              pesanValidasi: "Email")),
-                      // SizedBox(
-                      //     child: TextFieldPassword(
-                      //         textEditingControllerPassword,
-                      //         "Masukkan Sandi",
-                      //         false,
-                      //         "Kata Sandi",
-                      //         "Kata Sandi")),
-                      PasswordDone(
-                          hintText: "Masukkan Sandi",
-                          text_kontrol: textEditingControllerPassword,
-                          labelName: "Kata Sandi",
-                          passwordType: _obsecureText,
-                          pesanValidasi: "Kata Sandi"),
-                      SizedBox(
-                        height: 10.sp,
-                      ),
-                      GestureDetector(
-                        onTap: () => {
-                          Navigator.pushNamed(
-                              context, LupaSandi.routeName.toString())
-                        },
-                        child: MouseRegion(
-                          onHover: (event) {
-                            setState(() {
-                              _isHovering = true;
-                            });
-                          },
-                          onExit: (event) {
-                            setState(() {
-                              _isHovering = false;
-                            });
-                          },
-                          child: Text(
-                            "Lupa Sandi?",
-                            style: GoogleFonts.dmSans(
-                                textStyle: TextStyle(
-                                    color: _isHovering
-                                        ? ListColor.warnaBiruSidoKare
-                                        : Colors.grey.shade700,
-                                    fontStyle: FontStyle.italic,
-                                    fontSize: size.sizeDescriptionPas.sp)),
-                            textAlign: TextAlign.end,
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 20.h,
-                      ),
-                      ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                              backgroundColor: ListColor.warnaBiruSidoKare,
-                              minimumSize: Size.fromHeight(55.h)),
-                          onPressed: () => {
-                                if (_formKey.currentState!.validate())
-                                  {
-                                    HttpStatefull.loginAkun(
-                                            textEditingControllerEmail.text,
-                                            textEditingControllerPassword.text)
-                                        .then((value) async => {
-                                              if (value.code == 200)
-                                                {
-                                                  print(
-                                                      "Nama anda adalah ${value.nama_lengkap}"),
-                                                  print(
-                                                      "ID Akun adalah ${value.id_akun}"),
-                                                  print(
-                                                      "Nik Akun adalah ${value.nik}"),
-                                                  print(
-                                                      "mamagambar Akun adalah ${value.namaProfile}"),
-                                                  providerAccount!.AddData(
-                                                      value.id_akun!,
-                                                      value.nama_lengkap!,
-                                                      value.nik!,
-                                                      value.namaProfile!,
-                                                      value.nomor_telepon!,
-                                                      value.email!),
-                                                  providerAccount!.setIdAkun(
-                                                      value.id_akun!.toInt()),
-                                                  Navigator.pushNamed(
-                                                      context,
-                                                      HalamanUtama.routeName
-                                                          .toString(),
-                                                      arguments: value.id_akun),
-                                                  FocusManager
-                                                      .instance.primaryFocus!
-                                                      .unfocus(),
-                                                  ToastWidget.ToastSucces(
-                                                      context,
-                                                      "Masuk Berhasil , Akun Ditemukan",
-                                                      "Selamat "),
-                                                  UtilPref().saveSingleAccount(
-                                                      ModelAccount(
-                                                          id_akun:
-                                                              value.id_akun,
-                                                          nama: value
-                                                              .nama_lengkap,
-                                                          Nik: value.nik,
-                                                          urlGambar:
-                                                              value.namaProfile,
-                                                          noTelepon: value
-                                                              .nomor_telepon,
-                                                          email: value.email)),
-                                                  UtilPref()
-                                                      .saveLoginStatus(true)
-                                                }
-                                              else if (value.code == 400)
-                                                {
-                                                  print("apakag eror kesini"),
-                                                  ToastWidget.ToastEror(
-                                                      context,
-                                                      "Masuk Gagal , Akun Tidak Ditemukan",
-                                                      "Mohon Maaf")
-                                                }
-                                            })
-                                  }
-                                else
-                                  {}
-                              },
-                          child: Padding(
-                            padding: const EdgeInsets.all(10.0),
-                            child: Text(
-                              "Masuk",
-                              style: TextStyle(fontSize: size.textButton.sp),
-                            ),
-                          )),
-                      SizedBox(
-                        height: 20.h,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
+        return WillPopScope(
+            child: Scaffold(
+              resizeToAvoidBottomInset: false,
+              // resizeToAvoidBottomInset: false,
+              body: SingleChildScrollView(
+                reverse: true,
+                child: Center(
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 20.0.h),
+                    child: Form(
+                      key: _formKey,
+                      child: ListView(
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
                         children: [
+                          SizedBox(
+                            height: 50.h,
+                          ),
                           Text(
-                            "Belum punya akun? ",
+                            "Selamat Datang",
                             style: GoogleFonts.dmSans(
                                 textStyle: TextStyle(
-                                    fontWeight: FontWeight.normal,
-                                    fontSize: size.sizeDescriptionPas.sp)),
-                            textAlign: TextAlign.start,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: size.HeaderText.sp)),
+                            textAlign: TextAlign.center,
+                          ),
+                          Text(
+                            "Silahkan masuk dan lakukan aktivitas",
+                            style: GoogleFonts.dmSans(
+                                textStyle: TextStyle(
+                              fontSize: size.SubHeader.sp,
+                              color: ListColor.warnaDescription,
+                            )),
+                            textAlign: TextAlign.center,
+                          ),
+                          Lottie.asset(
+                            "assets/login_animasi.json",
+                            width: 120.w,
+                            height: 300.h,
+                          ),
+                          SizedBox(
+                              child: TextFieldImport.TextForm(
+                                  labelName: "Email",
+                                  text_kontrol: textEditingControllerEmail,
+                                  hintText: "Masukkan Emailmu",
+                                  pesanValidasi: "Email")),
+                          // SizedBox(
+                          //     child: TextFieldPassword(
+                          //         textEditingControllerPassword,
+                          //         "Masukkan Sandi",
+                          //         false,
+                          //         "Kata Sandi",
+                          //         "Kata Sandi")),
+                          PasswordDone(
+                              hintText: "Masukkan Sandi",
+                              text_kontrol: textEditingControllerPassword,
+                              labelName: "Kata Sandi",
+                              passwordType: _obsecureText,
+                              pesanValidasi: "Kata Sandi"),
+                          SizedBox(
+                            height: 10.sp,
                           ),
                           GestureDetector(
                             onTap: () => {
                               Navigator.pushNamed(
-                                  context, PageRegister.routeName.toString()),
-                              FocusManager.instance.primaryFocus!.unfocus(),
+                                  context, LupaSandi.routeName.toString())
                             },
-                            child: Text(
-                              "Daftar Disini",
-                              style: TextStyle(
-                                  fontFamily: fontfix.DmSansBruh,
-                                  color: ListColor.warnaBiruSidoKare,
-                                  fontSize: size.sizeDescriptionPas.sp),
-                              textAlign: TextAlign.start,
+                            child: MouseRegion(
+                              onHover: (event) {
+                                setState(() {
+                                  _isHovering = true;
+                                });
+                              },
+                              onExit: (event) {
+                                setState(() {
+                                  _isHovering = false;
+                                });
+                              },
+                              child: Text(
+                                "Lupa Sandi?",
+                                style: GoogleFonts.dmSans(
+                                    textStyle: TextStyle(
+                                        color: _isHovering
+                                            ? ListColor.warnaBiruSidoKare
+                                            : Colors.grey.shade700,
+                                        fontStyle: FontStyle.italic,
+                                        fontSize: size.sizeDescriptionPas.sp)),
+                                textAlign: TextAlign.end,
+                              ),
                             ),
                           ),
                           SizedBox(
-                            height: 50.h,
+                            height: 20.h,
                           ),
+                          ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor: ListColor.warnaBiruSidoKare,
+                                  minimumSize: Size.fromHeight(55.h)),
+                              onPressed: () => {
+                                    if (_formKey.currentState!.validate())
+                                      {
+                                        HttpStatefull.loginAkun(
+                                                textEditingControllerEmail.text,
+                                                textEditingControllerPassword
+                                                    .text)
+                                            .then((value) async => {
+                                                  if (value.code == 200)
+                                                    {
+                                                      print(
+                                                          "Nama anda adalah ${value.nama_lengkap}"),
+                                                      print(
+                                                          "ID Akun adalah ${value.id_akun}"),
+                                                      print(
+                                                          "Nik Akun adalah ${value.nik}"),
+                                                      print(
+                                                          "mamagambar Akun adalah ${value.namaProfile}"),
+                                                      providerAccount!.AddData(
+                                                          value.id_akun!,
+                                                          value.nama_lengkap!,
+                                                          value.nik!,
+                                                          value.namaProfile!,
+                                                          value.nomor_telepon!,
+                                                          value.email!),
+                                                      providerAccount!
+                                                          .setIdAkun(value
+                                                              .id_akun!
+                                                              .toInt()),
+                                                      Navigator.pushNamed(
+                                                          context,
+                                                          HalamanUtama.routeName
+                                                              .toString(),
+                                                          arguments:
+                                                              value.id_akun),
+                                                      FocusManager.instance
+                                                          .primaryFocus!
+                                                          .unfocus(),
+                                                      ToastWidget.ToastSucces(
+                                                          context,
+                                                          "Masuk Berhasil , Akun Ditemukan",
+                                                          "Selamat "),
+                                                      UtilPref().saveSingleAccount(
+                                                          ModelAccount(
+                                                              id_akun:
+                                                                  value.id_akun,
+                                                              nama: value
+                                                                  .nama_lengkap,
+                                                              Nik: value.nik,
+                                                              urlGambar: value
+                                                                  .namaProfile,
+                                                              noTelepon: value
+                                                                  .nomor_telepon,
+                                                              email:
+                                                                  value.email)),
+                                                      UtilPref()
+                                                          .saveLoginStatus(true)
+                                                    }
+                                                  else if (value.code == 400)
+                                                    {
+                                                      print(
+                                                          "apakag eror kesini"),
+                                                      ToastWidget.ToastEror(
+                                                          context,
+                                                          "Masuk Gagal , Akun Tidak Ditemukan",
+                                                          "Mohon Maaf")
+                                                    }
+                                                })
+                                      }
+                                    else
+                                      {}
+                                  },
+                              child: Padding(
+                                padding: const EdgeInsets.all(10.0),
+                                child: Text(
+                                  "Masuk",
+                                  style:
+                                      TextStyle(fontSize: size.textButton.sp),
+                                ),
+                              )),
+                          SizedBox(
+                            height: 20.h,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                "Belum punya akun? ",
+                                style: GoogleFonts.dmSans(
+                                    textStyle: TextStyle(
+                                        fontWeight: FontWeight.normal,
+                                        fontSize: size.sizeDescriptionPas.sp)),
+                                textAlign: TextAlign.start,
+                              ),
+                              GestureDetector(
+                                onTap: () => {
+                                  Navigator.pushNamed(context,
+                                      PageRegister.routeName.toString()),
+                                  FocusManager.instance.primaryFocus!.unfocus(),
+                                },
+                                child: Text(
+                                  "Daftar Disini",
+                                  style: TextStyle(
+                                      fontFamily: fontfix.DmSansBruh,
+                                      color: ListColor.warnaBiruSidoKare,
+                                      fontSize: size.sizeDescriptionPas.sp),
+                                  textAlign: TextAlign.start,
+                                ),
+                              ),
+                              SizedBox(
+                                height: 50.h,
+                              ),
+                            ],
+                          ),
+                          Padding(
+                              padding: EdgeInsets.only(
+                                  bottom:
+                                      MediaQuery.of(context).viewInsets.bottom))
                         ],
                       ),
-                      Padding(
-                          padding: EdgeInsets.only(
-                              bottom: MediaQuery.of(context).viewInsets.bottom))
-                    ],
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
-        );
+            onWillPop: () async {
+              showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    title: Text('Konfirmasi'),
+                    content: Text('Yakin ingin keluar dari aplikasi?'),
+                    actions: [
+                      TextButton(
+                        child: Text('tidak'),
+                        onPressed: () {
+                          Navigator.of(context).pop(); // Menutup dialog
+                        },
+                      ),
+                      TextButton(
+                        child: Text('Iya'),
+                        onPressed: () {
+                          SystemNavigator.pop(); // Keluar dari aplikasi
+                        },
+                      ),
+                    ],
+                  );
+                },
+              );
+              return false;
+            });
       },
     );
   }

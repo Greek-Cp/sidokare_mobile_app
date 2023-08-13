@@ -47,6 +47,10 @@ dependencies:
   connectivity_plus: ^4.0.2
   open_settings: ^2.0.2
   get: ^4.6.5
+  shimmer: ^3.0.0
+  carousel_slider: ^4.2.1
+  smooth_page_indicator: ^1.1.0
+  google_maps_flutter: ^2.4.0
 
 dev_dependencies:
   flutter_lints: ^2.0.0
@@ -75,6 +79,9 @@ flutter:
     - assets/newspaper.json
     - assets/emptylist.json
     - assets/koneks.json
+    - assets/tentang.png
+    - assets/lokasi.png
+    - assets/sidokaredesa.jpg
 
   fonts:
     - family: DMsans

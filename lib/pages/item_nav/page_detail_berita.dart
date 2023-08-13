@@ -1,11 +1,23 @@
+import 'dart:async';
+import 'dart:io';
+
 import 'package:bottom_bar_matu/utils/app_utils.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:intl/intl.dart';
+import 'package:lottie/lottie.dart';
+import 'package:material_dialogs/material_dialogs.dart';
+import 'package:material_dialogs/widgets/buttons/icon_button.dart';
+import 'package:material_dialogs/widgets/buttons/icon_outline_button.dart';
+import 'package:open_settings/open_settings.dart';
 import 'package:provider/provider.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:sidokare_mobile_app/component/jenis_button.dart';
 import 'package:sidokare_mobile_app/component/text_field.dart';
 import 'package:sidokare_mobile_app/const/list_color.dart';
@@ -16,6 +28,7 @@ import 'package:sidokare_mobile_app/model/response/modelkomentar.dart';
 import 'package:sidokare_mobile_app/model/response/modelkomentarlist.dart';
 import 'package:sidokare_mobile_app/provider/provider_account.dart';
 
+import '../../component/image_class.dart';
 import '../../const/const.dart';
 
 class PageDetailBerita extends StatefulWidget {
@@ -37,6 +50,74 @@ class _PageDetailBeritaState extends State<PageDetailBerita> {
   bool startAnimation = false;
   double screenHeight = 0;
   double screenWidth = 0;
+  late StreamSubscription subscription;
+  bool isDeviceConnected = false;
+  bool isAlertSet = false;
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    subscription.cancel();
+    super.dispose();
+  }
+
+  getConnectivity(BuildContext context) =>
+      subscription = Connectivity().onConnectivityChanged.listen(
+        (ConnectivityResult result) async {
+          isDeviceConnected = await InternetConnectionChecker().hasConnection;
+          if (!isDeviceConnected && isAlertSet == false) {
+            btn4(context);
+            setState(() => isAlertSet = true);
+          }
+        },
+      );
+
+  btn4(BuildContext context) {
+    return Dialogs.bottomMaterialDialog(
+      msg: 'Harap Periksa Ulang Koneksi / Internet',
+      title: 'Tidak Ada Koneksi',
+      color: Colors.white,
+      lottieBuilder: Lottie.asset(
+        "assets/koneks.json",
+        fit: BoxFit.contain,
+      ),
+      context: context,
+      enableDrag: false,
+      isDismissible: false,
+      actions: [
+        IconsOutlineButton(
+          onPressed: () {
+            // Navigator.of(context).pop();
+            if (Platform.isAndroid) {
+              OpenSettings.openWIFISetting();
+            }
+
+            // OpenSettings.openDateSetting();
+          },
+          text: 'Pengaturan',
+          iconData: Icons.wifi,
+          textStyle: TextStyle(color: Colors.grey),
+          iconColor: Colors.grey,
+        ),
+        IconsButton(
+          onPressed: () async {
+            Navigator.pop(context, 'Cancel');
+            setState(() => isAlertSet = false);
+            isDeviceConnected = await InternetConnectionChecker().hasConnection;
+            if (!isDeviceConnected && isAlertSet == false) {
+              btn4(context);
+              setState(() => isAlertSet = true);
+            }
+          },
+          text: 'Hubungkan',
+          iconData: Icons.repeat,
+          color: Colors.blue,
+          textStyle: TextStyle(color: Colors.white),
+          iconColor: Colors.white,
+        ),
+      ],
+    );
+  }
 
   List<DataBerita>? BeritaList = [];
   late Future<bool> removeKomentar;
@@ -44,6 +125,7 @@ class _PageDetailBeritaState extends State<PageDetailBerita> {
   @override
   void initState() {
     // TODO: implement initState
+    getConnectivity(context);
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       setState(() {
@@ -80,6 +162,10 @@ class _PageDetailBeritaState extends State<PageDetailBerita> {
     future = ControllerAPI.getKomentar(idBerita);
     idAkun = provider.id_akun.toString();
 
+    final DataDiri = Provider.of<ProviderAccount>(context)
+        .GetDataDiri
+        .firstWhere((idData) => idData.id_akun == idAkun.toInt());
+
     String tanggal_publikasi = berita.tanggalPublikasi.toString();
     DateTime tempDate =
         new DateFormat("yyyy-MM-dd hh:mm:ss").parse(tanggal_publikasi);
@@ -109,7 +195,7 @@ class _PageDetailBeritaState extends State<PageDetailBerita> {
                 floating: true,
                 stretch: true,
                 shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10)),
+                    borderRadius: BorderRadius.circular(0)),
                 backgroundColor: ListColor.warnaBiruSidoKare,
                 pinned: true,
                 expandedHeight: 180.w,
@@ -166,8 +252,8 @@ class _PageDetailBeritaState extends State<PageDetailBerita> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 20.0, vertical: 10.0),
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 20.0.w, vertical: 5.h),
                     child: AnimationConfiguration.synchronized(
                       child: FadeInAnimation(
                         duration: Duration(milliseconds: 700),
@@ -189,8 +275,15 @@ class _PageDetailBeritaState extends State<PageDetailBerita> {
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
                         BeritaList = snapshot.data!.data!;
+                        for (var berita in BeritaList!) {
+                          print("Judul Utama: ${berita.isiKomentar}");
+                          print("Isi Utama: ${berita.idKomentar}");
+                          print(
+                              "============="); // Membuat baris kosong antara berita
+                        }
                         return ListView.builder(
                           shrinkWrap: true,
+                          padding: EdgeInsets.all(0),
                           physics: NeverScrollableScrollPhysics(),
                           itemCount: BeritaList!.length,
                           itemBuilder: (context, index) {
@@ -237,7 +330,8 @@ class _PageDetailBeritaState extends State<PageDetailBerita> {
                         idBerita,
                         getKomen?.text.toString(),
                         getCurrentDateTime().toString(),
-                        namaProfile.toString()),
+                        namaProfile.toString(),
+                        DataDiri.urlGambar.toString()),
                   )),
                   Padding(
                       padding: EdgeInsets.only(
@@ -254,7 +348,7 @@ class _PageDetailBeritaState extends State<PageDetailBerita> {
   Widget _CommentItemUser(
       DataBerita data, int index, TextEditingController Kontroller) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 20.h, vertical: 10.h),
+      padding: EdgeInsets.only(left: 20.0.w, right: 20.0.w, bottom: 10.0.h),
       child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -267,17 +361,10 @@ class _PageDetailBeritaState extends State<PageDetailBerita> {
                 SizedBox(
                   height: 20.h,
                   width: 20.w,
-                  child: CircleAvatar(
-                    backgroundColor: Colors.red,
-
-                    backgroundImage: data.profilePicKomen.toString() == "" ||
-                            data.profilePicKomen.toString() == null ||
-                            data.profilePicKomen.toString() == 'kosong'
-                        ? AssetImage("assets/accountBlank.png") as ImageProvider
-                        : NetworkImage(
-                                "http://${ApiPoint.BASE_URL}/storage/app/public/profile/${data.profilePicKomen.toString().replaceAll("'", "")}")
-                            as ImageProvider,
-                    // "http://${ApiPoint.BASE_URL}/storage/profile/${data.profilePicKomen.toString()}"
+                  child: BunderImageProfile(
+                    namaGambar: data.profilePicKomen.toString(),
+                    lebarFoto: 20,
+                    tinggiFoto: 20,
                   ),
                 ),
                 SizedBox(
@@ -397,18 +484,43 @@ class _PageDetailBeritaState extends State<PageDetailBerita> {
             Text(
               data.isiKomentar.toString(),
               style: TextStyle(fontSize: size.sizeDescriptionPas.sp),
-            )
+            ),
           ]),
     );
   }
 
   Widget _Image(String urlImage) {
-    return Image.network(
-      "http://${ApiPoint.BASE_URL}/storage/app/public/berita/${urlImage}",
-      fit: BoxFit.cover,
-      width: double.infinity,
-      height: 200.h,
-    );
+    // return Image.network(
+    //   "http://${ApiPoint.BASE_URL}/storage/app/public/berita/${urlImage}",
+    //   fit: BoxFit.cover,
+    //   width: double.infinity,
+    //   height: 200.h,
+    // );
+    return CachedNetworkImage(
+        imageUrl:
+            "http://${ApiPoint.BASE_URL}/storage/app/public/berita/${urlImage}",
+        height: 200.h,
+        width: double.infinity,
+        fit: BoxFit.cover,
+        errorWidget: (context, url, error) {
+          return Shimmer.fromColors(
+              child: Container(
+                width: double.infinity,
+                height: 140.h,
+                color: Colors.white,
+              ),
+              baseColor: Colors.grey.shade300,
+              highlightColor: Colors.grey.shade100);
+        },
+        progressIndicatorBuilder: (context, url, progress) =>
+            Shimmer.fromColors(
+                child: Container(
+                  width: double.infinity,
+                  height: 140.h,
+                  color: Colors.white,
+                ),
+                baseColor: Colors.grey.shade300,
+                highlightColor: Colors.grey.shade100));
   }
 
   Widget _HeaderJudul(String judul) {
@@ -509,7 +621,7 @@ class _PageDetailBeritaState extends State<PageDetailBerita> {
   }
 
   Widget _isiKomen(
-      String id_akun, id_berita, isi_komentar, waktuBerkomentar, nama) {
+      String id_akun, id_berita, isi_komentar, waktuBerkomentar, nama, gbr) {
     print("Isi Komentar");
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
@@ -533,16 +645,17 @@ class _PageDetailBeritaState extends State<PageDetailBerita> {
                   onPressed: () {
                     setState(() {
                       BeritaList!.add(DataBerita(
-                        idAkun: id_akun,
-                        idBerita: id_berita.toString(),
-                        isiKomentar: getKomen!.text,
-                        waktuBerkomentar: waktuBerkomentar,
-                        namaPengkomen: nama,
-                      ));
+                          idAkun: id_akun,
+                          idBerita: id_berita.toString(),
+                          isiKomentar: getKomen!.text,
+                          waktuBerkomentar: waktuBerkomentar,
+                          namaPengkomen: nama,
+                          profilePicKomen: gbr));
                     });
 
                     Future<ModelKomentar> d = ControllerAPI.buatKomentar(
                         id_akun, id_berita, getKomen!.text, waktuBerkomentar);
+                    getKomen!.clear();
                   },
                   style: ElevatedButton.styleFrom(
                       minimumSize: Size.fromHeight(45.h)),

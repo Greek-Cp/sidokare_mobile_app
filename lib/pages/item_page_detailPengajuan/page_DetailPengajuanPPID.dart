@@ -1,10 +1,18 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:bottom_bar_matu/utils/app_utils.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:intl/intl.dart';
+import 'package:lottie/lottie.dart';
+import 'package:material_dialogs/material_dialogs.dart';
+import 'package:material_dialogs/widgets/buttons/icon_button.dart';
+import 'package:material_dialogs/widgets/buttons/icon_outline_button.dart';
+import 'package:open_settings/open_settings.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:sidokare_mobile_app/component/Toast.dart';
@@ -30,6 +38,83 @@ class DetailPengajuanPPID extends StatefulWidget {
 
 class _DetailPengajuanPPIDState extends State<DetailPengajuanPPID> {
   Map? getData;
+
+  late StreamSubscription subscription;
+  bool isDeviceConnected = false;
+  bool isAlertSet = false;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    getConnectivity(context);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    subscription.cancel();
+    super.dispose();
+  }
+
+  getConnectivity(BuildContext context) =>
+      subscription = Connectivity().onConnectivityChanged.listen(
+        (ConnectivityResult result) async {
+          isDeviceConnected = await InternetConnectionChecker().hasConnection;
+          if (!isDeviceConnected && isAlertSet == false) {
+            btn4(context);
+            setState(() => isAlertSet = true);
+          }
+        },
+      );
+
+  btn4(BuildContext context) {
+    return Dialogs.bottomMaterialDialog(
+      msg: 'Harap Periksa Ulang Koneksi / Internet',
+      title: 'Tidak Ada Koneksi',
+      color: Colors.white,
+      lottieBuilder: Lottie.asset(
+        "assets/koneks.json",
+        fit: BoxFit.contain,
+      ),
+      context: context,
+      enableDrag: false,
+      isDismissible: false,
+      actions: [
+        IconsOutlineButton(
+          onPressed: () {
+            // Navigator.of(context).pop();
+            if (Platform.isAndroid) {
+              OpenSettings.openWIFISetting();
+            }
+
+            // OpenSettings.openDateSetting();
+          },
+          text: 'Pengaturan',
+          iconData: Icons.wifi,
+          textStyle: TextStyle(color: Colors.grey),
+          iconColor: Colors.grey,
+        ),
+        IconsButton(
+          onPressed: () async {
+            Navigator.pop(context, 'Cancel');
+            setState(() => isAlertSet = false);
+            isDeviceConnected = await InternetConnectionChecker().hasConnection;
+            if (!isDeviceConnected && isAlertSet == false) {
+              btn4(context);
+              setState(() => isAlertSet = true);
+            }
+          },
+          text: 'Hubungkan',
+          iconData: Icons.repeat,
+          color: Colors.blue,
+          textStyle: TextStyle(color: Colors.white),
+          iconColor: Colors.white,
+        ),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     getData = ModalRoute.of(context)?.settings.arguments as Map;
@@ -82,7 +167,7 @@ class _DetailPengajuanPPIDState extends State<DetailPengajuanPPID> {
               } else if (snapshot.hasError) {
                 return Text("Error : ${snapshot.error}");
               } else {
-                return CircularProgressIndicator();
+                return Center(child: CircularProgressIndicator());
               }
               return SingleChildScrollView(
                 child: Padding(
@@ -185,13 +270,16 @@ class _DetailPengajuanPPIDState extends State<DetailPengajuanPPID> {
                                 ComponentTextDescription(": ${asalPelapor} "),
                                 ComponentTextDescription(": ${RT} / ${RW}"),
                                 ComponentTextDescription(": ${KategoriPPID}"),
-                                Text(filePendukung.toString().length > 20
-                                    ? ": " +
-                                        filePendukung
-                                            .toString()
-                                            .substring(0, 20) +
-                                        '...'
-                                    : ": ${filePendukung}"),
+                                Text(
+                                  filePendukung.toString().length > 15
+                                      ? ": " +
+                                          filePendukung
+                                              .toString()
+                                              .substring(0, 15) +
+                                          '...'
+                                      : ": ${filePendukung}",
+                                  overflow: TextOverflow.ellipsis,
+                                ),
                                 // ComponentTextDescription(": ${filePendukung}"),
                               ],
                             ),
@@ -291,64 +379,133 @@ class _DetailPengajuanPPIDState extends State<DetailPengajuanPPID> {
                         Divider(
                           color: Colors.grey,
                         ),
-                        SizedBox(
-                          height: 30.h,
-                        ),
-                        Divider(
-                          height: 1.h,
-                          color: Colors.grey,
-                        ),
+                        // SizedBox(
+                        //   height: 30.h,
+                        // ),
+                        // Divider(
+                        //   height: 1.h,
+                        //   color: Colors.grey,
+                        // ),
                         // ButtonKeberatan("Keberatan"),
                         Padding(
                           padding: EdgeInsets.symmetric(vertical: 0.h),
-                          child: ElevatedButton(
-                            onPressed: () {
-                              int batasan =
-                                  snapshot.data!.jumlahKeberatanPPID != "Kosong"
-                                      ? snapshot.data!.jumlahKeberatanPPID
-                                          .toInt()
-                                      : 0;
-                              if (batasan == 2) {
-                                ToastWidget.ToastInfo(
-                                    context,
-                                    "Revisi sudah kedua kali, silahkan datang ke kantor Desa untuk mendapatkan informasi lebih lanjut",
-                                    "Mohon Maaf ");
-                              } else if (status == "Diterima") {
-                                ToastWidget.ToastInfo(
-                                    context,
-                                    "Tidak dapat lagi mengajukan keberatan",
-                                    "Mohon Maaf");
-                              } else if (status == "Ditolak") {
-                                ToastWidget.ToastInfo(
-                                    context,
-                                    "Pengajuan Ditolak silakan membuat pengajuan kembali",
-                                    "Pengajuan Ditolak");
-                              } else {
-                                if (status == "Selesai") {
-                                  Navigator.pushNamed(
-                                      context,
-                                      PageFormulirKeberatanPPID.routeName
-                                          .toString(),
-                                      arguments: {
-                                        "id": id_ppid.toString(),
-                                        "id_akun": Akunn,
-                                        "kategori": "ppid"
-                                      });
-                                } else {
-                                  ToastWidget.ToastInfo(
-                                      context,
-                                      "Pengajuan PPID tidak dalam status selesai , tidak dapat melakukan Keberatan",
-                                      "Mohon Maaf");
-                                }
-                              }
-                            },
-                            child: ComponentTextButton("Keberatan"),
-                            style: ElevatedButton.styleFrom(
-                                minimumSize: Size.fromHeight(55.h),
-                                backgroundColor: Colors.red),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: ElevatedButton(
+                                  onPressed: () {
+                                    int batasan =
+                                        snapshot.data!.jumlahKeberatanPPID !=
+                                                "Kosong"
+                                            ? snapshot.data!.jumlahKeberatanPPID
+                                                .toInt()
+                                            : 0;
+                                    if (batasan == 2) {
+                                      ToastWidget.ToastInfo(
+                                          context,
+                                          "Revisi sudah kedua kali, silahkan datang ke kantor Desa untuk mendapatkan informasi lebih lanjut",
+                                          "Mohon Maaf ");
+                                    } else if (status == "Diterima") {
+                                      ToastWidget.ToastInfo(
+                                          context,
+                                          "Tidak dapat lagi mengajukan keberatan",
+                                          "Mohon Maaf");
+                                    } else if (status == "Ditolak") {
+                                      ToastWidget.ToastInfo(
+                                          context,
+                                          "Pengajuan Ditolak silakan membuat pengajuan kembali",
+                                          "Pengajuan Ditolak");
+                                    } else {
+                                      if (status == "Selesai") {
+                                        Navigator.pushNamed(
+                                            context,
+                                            PageFormulirKeberatanPPID.routeName
+                                                .toString(),
+                                            arguments: {
+                                              "id": id_ppid.toString(),
+                                              "id_akun": Akunn,
+                                              "kategori": "ppid"
+                                            });
+                                      } else {
+                                        ToastWidget.ToastInfo(
+                                            context,
+                                            "Pengajuan PPID tidak dalam status selesai , tidak dapat melakukan Keberatan",
+                                            "Mohon Maaf");
+                                      }
+                                    }
+                                  },
+                                  child: Text(
+                                    "Keberatan",
+                                    style: TextStyle(color: Colors.redAccent),
+                                  ),
+                                  style: ElevatedButton.styleFrom(
+                                      side: BorderSide(color: Colors.redAccent),
+                                      elevation: 0,
+                                      foregroundColor:
+                                          Colors.redAccent.shade200,
+                                      backgroundColor: Colors.white),
+                                ),
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Expanded(
+                                  child: ButtonSelesai(
+                                      "Selesai", id_ppid.toString(), status))
+                            ],
                           ),
                         ),
-                        ButtonSelesai("Selesai", id_ppid.toString(), status)
+
+                        // Padding(
+                        //   padding: EdgeInsets.symmetric(vertical: 0.h),
+                        //   child: ElevatedButton(
+                        //     onPressed: () {
+                        //       int batasan =
+                        //           snapshot.data!.jumlahKeberatanPPID != "Kosong"
+                        //               ? snapshot.data!.jumlahKeberatanPPID
+                        //                   .toInt()
+                        //               : 0;
+                        //       if (batasan == 2) {
+                        //         ToastWidget.ToastInfo(
+                        //             context,
+                        //             "Revisi sudah kedua kali, silahkan datang ke kantor Desa untuk mendapatkan informasi lebih lanjut",
+                        //             "Mohon Maaf ");
+                        //       } else if (status == "Diterima") {
+                        //         ToastWidget.ToastInfo(
+                        //             context,
+                        //             "Tidak dapat lagi mengajukan keberatan",
+                        //             "Mohon Maaf");
+                        //       } else if (status == "Ditolak") {
+                        //         ToastWidget.ToastInfo(
+                        //             context,
+                        //             "Pengajuan Ditolak silakan membuat pengajuan kembali",
+                        //             "Pengajuan Ditolak");
+                        //       } else {
+                        //         if (status == "Selesai") {
+                        //           Navigator.pushNamed(
+                        //               context,
+                        //               PageFormulirKeberatanPPID.routeName
+                        //                   .toString(),
+                        //               arguments: {
+                        //                 "id": id_ppid.toString(),
+                        //                 "id_akun": Akunn,
+                        //                 "kategori": "ppid"
+                        //               });
+                        //         } else {
+                        //           ToastWidget.ToastInfo(
+                        //               context,
+                        //               "Pengajuan PPID tidak dalam status selesai , tidak dapat melakukan Keberatan",
+                        //               "Mohon Maaf");
+                        //         }
+                        //       }
+                        //     },
+                        //     child: ComponentTextButton("Keberatan"),
+                        //     style: ElevatedButton.styleFrom(
+                        //         minimumSize: Size.fromHeight(55.h),
+                        //         backgroundColor: Colors.red),
+                        //   ),
+                        // ),
+                        // ButtonSelesai("Selesai", id_ppid.toString(), status)
                       ]),
                 ),
               );
@@ -477,7 +634,7 @@ class ButtonSelesai extends StatelessWidget {
           }
         },
         child: ComponentTextButton("$buttonName"),
-        style: ElevatedButton.styleFrom(minimumSize: Size.fromHeight(55.h)),
+        style: ElevatedButton.styleFrom(),
       ),
     );
   }

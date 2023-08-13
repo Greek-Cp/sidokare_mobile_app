@@ -1,12 +1,20 @@
 import 'dart:async';
+import 'dart:io';
 import 'dart:math';
 
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
+import 'package:lottie/lottie.dart';
 import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server/gmail.dart';
+import 'package:material_dialogs/material_dialogs.dart';
+import 'package:material_dialogs/widgets/buttons/icon_button.dart';
+import 'package:material_dialogs/widgets/buttons/icon_outline_button.dart';
+import 'package:open_settings/open_settings.dart';
 import 'package:otp_text_field/otp_field.dart';
 import 'package:otp_text_field/style.dart';
 import 'package:sidokare_mobile_app/component/Helper.dart';
@@ -37,11 +45,82 @@ class _InputOtpState extends State<InputOtp> {
   Timer? _timer;
   bool statusHitungMundur = false;
 
+  late StreamSubscription subscription;
+  bool isDeviceConnected = false;
+  bool isAlertSet = false;
+
   @override
   void initState() {
-    ConnectivityHelper().startListening(context, false);
+    // TODO: implement initState
+    getConnectivity(context);
     super.initState();
     startCountdown();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    subscription.cancel();
+    super.dispose();
+    _timer?.cancel();
+  }
+
+  getConnectivity(BuildContext context) =>
+      subscription = Connectivity().onConnectivityChanged.listen(
+        (ConnectivityResult result) async {
+          isDeviceConnected = await InternetConnectionChecker().hasConnection;
+          if (!isDeviceConnected && isAlertSet == false) {
+            btn4(context);
+            setState(() => isAlertSet = true);
+          }
+        },
+      );
+
+  btn4(BuildContext context) {
+    return Dialogs.bottomMaterialDialog(
+      msg: 'Harap Periksa Ulang Koneksi / Internet',
+      title: 'Tidak Ada Koneksi',
+      color: Colors.white,
+      lottieBuilder: Lottie.asset(
+        "assets/koneks.json",
+        fit: BoxFit.contain,
+      ),
+      context: context,
+      enableDrag: false,
+      isDismissible: false,
+      actions: [
+        IconsOutlineButton(
+          onPressed: () {
+            // Navigator.of(context).pop();
+            if (Platform.isAndroid) {
+              OpenSettings.openWIFISetting();
+            }
+
+            // OpenSettings.openDateSetting();
+          },
+          text: 'Pengaturan',
+          iconData: Icons.wifi,
+          textStyle: TextStyle(color: Colors.grey),
+          iconColor: Colors.grey,
+        ),
+        IconsButton(
+          onPressed: () async {
+            Navigator.pop(context, 'Cancel');
+            setState(() => isAlertSet = false);
+            isDeviceConnected = await InternetConnectionChecker().hasConnection;
+            if (!isDeviceConnected && isAlertSet == false) {
+              btn4(context);
+              setState(() => isAlertSet = true);
+            }
+          },
+          text: 'Hubungkan',
+          iconData: Icons.repeat,
+          color: Colors.blue,
+          textStyle: TextStyle(color: Colors.white),
+          iconColor: Colors.white,
+        ),
+      ],
+    );
   }
 
   void startCountdown() {
@@ -69,13 +148,6 @@ class _InputOtpState extends State<InputOtp> {
 
       startCountdown();
     }
-  }
-
-  @override
-  void dispose() {
-    ConnectivityHelper().startListening(context, true);
-    _timer?.cancel();
-    super.dispose();
   }
 
   String formatTime(int seconds) {
@@ -202,7 +274,7 @@ class _InputOtpState extends State<InputOtp> {
     );
   }
 
-  sendMail(String input_email, String otpne) {
+  sendMail(String input_email, String otpne) async {
     String username = 'e41211358@student.polije.ac.id';
     String password = 'ltddukvjccanwukp';
 
@@ -393,7 +465,7 @@ class _InputOtpState extends State<InputOtp> {
 
     // print('Message sent: ' + sendReport.toString());
     try {
-      final sendReport = send(message, smtpServer);
+      final sendReport = await send(message, smtpServer);
       print('Message sent: ' + sendReport.toString());
     } on MailerException catch (e) {
       print('Message not sent.');

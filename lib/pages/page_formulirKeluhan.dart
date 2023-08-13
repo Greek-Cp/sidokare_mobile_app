@@ -1,5 +1,7 @@
+import 'dart:async';
 import 'dart:io';
 
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +10,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
+import 'package:lottie/lottie.dart';
+import 'package:material_dialogs/material_dialogs.dart';
+import 'package:material_dialogs/widgets/buttons/icon_button.dart';
+import 'package:material_dialogs/widgets/buttons/icon_outline_button.dart';
+import 'package:open_settings/open_settings.dart';
 import 'package:provider/provider.dart';
 import 'package:sidokare_mobile_app/component/LoadingComponent.dart';
 import 'package:sidokare_mobile_app/component/Toast.dart';
@@ -47,10 +55,80 @@ class _PageFormulirPengajuanKeluhanState
   DateTime selectedDate = DateTime.now();
   File? _file;
 
+  late StreamSubscription subscription;
+  bool isDeviceConnected = false;
+  bool isAlertSet = false;
+
   @override
   void initState() {
+    // TODO: implement initState
+    getConnectivity(context);
     super.initState();
-    // selectedDate = DateTime.now();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    subscription.cancel();
+    super.dispose();
+  }
+
+  getConnectivity(BuildContext context) =>
+      subscription = Connectivity().onConnectivityChanged.listen(
+        (ConnectivityResult result) async {
+          isDeviceConnected = await InternetConnectionChecker().hasConnection;
+          if (!isDeviceConnected && isAlertSet == false) {
+            btn4(context);
+            setState(() => isAlertSet = true);
+          }
+        },
+      );
+
+  btn4(BuildContext context) {
+    return Dialogs.bottomMaterialDialog(
+      msg: 'Harap Periksa Ulang Koneksi / Internet',
+      title: 'Tidak Ada Koneksi',
+      color: Colors.white,
+      lottieBuilder: Lottie.asset(
+        "assets/koneks.json",
+        fit: BoxFit.contain,
+      ),
+      context: context,
+      enableDrag: false,
+      isDismissible: false,
+      actions: [
+        IconsOutlineButton(
+          onPressed: () {
+            // Navigator.of(context).pop();
+            if (Platform.isAndroid) {
+              OpenSettings.openWIFISetting();
+            }
+
+            // OpenSettings.openDateSetting();
+          },
+          text: 'Pengaturan',
+          iconData: Icons.wifi,
+          textStyle: TextStyle(color: Colors.grey),
+          iconColor: Colors.grey,
+        ),
+        IconsButton(
+          onPressed: () async {
+            Navigator.pop(context, 'Cancel');
+            setState(() => isAlertSet = false);
+            isDeviceConnected = await InternetConnectionChecker().hasConnection;
+            if (!isDeviceConnected && isAlertSet == false) {
+              btn4(context);
+              setState(() => isAlertSet = true);
+            }
+          },
+          text: 'Hubungkan',
+          iconData: Icons.repeat,
+          color: Colors.blue,
+          textStyle: TextStyle(color: Colors.white),
+          iconColor: Colors.white,
+        ),
+      ],
+    );
   }
 
   final List<String> listDusun = ['Sidokare', 'SidoMaju', 'SidoSido'];
@@ -230,15 +308,68 @@ class _PageFormulirPengajuanKeluhanState
                               print("Lokasi kejadian == ${getMap!.text}");
                               print(
                                   "Asal Pelapor == ${textEditingControllerAsalPelapor!.text}");
+                              print(
+                                  "File Upp tes = ${fileUp!.text.toString()}");
+
                               if (_formKey.currentState!.validate()) {
-                                int sizeInBytes = _file!.lengthSync();
-                                double sizeInMb = sizeInBytes / (1024 * 1024);
-                                if (sizeInMb > 2) {
-                                  ToastWidget.ToastInfo(
-                                      context,
-                                      "Maksimal file yang dapat upload 2MB",
-                                      "File Terlalu Besar");
+                                //sini
+                                if (fileUp!.text.toString() != "") {
+                                  int sizeInBytes = _file!.lengthSync();
+                                  double sizeInMb = sizeInBytes / (1024 * 1024);
+
+                                  if (sizeInMb > 2) {
+                                    ToastWidget.ToastInfo(
+                                        context,
+                                        "Maksimal file yang dapat upload 2MB",
+                                        "File Terlalu Besar");
+                                  } else {
+                                    //Dengan File
+                                    setState(() {
+                                      statusPengajuan = true;
+                                    });
+                                    PengajuhanKeluhan.InsertDataKeluhan(
+                                            idAkunnn.toString(),
+                                            textEditingControllerJudulLaporan!
+                                                .text,
+                                            textEditingControllerIsiLaporan!
+                                                .text,
+                                            textEditingControllerAsalPelapor!
+                                                .text, //Asal
+                                            getMap!.text, // Lokasi Kejadian
+                                            randomValueKategoriLaporan
+                                                .toString(),
+                                            pp.toString(),
+                                            randomValueRT.toString(),
+                                            randomValueRW.toString(),
+                                            fileUp!.text.toString())
+                                        .then((value) => {
+                                              if (value.code == 200)
+                                                {
+                                                  print(
+                                                      "Berhasil Upload File - Keluhan"),
+                                                  PengajuhanKeluhan
+                                                          .uploadFileKeluhan(
+                                                              _file!)
+                                                      .then((value) => {
+                                                            Navigator.popAndPushNamed(
+                                                                context,
+                                                                BerhasilBuatLaporan
+                                                                    .routeName
+                                                                    .toString(),
+                                                                arguments: idAkunnn
+                                                                    .toString())
+                                                          })
+                                                }
+                                              else
+                                                {
+                                                  print(
+                                                      "Gagal Upload File - Keluhan")
+                                                }
+                                            });
+                                  }
                                 } else {
+                                  //file tidak ada
+                                  print("helo");
                                   setState(() {
                                     statusPengajuan = true;
                                   });
@@ -258,39 +389,25 @@ class _PageFormulirPengajuanKeluhanState
                                       .then((value) => {
                                             if (value.code == 200)
                                               {
-                                                print("jelase kenek"),
-                                                if (fileUp!.text.toString() !=
-                                                    "")
-                                                  {
-                                                    PengajuhanKeluhan
-                                                            .uploadFileKeluhan(
-                                                                _file!)
-                                                        .then((value) => {
-                                                              Navigator.popAndPushNamed(
-                                                                  context,
-                                                                  BerhasilBuatLaporan
-                                                                      .routeName
-                                                                      .toString(),
-                                                                  arguments:
-                                                                      idAkunnn
-                                                                          .toString())
-                                                            })
-                                                  }
-                                                else
-                                                  {
-                                                    Navigator.popAndPushNamed(
-                                                        context,
-                                                        BerhasilBuatLaporan
-                                                            .routeName
-                                                            .toString(),
-                                                        arguments:
-                                                            idAkunnn.toString())
-                                                  }
+                                                print(
+                                                    "Berhasil Upload Tanpa File - Keluhan"),
+                                                Navigator.popAndPushNamed(
+                                                    context,
+                                                    BerhasilBuatLaporan
+                                                        .routeName
+                                                        .toString(),
+                                                    arguments:
+                                                        idAkunnn.toString())
                                               }
                                             else
-                                              {print("gagal banh")}
+                                              {
+                                                print(
+                                                    "gagal Upload Tanpa File - Keluhan")
+                                              }
                                           });
                                 }
+                              } else {
+                                //validate else
                               }
                             },
                             child: Padding(

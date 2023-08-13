@@ -13,6 +13,7 @@ import 'package:sidokare_mobile_app/pages/page_detail_keluhan.dart';
 
 import 'package:sidokare_mobile_app/provider/provider_account.dart';
 
+import '../../../component/shimmer_loading.dart';
 import '../../item_page_detailPengajuan/page_DetailKeluhan.dart';
 
 class itemListStatusKeluhan extends StatefulWidget {
@@ -151,6 +152,10 @@ class _itemListStatusKeluhanState extends State<itemListStatusKeluhan> {
                     },
                     itemCount: snapshot.data!.data!.length);
               }
+            } else if (snapshot.hasError) {
+              return ShimmerListStatus();
+            } else if (snapshot.connectionState == ConnectionState.waiting) {
+              return CircularProgressIndicator();
             } else {
               return CircularProgressIndicator();
             }

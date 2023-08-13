@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:sidokare_mobile_app/const/list_color.dart';
 import 'package:sidokare_mobile_app/const/size.dart';
 import 'package:sidokare_mobile_app/model/controller_idakun.dart';
@@ -13,6 +14,7 @@ import 'package:sidokare_mobile_app/pages/page_detail_status.dart';
 
 import 'package:sidokare_mobile_app/provider/provider_account.dart';
 
+import '../../../component/shimmer_loading.dart';
 import '../../item_page_detailPengajuan/page_DetailPengajuanPPID.dart';
 
 class itemListStatus extends StatefulWidget {
@@ -121,35 +123,13 @@ class _itemListStatusState extends State<itemListStatus> {
                                               uploadFile: snapshot.data!.data![index].uploadFilePendukung,
                                               idAkun: snapshot.data!.data![index].idAkun)),
                                     )));
-                      // return _containerListStatus(
-                      //     id_ppid: snapshot.data!.data![index].idPengajuanPpid,
-                      //     email: snapshot.data!.data![index].email,
-                      //     NoTelp: snapshot.data!.data![index].telpp,
-                      //     statusUser: snapshot.data!.data![index].status,
-                      //     docUp: snapshot.data!.data![index].OutputDocPPID ==
-                      //                 null ||
-                      //             snapshot.data!.data![index].OutputDocPPID ==
-                      //                 ""
-                      //         ? "kosong"
-                      //         : snapshot.data!.data![index].OutputDocPPID,
-                      //     RTuser: snapshot.data!.data![index].RT,
-                      //     RWuser: snapshot.data!.data![index].RW,
-                      //     judul_pengajuan: snapshot
-                      //         .data!.data![index].judulLaporan
-                      //         .toString(),
-                      //     isi_pengajuan: snapshot.data!.data![index].isiLaporan,
-                      //     laporan: snapshot.data!.data![index].judulLaporan
-                      //         .toString(),
-                      //     isiLaporan: snapshot.data!.data![index].isiLaporan,
-                      //     asalPelapor: snapshot.data!.data![index].asalPelapor,
-                      //     kategoriPPID:
-                      //         snapshot.data!.data![index].kategoriPpid,
-                      //     uploadFile:
-                      //         snapshot.data!.data![index].uploadFilePendukung,
-                      //     idAkun: snapshot.data!.data![index].idAkun);
                     },
                     itemCount: snapshot.data!.data!.length);
               }
+            } else if (snapshot.hasError) {
+              return ShimmerListStatus();
+            } else if (snapshot.connectionState == ConnectionState.waiting) {
+              return CircularProgressIndicator();
             } else {
               return CircularProgressIndicator();
             }

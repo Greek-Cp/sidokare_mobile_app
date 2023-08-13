@@ -26,8 +26,10 @@ import 'package:sidokare_mobile_app/pages/page_inputotp.dart';
 import 'package:sidokare_mobile_app/pages/page_introawal.dart';
 import 'package:sidokare_mobile_app/pages/page_login.dart';
 import 'package:sidokare_mobile_app/pages/page_lupasandi.dart';
+import 'package:sidokare_mobile_app/pages/page_maps.dart';
 import 'package:sidokare_mobile_app/pages/page_profileSettings.dart';
 import 'package:sidokare_mobile_app/pages/page_register.dart';
+import 'package:sidokare_mobile_app/pages/page_tentangdesa.dart';
 import 'package:sidokare_mobile_app/pages/page_ubahsandi.dart';
 import 'package:sidokare_mobile_app/provider/provider_account.dart';
 
@@ -92,6 +94,9 @@ class MainApp extends StatelessWidget {
               PageDetailAspirasiiii(),
           PageDetailKeluhann.routeName.toString(): (context) =>
               PageDetailKeluhann(),
+          TentangDesaSidokare.routeName.toString(): (context) =>
+              TentangDesaSidokare(),
+          MapSample.routname.toString(): (context) => MapSample()
         },
       ),
     );

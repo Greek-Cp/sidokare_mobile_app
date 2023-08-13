@@ -1,9 +1,17 @@
+import 'dart:async';
 import 'dart:io';
 
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
+import 'package:lottie/lottie.dart';
+import 'package:material_dialogs/material_dialogs.dart';
+import 'package:material_dialogs/widgets/buttons/icon_button.dart';
+import 'package:material_dialogs/widgets/buttons/icon_outline_button.dart';
+import 'package:open_settings/open_settings.dart';
 import 'package:provider/provider.dart';
 import 'package:sidokare_mobile_app/component/LoadingComponent.dart';
 import 'package:sidokare_mobile_app/component/Toast.dart';
@@ -35,6 +43,82 @@ class _PageFormulirAspirasiState extends State<PageFormulirAspirasi> {
   bool statusPengajuan = false;
 
   final _formKey = GlobalKey<FormState>();
+
+  late StreamSubscription subscription;
+  bool isDeviceConnected = false;
+  bool isAlertSet = false;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    getConnectivity(context);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    subscription.cancel();
+    super.dispose();
+  }
+
+  getConnectivity(BuildContext context) =>
+      subscription = Connectivity().onConnectivityChanged.listen(
+        (ConnectivityResult result) async {
+          isDeviceConnected = await InternetConnectionChecker().hasConnection;
+          if (!isDeviceConnected && isAlertSet == false) {
+            btn4(context);
+            setState(() => isAlertSet = true);
+          }
+        },
+      );
+
+  btn4(BuildContext context) {
+    return Dialogs.bottomMaterialDialog(
+      msg: 'Harap Periksa Ulang Koneksi / Internet',
+      title: 'Tidak Ada Koneksi',
+      color: Colors.white,
+      lottieBuilder: Lottie.asset(
+        "assets/koneks.json",
+        fit: BoxFit.contain,
+      ),
+      context: context,
+      enableDrag: false,
+      isDismissible: false,
+      actions: [
+        IconsOutlineButton(
+          onPressed: () {
+            // Navigator.of(context).pop();
+            if (Platform.isAndroid) {
+              OpenSettings.openWIFISetting();
+            }
+
+            // OpenSettings.openDateSetting();
+          },
+          text: 'Pengaturan',
+          iconData: Icons.wifi,
+          textStyle: TextStyle(color: Colors.grey),
+          iconColor: Colors.grey,
+        ),
+        IconsButton(
+          onPressed: () async {
+            Navigator.pop(context, 'Cancel');
+            setState(() => isAlertSet = false);
+            isDeviceConnected = await InternetConnectionChecker().hasConnection;
+            if (!isDeviceConnected && isAlertSet == false) {
+              btn4(context);
+              setState(() => isAlertSet = true);
+            }
+          },
+          text: 'Hubungkan',
+          iconData: Icons.repeat,
+          color: Colors.blue,
+          textStyle: TextStyle(color: Colors.white),
+          iconColor: Colors.white,
+        ),
+      ],
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -132,14 +216,52 @@ class _PageFormulirAspirasiState extends State<PageFormulirAspirasi> {
                                     "ISI ASPIRASI :: ${textEditingControllerIsiAspirasi!.text}");
                                 print("FILE UPLOAD :: ${fileUp!.text}");
 
-                                int sizeInBytes = _file!.lengthSync();
-                                double sizeInMb = sizeInBytes / (1024 * 1024);
-                                if (sizeInMb > 2) {
-                                  ToastWidget.ToastInfo(
-                                      context,
-                                      "Maksimal file yang dapat upload 2MB",
-                                      "File Terlalu Besar");
+                                if (fileUp!.text.toString() != "") {
+                                  int sizeInBytes = _file!.lengthSync();
+                                  double sizeInMb = sizeInBytes / (1024 * 1024);
+
+                                  if (sizeInMb > 2) {
+                                    ToastWidget.ToastInfo(
+                                        context,
+                                        "Maksimal file yang dapat upload 2MB",
+                                        "File Terlalu Besar");
+                                  } else {
+                                    //Dengan File
+                                    setState(() {
+                                      statusPengajuan = true;
+                                    });
+                                    PengajuanAspirasi.InsertAspirasi(
+                                            idAkunnn.toString(),
+                                            textEditingControllerJudulAspirasi!
+                                                .text,
+                                            textEditingControllerIsiAspirasi!
+                                                .text,
+                                            fileUp!.text)
+                                        .then((value) => {
+                                              if (value.code == 200)
+                                                {
+                                                  print(
+                                                      "Kenek Aspirasi Dengan File"),
+                                                  PengajuanAspirasi
+                                                          .uploadFileAspirasi(
+                                                              _file!)
+                                                      .then((value) => {
+                                                            Navigator.popAndPushNamed(
+                                                                context,
+                                                                BerhasilBuatLaporan
+                                                                    .routeName
+                                                                    .toString(),
+                                                                arguments: idAkunnn
+                                                                    .toString())
+                                                          })
+                                                }
+                                              else
+                                                {print("gagal aspirasi")}
+                                            });
+                                  }
                                 } else {
+                                  //file tidak ada
+                                  print("halo");
                                   setState(() {
                                     statusPengajuan = true;
                                   });
@@ -153,34 +275,15 @@ class _PageFormulirAspirasiState extends State<PageFormulirAspirasi> {
                                       .then((value) => {
                                             if (value.code == 200)
                                               {
-                                                print("Kenek Aspirasi"),
-                                                if (fileUp!.text.toString() !=
-                                                    "")
-                                                  {
-                                                    PengajuanAspirasi
-                                                            .uploadFileAspirasi(
-                                                                _file!)
-                                                        .then((value) => {
-                                                              Navigator.popAndPushNamed(
-                                                                  context,
-                                                                  BerhasilBuatLaporan
-                                                                      .routeName
-                                                                      .toString(),
-                                                                  arguments:
-                                                                      idAkunnn
-                                                                          .toString())
-                                                            })
-                                                  }
-                                                else
-                                                  {
-                                                    Navigator.popAndPushNamed(
-                                                        context,
-                                                        BerhasilBuatLaporan
-                                                            .routeName
-                                                            .toString(),
-                                                        arguments:
-                                                            idAkunnn.toString())
-                                                  },
+                                                print(
+                                                    "Kenek Aspirasi Tanpa File"),
+                                                Navigator.popAndPushNamed(
+                                                    context,
+                                                    BerhasilBuatLaporan
+                                                        .routeName
+                                                        .toString(),
+                                                    arguments:
+                                                        idAkunnn.toString())
                                               }
                                             else
                                               {print("gagal aspirasi")}

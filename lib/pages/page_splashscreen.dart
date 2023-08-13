@@ -47,7 +47,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   _nextUtama() async {
     await Future.delayed(Duration(milliseconds: 2000), () {
-      Navigator.push(
+      Navigator.pushReplacement(
           context,
           WaveTransition(
               child: HalamanUtama(),
@@ -59,7 +59,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   _getLogin() async {
     await Future.delayed(Duration(milliseconds: 2000), () {
-      Navigator.push(
+      Navigator.pushReplacement(
           context,
           WaveTransition(
               child: PageLogin(),
@@ -73,7 +73,7 @@ class _SplashScreenState extends State<SplashScreen> {
     final status = await Permission.location.request();
     if (status.isGranted) {
       await Future.delayed(Duration(milliseconds: 2000), () {
-        Navigator.push(
+        Navigator.pushReplacement(
             context,
             WaveTransition(
                 child: IntroAwal(),

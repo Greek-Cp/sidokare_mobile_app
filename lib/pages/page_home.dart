@@ -146,11 +146,11 @@ class _HalamanUtamaState extends State<HalamanUtama> {
                 TextButton(
                   child: Text('Iya'),
                   onPressed: () {
-                    UtilPref()
-                        .removeSingleAccount()
-                        .then((value) => {print("Remove Success")});
-                    UtilPref().saveLoginStatus(false);
-                    UtilPref().saveSingleAccount(null);
+                    // UtilPref()
+                    //     .removeSingleAccount()
+                    //     .then((value) => {print("Remove Success")});
+                    // UtilPref().saveLoginStatus(false);
+                    // UtilPref().saveSingleAccount(null);
                     SystemNavigator.pop(); // Keluar dari aplikasi
                   },
                 ),
